@@ -4,7 +4,7 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model; §12 (the boundary with the workflow layer), because it is asked again by every feature; §1 and §16 (the two names), because they get harder every day; §11 (enforcing outcome-first), because it likely settles §6.
+**Most consequential right now:** §18 (whether an outcome is a unit), because it may reorganise the whole model and demote tasks to scaffolding; §8 (worktrees), because it may invalidate the claiming model; §12 (the boundary with the workflow layer), because it is asked again by every feature; §1 and §16 (the two names), because they get harder every day.
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
@@ -14,7 +14,7 @@ Numbering is stable — new questions are appended rather than inserted, so refe
 
 **Status:** Open, and the most consequential naming decision in the project.
 
-The unit itself is settled — it is the unit of iteration, and its job is described in `SPEC.md` §2.4. What it is **called** is not, and the word is being left open deliberately rather than for lack of a preference.
+The unit itself is settled — it is the unit of iteration, and its job is described in `SPEC.md` §2.3. What it is **called** is not, and the word is being left open deliberately rather than for lack of a preference.
 
 ### Why the name is being held
 
@@ -35,9 +35,9 @@ A name is cheap to change now and expensive later: it lands in the command inter
 | **round** | Short, unambiguous, no collisions. "Round 2" needs no explanation to anyone. | Informal; may read as insufficiently serious in enterprise settings. |
 | **wave** | Currently in the docs. | Connotes things moving together in a batch rather than attempts at a target. Weakest priors of the set. |
 
-**Ruled out — `phase`.** Phases are known in advance and differ in kind from one another; this unit is unknown in count and identical in kind, so the word actively misleads. It is also a common name for a user-defined grouping, and has been assigned there instead (`SPEC.md` §2.6).
+**Ruled out — `phase`.** Phases are known in advance and differ in kind from one another; this unit is unknown in count and identical in kind, so the word actively misleads. It is also a common name for a user-defined dimension, and has been assigned there instead (`SPEC.md` §2.7).
 
-**Watch for further collisions.** `cycle` and `round` are milder versions of the same problem — teams do use them as bucket names. Whichever word wins becomes unavailable as a grouping name, so the cost of taking a common one should be counted.
+**Watch for further collisions.** `cycle` and `round` are milder versions of the same problem — teams do use them as dimension names. Whichever word wins becomes unavailable as a dimension name, so the cost of taking a common one should be counted.
 
 *Settled by:* the maintainer, deliberately, before the first release. Not by drift.
 
@@ -107,7 +107,7 @@ This is the first change this project asks of the format, and should be raised t
 
 ## 5. Whether decisions are a record type
 
-**Status:** **Settled.** Yes — and more than a record type. A decision is a core unit, defined in `SPEC.md` §2.5.
+**Status:** **Settled.** Yes — and more than a record type. A decision is a core unit, defined in `SPEC.md` §2.6.
 
 It was resolved by noticing that a decision does a job none of the other units do, on a different axis from all of them: a project, a wave, and a task are *work*, whereas a decision is a *constraint on* work. It does not complete, does not iterate, and outlives the thing that produced it — which is also why it cannot be stored inside any one project.
 
@@ -134,7 +134,7 @@ So the question was never *whether* to enforce, but *what class of rule* is safe
 
 The working lean is to enforce the first and be suspicious of the second. It is a lean, not a law.
 
-**A data point pulling the other way.** `SPEC.md` §2.4 now says that verification and applied learning **always** happen at the boundary of a unit of iteration. If that word is meant strictly, the tool is already being asked to enforce a process sequence — which would settle this question in favour of enforcement, at least at that one boundary. Whether "always" is a description of intent or a requirement on the tool is worth resolving explicitly rather than by inference.
+**A data point pulling the other way.** `SPEC.md` §2.3 now says that verification and applied learning **always** happen at the boundary of a unit of iteration. If that word is meant strictly, the tool is already being asked to enforce a process sequence — which would settle this question in favour of enforcement, at least at that one boundary. Whether "always" is a description of intent or a requirement on the tool is worth resolving explicitly rather than by inference.
 
 ### The genuine counter-argument
 
@@ -167,7 +167,7 @@ States are expected to be configurable and carry no meaning to the tool. But the
 
 ## 8. Worktrees, and where coordination state lives
 
-**Status:** Open, and currently the most structurally dangerous question here. It may invalidate the claiming model described in `SPEC.md` §2.3 and §6.
+**Status:** Open, and currently the most structurally dangerous question here. It may invalidate the claiming model described in `SPEC.md` §2.5 and §6.
 
 `SPEC.md` §7 requires that agents and humans working in separate git worktrees have an up-to-date view and do not repeat effort. That requirement is in direct tension with how worktrees work.
 
@@ -254,7 +254,7 @@ So the question is what actually makes it happen.
 | **Gate on start** | No tasks may be created until the project declares criteria. | Strongest, and the only one that enforces *first*. Also the most obstructive, and the most likely to be worked around. |
 | **Report drift** | Criteria exist, but tasks are accumulating while they go untouched. | Advisory, but cheap and hard to argue with. Surfaces the failure mode without blocking. |
 
-Note the interaction with `SPEC.md` §2.4, which currently says verification and applied learning **always** happen at an iteration boundary. If that is a requirement rather than a description, some enforcement already exists and this question is partly answered.
+Note the interaction with `SPEC.md` §2.3, which currently says verification and applied learning **always** happen at an iteration boundary. If that is a requirement rather than a description, some enforcement already exists and this question is partly answered.
 
 *Settled by:* deciding whether the discipline is worth obstruction. If gating on start is too aggressive, the honest fallback is reporting drift rather than pretending a close-time gate enforces a start-time discipline.
 
@@ -285,7 +285,7 @@ The mitigation is cheap and worth adopting now: **write that logic as a consumer
 
 **Status:** Open. One rule settled (`SPEC.md` §7.1), the layout itself not.
 
-Settled: volatile properties — status, priority, grouping — are attributes and never directories. Filing records under `active/` and `archived/` changes their identity on every transition, breaks inbound links, and produces exactly the churn observed in earlier projects.
+Settled: volatile properties — status, priority, dimension — are attributes and never directories. Filing records under `active/` and `archived/` changes their identity on every transition, breaks inbound links, and produces exactly the churn observed in earlier projects.
 
 What remains open is what the directories *are*.
 
@@ -319,7 +319,7 @@ So the real decision is not "ranking or not" but "if ranking ever arrives, is th
 
 **Status:** Open.
 
-Configuration is where opinions live so that the binary can stay free of them — task states, priority values, grouping names, templates, hooks. That makes it load-bearing, and it will grow.
+Configuration is where opinions live so that the binary can stay free of them — task states, priority values, dimension names, templates, hooks. That makes it load-bearing, and it will grow.
 
 Open:
 
@@ -365,3 +365,75 @@ Open beneath that:
 - **Are templates configurable?** They should be. Templates are exactly where a methodology reaches into a tool, and keeping them in configuration rather than in code is what allows the methodology to change without the tool changing (§12).
 
 *Settled by:* drafting one of each by hand and noticing which headings were actually useful and which were filled in out of obligation.
+
+---
+
+## 18. How the outcome unit relates to the others
+
+**Status:** Partly settled. **The unit exists and is called an outcome** — defined in `SPEC.md` §2.4. What remains open is how it relates to the units around it.
+
+Two things were settled alongside it. The project became the unit of **delivery** only, since *outcome* now names something specific and a project can no longer be described as the unit of outcome. And the wave's claim to be "the only unit that repeats" was narrowed, because an outcome loops too — see the two-loop distinction below.
+
+### The idea
+
+An **outcome** is a small, binary, testable statement of what done looks like — at a granularity an agent can work directly against, such as *a dry run prints the planned changes and writes nothing*.
+
+The agent is given the outcome, not a procedure. It decides how to get there, generates whatever work it needs, tests against the same statement, and stops when the statement is true.
+
+### Why it matters more than it looks
+
+The bet underneath it: **as models get more capable, the value of telling them *how* falls and the value of telling them *what* rises.** A specification made of procedures ages badly, because it encodes the limitations of the model that was current when it was written. A specification made of testable end states does not.
+
+That has a structural consequence. If an agent generates its own work from an outcome, then **the task stops being the specification and becomes coordination scaffolding** — it exists so that concurrent actors can claim work, order it, and avoid colliding. This is consistent with where the task already landed (its essential property is claimability, not planning), but it inverts which unit is primary: outcomes become the durable artifact, and tasks become derived and possibly ephemeral.
+
+Taken far enough, a sufficiently capable agent working a small outcome might need no tasks at all. Tasks survive because of *concurrency*, not because of *planning*.
+
+### Does it earn its place?
+
+It does, on a distinction none of the others occupy: **every other unit is either work or a container of work. An outcome is a description of a condition.**
+
+The sharper version: what a delivery is *for* is not directly testable — "payments work" can only be assessed. An outcome is testable by construction, which is what allows it to serve as target, test, verification record, and stopping condition all at once. One statement being reusable across all four roles is the strongest argument for the unit.
+
+### The conflict it creates with the wave
+
+Both now iterate, which cannot stand as stated. `SPEC.md` §2.3 currently claims the wave is "the only unit that repeats."
+
+The resolution is probably that there are **two different loops**:
+
+| | Inner loop | Outer loop |
+|---|---|---|
+| **Runs against** | one outcome | a batch of them |
+| **Repeats until** | the statement is true | the batch is judged sufficient |
+| **On each pass** | attempt, probe, adjust | measure, apply learning, re-plan |
+| **Recorded?** | probably not — transient convergence | yes, each pass is a durable record |
+| **Speed** | fast, many, largely invisible | slow, deliberate, checkpointed |
+
+If that holds, the wave is not "the unit that repeats" but **the unit that repeats *with re-planning and learning*** — and the outcome hosts a convergence loop that deliberately has no learning checkpoint, which is exactly why it must be smaller than a wave. `SPEC.md` §2.3 needs rewording either way.
+
+### What is unresolved
+
+- **Where does it attach?** To a **project**, if outcomes are the testable decomposition of what is being delivered and therefore stable across attempts — a wave then selects which ones it is targeting. To a **wave**, if they are scoped to a single attempt and unmet ones are re-created next time, in the manner of §9. The first seems more natural: what is wanted does not change because an attempt failed.
+- **Do tasks attach to outcomes rather than to waves?** If tasks are generated to satisfy an outcome, they belong to it. But then a task sits two levels away from its wave, and a wave's boundary condition becomes harder to compute.
+- **Is an outcome a record or an inline entry?** `SPEC.md` §4 currently settles criteria as an inline checklist, rejecting criteria-as-records on token cost and interop grounds. **That decision is now in question.** The token argument weakens if an outcome owns tasks and evidence, because those need identity regardless. The interop argument does not weaken — external systems still have nothing to map an outcome onto.
+- **Does a project hold outcomes directly, or only through waves?** If only through waves, a project with no wave yet has nowhere to state what it is for.
+
+*Settled by:* writing a real project as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganised around them.
+
+---
+
+## 19. What to call the ordering and parallelism property of tasks
+
+**Status:** Open, and minor — but it needs a name because the specification keeps describing it in a phrase.
+
+A task carries the answer to "must this follow that, or may they run at the same time?" The specification currently calls this "ordering and parallelism," which is accurate and clumsy.
+
+The property and the structure it forms may want different words:
+
+- **Sequencing** — the best single word for the property, because it covers both halves: parallel work is simply unsequenced. Neutral, precise, no baggage.
+- **Dependency graph** or **work graph** — the right name for the structure formed across many tasks, and the thing an agent actually traverses.
+- **Ordering** — plainer, but implies a total order when what exists is a partial one.
+- **Scheduling** — accurate in the abstract, but suggests time and assignment, which this is not.
+
+The lean is **sequencing** for the property and **dependency graph** for the structure, on the grounds that parallelism is the absence of a constraint rather than a separate thing to name.
+
+*Settled by:* picking one and using it consistently before the specification is written any further.

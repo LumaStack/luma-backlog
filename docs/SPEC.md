@@ -32,107 +32,147 @@ A unit is a thing this project models directly, with mechanics attached. Somethi
 
 The third question is the demanding one. Levels that exist because they feel natural, or because other tools have them, do not qualify. A unit must do work no other unit can do.
 
-Three units currently qualify, and they are not three sizes of the same thing — each is the unit of a different job:
+Four units currently qualify, and they are not four sizes of the same thing — each is the unit of a different job:
 
 | Unit | Is the unit of |
 |---|---|
-| **Project** | outcome |
-| **Wave** (name tentative, §2.4) | iteration |
+| **Project** | delivery |
+| **Wave** (name tentative, §2.3) | iteration |
+| **Outcome** | done |
 | **Task** | work |
 
-Define the target, close the gap repeatedly, do the work. This is also a completeness check: any further unit has to name a job that is none of these three.
+Say when it is delivered, attempt it repeatedly, state what done means, do the work. This is also a completeness check: any further unit has to name a job that is none of these four.
 
-One does. A **decision** (§2.5) sits outside this hierarchy entirely — the three above are all *work*, whereas a decision is a *constraint on* work.
+One does. A **decision** (§2.6) sits outside this hierarchy entirely — everything above is either work or a statement about work in progress, whereas a decision constrains work without ever being part of it.
 
 ### 2.2 Project
 
 > **The name is tentative, though likely.** *Project* is the working term and the probable winner; *feature* is the live alternative. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §16.
 
-**What it is.** The smallest unit of release or a desired outcome. A body of work that becomes shippable. Sometimes referred to as a feature.
+**What it is.** The unit of delivery. A body of work that reaches whoever needed it.
 
-**Why it exists.** Something has to define *ready* — the point where work becomes an external commitment. Cutting a version, wrapping up, and declaring an outcome achieved all need a place to happen.
+**Why it exists.** Something has to define *ready* — the point at which work stops being internal and is handed over. Cutting a version, wrapping up, migrating the thing, publishing the answer: all of them need somewhere to happen.
 
-**How it earns its place.** It is the only level at which outcome-shaped acceptance criteria are meaningful. Task-level verification asks whether a change was made correctly; project-level criteria ask whether the thing that was wanted now exists. Those are different questions, and only the second can be asked here.
+**How it earns its place.** It is the only unit that draws a **delivery boundary**. Outcomes state what done means and waves attempt it, but neither carries the handover to someone outside the work, and neither can say *this is delivered*. That is a distinct act, and it needs a distinct unit.
+
+> **Delivery, not release: the units divide by whose side they are on.**
+>
+> A release is defined by us — we cut a version, we tag, we deploy. A delivery is defined by whoever needed it — their situation changed. The same event seen from opposite vantage points, and only one of them belongs here.
+>
+> | Unit | Describes |
+> |---|---|
+> | **Delivery** | the world — someone now has the thing |
+> | **Outcome** | the world — a condition is now true |
+> | **Wave** | us — our attempt, our learning cycle |
+> | **Task** | us — our coordination |
+>
+> Two units describe **the world**; two describe **how we organize ourselves to change it**. *Release* grates in this position because it is a producer-facing word in a recipient-facing slot: it names something we did, where the model wants something they got.
+>
+> This is not only about a word. It explains three rules that were arrived at separately. A project is judged on its outcomes and **never on its tasks** — because only world-facing units say anything about whether the world changed. Tasks are coordination rather than specification, for the same reason. And completion is evidenced rather than declared, because a producer can always assert a release, whereas whether a condition holds is settled by the world and not by the claimant.
+>
+> It also gives a test for any unit proposed later: **does this describe the world, or describe us?** If the second, it cannot carry completion — it is scaffolding.
 
 > **A design property worth keeping.** Wrap-up at project level should be close to a formality — if a project-level audit routinely catches problems, the discipline below it is too weak. The catch rate is a diagnostic for everything underneath.
 
-### 2.3 Task
-
-**What it is.** A unit of work. A thing someone or something picks up and finishes.
-
-**Why it exists.** Work has to be divisible into pieces an actor can hold and complete.
-
-**How it earns its place.** It is the only level at which **ordering and parallelism** can be expressed — whether two pieces of work may proceed at once, or whether one must wait. That is a property of what the work touches, so it cannot be stated anywhere else. A task therefore declares its own sequencing relationships rather than inheriting them from a container.
-
-This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the sequencing graph is what keeps concurrent actors out of each other's way.
-
-### 2.4 Wave
+### 2.3 Wave
 
 > **The name is tentative and deliberately unresolved.** *Wave* is a placeholder. *Cycle*, *iteration*, and *round* are the live candidates. The choice is hard to reverse once the interface, the documentation, and every backlog in the wild have adopted it, so it is being left open on purpose. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §1. **Nothing in the design should depend on which word wins.**
 
-**What it is.** One iteration toward a project's outcome: an attempt to close the gap between where things are and where the project says they should be, followed by measuring what remains.
+**What it is.** One attempt at a set of outcomes: work is undertaken, and then what remains is measured.
 
-**Why it exists.** How many attempts a project needs is not knowable in advance. Work is undertaken, the result is measured against the project's criteria, and what is learned determines whether another attempt is required. Without a unit for that, the loop has nowhere to live — no place to record that something was tried, measured, and is being attempted again.
+**Why it exists.** How many attempts a delivery needs is not knowable in advance. Work is done, the result is measured, and what is learned determines whether another attempt is required. Without a unit for that, the loop has nowhere to live — no place to record that something was tried, measured, and is being attempted again.
 
-**How it earns its place.** It is **the only unit that iterates or repeats.** A project happens once. A task happens once. This occurs an unknown number of times against the same goal, and neither of the others can express that. It also gates where mandatory verification and applied learning — updating written context, for example — **always** happen.
+**How it earns its place.** It is the only unit that **repeats deliberately** — the only one whose repetition involves stopping, measuring, learning, and re-planning before going again. An outcome (§2.4) also loops, but its loop is *convergence*: attempt, probe, adjust, with no checkpoint between passes. That difference is the entire reason both units exist, and it is why a wave is necessarily larger than an outcome — nobody wants to run a retrospective after every assertion turns green. It also gates where mandatory verification and applied learning — updating written context, for example — **always** happen.
 
 **What workflows it triggers or verifies.** Its boundary *is* a measurement point, which is what makes it the natural home for verification sweeps, audits, logging, reviews, additional research, and applying what has been learned. Those are not attached to it arbitrarily — assessing the gap is the thing that ends one and begins the next. It is also how the system improves while work is still underway: learning that lands only at project close arrives too late to help the project that produced it.
 
 **They accrue rather than being planned.** Projects and tasks are authored ahead of the work. Waves are created reactively, when the previous one did not get there. Or when the current set of tasks has grown too large to complete within one checkpoint. This argues for keeping them extremely lightweight. It is acceptable to break planned work off into a separate wave as soon as unforeseen circumstances are hit.
 
-### 2.5 Decision
+### 2.4 Outcome
+
+**What it is.** A small, testable statement of a condition that must hold once the work is done. Phrased as a **state, not an action**, and narrow enough that one check returns true or false and nothing else. For example: *a dry run prints the planned changes and writes nothing*, or *the symlink resolves to the same location as its target*.
+
+**Why it exists.** An agent should be told *what* is wanted, not *how* to reach it. A procedure encodes the limitations of whatever wrote it and ages badly; a statement of the end state survives improvements in the model that reads it. **As models get more capable, the value of specifying *how* falls and the value of specifying *what* rises**, and this unit is where that bet is expressed.
+
+It is also the **stopping condition**. Without one, an agent has no principled reason to stop generating work — it can always imagine more to do. An outcome is what tells it to stop.
+
+**How it earns its place.** It is the only unit that is a **description of a condition** rather than work or a container of work. That is what lets a single statement serve four roles at once: the target work is generated from, the test that is run, the record of verification, and the definition of done. Nothing else in the model can be all four, because nothing else is phrased as something that is simply true or false.
+
+**What workflows it triggers or verifies.** Task generation, verification, and completion arithmetic. An outcome with recorded evidence passes; a wave or a project is judged on the outcomes attached to it, never on the tasks.
+
+**Its loop is convergence, not re-planning.** An agent may attempt an outcome many times — attempt, probe, adjust — and those passes are transient. What persists is the statement and the evidence that finally satisfied it. There is deliberately no learning checkpoint between passes; that is what a wave is for (§2.3), and it is why an outcome is necessarily smaller.
+
+> **Open.** Whether outcomes attach to projects or to waves, whether tasks attach to outcomes, and whether an outcome is a record or an inline entry are all unresolved. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18.
+
+### 2.5 Task
+
+**What it is.** A unit of work. A thing someone or something picks up and finishes.
+
+**Why it exists.** Work has to be divisible into pieces an actor can hold and complete.
+
+**How it earns its place.** It is the only unit at which **ordering and parallelism** can be expressed — whether two pieces of work may proceed at once, or whether one must wait. That is a property of what the work touches, so it cannot be stated anywhere else. A task therefore declares its own sequencing relationships rather than inheriting them from a container.
+
+This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the sequencing graph is what keeps concurrent actors out of each other's way.
+
+> **Tasks are coordination, not specification.** What *should be true* is stated by an outcome (§2.4). A task is how the work of getting there is divided, ordered, and owned — it exists because actors work concurrently, not because anybody needs a plan. Where an agent generates its own tasks from an outcome, tasks become derived and possibly disposable while the outcome remains durable. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18.
+
+### 2.6 Decision
 
 **What it is.** A record of a choice that constrains future work: what was chosen, what was rejected, and why.
 
 **Why it exists.** Settled questions get re-opened. Agents in particular will cheerfully re-litigate a choice, because nothing in front of them says it was ever made. A decision that is written down, dated, attributed, and findable is what stops the same ground being covered repeatedly — and the reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
 
-**How it earns its place.** It is the only unit that sits **outside the work hierarchy.** A project, a wave, and a task are all work; a decision is a constraint on work. It does not complete, does not iterate, and is not owned by any single project — it frequently outlives the thing that produced it, which is precisely why it cannot be stored inside one.
+**How it earns its place.** It is the only unit that **never completes and belongs to nothing.** Projects, waves, outcomes, and tasks all sit inside the hierarchy and all reach a terminal state. A decision does neither: it constrains work without being part of it, and it routinely outlives whatever produced it — which is precisely why it cannot be stored inside one project.
 
 **What workflows it triggers or verifies.** Supersession, where a later decision replaces an earlier one and the earlier is retained rather than deleted; and ratification, where a choice needs human sign-off before it binds.
 
-### 2.6 Groupings (or Buckets)
+### 2.7 Dimensions
 
-Groupings — epics, milestones, initiatives, phases, releases, sprints, or whatever a team already uses — are **user-defined and not core to this project**. They carry no mechanics of their own.
+Dimensions — epics, milestones, initiatives, phases, releases, sprints, or whatever a team already uses — are **user-defined and not core to this project**. They carry no mechanics of their own.
+
+A dimension is an axis a record is classified along, and **a record may sit on several at once**: a project can belong to a milestone *and* an initiative without the two competing. A dimension may also have **levels that nest** — an initiative holding epics holding milestones is one axis with a hierarchy, in the way a geography dimension holds country, region, and city. Both properties come from the word: independent axes that combine freely, with roll-up levels inside any one of them.
 
 They are supported because humans organize this way, external trackers are built this way, and an agent benefits from knowing what neighborhood it is working in. They may become useful places to attach hooks (§5). But no agent needs one to work, and a repository that defines none is fully functional.
 
-For the minimum viable product they are groupings and nothing more.
+For the minimum viable product they classify and nothing more.
 
-This project must make importing and exporting these groupings a first-class affair, so that upstream and downstream systems work seamlessly with this tool.
+This project must make importing and exporting dimensions a first-class affair, so that upstream and downstream systems work seamlessly with this tool.
 
-## 3. Grouping and membership
+## 3. Dimensions and membership
 
-Two rules govern every grouping in the system, at every level. Together they are why groupings cost nothing when unused and never need a hierarchy to be declared up front.
+Two rules govern every dimension in the system, at every level. Together they are why dimensions cost nothing when unused and never need a hierarchy to be declared up front.
 
-Groupings may evolve over time; these sections describe the minimum viable product.
+Dimensions may evolve over time; these sections describe the minimum viable product.
 
-### 3.1 A grouping is an attribute; its record is optional
+### 3.1 A dimension is an attribute; its records are optional
 
-**A grouping is a value carried by the records in it.** It is not a container that must exist first, and nothing needs to be created before a grouping can be used.
+**A dimension is a value carried by the records classified along it.** It is not a container that must exist first, and nothing needs to be created before a dimension can be used.
 
-**A record for a grouping exists only when there is something to say about it.** Create a milestone record when the milestone needs a description, a date, or criteria of its own. Do not create one when it is only a name. The grouping works identically either way — the record is descriptive, never constitutive.
+**A record describing one of its values exists only when there is something to say about that value.** Create a record for a particular milestone when it needs a description, a date, or criteria of its own. Do not create one when it is only a name. Classification works identically either way — the record is descriptive, never constitutive.
 
 This is what allows a concept to be adopted gradually and abandoned cheaply. It is also the answer for anything that produces output at a boundary: whatever needs a home gets a record; whatever does not, does not.
 
 ### 3.2 Membership lives on the member
 
-**Membership is recorded on the member, never in the group.** A task names the project it belongs to; a project never enumerates its tasks. A project names the milestone it belongs to; a milestone never lists projects.
+**Membership is recorded on the member, never in the dimension.** A task names the project it belongs to; a project never enumerates its tasks. A project names the milestone it belongs to; a milestone never lists projects.
 
 This is not a stylistic preference. It follows from the principles and buys several things at once:
 
-- **No contention.** Adding something to a group writes exactly one file. Concurrent writers never touch a shared list, so they cannot collide.
-- **Minimal churn.** Regrouping fifty records changes fifty small lines rather than rewriting a manifest.
+- **No contention.** Classifying a record writes exactly one file. Concurrent writers never touch a shared list, so they cannot collide.
+- **Minimal churn.** Reclassifying fifty records changes fifty small lines rather than rewriting a manifest.
 - **No ambiguity.** Membership is recorded in one place and cannot disagree with itself.
 - **Interop.** External trackers already express membership member-side, so import and export map directly.
-- **Nothing is required.** A repository using no groupings has no machinery to explain or ignore.
+- **Nothing is required.** A repository using no dimensions has no machinery to explain or ignore.
 
-The cost is that listing a group's members is a scan rather than a lookup. That is answered by a derived index, which may be deleted and rebuilt without loss.
+The cost is that listing everything in a dimension is a scan rather than a lookup. That is answered by a derived index, which may be deleted and rebuilt without loss.
 
 ## 4. Record shapes
 
 *To be written.* Field tables for `project`, `wave` (name pending), and `task`, published as Type Definitions in the bundle's `_types/` directory so their contracts are discoverable by reading a file.
 
 Settled so far:
+
+> **Under review.** The first item below is challenged by [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18, which asks whether a testable end state should be a unit in its own right. If it is, criteria stop being an inline checklist and become records that own tasks and evidence.
 
 - Acceptance criteria live **inline** in the record they belong to, as a checklist, rather than as separate records. Criteria as individual files were considered and rejected: answering "what does done look like here?" is the most common question asked, and splitting it across many files makes the most common read the most expensive one. Inline criteria also survive import and export, where a separate criterion object has nothing to map onto.
 - Evidence attaches to a criterion. The format has no place to record what evidence *was* — only who confirmed and when. This is an open gap and the first change this project asks of the format. See `OPEN-QUESTIONS.md` §4.
@@ -156,7 +196,7 @@ Closing is expected to be an explicit act that the tool validates rather than a 
 
 ### 7.1 Directories encode only what does not change
 
-**Volatile properties are attributes, never directories.** A record's status, priority, and grouping are fields in its frontmatter. They do not determine where its file lives, and changing one does not move it.
+**Volatile properties are attributes, never directories.** A record's status, priority, and dimension values are fields in its frontmatter. They do not determine where its file lives, and changing one does not move it.
 
 This is not only about churn, though the churn is real — moving files between directories on every status change produces noisy history and loses continuity. The decisive reason is **identity**: in the format, a record's identity *is* its path. Filing a record under `active/` and later moving it to `archived/` therefore changes what the record *is*, breaking every inbound link to it and severing it from its own history. Status changes are among the most frequent writes in the system, and identity has to be stable under them.
 
@@ -178,4 +218,4 @@ Must support worktrees communicating in some way with the `main` branch, so that
 
 ## 11. Terminal and web real-time interfaces
 
-*To be written.* A first-class real-time web interface will eventually be available alongside the real-time interactive terminal interface, for managing, editing, prioritizing, creating, filtering, and browsing the groupings and core units of work.
+*To be written.* A first-class real-time web interface will eventually be available alongside the real-time interactive terminal interface, for managing, editing, prioritizing, creating, filtering, and browsing the dimensions and core units of work.
