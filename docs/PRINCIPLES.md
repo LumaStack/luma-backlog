@@ -40,7 +40,7 @@ Concurrent access by many actors is the expected condition, not an edge case to 
 
 - **Independent work should proceed independently.** Actors not touching the same thing should not wait on each other.
 - **Contention should be bounded** to the records actually being changed.
-- **Conflicting writes should be detected and surfaced rather than silently resolved.** A caller that would clobber a change it never saw should be told. And the end user should be made aware.
+- **Conflicting writes should be detected and surfaced rather than silently resolved.** A caller that would clobber a change it never saw should be told, and the end user made aware.
 - **Concurrent-safe by hand, too.** A human editing in an editor while agents work is ordinary use.
 
 ## Completion is evidenced, not asserted
