@@ -406,8 +406,17 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `outcome.unmeasured` | An outcome with no `verify_by` — the *Measure* phase was skipped. |
 | `task.advances-nothing` | A task attached to no outcome. |
 | `deliverable.unarticulated` | A deliverable with no outcomes at all. |
+| `deliverable.drifted` | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
+| `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
+| `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 
-The last three detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2 — skipping Measure, planning work that serves nothing, starting without declaring done. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make those failures visible are as load-bearing as the ones that drive completion.
+Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
+
+Three of them describe failure modes specific to agents working unattended, and are worth naming for that reason:
+
+- **Drift** is the specification falling behind what was actually built. It is invisible from the record alone — everything looks fine, because nothing was written down. The tell is *activity without verification*.
+- **Non-convergence** is the loop running forever. Each wave looks productive in isolation; only the trend reveals that nothing is closing.
+- **Churn** is unbounded creation — an actor generating tasks or outcomes faster than anything gets proven. Volume reads as progress until it is measured against outcomes.
 
 ### 5.3 Closing is an explicit act
 
@@ -439,10 +448,18 @@ That mapping is deliberately dumb. Boundary to command, nothing more — no cond
 
 A hook receives structured context describing what happened, on standard input. It does not receive the tool's internal state, and its output is **not** interpreted as instructions — a hook that wants to change the backlog does so by calling the interface like any other caller.
 
-**Open — may a hook block?** Guardrails imply yes: a hook that cannot refuse is advice, and advice gets routed around. But a blocking hook makes the tool an enforcer of policy it did not author, which is the unresolved question in `OPEN-QUESTIONS.md` §6. Two constraints hold whichever way it lands:
+**Open — may a hook block?** Guardrails imply yes: a hook that cannot refuse is advice, and advice gets routed around. But a blocking hook makes the tool an enforcer of policy it did not author, which is the unresolved question in `OPEN-QUESTIONS.md` §6.
 
-- **Failure must be legible.** Which hook, why, and what to do about it. A hook that fails obscurely trains people to reach for a force flag, and then the guardrail is decorative.
+**If blocking lands, block exactly once.** A gate that refuses the same action repeatedly teaches people to reach for a force flag, and a guardrail everyone bypasses is worse than none — it produces the belief in protection without the protection. A gate that blocks once, says precisely what is wrong, and then permits the action keeps its teeth while staying survivable. The refusal is what carries the message; repeating it only carries frustration.
+
+Four properties hold whichever way blocking lands:
+
+- **Non-blocking by default.** A hook has to justify delaying anyone; most do not.
+- **Failure is isolated.** One hook failing must never break the operation that triggered it, nor prevent other hooks running.
+- **Failure is legible.** Which hook, why, and what to do about it.
 - **Nothing is retried silently.** A hook that ran twice, or did not run, must be discoverable afterwards.
+
+**A practical caution.** Several hooks on one boundary means several processes started for one action, on a boundary that may be crossed constantly. If that becomes a cost, the answer is to run them in one process rather than to fire fewer boundaries.
 
 ### 5.5 What the log is for
 

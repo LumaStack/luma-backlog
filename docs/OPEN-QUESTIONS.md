@@ -695,8 +695,24 @@ This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail
 - **What is a hook in an agent world?** Most of what is wanted at a boundary — audits, applying learning, promoting decisions — is agent work rather than script work. A tool shelling out to a script is ordinary; a tool needing to invoke an agent is a different proposition, though a script that happens to call one keeps the tool ignorant of the difference.
 - **Failure must be legible or the feature is worse than nothing.** A hook that fails obscurely trains people to reach for a force flag, at which point the guardrail is decorative and everyone believes they are protected.
 
+### The finding that may resolve this
+
+**Agent harnesses already have a hook system, and it fires on a different axis than ours would.**
+
+Existing systems in this space hook the *agent's* lifecycle — before and after a tool runs, when a turn stops, when a session ends, when a subagent is created. Not domain boundaries. One mature example registers roughly fifty such hooks, covering gates on completion claims, guards against writes that would discard unseen changes, detection of a specification falling behind reality, and limits on runaway task creation.
+
+That suggests a **division of labour rather than a competition**:
+
+- The **harness** provides the firing — it already knows when a turn stopped or a session ended.
+- **This tool** provides the conditions — it already knows what is true.
+- A workflow layer's hook runs on a harness event, asks our conditions, and acts.
+
+Under that split, query-and-mark is not the weaker option. It is **half of a mechanism whose other half already exists**, and building a second hook system here would duplicate machinery rather than add capability.
+
+**The gap it leaves.** Harness hooks only fire when an agent is running. A person closing a deliverable in the terminal board triggers no agent event at all, so human-driven boundaries would have nothing attached to them. Whether that matters depends on how much of the loop runs unattended.
+
 ### What would settle it
 
-Whether **enforcement** is genuinely required. If boundaries only need *something to happen eventually*, query-and-mark is sufficient and free. If a boundary must **stop** work that has not satisfied it — the governance case for retiring an outcome (`LIFECYCLE.md` §2.8) is the strongest example — then only a blocking mechanism will do, and hooks become necessary rather than convenient.
+Whether **enforcement** is genuinely required, and whether it is required on **human-driven** boundaries specifically. If boundaries only need *something to happen eventually*, query-and-mark plus harness hooks is sufficient and free. If a boundary must **stop** work — the governance case for retiring an outcome (`LIFECYCLE.md` §2.8) is the strongest example — and must stop it when a person is driving, then only a mechanism inside this tool will do.
 
 *Settled by:* running the loop with query-and-mark and seeing whether anything important gets skipped. If it does, that is the case for hooks, made by evidence rather than anticipation.
