@@ -247,7 +247,19 @@ It is the only pairing where claiming is genuinely reliable **across machines**,
 | Setup friction proves worse in practice than occasional duplicated work | **stay on A** |
 | Teams strongly value backlog changes travelling with the pull request | **stay on A** |
 
-The first two rows are the ones to watch, and the answer is not ours alone to give: **it depends on how the workflow layer drives agents.** If it assigns disjoint work, this question mostly disappears. If agents pick their own, reliable claiming becomes load-bearing.
+### Self-selection versus assignment — resolved, and smaller than it looked
+
+The first two rows above were treated for a while as the pivotal unknown. They are not, for two reasons.
+
+**Self-selection is guaranteed.** Humans are first-class users, and a person looking at a board and taking something *is* self-selecting. Claiming can therefore never be omitted, and it is the **primary path rather than a fallback** — the maintainer expects to self-select most of the time.
+
+**Delegation needs no additional mechanism.** Whether a human, a delegating agent, or an upstream system assigns the work, the result is still a claim — made by a different actor, or made by the agent because it was told to. Same field, same file, same command. The only difference is that assigned claims never race, because something upstream already ensured they would not.
+
+So there was never a fork here. **Build claiming; delegation comes free.** Some teams may well delegate, and nothing extra is required to serve them.
+
+What this does change is emphasis. Claiming is load-bearing from day one, so it has to be good: visible, honest about staleness, and clear when it fails. And the migration path to reliable claiming must stay open — which it does, since records are identical across topologies and only their location changes.
+
+**The trigger for moving to the heavier design is therefore observed collision frequency**, not any question about how work is assigned. Build for self-selection because it is certain, build nothing for delegation because it needs nothing, and build for high collision rates only after seeing one.
 
 ### What was learned while exploring this
 
@@ -261,7 +273,9 @@ This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, 
 
 **Migration between topologies is cheap.** Records are byte-identical in all of them; only their location changes. That makes this decision far more reversible than it first appeared, and argues for starting simple and moving when the pain is demonstrated rather than predicted.
 
-*Settled by:* answering two questions. **Are actors self-selecting work, or is something upstream assigning it?** — if assigned, mechanism 5 dissolves most of the problem. And **is occasional duplicated work acceptable at the start, or is reliable claiming a day-one requirement?** — if day one, `SPEC.md` §7 requires topology B.
+*Settled by:* observing how often claims actually collide. The other question — how work is assigned — is answered above and does not fork the design. What remains is whether occasional duplicated work is tolerable while the tool is young, and the lean is that it is, given how cheap migration turns out to be.
+
+> **A note on `SPEC.md` §7.** As written, it requires that actors in separate worktrees have an up-to-date view and do not repeat effort. The MVP lean does not fully meet that: actors would see each other's work but could still occasionally collide. Either the requirement softens to *should not silently repeat effort* — which the cross-branch read does satisfy, since divergence is surfaced — or topology B is adopted on day one. This should be reconciled deliberately rather than left as a quiet mismatch between the two documents.
 
 ---
 
