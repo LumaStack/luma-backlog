@@ -275,7 +275,11 @@ This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, 
 
 *Settled by:* observing how often claims actually collide. The other question — how work is assigned — is answered above and does not fork the design. What remains is whether occasional duplicated work is tolerable while the tool is young, and the lean is that it is, given how cheap migration turns out to be.
 
-> **A note on `SPEC.md` §7.** As written, it requires that actors in separate worktrees have an up-to-date view and do not repeat effort. The MVP lean does not fully meet that: actors would see each other's work but could still occasionally collide. Either the requirement softens to *should not silently repeat effort* — which the cross-branch read does satisfy, since divergence is surfaced — or topology B is adopted on day one. This should be reconciled deliberately rather than left as a quiet mismatch between the two documents.
+> **A known gap against `SPEC.md` §7.** That section requires that actors in separate worktrees have an up-to-date view and do not repeat effort, and it **stays stated at full strength** — the specification describes the finished design, not the first release.
+>
+> The minimum viable lean does not meet it. Cross-branch reads prevent *silent* duplication, since divergence is surfaced rather than hidden, but they do not make claims atomic, so two actors can still occasionally collide. Only topology B satisfies §7 in full, because only push atomicity makes a claim unforgeable across machines.
+>
+> This is therefore a **deliberate, temporary shortfall**, recorded rather than legislated away. It closes when the topology moves, and the trigger for that move is observed collision frequency.
 
 ---
 

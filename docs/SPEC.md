@@ -245,7 +245,9 @@ This is not only about churn, though the churn is real — moving files between 
 
 A directory structure may only reflect properties that are effectively permanent. Everything else is queried, not walked — which a derived index makes cheap, and which can be rebuilt without loss.
 
-Must support worktrees communicating in some way with the `main` branch, so that agents and humans on other worktrees have an up-to-date view and do not repeat effort. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §8 — this requirement is in tension with the claiming model and is not yet resolved.
+Actors working in separate git worktrees **must have an up-to-date view and must not repeat effort.** This is a requirement of the finished design rather than an aspiration: a claim taken in one worktree is visible in every other, and two actors cannot both believe they hold the same work.
+
+> **The specification describes the destination.** An early implementation may fall short of this — the simplest storage topology gives visibility across worktrees without making claims atomic, which prevents *silent* duplication but not all of it. That shortfall is recorded as a known gap in [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §8, together with the topologies that satisfy the requirement in full and the staged path toward one. The requirement is not weakened to match what ships first.
 
 ## 8. Configuration
 
