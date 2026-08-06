@@ -7,6 +7,8 @@
 
 luma-backlog manages a backlog inside a git repository. Work is stored as markdown records conforming to the [Luma Knowledge Format](https://github.com/LumaStack/luma-knowledge-format), and a single command-line interface is how humans, agents, and automation read and change it — concurrently, without coordinating with each other.
 
+**The work need not be software.** Nothing in the model assumes code. What is delivered may be a released version, a completed migration, a published document, a health target reached, or a practice established. Where this document uses software examples, they are illustrations rather than constraints — a design that only works for engineering work has failed one of its requirements.
+
 [`PRINCIPLES.md`](PRINCIPLES.md) governs every decision in this document. [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) tracks what is deliberately unsettled.
 
 ## 1. Conventions
@@ -63,11 +65,13 @@ That axis does three jobs: it is why completion is measured on outcomes and neve
 
 ### 2.2 Project
 
-> **The name is tentative, though likely.** *Project* is the working term and the probable winner; *feature* is the live alternative. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §16.
+> **On the name.** *Project* was chosen for immediate recognition: it is understood instantly, in every domain, by everyone. *Feature* was rejected for covering only a fraction of what this unit holds. *Objective* and *goal* fit the range but sit too close to `outcome`, and two adjacent aspirational nouns would need explaining forever. *Commitment* reads too binding — some projects are deliberately experimental and non-committal. *Pursuit* was the strongest rival and lost only on familiarity. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §16.
 
-**What it is.** The unit of delivery. A body of work that reaches whoever needed it.
+**What it is.** The unit of delivery. A bounded body of work that, once complete, hands something over.
 
-**Why it exists.** Something has to define *ready* — the point at which work stops being internal and is handed over. Cutting a version, wrapping up, migrating the thing, publishing the answer: all of them need somewhere to happen.
+Size is not part of the definition. A project may be a week or a year, and it is bounded by *what it delivers* rather than by how much work it takes.
+
+**Why it exists.** Something has to define *ready* — the point at which work stops being internal and is handed over. Shipping a version, completing a migration, publishing a document, reaching a health target, establishing a practice: all of them need somewhere to happen.
 
 **How it earns its place.** It is the only unit that draws a **delivery boundary**. Outcomes state what done means and waves attempt it, but neither carries the handover to someone outside the work, and neither can say *this is delivered*. That is a distinct act, and it needs a distinct unit.
 

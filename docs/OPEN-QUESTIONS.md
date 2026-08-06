@@ -4,7 +4,9 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §16 (the last open name).
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §2 (exploration, log, and context still have no home).
+
+All unit names are now settled: **project**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
@@ -310,6 +312,8 @@ The forces are: how an agent navigates without wasting reads, how a human browse
 
 **Priority** is expected to be a small ordered set with familiar defaults — the low / medium / high family that mainstream trackers ship — configurable per repository. That is uncontroversial and maps cleanly to external systems.
 
+**Priority may also be derived.** The intent is that a default priority can be computed from scoring fields on the record — **`effort`** and **`impact`** at minimum, possibly more. Those names are therefore **reserved** and must not be used for anything else. A derived default raises its own questions: whether a manually set priority overrides the computed one permanently or until inputs change, and whether the scoring formula is configuration (it should be, by §15) or fixed.
+
 **Ranking** is a different thing: a total order that says what comes first *within* a priority, which is what a board's vertical position expresses. The question is whether the minimum viable product has one.
 
 The reason it is not merely a nice-to-have deferred: **how ranking is stored decides whether it is affordable.** Naive integer positions mean reordering one item rewrites all its neighbours — churn on every drag, and contention when two actors reorder at once. A sparse or fractional ordering key means a move writes exactly one record, which is the same commutative-write property that makes membership work (§3.2).
@@ -336,16 +340,34 @@ Open:
 
 ---
 
-## 16. What the unit of outcome is called
+## 16. What the unit of delivery is called
 
-**Status:** Open, but leaning strongly. *Project* is tentative and likely; *feature* is the alternative.
+**Status:** **Settled — `project`.**
 
-| Candidate | For | Against |
-|---|---|---|
-| **project** | Broad enough to cover everything the unit must hold — a feature, but also a migration, a refactor, a research effort, a cleanup. Universally understood. | Collides with the repository itself, which is also a project. "The project's projects" is a real snag in documentation and conversation. |
-| **feature** | Precise and natural for product work; maps directly onto how product organisations talk. | Simply wrong for a large share of real work. A migration is not a feature, and forcing the word invites people to file such work incorrectly or not at all. |
+The deciding argument was **immediate recognition**. This is the unit a person meets first and names most often, and `project` is understood instantly, in every domain, by everyone — writing project, home project, research project, work project. No candidate matched that, and nothing else it might gain was worth the explanation it would cost.
 
-The deciding argument is coverage: the unit has to hold work that is not a feature, and a name that misdescribes half its instances will distort how it is used. The collision `project` carries is a documentation problem, which is solvable by writing carefully; the wrongness `feature` carries is a modelling problem, which is not.
+### The test that mattered
+
+The work is not necessarily software. Every candidate was checked against four:
+
+*ship payments v2* · *lower resting heart rate to 55* · *establish a daily writing habit* · *publish the Q3 strategy document*
+
+| Candidate | Why not |
+|---|---|
+| **feature** | Passes only the first. A migration, a health target, and a habit are not features, and forcing the word would push that work into being filed wrongly or not at all. |
+| **objective**, **goal**, **aim** | All four pass, and `goal` mirrors OKRs neatly — a goal holding measurable outcomes is Objective plus Key Results. Rejected because they sit **too close to `outcome`**: two adjacent aspirational nouns would need explaining permanently, and `outcome` is the unit that can least afford confusion. |
+| **commitment** | Spans well and carries accountability, but reads too binding. **Some projects are deliberately experimental and non-committal**, and the word argues against that. |
+| **pursuit** | The strongest rival — excellent for health, habits, and personal work, and it carries a pleasing sense of something actively chased. Lost on familiarity alone. |
+| **effort** | Passes all four cleanly and owns no domain. **Ruled out by collision:** `effort` is a field on this unit, feeding default priority alongside impact (§14). |
+| **delivery** | Names the terminal event rather than the thing, and the unit spends nearly all its life undelivered. Also fights the established mass-noun usage. |
+| **endeavor**, **undertaking** | Span everything; too formal and long for a word typed constantly. |
+| **initiative**, **charter**, **venture** | Imply scale, formality, or risk that the unit does not always carry. Initiative is also a dimension example. |
+
+### Known costs, accepted
+
+- **It collides with the repository**, which is also a project. This is a documentation discipline problem — say *repository* for the containing thing — not a modelling one.
+- **It reads oddly for habits.** "A project to build a writing habit" is stilted. One awkward case in four was judged a fair price for universal recognition.
+- **External trackers use `project` for something much larger.** A tracker project is typically a whole product area; ours is one delivery. Import and export must map deliberately rather than by name.
 
 *Settled by:* the maintainer, alongside §1, before first release.
 
