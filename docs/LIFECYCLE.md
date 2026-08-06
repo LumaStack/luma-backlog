@@ -31,7 +31,7 @@ Each phase answers its own unique questions. If two phases answer the same one, 
 | **Measure** | *How can we prove we are done?* | Decide how each outcome gets checked, before work begins. |
 | **Plan** | *How do we get there, and in what order?* | Break work into tasks and sequence them. |
 | **Advance** | *Are we progressing?* | Do the work. |
-| **Verify** | *Have we proven it to be true?* | Check each outcome against real evidence. |
+| **Verify** | *Have we proven progress to be true?* | Check each outcome against real evidence. |
 | **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. **Requires governance** — this is where goalposts get moved (§2.8). |
 | **Learn** | *How should we work differently next time?* | Capture improvements to the method. |
 
@@ -96,7 +96,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Watch for.** Starting without claiming, which is how two actors do the same job.
 
-### 2.7 Verify — *have we proven it to be true?*
+### 2.7 Verify — *have we proven progress to be true?*
 
 **What.** Check each outcome against real evidence, and record what was found.
 
