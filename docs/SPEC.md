@@ -360,7 +360,87 @@ Closing is expected to be an explicit act that the tool validates rather than a 
 
 ## 6. Concurrency
 
-*To be written.* Atomic writes, conflict detection, identifier allocation, claiming and lease expiry, and the guarantee that independent work does not serialize.
+Concurrent access is the normal condition, not an edge case (`PRINCIPLES.md`). Many actors — people in editors, agents, and automation — read and write the same backlog at the same time, and the design is answerable for that from the start.
+
+### 6.1 What is guaranteed
+
+**Independent work never serializes.** There is no global lock, no lock file, and no lock server. Two actors touching different records never wait on each other, and contention is bounded to the records actually being changed. This falls out of one record per file (§4) and membership living on the member (§3.2): almost every operation writes exactly one file.
+
+**A reader never sees a partial record.** Writes are atomic (§6.2), so a record is either its previous content or its new content, never something in between. This holds for a person with the file open in an editor as much as for the tool.
+
+**A write that would clobber an unseen change is refused, not silently applied** (§6.3).
+
+**A claim is exclusive within its storage scope** (§6.5), and the scope depends on the topology chosen in `OPEN-QUESTIONS.md` §8 — see §6.7 for what that means in practice.
+
+### 6.2 Atomic writes
+
+Every record write is: write the new content to a temporary file in the same directory, flush it to disk, then **rename it over the target**. Rename within a directory is atomic on every platform the tool supports, so a concurrent reader observes one version or the other and never a truncated file.
+
+The temporary file lives in the same directory deliberately — renaming across filesystems is not atomic.
+
+### 6.3 Conflict detection
+
+Changes use **optimistic concurrency**, never locking:
+
+1. Read the record and retain a hash of exactly what was read.
+2. Apply the change in memory.
+3. Before renaming, confirm the on-disk content still matches that hash.
+4. If it does not, the record changed underneath — **do not write**.
+
+Content hashing is used rather than modification time, which is too coarse and vulnerable to clock skew, and rather than the format's `modified` field, which advances only on *meaningful* change and is therefore not a reliable witness.
+
+**What happens on a conflict depends on whether the operation commutes:**
+
+| Operation | On conflict |
+|---|---|
+| **Commutative** — appending a verification event, adding to a list | **Re-read and retry.** Two actors appending different entries can both succeed; nothing is lost, and the retry is cheap. |
+| **Non-commutative** — setting a field, changing workflow status | **Surface it.** The caller is told what changed underneath and decides. The tool does not merge, and it does not pick a winner. |
+
+That second row is the principle that conflicting writes are detected and surfaced rather than silently resolved. Choosing a winner by recency would discard the loser without anyone knowing.
+
+### 6.4 Identifier allocation
+
+Identity is the file path (§4.1), so allocating an identifier means claiming a filename. Two actors creating records at the same moment must not land on the same one.
+
+**Within one filesystem this is solved without coordination:** create the file with exclusive-create semantics, which fails if the path already exists. On failure, choose the next candidate and retry. This is atomic, needs no lock, and no allocator has to be consulted.
+
+**Across branches or machines it is not solved**, and cannot be by local means — two actors on separate branches can each create the same path with different content, producing a genuine conflict at merge time. This is a direct consequence of the storage topology and is tracked in `OPEN-QUESTIONS.md` §8. Mitigations worth weighing when that is settled: deriving names from titles rather than counters, so collisions require two actors to name the same thing identically, and including an actor-specific component in the candidate name.
+
+### 6.5 Claiming and leases
+
+A claim records that an actor holds a task: `claimed_by` carries who and since when, and `lease_expires` carries when the claim goes stale (§4.5).
+
+**Claiming is a compare-and-swap.** An actor may only claim a task with no live claim, and the write goes through the same conflict detection as any other — so two simultaneous claimants resolve cleanly, with the loser told the task is already held rather than shown an error about files.
+
+**An expired lease does not release itself.** This is deliberate and follows from the principles: silently returning work to the pool would resolve a conflict by rule rather than surfacing it, and an actor that is merely slow would have its work taken without anyone noticing. Instead, an expired claim is **reported as stale** and becomes *stealable*.
+
+**Stealing is explicit and recorded.** Taking a stale claim is an action a person or agent performs deliberately, and the takeover is written to the log — because the previous holder may still be working, and that fact must survive.
+
+**Lease duration is set by the claimant, not by the tool.** An agent that refreshes while working takes a short lease; a person who claims something before lunch takes a long one. A fixed duration would either strand work behind dead agents or accuse people of abandoning tasks they went to a meeting about.
+
+### 6.6 Working alongside a person
+
+A human editing records by hand while agents work is ordinary use, and three properties make it safe:
+
+- **Atomic writes** mean an editor never reads a half-written file.
+- **Conflict detection** means the tool refuses to overwrite an edit it did not see, rather than winning by being faster.
+- **Nothing is locked**, so no tool state can prevent someone opening a file and changing it.
+
+### 6.7 What the tool must never do
+
+**Never commit files it did not write.** A synchronising operation that stages everything will sweep up a person's half-finished manual edits into a commit they did not intend, and possibly push them. Every commit the tool makes is confined to the specific files that operation changed. This is easy to implement, catastrophic to get wrong, and is stated here as a rule rather than left to implementation taste.
+
+**Never resolve a conflict by recency.** Preferring the most recent version discards the other silently, and the loser has no way to discover what happened.
+
+**Never hold a lock across an operation a person might be waiting on.**
+
+### 6.8 What is not guaranteed, and why
+
+**Claim exclusivity across machines depends on the storage topology**, which is open (`OPEN-QUESTIONS.md` §8). Under the simplest topology, claims are *visible* across branches but not atomic across them — two actors can still occasionally collide, and the collision surfaces rather than being prevented. Under the dedicated-branch topology, push atomicity makes claims genuinely exclusive across machines, because git accepts exactly one of two competing updates.
+
+**Offline claiming is optimistic.** Without the network, an actor claims on the basis of what it last saw, and reconciles later. No local-first tool solves this, and it is stated rather than concealed.
+
+`SPEC.md` §7 states the requirement at full strength; the distance between it and what ships first is tracked as a known gap in §8 of the open questions.
 
 ## 7. On-disk layout
 
