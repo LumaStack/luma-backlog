@@ -425,19 +425,25 @@ The mitigation is cheap and worth adopting now: **write that logic as a consumer
 
 ## 13. Directory layout under `.backlog/`
 
-**Status:** Open. One rule settled (`SPEC.md` §7.1), the layout itself not.
+**Status:** **Settled — containment under the deliverable.** Written up in `SPEC.md` §7.2 through §7.5.
 
-Settled: volatile properties — status, priority, dimension — are attributes and never directories. Filing records under `active/` and `archived/` changes their identity on every transition, breaks inbound links, and produces exactly the churn observed in earlier projects.
+The rule was already settled: volatile properties are attributes, never directories, because a record's identity is its path and filing by status would change identity on every transition.
 
-What remains open is what the directories *are*.
+What remained was what the directories *are*, and it turned on one question — **is deliverable membership stable enough to be a path fact?** It is. Records are created for a deliverable and rarely move between them, whereas wave membership, dimensions, and workflow status all change routinely. So the path carries deliverable membership and nothing else.
 
-- **By unit type** — `deliverables/`, `tasks/`, `decisions/`. Flat, predictable, trivial to scan, and nothing moves when relationships change.
-- **By containment** — `deliverables/<name>/tasks/`. Browsable by a human, and gives an agent a natural context boundary. **But it encodes deliverable membership in the path**, which contradicts §3.2: reassigning a task between deliverables becomes a move, and a move changes identity. How often that happens decides whether the contradiction matters.
-- **Flat with name prefixes** — one directory, identity in the filename. Maximum merge friendliness, worst human browsing.
+### Why containment won
 
-The forces are: how an agent navigates without wasting reads, how a human browses in an editor, how git merges behave when many actors write at once, and how stable identity remains under ordinary reorganisation.
+**Rejected — by unit type** (`deliverables/`, `tasks/`, `decisions/`). Nothing moves when relationships change, which is genuinely attractive. But it accumulates thousands of files in one directory with **no sanctioned way to reduce it** — archiving is an attribute, so it cannot move anything out. Browsing degrades permanently, and an agent gathering context on one deliverable must filter everything by a frontmatter field rather than reading a directory.
 
-*Settled by:* deciding whether deliverable membership is stable enough to be a path fact. If it is, containment; if not, flat.
+**Rejected — flat with name prefixes.** Best merge behaviour, worst for a person reading files directly, which the principles treat as a first-class use.
+
+**Accepted — containment**, with the tension acknowledged rather than hidden: it does encode membership in the path, and reassigning a record between deliverables is therefore a rename. That is uncommon, and the format anticipates renames being performed by tooling that rewrites inbound links, so the case is handled rather than merely tolerated.
+
+What it buys: a deliverable's entire working set is one directory, directories stay small, and both browsing and context-gathering read one place.
+
+### One thing carried forward
+
+If `deliverables/` becomes unwieldy at scale, **sharding by creation period is legal** under §7.1, because creation date never changes. Recorded so nobody reaches for a status directory when the pressure arrives.
 
 ---
 

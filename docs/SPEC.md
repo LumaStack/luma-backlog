@@ -444,7 +444,7 @@ A human editing records by hand while agents work is ordinary use, and three pro
 
 ## 7. On-disk layout
 
-*To be written.* Must produce clean diffs and tolerable merges.
+The backlog lives in `.backlog/` at the repository root. Everything in it is plain markdown or plain configuration, editable by hand, and arranged so that ordinary git operations produce clean diffs and tolerable merges.
 
 ### 7.1 Directories encode only what does not change
 
@@ -453,6 +453,82 @@ A human editing records by hand while agents work is ordinary use, and three pro
 This is not only about churn, though the churn is real — moving files between directories on every status change produces noisy history and loses continuity. The decisive reason is **identity**: in the format, a record's identity *is* its path. Filing a record under `active/` and later moving it to `archived/` therefore changes what the record *is*, breaking every inbound link to it and severing it from its own history. Status changes are among the most frequent writes in the system, and identity has to be stable under them.
 
 A directory structure may only reflect properties that are effectively permanent. Everything else is queried, not walked — which a derived index makes cheap, and which can be rebuilt without loss.
+
+### 7.2 The layout
+
+```
+.backlog/
+  config.yml                      configuration (§8)
+  log.md                          repository-level append-only history
+  index.md                        derived navigation — a cache, never a source
+  _types/                         Type Definitions, one per type
+    deliverable.md
+    wave.md
+    outcome.md
+    task.md
+    decision.md
+  deliverables/
+    payments-v2/
+      deliverable.md              the deliverable record itself
+      outcomes/
+        dry-run-safety.md
+        retry-durability.md
+      waves/
+        1.md
+        2.md
+      tasks/
+        add-retry-queue.md
+        wire-dead-letter-path.md
+      log.md                      this deliverable's append-only history
+  decisions/
+    postgres-over-sqlite.md
+```
+
+`_types/`, `index.md`, and `log.md` are reserved by the format. `index.md` is derived and rebuildable — deleting it loses nothing. `log.md` is append-only: writers add to it and never rewrite it.
+
+**Decisions sit at the top level** because they belong to nothing and outlive whatever produced them (§2.6). Filing them under a deliverable would assert an ownership that does not exist.
+
+> **Not yet placed.** Exploration records, context material, and the exact structure of `log.md` have no defined home (`OPEN-QUESTIONS.md` §2). The layout above leaves room for them without guessing at their shape.
+
+### 7.3 Why deliverable membership is the only path fact
+
+Nesting outcomes, waves, and tasks under their deliverable **encodes that membership in the path** — which sits in tension with membership living on the member (§3.2), and means reassigning a record between deliverables is a move, and a move changes identity.
+
+That tension is accepted for exactly one relationship, because it is the only one that passes the §7.1 test:
+
+| Relationship | Stable enough to be a path? |
+|---|---|
+| A record's **deliverable** | **Yes.** Records are created for a deliverable and rarely move between them. |
+| A task's **wave** | No. Tasks move between attempts, or gain successors, routinely (§4.6). |
+| A record's **dimensions** | No. Classification changes freely by design (§3.1). |
+| **Workflow status**, priority, claims | No. Among the most frequent writes in the system. |
+
+So the path carries deliverable membership and nothing else; everything else is a field.
+
+**When a record does move deliverables** — uncommon but real — it is a rename, and the tool rewrites inbound links as part of it. This is the mechanism the format anticipates for renames, rather than a workaround.
+
+**What the nesting buys** is worth the single exception. A deliverable's entire working set is one directory: a person browsing it in an editor sees everything at once, and an agent gathering context reads one place rather than filtering thousands of files by a frontmatter field. It also keeps directories small — a deliverable holds tens of records, where a flat layout would accumulate thousands in one place with no sanctioned way to reduce it, since archiving is an attribute and therefore cannot move anything.
+
+### 7.4 Names and references
+
+**Filenames are slugs derived from titles**, in kebab-case, which the format recommends for path-like identifiers. They are human-readable, so a path is meaningful without a lookup, and stable, because titles are short handles rather than content that gets refined (§4.4).
+
+Numeric identifiers are deliberately **not** used. They require an allocator, they collide across branches (§6.4), and they carry no meaning to a reader.
+
+**The interface accepts unambiguous prefixes.** `add-retry` resolves to `add-retry-queue` when only one record matches, in the manner of abbreviated git revisions. This keeps full names descriptive without making them tedious to type.
+
+### 7.5 Merge behaviour
+
+The layout is chosen so that the common concurrent cases do not conflict:
+
+- **Two actors adding different records to the same deliverable** touch different files. No conflict.
+- **Two actors changing different records** touch different files. No conflict.
+- **Two actors changing the same record** conflict — correctly, and that is what §6.3 detects.
+- **Two branches creating a wave with the same ordinal**, or two records that slugify identically, conflict at the path. This is the identifier problem of §6.4 and is a consequence of the open storage topology, not of this layout.
+
+**A note on growth.** If `deliverables/` becomes unwieldy at scale, sharding by creation period is legal under §7.1, because creation date never changes. That is a later option, recorded so nobody reaches for a status directory instead.
+
+### 7.6 Worktrees
 
 Actors working in separate git worktrees **must have an up-to-date view and must not repeat effort.** This is a requirement of the finished design rather than an aspiration: a claim taken in one worktree is visible in every other, and two actors cannot both believe they hold the same work.
 
