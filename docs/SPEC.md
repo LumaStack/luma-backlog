@@ -211,15 +211,122 @@ The cost is that listing everything in a dimension is a scan rather than a looku
 
 ## 4. Record shapes
 
-*To be written.* Field tables for `deliverable`, `wave`, `outcome`, and `task`, published as Type Definitions in the bundle's `_types/` directory so their contracts are discoverable by reading a file.
+Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type is published as a Type Definition in the bundle's `_types/` directory, so its contract is discoverable by reading a file rather than by reading this document.
 
-Settled so far:
+> **Draft.** Field names below are working, not ratified. Several depend on open questions and are marked where they do.
 
-> **Under review.** The first item below is challenged by [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18, which asks whether a testable end state should be a unit in its own right. If it is, criteria stop being an inline checklist and become records that own tasks and evidence.
+### 4.1 Conventions
 
-- Acceptance criteria live **inline** in the record they belong to, as a checklist, rather than as separate records. Criteria as individual files were considered and rejected: answering "what does done look like here?" is the most common question asked, and splitting it across many files makes the most common read the most expensive one. Inline criteria also survive import and export, where a separate criterion object has nothing to map onto.
-- Evidence attaches to a criterion. The format has no place to record what evidence *was* — only who confirmed and when. This is an open gap and the first change this project asks of the format. See `OPEN-QUESTIONS.md` §4.
-- A record may carry any field beyond those specified. Unrecognized fields are preserved untouched, never interpreted, and never a reason to reject a record.
+**Type names are namespaced by domain:** `backlog/deliverable`, `backlog/wave`, `backlog/outcome`, `backlog/task`, `backlog/decision`. This follows the format's own recommendation to namespace by domain, and reads self-describingly.
+
+**Every record carries the format's core fields** — `type`, `title`, `description`, `created`, `modified`, `lifecycle_status`, `tags` — and those are not repeated in the tables below. Only domain fields are listed.
+
+**Identity is the file path**, as the format defines it. Whether records also carry an identifier independent of path is unresolved and blocks import and export (`OPEN-QUESTIONS.md` §10).
+
+**Dimension values are ordinary frontmatter keys**, one per configured dimension — `milestone: q3-launch`, `epic: payments`. They are not enumerated in the tables because they are defined per repository (§2.7), and they appear on whichever records a team classifies.
+
+**Unrecognized fields are preserved untouched** (§3.1 of the principles). Anything upstream may annotate any record without this tool interpreting or losing it.
+
+### 4.2 `backlog/deliverable`
+
+| Field | Obligation | Field type | Meaning |
+|---|---|---|---|
+| `state` | recommended | enum | Workflow state. Vocabulary is **configurable** (§8) and carries no meaning to the tool. |
+| `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
+| `effort` | optional | number | Scoring input. **Reserved name.** |
+| `impact` | optional | number | Scoring input. **Reserved name.** |
+| `rank` | optional | text | Ordering key within a priority, for manual board ordering. **Pending** `OPEN-QUESTIONS.md` §14 — but the storage scheme must be chosen before a board ships, because a naive one rewrites every neighbour on each move. |
+
+A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
+
+**Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`OPEN-QUESTIONS.md` §17).
+
+### 4.3 `backlog/wave`
+
+| Field | Obligation | Field type | Meaning |
+|---|---|---|---|
+| `deliverable` | mandatory | wikilink | The deliverable this is an attempt at. |
+| `ordinal` | recommended | number | Which attempt this is. Waves accrue, so this is assigned on creation rather than planned. |
+| `closed` | optional | actor_event | Who closed it and when. Absent means open. |
+
+> **Pending `OPEN-QUESTIONS.md` §1a — record or attribute?** Modelled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
+
+**Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
+
+### 4.4 `backlog/outcome`
+
+The defining record type of this specification.
+
+| Field | Obligation | Field type | Meaning |
+|---|---|---|---|
+| `statement` | mandatory | text | The desired state itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
+| `probe` | recommended | text | The evidence that would prove the statement false. Named before the work starts. |
+| `deliverable` | mandatory | wikilink | What this is part of delivering. |
+| `wave` | optional | wikilink | The attempt currently targeting it, if any. |
+| `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
+
+An outcome with no `verified` entries has not passed. There is no separate pass or fail field, because there is nothing to store that the verification record does not already say (§2.4).
+
+A retired outcome is archived via `lifecycle_status`, never deleted, and is excluded from completion arithmetic.
+
+> **Two pending decisions**, both `OPEN-QUESTIONS.md` §18. Whether outcomes attach to a deliverable or a wave — modelled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modelled as a record because it owns tasks and evidence, which need identity.
+
+**Naming note:** the statement field is deliberately not called `claim`, which would collide with claiming a task (§4.5).
+
+### 4.5 `backlog/task`
+
+| Field | Obligation | Field type | Meaning |
+|---|---|---|---|
+| `deliverable` | mandatory | wikilink | What this is part of delivering. |
+| `wave` | recommended | wikilink | The attempt this task belongs to. |
+| `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
+| `state` | recommended | enum | Execution state. Configurable (§8), no meaning to the tool. |
+| `depends_on` | optional | list of wikilink | Tasks that must finish first. |
+| `runs_with` | optional | list of wikilink | Tasks with no ordering relationship to this one; safe to run at the same time. |
+| `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
+| `lease_expires` | optional | datetime | When an unrefreshed claim lapses. |
+| `follows` | optional | wikilink | The task this one succeeds after a failed or unfinished attempt (§4.6). |
+| `follows_reason` | optional | enum | Why a successor exists — `retry`, `defect`, `unfinished`, or a team's own value. |
+
+`depends_on` and `runs_with` together express **sequencing** — the property that decides what may proceed at once. Parallelism is the *absence* of a constraint rather than a separate thing to declare (`OPEN-QUESTIONS.md` §19).
+
+**Body:** what is to be done, and how it will be verified.
+
+### 4.6 Succession
+
+When an attempt does not succeed and another is begun, **a new record is created and links back to the one it follows.** The earlier record is never rewritten — it stands as a permanent account of what that attempt tried, with its own evidence and history.
+
+Creating a successor therefore writes exactly one file and touches nothing shared, which is the same property that makes membership work (§3.2). The format supports this directly, defining supersession as a relationship rather than a lifecycle status.
+
+The reason is recorded as an **attribute rather than in the link**, because at least three situations look alike from outside: work that was done but did not satisfy the criteria (a retry), work that was done and introduced a defect (a bug), and work that never finished (unfinished). Collapsing them loses the distinction that decides what to do next. Whether identity is shared or fresh remains open (`OPEN-QUESTIONS.md` §9).
+
+### 4.7 Evidence
+
+An outcome closes on evidence produced by a tool — command output, a response, a diff — never on an assertion that something works.
+
+The format's `verified` field is the mechanism: a list of independent confirmation events, from which trust tiers derive without being stored. Several agents checking the same outcome, or an agent followed by a human, is naturally a list — and a human entry raises the derived tier with no bespoke logic.
+
+**The gap:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. This is the first change this project asks of the format, and it is tracked there rather than worked around locally (`OPEN-QUESTIONS.md` §4).
+
+### 4.8 `backlog/decision`
+
+| Field | Obligation | Field type | Meaning |
+|---|---|---|---|
+| `supersedes` | optional | wikilink | An earlier decision this replaces. The earlier one is retained, never deleted. |
+| `affects` | optional | list of wikilink | Records this decision constrains. Optional, because a decision frequently outlives everything it touched. |
+
+A decision belongs to nothing and never completes (§2.6). It carries no `deliverable`, and its `lifecycle_status` records whether it is provisional, ratified, or retired.
+
+**Body:** the context, what was chosen, what was rejected, and why. The reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
+
+### 4.9 What modelling outcomes as records costs
+
+Outcomes were originally specified as an **inline checklist** on the deliverable, and that decision was reversed when the outcome became a unit (§2.4). The reversal has real costs, recorded here so they are weighed rather than forgotten:
+
+- **The most common read becomes the most expensive one.** "What does done look like here?" is the question asked most often, and answering it now means reading many files instead of one. A derived index makes this cheap, but an index is machinery that inline criteria would not have needed.
+- **Import and export lose fidelity.** External trackers keep acceptance criteria as unstructured text inside an item. There is nothing on the other side to map an outcome record onto, so a round trip degrades it to a rendered checklist and cannot reconstruct provenance.
+
+They were accepted because an outcome does more than a checkbox: it owns tasks and accumulates evidence, and both need identity. If use shows the token and interop costs outweigh that, the inline shape is the fallback — and `OPEN-QUESTIONS.md` §18 keeps the question live.
 
 ## 5. Boundaries and hooks
 
