@@ -3,6 +3,8 @@
 - **Version:** `v0.0.1-draft`
 - **Status:** Draft. Sections are written in dependency order; several are still placeholders. Nothing here is ratified.
 
+> **Sections vary in how well grounded they are, and say so.** Some describe decisions argued to a conclusion and tested against the principles. Others are **proposals** — a plausible shape written down so it can be criticised, not a design anyone has committed to. Proposals carry a banner saying as much. Absence of a banner means the section has been reasoned through, not that it is beyond revision.
+
 ## Abstract
 
 luma-backlog manages a backlog inside a git repository. Work is stored as markdown records conforming to the [Luma Knowledge Format](https://github.com/LumaStack/luma-knowledge-format), and a single command-line interface is how humans, agents, and automation read and change it — concurrently, without coordinating with each other.
@@ -374,6 +376,8 @@ They were accepted because an outcome does more than a checkbox: it owns tasks a
 
 ## 5. Boundaries and hooks
 
+> **⚠ Proposal, not settled design.** This section is written to be argued with. §5.1 through §5.3 follow reasonably from the principles; **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §22 for the alternative that was set aside and why it may be better.
+
 A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behaviour attaches.
 
 ### 5.1 Conditions, not events
@@ -416,7 +420,9 @@ The two closings differ, and the difference matters:
 
 Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 
-### 5.4 Hooks
+### 5.4 Hooks — *the least settled part of this document*
+
+> **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`OPEN-QUESTIONS.md` §22). What follows is a shape to criticise.
 
 A **hook** is a command the tool runs when a boundary is crossed. Configuration maps a boundary to a command (§8); the tool runs it and **never interprets what it does**.
 

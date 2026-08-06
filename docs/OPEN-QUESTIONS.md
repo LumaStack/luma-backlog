@@ -668,3 +668,35 @@ The field is currently typed as a list of text, which accommodates several check
 Deciding this early risks either over-modelling something that turns out to be prose, or under-modelling something that turns out to be the main path to evidence.
 
 *Settled by:* writing real outcomes across several domains and seeing what proportion have a command behind them. If most do, structure earns its place; if few do, prose with an optional convention is enough.
+
+---
+
+## 22. How behaviour attaches at a boundary
+
+**Status:** Open, and the least settled thing in the specification. `SPEC.md` §5.4 describes hooks as a **proposal**, not a decision.
+
+Something has to happen when a wave closes or a deliverable completes — apply learning, run an audit, promote decisions, archive. The question is what mechanism carries it.
+
+### Two candidates
+
+**Query and mark.** A caller asks a condition — *which deliverables are complete and not yet handled by me?* — does its work, and records its own marker on the record. That marker is an unrecognised field the tool preserves and never interprets (`SPEC.md` §3.1).
+
+This needs **no new machinery whatsoever**. It works today, given conditions and field preservation. Consumers own their own cursors, two consumers never interfere, and a consumer that was offline for a week simply catches up. It also degrades gracefully: nothing is missed, because nothing was ever delivered.
+
+**Hooks.** Configuration maps a boundary to a command; the tool runs it when the boundary is crossed.
+
+This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail that actually stops something. Neither is available from query-and-mark, because a caller that never asks never acts.
+
+### Why hooks are hard
+
+- **The tool becomes an executor**, which brings environments, timeouts, isolation, and failure handling into a layer deliberately kept free of them.
+- **Blocking is the whole point and also the problem.** A hook that cannot refuse is advice, and advice gets routed around. A hook that can refuse makes the tool an enforcer of policy it did not author (§6).
+- **Where does a hook run?** Under the branch-local topology (§8), on whose machine, in which worktree? An agent's boundary crossing and a person's may fire the same hook in very different environments.
+- **What is a hook in an agent world?** Most of what is wanted at a boundary — audits, applying learning, promoting decisions — is agent work rather than script work. A tool shelling out to a script is ordinary; a tool needing to invoke an agent is a different proposition, though a script that happens to call one keeps the tool ignorant of the difference.
+- **Failure must be legible or the feature is worse than nothing.** A hook that fails obscurely trains people to reach for a force flag, at which point the guardrail is decorative and everyone believes they are protected.
+
+### What would settle it
+
+Whether **enforcement** is genuinely required. If boundaries only need *something to happen eventually*, query-and-mark is sufficient and free. If a boundary must **stop** work that has not satisfied it — the governance case for retiring an outcome (`LIFECYCLE.md` §2.8) is the strongest example — then only a blocking mechanism will do, and hooks become necessary rather than convenient.
+
+*Settled by:* running the loop with query-and-mark and seeing whether anything important gets skipped. If it does, that is the case for hooks, made by evidence rather than anticipation.
