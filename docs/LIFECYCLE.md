@@ -28,9 +28,9 @@ Each phase answers its own unique questions. If two phases answer the same one, 
 |---|---|---|
 | **Observe** | *Where do things actually stand?* | Gather current state before deciding anything. |
 | **Articulate** | *What does done look like?* | Declare the desired states as outcomes. |
-| **Measure** | *How would we know?* | Decide how each outcome gets checked, before work begins. |
+| **Measure** | *How can we prove we are done?* | Decide how each outcome gets checked, before work begins. |
 | **Plan** | *How do we get there, and in what order?* | Break work into tasks and sequence them. |
-| **Advance** | *Are we closer?* | Do the work. |
+| **Advance** | *Are we progressing?* | Do the work. |
 | **Verify** | *Have we proven it to be true?* | Check each outcome against real evidence. |
 | **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. **Requires governance** — this is where goalposts get moved (§2.8). |
 | **Learn** | *How should we work differently next time?* | Capture improvements to the method. |
@@ -70,7 +70,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Watch for.** Actions instead of states — *add caching* is a guess at a solution, not an outcome. And one outcome that is secretly three.
 
-### 2.4 Measure — *how would we know?*
+### 2.4 Measure — *how can we prove we are done?*
 
 **What.** Decide how each outcome gets checked, before any work begins.
 
@@ -88,7 +88,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Watch for.** Planning beyond the current wave, which Redefine will waste. And sequencing everything serially out of caution, which quietly destroys the parallelism the model exists to enable.
 
-### 2.6 Advance — *are we closer?*
+### 2.6 Advance — *are we progressing?*
 
 **What.** Do the work.
 
