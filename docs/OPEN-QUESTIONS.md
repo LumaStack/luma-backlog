@@ -6,7 +6,7 @@ Nothing here should be resolved by argument where building would answer it faste
 
 **Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §2 (exploration, log, and context still have no home).
 
-All unit names are now settled: **project**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
+All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
@@ -55,7 +55,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 **Status:** Open. Independent of the name, which is settled (§1).
 
 - **Record or attribute?** The lean is an attribute on tasks — costing nothing when unused, adding no level to walk up, and keeping the boundary computable ("every task in this one is done"). Under `SPEC.md` §3.1 an attribute may gain a record when it has something to say, so this may not be a hard fork. But this unit has mechanics, and mechanics may want a home.
-- **Sequential or parallel?** Iterating toward an outcome implies an order. A project with genuinely independent tracks might want concurrent ones, which changes what a boundary means.
+- **Sequential or parallel?** Iterating toward an outcome implies an order. A deliverable with genuinely independent tracks might want concurrent ones, which changes what a boundary means.
 - **Do tasks belong to exactly one?** If work does not finish, does the task move to the next, or is a new task created? Moving keeps history in one place; creating fresh makes each iteration honest about what it actually attempted. See §9, which is the same question approached from the other side.
 - **What happens when a task joins a closed one?** As a pure attribute the boundary silently un-fires. That may argue for recording closure even if the unit itself stays an attribute.
 - **Where does its output live?** A learning pass or an audit produces artifacts. `SPEC.md` §3.1 suggests the answer — a record exists when there is something to say — but this should be confirmed by use.
@@ -116,7 +116,7 @@ This is the first change this project asks of the format, and should be raised t
 
 **Status:** **Settled.** Yes — and more than a record type. A decision is a core unit, defined in `SPEC.md` §2.6.
 
-It was resolved by noticing that a decision does a job none of the other units do, on a different axis from all of them: a project, a wave, and a task are *work*, whereas a decision is a *constraint on* work. It does not complete, does not iterate, and outlives the thing that produced it — which is also why it cannot be stored inside any one project.
+It was resolved by noticing that a decision does a job none of the other units do, on a different axis from all of them: a deliverable, a wave, and a task are *work*, whereas a decision is a *constraint on* work. It does not complete, does not iterate, and outlives the thing that produced it — which is also why it cannot be stored inside any one deliverable.
 
 What remains open is smaller and lives elsewhere: how supersession is represented (§9 covers the same mechanism for tasks), and whether ratification is enforced or advisory (§6).
 
@@ -137,7 +137,7 @@ So the question was never *whether* to enforce, but *what class of rule* is safe
 | Class | Examples | Cost of enforcing |
 |---|---|---|
 | **Model invariants** | A claim is exclusive. Verification requires evidence. Completion is derived. | Low. These *are* the data model; enforcing them is what makes it coherent. They do not change when working styles change. |
-| **Process sequences** | Work may not start before review. A project may not close before an audit. | High. These vary by team, change often, and may differ between systems operating on the same backlog. |
+| **Process sequences** | Work may not start before review. A deliverable may not close before an audit. | High. These vary by team, change often, and may differ between systems operating on the same backlog. |
 
 The working lean is to enforce the first and be suspicious of the second. It is a lean, not a law.
 
@@ -250,15 +250,15 @@ The format defers stable identifiers deliberately, noting that adding them later
 
 **Status:** Open. A specific instance of §6, and probably the one that settles it.
 
-The method this project follows requires that a project state its desired end state and its testable criteria **before** work begins, and that completion be measured against them rather than declared. The discipline is the whole value; a project whose criteria are written afterwards to match what was built has gained nothing.
+The method this project follows requires that a deliverable state its desired end state and its testable criteria **before** work begins, and that completion be measured against them rather than declared. The discipline is the whole value; a deliverable whose criteria are written afterwards to match what was built has gained nothing.
 
 So the question is what actually makes it happen.
 
 | Approach | What it does | Cost |
 |---|---|---|
 | **Nothing** | The workflow layer is trusted to do it. | An unenforced discipline is a suggestion. This is the current default by omission. |
-| **Gate on close** | A project cannot be closed without criteria that pass. | Weakest useful gate — it catches the lie at the end, after the work is done. |
-| **Gate on start** | No tasks may be created until the project declares criteria. | Strongest, and the only one that enforces *first*. Also the most obstructive, and the most likely to be worked around. |
+| **Gate on close** | A deliverable cannot be closed without criteria that pass. | Weakest useful gate — it catches the lie at the end, after the work is done. |
+| **Gate on start** | No tasks may be created until the deliverable declares criteria. | Strongest, and the only one that enforces *first*. Also the most obstructive, and the most likely to be worked around. |
 | **Report drift** | Criteria exist, but tasks are accumulating while they go untouched. | Advisory, but cheap and hard to argue with. Surfaces the failure mode without blocking. |
 
 Note the interaction with `SPEC.md` §2.3, which currently says verification and applied learning **always** happen at an iteration boundary. If that is a requirement rather than a description, some enforcement already exists and this question is partly answered.
@@ -296,13 +296,13 @@ Settled: volatile properties — status, priority, dimension — are attributes 
 
 What remains open is what the directories *are*.
 
-- **By unit type** — `projects/`, `tasks/`, `decisions/`. Flat, predictable, trivial to scan, and nothing moves when relationships change.
-- **By containment** — `projects/<name>/tasks/`. Browsable by a human, and gives an agent a natural context boundary. **But it encodes project membership in the path**, which contradicts §3.2: reassigning a task between projects becomes a move, and a move changes identity. How often that happens decides whether the contradiction matters.
+- **By unit type** — `deliverables/`, `tasks/`, `decisions/`. Flat, predictable, trivial to scan, and nothing moves when relationships change.
+- **By containment** — `deliverables/<name>/tasks/`. Browsable by a human, and gives an agent a natural context boundary. **But it encodes deliverable membership in the path**, which contradicts §3.2: reassigning a task between deliverables becomes a move, and a move changes identity. How often that happens decides whether the contradiction matters.
 - **Flat with name prefixes** — one directory, identity in the filename. Maximum merge friendliness, worst human browsing.
 
 The forces are: how an agent navigates without wasting reads, how a human browses in an editor, how git merges behave when many actors write at once, and how stable identity remains under ordinary reorganisation.
 
-*Settled by:* deciding whether project membership is stable enough to be a path fact. If it is, containment; if not, flat.
+*Settled by:* deciding whether deliverable membership is stable enough to be a path fact. If it is, containment; if not, flat.
 
 ---
 
@@ -332,7 +332,7 @@ Configuration is where opinions live so that the binary can stay free of them �
 
 Open:
 
-- **Where it lives and what scope it has.** The lean is a single committed file under `.backlog/`, repository-scoped, because this is shared project data rather than personal preference. A user-level layer, if any, should cover display only — never anything that changes what records mean, or two people will read the same backlog differently.
+- **Where it lives and what scope it has.** The lean is a single committed file under `.backlog/`, repository-scoped, because this is shared repository data rather than personal preference. A user-level layer, if any, should cover display only — never anything that changes what records mean, or two people will read the same backlog differently.
 - **Whether unknown keys are preserved.** They should be, for the same reason records preserve them: it is how something upstream stores its own settings without this tool needing to know.
 - **How far it may go.** Configuration is the natural place for process rules to accumulate, and a configuration format rich enough to express conditional workflow *is* a rules engine wearing a different hat. This is §6 arriving through a side door and should be watched for.
 
@@ -342,9 +342,19 @@ Open:
 
 ## 16. What the unit of delivery is called
 
-**Status:** **Settled — `project`.**
+**Status:** **Settled — `deliverable`.** `project` held the slot for most of the design and was displaced late.
 
-The deciding argument was **immediate recognition**. This is the unit a person meets first and names most often, and `project` is understood instantly, in every domain, by everyone — writing project, home project, research project, work project. No candidate matched that, and nothing else it might gain was worth the explanation it would cost.
+**A deliverable is a backlog item.** That is the anchor: it is what gets listed, ranked, picked up, and delivered. It is normally smaller than an epic — an epic groups several of them and belongs among the dimensions.
+
+### Why it displaced `project`
+
+`project` was chosen first on immediate recognition, which is a real advantage and the reason it survived so long. Three things eventually outweighed it:
+
+- **Scale.** `project` implies a substantial endeavor, but this is a backlog item. "Twelve projects this quarter" reads like an agency; "twelve deliverables" reads correctly.
+- **Two collisions.** The repository is also a project, and external trackers use the word for something far larger — a product area containing many of ours. Import mapping could never go by name.
+- **It teaches nothing.** Its familiarity lets people bring the habits they already have, including writing the *how* — the exact behaviour this design is trying to replace. `deliverable` obliges every backlog entry to answer *what gets handed over*, which open-ended work avoids.
+
+`delivery` was rejected earlier for naming the terminal event; `deliverable` is the right grammatical form, accurate from the moment the record exists.
 
 ### The test that mattered
 
@@ -355,21 +365,26 @@ The work is not necessarily software. Every candidate was checked against four:
 | Candidate | Why not |
 |---|---|
 | **feature** | Passes only the first. A migration, a health target, and a habit are not features, and forcing the word would push that work into being filed wrongly or not at all. |
-| **objective**, **goal**, **aim** | All four pass, and `goal` mirrors OKRs neatly — a goal holding measurable outcomes is Objective plus Key Results. Rejected because they sit **too close to `outcome`**: two adjacent aspirational nouns would need explaining permanently, and `outcome` is the unit that can least afford confusion. |
-| **commitment** | Spans well and carries accountability, but reads too binding. **Some projects are deliberately experimental and non-committal**, and the word argues against that. |
-| **pursuit** | The strongest rival — excellent for health, habits, and personal work, and it carries a pleasing sense of something actively chased. Lost on familiarity alone. |
-| **effort** | Passes all four cleanly and owns no domain. **Ruled out by collision:** `effort` is a field on this unit, feeding default priority alongside impact (§14). |
-| **delivery** | Names the terminal event rather than the thing, and the unit spends nearly all its life undelivered. Also fights the established mass-noun usage. |
-| **endeavor**, **undertaking** | Span everything; too formal and long for a word typed constantly. |
-| **initiative**, **charter**, **venture** | Imply scale, formality, or risk that the unit does not always carry. Initiative is also a dimension example. |
+| **story** | The natural incumbent, and rejected deliberately. It is the most precisely-owned word in agile, sized much smaller, carrying a narrative template, and colliding with `task`. Using it would import exactly the habits this model is trying to change. |
+| **slice** | Genuinely strong — small, self-contained, prioritizable, and it teaches thin-and-complete. Rejected because it reads as software-only, and because a slice implies a whole it was cut from, which standalone work does not have. |
+| **item** | Collides with nothing and teaches nothing. In an agent-first tool the noun is part of the prompt surface: "create an item" gives an agent no signal, "create a deliverable" does. |
+| **objective**, **goal**, **aim** | All four pass, and `goal` mirrors OKRs neatly. Rejected for sitting **too close to `outcome`** — two adjacent aspirational nouns would need explaining permanently. |
+| **commitment** | Reads too binding. Some deliverables are deliberately experimental and non-committal. |
+| **pursuit** | Excellent for health, habits, and personal work. Lost on familiarity. |
+| **effort** | Passes all four and owns no domain. **Ruled out by collision:** `effort` is a field, feeding default priority alongside impact (§14). |
+| **epic** | What most teams use for the level *above* this. Assigned to dimensions instead. |
+| **endeavor**, **undertaking**, **initiative**, **charter**, **venture** | Too formal, too long, or implying scale and risk the unit does not always carry. |
+| **issue**, **ticket** | Both imply something is wrong. Too negative for work that is usually ordinary. |
 
 ### Known costs, accepted
 
-- **It collides with the repository**, which is also a project. This is a documentation discipline problem — say *repository* for the containing thing — not a modelling one.
-- **It reads oddly for habits.** "A project to build a writing habit" is stilted. One awkward case in four was judged a fair price for universal recognition.
-- **External trackers use `project` for something much larger.** A tracker project is typically a whole product area; ours is one delivery. Import and export must map deliberately rather than by name.
+- **Eleven characters**, appearing in every command, with the obvious short form poisoned — `del` reads as delete. Needs a deliberate alias or prefix matching.
+- **Consultant tone.** Some will hear status decks. Judged to fade with use.
+- **Weakest on habits** — a habit is not handed to anyone. `project` shared this flaw.
 
-*Settled by:* the maintainer, alongside §1, before first release.
+### Relabelling
+
+The cost of an unfamiliar word is largely paid back by configuration: a team may display deliverables as *stories*, *projects*, or anything else. The canonical name stays on disk and in structured output so files remain portable and integrations do not break per repository. See `SPEC.md` §2.1.
 
 ---
 
@@ -381,7 +396,7 @@ Every unit needs a default body structure — the headings a new record starts w
 
 A starting sketch, deliberately minimal:
 
-- **Project** — the problem being solved, the outcome wanted, acceptance criteria, what is explicitly out of scope, and any constraints that bind the work.
+- **Deliverable** — the problem being solved, the outcome wanted, acceptance criteria, what is explicitly out of scope, and any constraints that bind the work.
 - **Wave** — what this attempt is targeting, what was verified at its close, what was learned, and what carries forward to the next.
 - **Task** — what is to be done, and how it will be verified.
 
@@ -399,7 +414,7 @@ Open beneath that:
 
 **Status:** Partly settled. **The unit exists and is called an outcome** — defined in `SPEC.md` §2.4. What remains open is how it relates to the units around it.
 
-Two things were settled alongside it. The project became the unit of **delivery** only, since *outcome* now names something specific and a project can no longer be described as the unit of outcome. And the wave's claim to be "the only unit that repeats" was narrowed, because an outcome loops too — see the two-loop distinction below.
+Two things were settled alongside it. The unit of delivery became just that, since *outcome* now names something specific and it could no longer be described as the unit of outcome. And the wave's claim to be "the only unit that repeats" was narrowed, because an outcome loops too — see the two-loop distinction below.
 
 ### The idea
 
@@ -439,12 +454,12 @@ If that holds, the wave is not "the unit that repeats" but **the unit that repea
 
 ### What is unresolved
 
-- **Where does it attach?** To a **project**, if outcomes are the testable decomposition of what is being delivered and therefore stable across attempts — a wave then selects which ones it is targeting. To a **wave**, if they are scoped to a single attempt and unmet ones are re-created next time, in the manner of §9. The first seems more natural: what is wanted does not change because an attempt failed.
+- **Where does it attach?** To a **deliverable**, if outcomes are the testable decomposition of what is being delivered and therefore stable across attempts — a wave then selects which ones it is targeting. To a **wave**, if they are scoped to a single attempt and unmet ones are re-created next time, in the manner of §9. The first seems more natural: what is wanted does not change because an attempt failed.
 - **Do tasks attach to outcomes rather than to waves?** If tasks are generated to satisfy an outcome, they belong to it. But then a task sits two levels away from its wave, and a wave's boundary condition becomes harder to compute.
 - **Is an outcome a record or an inline entry?** `SPEC.md` §4 currently settles criteria as an inline checklist, rejecting criteria-as-records on token cost and interop grounds. **That decision is now in question.** The token argument weakens if an outcome owns tasks and evidence, because those need identity regardless. The interop argument does not weaken — external systems still have nothing to map an outcome onto.
-- **Does a project hold outcomes directly, or only through waves?** If only through waves, a project with no wave yet has nowhere to state what it is for.
+- **Does a deliverable hold outcomes directly, or only through waves?** If only through waves, a deliverable with no wave yet has nowhere to state what it is for.
 
-*Settled by:* writing a real project as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganised around them.
+*Settled by:* writing a real deliverable as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganised around them.
 
 ---
 

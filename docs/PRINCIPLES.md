@@ -12,7 +12,7 @@ This project assumes a world where a backlog is worked **continuously and in par
 
 ## What this is
 
-**The place work is represented, held, and manipulated.** It is where tasks and projects live, where their state can be seen, and where humans and agents change them. That includes visual representation as a first-class concern, not an afterthought — a board is one of the primary ways people will meet this tool.
+**The place work is represented, held, and manipulated.** It is where tasks and deliverables live, where their state can be seen, and where humans and agents change them. That includes visual representation as a first-class concern, not an afterthought — a board is one of the primary ways people will meet this tool.
 
 **What it is not** is the thing that decides what happens next. Driving agents, running workflows, sequencing effort, and judging quality are expected to live in a separate system. That system is expected to change rapidly. This one is expected to hold still.
 
