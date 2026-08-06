@@ -4,7 +4,7 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §18 (whether an outcome is a unit), because it may reorganise the whole model and demote tasks to scaffolding; §8 (worktrees), because it may invalidate the claiming model; §12 (the boundary with the workflow layer), because it is asked again by every feature; §1 and §16 (the two names), because they get harder every day.
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §16 (the last open name).
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
@@ -12,40 +12,45 @@ Numbering is stable — new questions are appended rather than inserted, so refe
 
 ## 1. What the unit of iteration is called
 
-**Status:** Open, and the most consequential naming decision in the project.
+**Status:** **Settled — `wave`.** Recorded here because roughly eighty alternatives were considered, and the reasoning is worth keeping.
 
-The unit itself is settled — it is the unit of iteration, and its job is described in `SPEC.md` §2.3. What it is **called** is not, and the word is being left open deliberately rather than for lack of a preference.
+### Why `wave`
 
-### Why the name is being held
+The decisive fact is that **`wave` is not a novel coinage but established project-management vocabulary.** *Rolling wave planning* means: plan near-term work in detail, plan later work coarsely, and elaborate progressively as each pass teaches something — with the number of waves unknown at the outset. That last property is the defining one for this unit, and no other candidate carried it.
 
-A name is cheap to change now and expensive later: it lands in the command interface, in every piece of documentation, in generated completions and manual pages, in external tracker mappings, and eventually in every backlog anyone has created. It is also the word that has to teach the concept to a person or a model encountering it cold.
+Two adjacent senses reinforce it rather than competing. **Migration waves** group work into manageable batches specifically to reduce risk. In **agent orchestration**, a wave is a set of tasks at one dependency level run together, with a gate between waves so the next reads settled state.
 
-`wave` is currently in the specification as a **placeholder**. It is not a front-runner.
+The word therefore arrives carrying grouping, unbounded recurrence, progressive adaptation, and a gate — the whole shape of the unit, with a lineage that explains it in one sentence.
 
-### The test
+### The test that was applied
 
-**What ends one?** A sprint ends when time runs out. A phase ends when a predetermined stage completes. This unit ends when the result has been **measured against the project's criteria**. The right word should evoke repetition and assessment — not duration, and not a stage known in advance.
+**What ends one?** A sprint ends when time runs out. A phase ends when a predetermined stage completes. This unit ends when the result has been **measured**. So the word had to evoke a grouping that recurs and adapts — not a duration, and not a division known in advance.
 
-### Candidates
+A second test proved unexpectedly discriminating: **how does it read at number four?** A name used in status reporting cannot imply failure at high counts. *Attempt 4* sounds like struggling; *wave 4* is neutral, because a wave never claims its predecessor failed.
 
-| Candidate | For | Against |
-|---|---|---|
-| **iteration** | Semantically exact; the word teaches the concept with nothing to explain. Strong existing meaning in both delivery and optimization contexts, so both humans and models arrive already knowing it. | In Scrum-shaped organizations it is a synonym for *sprint*, importing a fixed-length time-box that would have to be actively corrected. Longest of the candidates. |
-| **cycle** | Short; clearly repeating; implies returning to a starting point. | Collides with *cycle time*, which means something else in delivery metrics. |
-| **round** | Short, unambiguous, no collisions. "Round 2" needs no explanation to anyone. | Informal; may read as insufficiently serious in enterprise settings. |
-| **wave** | Currently in the docs. | Connotes things moving together in a batch rather than attempts at a target. Weakest priors of the set. |
+### What was rejected, and why
 
-**Ruled out — `phase`.** Phases are known in advance and differ in kind from one another; this unit is unknown in count and identical in kind, so the word actively misleads. It is also a common name for a user-defined dimension, and has been assigned there instead (`SPEC.md` §2.7).
+| Candidate | Why not |
+|---|---|
+| **phase** | Phases are known in advance and differ in kind; this unit is unknown in count and identical in kind. Also a common dimension name, and assigned there instead (`SPEC.md` §2.7). |
+| **iteration** | Semantically exact, but in Azure DevOps and Scrum it *is* the sprint field — importing a fixed time-box, and colliding by synonymy with `sprint` as a dimension. |
+| **cycle** | Collides with *cycle time* as a delivery metric, and with fixed-length planning cycles. |
+| **round** | Clean and collision-free, but reads informal and carries no grouping sense. |
+| **segment, leg, chapter, passage, stretch** | All mean *a division of a known whole*, which implies a planned count — the same flaw as `phase`, in softer form. |
+| **push, drive, run, play** | Excellent on grouping and effort, but each collides hard: version control, storage vendors, execution verbs, and general overuse. |
+| **batch** | Honest and plain, but implies homogeneous items processed mechanically, with no sense that anything is learned between one and the next. |
+| **slice** | The strongest rival. Small by definition, self-contained, and agile-native. Rejected because slicing implies *planned decomposition* — it cannot express "a fourth one is needed because the third fell short." |
+| **generation, epoch, lot, tranche, campaign, volley, sweep, flight** | Each precise because some field already owns it, and each drags that field's assumptions along. |
 
-**Watch for further collisions.** `cycle` and `round` are milder versions of the same problem — teams do use them as dimension names. Whichever word wins becomes unavailable as a dimension name, so the cost of taking a common one should be counted.
+### The one caveat to keep in view
 
-*Settled by:* the maintainer, deliberately, before the first release. Not by drift.
+The agent-orchestration sense is **adjacent, not identical**: there a wave is a parallelism batch determined by dependency level, whereas here it is an iteration ending in measurement and learning. Tasks do carry sequencing, so the senses overlap — but documentation should not let a reader assume a wave means only "work that runs concurrently."
 
 ---
 
-## 1a. The shape of the unit of iteration
+## 1a. The shape of a wave
 
-**Status:** Open. Independent of the name.
+**Status:** Open. Independent of the name, which is settled (§1).
 
 - **Record or attribute?** The lean is an attribute on tasks — costing nothing when unused, adding no level to walk up, and keeping the boundary computable ("every task in this one is done"). Under `SPEC.md` §3.1 an attribute may gain a record when it has something to say, so this may not be a hard fork. But this unit has mechanics, and mechanics may want a home.
 - **Sequential or parallel?** Iterating toward an outcome implies an order. A project with genuinely independent tracks might want concurrent ones, which changes what a boundary means.

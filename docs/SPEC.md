@@ -37,7 +37,7 @@ Four units currently qualify, and they are not four sizes of the same thing — 
 | Unit | Is the unit of |
 |---|---|
 | **Project** | delivery |
-| **Wave** (name tentative, §2.3) | iteration |
+| **Wave** | iteration |
 | **Outcome** | desired state |
 | **Task** | work |
 
@@ -76,7 +76,13 @@ One does. A **decision** (§2.6) sits outside this hierarchy entirely — everyt
 
 ### 2.3 Wave
 
-> **The name is tentative and deliberately unresolved.** *Wave* is a placeholder. *Cycle*, *iteration*, and *round* are the live candidates. The choice is hard to reverse once the interface, the documentation, and every backlog in the wild have adopted it, so it is being left open on purpose. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §1. **Nothing in the design should depend on which word wins.**
+> **On the name.** *Wave* is borrowed deliberately from **rolling wave planning**, the established project-management technique in which near-term work is planned in detail, later work is planned coarsely, and the plan is elaborated progressively as each pass teaches something. The number of waves is not knowable at the outset — which is the defining property of this unit, and the reason the word fits rather than merely being available.
+>
+> Two adjacent senses reinforce it. **Migration waves** group work into manageable batches specifically to reduce risk. And in agent orchestration a wave is a set of tasks at one dependency level, run together, with a gate between waves so the next reads the settled state.
+>
+> That last sense is *adjacent, not identical*: there a wave is a parallelism batch, whereas here it is an iteration that ends in measurement and learning. Tasks do carry sequencing (§2.5), so the two overlap, but a reader arriving from agent tooling should not assume a wave means only "work that runs concurrently."
+>
+> Alternatives considered and rejected are recorded in [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §1.
 
 **What it is.** One attempt at a set of outcomes: work is undertaken, and then what remains is measured.
 
@@ -170,7 +176,7 @@ The cost is that listing everything in a dimension is a scan rather than a looku
 
 ## 4. Record shapes
 
-*To be written.* Field tables for `project`, `wave` (name pending), and `task`, published as Type Definitions in the bundle's `_types/` directory so their contracts are discoverable by reading a file.
+*To be written.* Field tables for `project`, `wave`, `outcome`, and `task`, published as Type Definitions in the bundle's `_types/` directory so their contracts are discoverable by reading a file.
 
 Settled so far:
 
