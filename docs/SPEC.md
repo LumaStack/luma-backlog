@@ -38,10 +38,10 @@ Four units currently qualify, and they are not four sizes of the same thing — 
 |---|---|
 | **Project** | delivery |
 | **Wave** (name tentative, §2.3) | iteration |
-| **Outcome** | done |
+| **Outcome** | desired state |
 | **Task** | work |
 
-Say when it is delivered, attempt it repeatedly, state what done means, do the work. This is also a completeness check: any further unit has to name a job that is none of these four.
+Say when it is delivered, attempt it repeatedly, declare the state that must hold, do the work. This is also a completeness check: any further unit has to name a job that is none of these four.
 
 One does. A **decision** (§2.6) sits outside this hierarchy entirely — everything above is either work or a statement about work in progress, whereas a decision constrains work without ever being part of it.
 
@@ -91,6 +91,8 @@ One does. A **decision** (§2.6) sits outside this hierarchy entirely — everyt
 ### 2.4 Outcome
 
 **What it is.** A small, testable statement of a condition that must hold once the work is done. Phrased as a **state, not an action**, and narrow enough that one check returns true or false and nothing else. For example: *a dry run prints the planned changes and writes nothing*, or *the symlink resolves to the same location as its target*.
+
+It is the unit of **desired state**, in the sense that declarative infrastructure uses the term: a target is declared, actual state is compared against it, and the gap is closed by repeated correction until the two match. An outcome is one such declared target, and the work is the reconciliation.
 
 **Why it exists.** An agent should be told *what* is wanted, not *how* to reach it. A procedure encodes the limitations of whatever wrote it and ages badly; a statement of the end state survives improvements in the model that reads it. **As models get more capable, the value of specifying *how* falls and the value of specifying *what* rises**, and this unit is where that bet is expressed.
 
