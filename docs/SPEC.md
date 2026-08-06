@@ -47,19 +47,19 @@ One does. A **decision** (§2.6) sits outside this hierarchy entirely — everyt
 
 #### 2.1.1 Who is expected to author what
 
-In the common case, **a person defines projects and outcomes, and agents define the waves and tasks that get there.** A person says what is to be delivered and what must be true when it is; an agent decides how the work is grouped, sequenced, and attempted.
+Authorship varies by team, and the whole range is legitimate. Some will want little or no agent involvement and will write every unit themselves; others will hand over nearly everything. **The tool serves the entire range and privileges no point on it** — it does not distinguish between callers (§1), and nothing here is enforced.
 
-This is not a rule and it is not enforced. The tool does not distinguish between callers (§1), and a person may write a wave or a task whenever they want to — early on, or whenever an agent's plan needs correcting. It is the expected shape of use, not a permission model.
+One pattern is likely to be common enough to design against: **a person defines projects and outcomes, and agents propose the waves and tasks that get there.** A person says what is to be delivered and what must be true when it is; an agent works out how that gets grouped, sequenced, and attempted.
 
-But the division is not arbitrary. It falls along the same line that separates the units (§2.2): **projects and outcomes describe the world, and waves and tasks describe how we organize ourselves to change it.** Declaring what should be true for whoever needs it is a statement of intent, and intent is a person's to give. How the work is then divided and attempted is exactly what an agent should be free to decide, and to re-decide as it learns.
+Where a division like that does occur, it tends to fall along the same line that separates the units (§2.2): **projects and outcomes describe the world, and waves and tasks describe how we organize ourselves to change it.** Declaring what should be true for whoever needs it is a statement of intent, which a person is usually best placed to give. How the work is then divided and attempted is the part an agent can most usefully decide, and re-decide as it learns.
 
-That axis now does three jobs: it is why completion is measured on outcomes and never on tasks, why the project unit is named for delivery rather than release, and why authorship divides where it does.
+That axis does three jobs: it is why completion is measured on outcomes and never on tasks, why the project unit is named for delivery rather than release, and why authorship tends to divide where it does when it divides at all.
 
-> **A consequence worth designing for.** If people mostly touch the top two units and agents mostly touch the lower two, then the interface, the board, and the defaults should not assume a person is authoring tasks. The most common human actions are declaring outcomes, reviewing whether they hold, and deciding when to deliver.
+> **A consequence worth designing for.** The interface, the board, and the defaults must not *require* a person to author tasks, and must not *assume* they never will. Both extremes are real: someone maintaining every task by hand should find the tool comfortable, and so should someone who never writes one.
 >
-> **Tasks stay fully visible, for a different reason.** They are how a person sees **how** an agent intends to act. Reading them is oversight, and should be easy, quick, and expected. Editing them is *intervention* — correcting a plan, steering an approach, or governing how something is done — and must be possible at any moment without ceremony, while remaining the exception rather than the routine.
+> **Tasks stay fully visible either way.** Where an agent proposes them, they are how a person sees **how** it intends to act — so reading them is oversight, and should be easy and quick. Editing them is *intervention*: correcting a plan, steering an approach, or governing how something is done. That must be possible at any moment without ceremony, whether it happens constantly or almost never.
 >
-> So a person's relationship to tasks is **read often, write rarely**, which is the opposite of a tool where someone maintains the task list by hand. Task views should be built for scanning and judging a plan, not for authoring one.
+> The practical implication is that task views should serve **both scanning and authoring well**, rather than optimizing for one. A team delegating heavily will mostly read them; a team delegating little will mostly write them.
 
 ### 2.2 Project
 
