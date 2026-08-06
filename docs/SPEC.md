@@ -374,11 +374,82 @@ They were accepted because an outcome does more than a checkbox: it owns tasks a
 
 ## 5. Boundaries and hooks
 
-*To be written.* How the tool notices that something has become true, what it announces, and how a caller attaches behavior to it.
+A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behaviour attaches.
 
-Current direction: prefer **queryable conditions** over emitted events, since a condition is re-derivable by a caller that was not present when it became true, while an event must be delivered. Transitions that current state cannot reconstruct are what the log is for.
+### 5.1 Conditions, not events
 
-Closing is expected to be an explicit act that the tool validates rather than a state it infers — which also supplies the edge a hook can fire on.
+**The tool answers questions about what is true. It does not deliver notifications.**
+
+A **condition** is re-derivable: ask at any time and get the current answer. An **event** must be delivered, which means ordering, retries, acknowledgements, and a subscriber that was running at the moment it fired.
+
+Conditions win for a reason that matters here: **a workflow layer that was not running can still catch up.** It asks what is true now and proceeds. Nothing was missed, because nothing was ever in flight. That property is worth more than immediacy for a tool whose consumers are agents that start, stop, and are replaced.
+
+The exception is **transitions that current state cannot reconstruct** — something closed and reopened, an outcome that passed and later regressed, a claim that was stolen. Those are genuinely historical, and they are what the log is for (§5.5).
+
+### 5.2 The conditions the tool answers
+
+A **fixed, named set** — not a general query language. A query language rich enough to express arbitrary conditions is a rules engine, and would move policy back into a layer built to hold still (`OPEN-QUESTIONS.md` §6).
+
+The set is principled rather than arbitrary: **each condition either drives the loop or detects a known failure.**
+
+| Condition | Purpose |
+|---|---|
+| `outcome.passing` / `outcome.unverified` | Drives completion arithmetic. |
+| `deliverable.complete` | Every live outcome passes. Gates closing (§5.3). |
+| `wave.open` / `wave.closed` | Locates the current attempt. |
+| `task.claimable` | No live claim. |
+| `task.claim-stale` | A lease has expired. Reported, never auto-released (§6.5). |
+| `outcome.unmeasured` | An outcome with no `verify_by` — the *Measure* phase was skipped. |
+| `task.advances-nothing` | A task attached to no outcome. |
+| `deliverable.unarticulated` | A deliverable with no outcomes at all. |
+
+The last three detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2 — skipping Measure, planning work that serves nothing, starting without declaring done. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make those failures visible are as load-bearing as the ones that drive completion.
+
+### 5.3 Closing is an explicit act
+
+Completion is computed (§2.4), but **closing is something a caller does** — and the tool validates it rather than inferring it. That gives a real edge for behaviour to attach to, which a derived condition alone cannot: nothing "becomes closed" on its own.
+
+The two closings differ, and the difference matters:
+
+- **Closing a wave is not gated on outcomes passing.** A wave ends when someone stops to measure, and stopping with four of six outcomes met is the normal case — that is what makes another wave necessary. Gating here would prevent the loop from iterating at all.
+- **Closing a deliverable is gated on `deliverable.complete`.** Every live outcome must pass. This is where computed completion stops being informational and becomes a refusal.
+
+Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
+
+### 5.4 Hooks
+
+A **hook** is a command the tool runs when a boundary is crossed. Configuration maps a boundary to a command (§8); the tool runs it and **never interprets what it does**.
+
+That mapping is deliberately dumb. Boundary to command, nothing more — no conditions, no ordering rules, no chaining. The moment configuration can express *if this and that, then the other*, it has become a rules engine wearing different clothes.
+
+**Boundaries that fire hooks:**
+
+| Boundary | Typical use |
+|---|---|
+| `wave.closed` | Apply learning, run an audit, update written context. |
+| `deliverable.closed` | Promote decisions, mark things stale, archive, update references. |
+| `outcome.verified` | Record or publish evidence elsewhere. |
+| `outcome.retired` | **Governance.** This is the operation that lowers the bar ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8), and the one a team most likely wants to require review for. |
+
+A hook receives structured context describing what happened, on standard input. It does not receive the tool's internal state, and its output is **not** interpreted as instructions — a hook that wants to change the backlog does so by calling the interface like any other caller.
+
+**Open — may a hook block?** Guardrails imply yes: a hook that cannot refuse is advice, and advice gets routed around. But a blocking hook makes the tool an enforcer of policy it did not author, which is the unresolved question in `OPEN-QUESTIONS.md` §6. Two constraints hold whichever way it lands:
+
+- **Failure must be legible.** Which hook, why, and what to do about it. A hook that fails obscurely trains people to reach for a force flag, and then the guardrail is decorative.
+- **Nothing is retried silently.** A hook that ran twice, or did not run, must be discoverable afterwards.
+
+### 5.5 What the log is for
+
+Conditions describe the present. The log records what **happened** — specifically the transitions that current state cannot reconstruct: a wave closed and reopened, an outcome that passed and later regressed, a claim stolen from a live holder, a close forced past a failing check.
+
+Its exact shape is unresolved, along with where exploration and context material live (`OPEN-QUESTIONS.md` §2).
+
+### 5.6 What this must never become
+
+- **A scheduler.** The tool does not decide when anything runs, or run anything on a timer.
+- **A rules engine.** Configuration maps boundaries to commands. It does not express conditions, priorities, or chains.
+- **An interpreter of hook output.** A hook's exit status may matter; its stdout is never read as instructions.
+- **A silent actor.** Every hook that ran, every override taken, and every check refused is recorded.
 
 ## 6. Concurrency
 
