@@ -54,6 +54,10 @@ One does. A **decision** (§2.6) sits outside this hierarchy entirely — everyt
 
 Without that split, structured output would change shape per repository and every integration written against it would break. With it, relabelling is free: files stay portable, agents reading records see one vocabulary, and people see theirs. See §8.
 
+**Aliases are taught, not encoded.** An agent reads more than structured output — it reads prompts, record bodies, and people saying "the auth story." So the local vocabulary belongs in the **generated agent instructions**: *this repository calls deliverables "stories."* The mapping is learned once; every record and every payload stays canonical. Vocabulary is documentation, never data.
+
+**Expect renaming to concentrate at one level.** In practice the unit teams will want to rename is the **deliverable**, because it is the one they meet first and name most often — followed by dimensions, which are user-defined already. Tasks are occasionally renamed (*to-dos*), and waves, outcomes, and decisions almost never. Anything may be relabelled, but the deliverable is the one that must be comfortable.
+
 #### 2.1.1 Who is expected to author what
 
 Authorship varies by team, and the whole range is legitimate. Some will want little or no agent involvement and will write every unit themselves; others will hand over nearly everything. **The tool serves the entire range and privileges no point on it** — it does not distinguish between callers (§1), and nothing here is enforced.
@@ -335,9 +339,27 @@ The format's `verified` field is the mechanism: a list of independent confirmati
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
 | `supersedes` | optional | wikilink | An earlier decision this replaces. The earlier one is retained, never deleted. |
+| `promoted_from` | optional | wikilink | The deliverable-level decision this was promoted from (§4.8.1). |
 | `affects` | optional | list of wikilink | Records this decision constrains. Optional, because a decision frequently outlives everything it touched. |
 
-A decision belongs to nothing and never completes (§2.6). It carries no `deliverable`, and its `lifecycle_status` records whether it is provisional, ratified, or retired.
+A decision never completes (§2.6). Its `lifecycle_status` records whether it is draft, provisional, ratified, or retired — and **while it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision is ratified.
+
+**Decisions live where they were made.** Most sit inside the deliverable that produced them; those made outside any deliverable sit at the top level (§7.2). *Where a decision was made never changes*, so this is a legal path fact under §7.1, and a derived index makes decisions globally browsable regardless of where they sit.
+
+#### 4.8.1 Promotion
+
+A minority of decisions outlive the work that produced them and deserve to become standing rules.
+
+**Promotion copies; it never moves.** A new record is created in the top-level decision space carrying `promoted_from`, and the original is left untouched. Moving would change the original's identity and break every inbound link. The new record carries the link, so promotion writes exactly one file — the same member-side rule as everywhere else (§3.2), which also means "was this promoted?" is an index lookup rather than a field someone must remember to set.
+
+**The two records are not competing copies.** They have different jobs, and that is what removes any divergence problem:
+
+- The **deliverable-level decision is a point-in-time record** of what was decided during that work. Once ratified it is *supposed* to freeze. It going stale is the point, not a defect.
+- The **global decision is a living, ratified rule**, amended as things change.
+
+Promotion therefore does not archive the original. Nothing is retired — the local decision remains exactly as true about that deliverable as it ever was.
+
+**Deciding that something deserves promotion is policy.** The tool provides the operation and never judges.
 
 **Body:** the context, what was chosen, what was rejected, and why. The reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
 
