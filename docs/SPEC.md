@@ -260,7 +260,7 @@ The defining record type of this specification.
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
 | `desired_state` | mandatory | text | The condition itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
-| `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **A single entry may be written bare and is treated as a one-element list**, following the format's own handling of `verified`. |
+| `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **Deliberately unconstrained** (§4.4.1). A single entry may be written bare and is treated as a one-element list, following the format's own handling of `verified`. |
 | `deliverable` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | optional | wikilink | The attempt currently targeting it, if any. |
 | `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
@@ -279,7 +279,21 @@ A retired outcome is archived via `lifecycle_status`, never deleted, and is excl
 
 `verify_by` rather than `probe` or `verification`. `verification` is ambiguous — it could name the method or the result, and `verified` sits directly beneath it holding results. `verify_by` is unmistakably the method, pairs with `verified` as a matched set, and is plain English rather than borrowed vocabulary.
 
-> **Open — is `verify_by` prose or something runnable?** Some checks are a command with an exit code; others are a description a human or agent interprets, and a health or document outcome will never be executable. The field is typed as text for now, and whether it later gains structure — a description alongside an optional command — is left to be discovered by using it (`OPEN-QUESTIONS.md` §21).
+#### 4.4.1 Why `verify_by` is deliberately unconstrained
+
+An entry may be prose, an ordered list of steps, a pointer to a test, a runnable command, or anything else that tells someone how to look. **The tool does not interpret it**, and it is left open on purpose until real use shows what belongs there.
+
+**Three roles, and none of them is missing.** It is tempting to add a field for *how to read the result*, and it turns out not to be needed:
+
+| Field | Answers |
+|---|---|
+| `desired_state` | what must be true — **this is the pass criterion** |
+| `verify_by` | how to observe it |
+| `verified` | who looked, when, and what they found (§4.7) |
+
+Because `desired_state` already states what you should see, `verify_by` never has to restate it. *"Run with the dry-run flag, then check `git status`"* needs no interpretation guide when the desired state says *a dry run prints the planned changes and writes nothing*. For a runnable entry, the conventional reading applies with no explanation required: **exit code zero means the desired state holds.** A pointer to a test needs nothing either, since the test carries its own judgement.
+
+**A consequence to be aware of.** Because the field is uninterpreted, **the tool records verdicts rather than producing them** — whoever verifies runs the check and reports what they found. Whether a command should ever execute checks itself is a genuine mechanism-versus-policy question, since executing needs an environment, timeouts, and isolation; it is left open (`OPEN-QUESTIONS.md` §21). If it is ever wanted, the tool must be able to tell a runnable entry from prose, and the lean is a second optional field rather than typed entries — less structure, and the prose stays useful for a person even where a command exists.
 
 ### 4.5 `backlog/task`
 

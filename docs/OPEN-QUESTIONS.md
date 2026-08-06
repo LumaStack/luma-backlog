@@ -635,7 +635,20 @@ The likely resolution is the one already used elsewhere: ship them in the **defa
 
 ## 21. Whether `verify_by` is prose or something runnable
 
-**Status:** Open — to be settled by using it, not by argument.
+**Status:** **Deliberately left open.** The field is unconstrained and uninterpreted, and stays that way until real use shows what belongs in it.
+
+### What was resolved along the way
+
+**No field is missing.** The instinct that a companion field is needed — something saying *how to read the output* — turns out to be wrong, because `desired_state` **is** the pass criterion. `verify_by` only has to say how to observe; what you should see is already stated. For a runnable entry the conventional reading needs no explanation (exit code zero means it holds), and a pointer to a test carries its own judgement. The triad of `desired_state`, `verify_by`, and `verified` is complete.
+
+**The real fork is not the field's shape.** It is whether **the tool ever executes checks, or only records verdicts something else produced.** While the field stays uninterpreted, the answer is the latter, which also keeps execution — with its environment, timeouts, and isolation — outside a layer that has been kept free of such concerns.
+
+### If structure is ever wanted
+
+Two shapes, with a lean:
+
+- **A second optional field** — prose always, plus an optional runnable command. Less machinery, degrades gracefully, and the prose stays useful to a person even where a command exists. **Preferred.**
+- **Typed entries** — each entry declares its kind. More flexible, more machinery, and it forces every author to classify what they wrote.
 
 An outcome's `verify_by` (`SPEC.md` §4.4) says how its desired state is checked. Two kinds of thing want to live there:
 
