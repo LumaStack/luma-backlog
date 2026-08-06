@@ -220,6 +220,35 @@ Storage topology and coordination mechanism are separable, and most viable desig
 - **A + 5** — no coordination machinery at all, if work is always assigned rather than self-selected.
 - **A + 3** — awkward: with no shared line, it is ambiguous which branch a sync should target.
 
+### Current leans
+
+**For the minimum viable product: A + 2** — branch-local records, with reads that look across branches.
+
+Nothing to set up, so a clone works and there is nothing to explain. It ships soonest, which matters because the backlog should be dogfooded early. It gives enough visibility that nobody works blind. And it accepts the one thing that is cheap to accept at this scale: occasional duplicated work, when there are few actors and collisions are rare. Building the expensive mechanism before observing how often collisions actually occur would be speculation.
+
+One amendment to the pattern as usually implemented: **surface divergence rather than resolving it by recency.** Silently keeping the most recent version discards the other, which contradicts the principle that conflicting writes are detected and surfaced.
+
+**For a long-term, team-hardened design: B + 3** — a dedicated backlog branch, with sync built into the commands that need currency.
+
+It is the only pairing where claiming is genuinely reliable **across machines**, which is what a distributed team actually is — and it gets that from git's own push atomicity rather than new infrastructure. It keeps backlog history separate from code history, which matters once pull requests are reviewed by people who do not want forty status flips in the diff. And a single shared line removes the "which branch is the truth" ambiguity that makes syncing awkward in every other pairing.
+
+### What would move the long-term choice
+
+| Signal | Points toward |
+|---|---|
+| Actors **self-select** work from a shared pool | **B + 3** — claims must be reliable, and only push atomicity makes them so |
+| Work is **assigned** by the workflow layer before an actor starts | **A + 5** — claims become unnecessary and most of this problem dissolves |
+| Many concurrent agents; collisions observed to be frequent or expensive | **B + 3** |
+| Small team, few concurrent actors, collisions rare in practice | **A + 2 is sufficient indefinitely** |
+| Team spread across machines and time zones | **B + 3** — the only mechanism that coordinates across machines |
+| **An external tracker is the system of record** | **C becomes viable** — cross-machine sync happens through that system, so local storage only needs to be shared between worktrees, which git's common directory provides for free |
+| The backlog must span several repositories | **D** — a separate repository is the only topology that serves more than one codebase |
+| Code review noise becomes a real complaint | **B** — separate the two histories |
+| Setup friction proves worse in practice than occasional duplicated work | **stay on A** |
+| Teams strongly value backlog changes travelling with the pull request | **stay on A** |
+
+The first two rows are the ones to watch, and the answer is not ours alone to give: **it depends on how the workflow layer drives agents.** If it assigns disjoint work, this question mostly disappears. If agents pick their own, reliable claiming becomes load-bearing.
+
 ### What was learned while exploring this
 
 - **Nothing switches branches in any option.** A dedicated branch is checked out once into a permanent folder; branch switching under a working actor was never on the table.
