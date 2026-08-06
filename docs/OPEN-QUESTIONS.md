@@ -218,7 +218,7 @@ Hooks are the likely mechanism, which makes this a question about hook semantics
 
 ---
 
-## 7. Default task state vocabulary
+## 7. Default workflow status vocabulary
 
 **Status:** Open.
 
@@ -463,7 +463,7 @@ So the real decision is not "ranking or not" but "if ranking ever arrives, is th
 
 **Status:** Open.
 
-Configuration is where opinions live so that the binary can stay free of them — task states, priority values, dimension names, templates, hooks. That makes it load-bearing, and it will grow.
+Configuration is where opinions live so that the binary can stay free of them — workflow status vocabularies, priority values, dimension names, templates, hooks. That makes it load-bearing, and it will grow.
 
 Open:
 
@@ -630,3 +630,22 @@ Dimensions are user-defined and carry no mechanics (`SPEC.md` §2.7). The questi
 The likely resolution is the one already used elsewhere: ship them in the **default configuration file** rather than in code, so they are present on first use, visible, and deletable. That is a starting point rather than a rule, which is the distinction that has settled several of these questions already.
 
 *Settled by:* writing the default configuration file (§15) and seeing whether an empty dimension list feels broken or clean.
+
+---
+
+## 21. Whether `verify_by` is prose or something runnable
+
+**Status:** Open — to be settled by using it, not by argument.
+
+An outcome's `verify_by` (`SPEC.md` §4.4) says how its desired state is checked. Two kinds of thing want to live there:
+
+- **A description** a human or agent interprets — *"run with the dry-run flag and diff the working tree."* Always sufficient, never automatable on its own.
+- **Something executable** — a command whose exit code settles it. Precise, repeatable, and the natural home for evidence.
+
+Some outcomes will never be executable at all. A health target, a published document, or an established practice is verified by looking, not by running something.
+
+The field is currently typed as a list of text, which accommodates several checks per outcome and a single one written bare. What is unresolved is whether an entry should later gain **structure** — a description alongside an optional command — so that automatable checks can be run while non-automatable ones stay readable.
+
+Deciding this early risks either over-modelling something that turns out to be prose, or under-modelling something that turns out to be the main path to evidence.
+
+*Settled by:* writing real outcomes across several domains and seeing what proportion have a command behind them. If most do, structure earns its place; if few do, prose with an optional convention is enough.

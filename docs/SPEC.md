@@ -231,7 +231,7 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `state` | recommended | enum | Workflow state. Vocabulary is **configurable** (§8) and carries no meaning to the tool. |
+| `workflow_status` | recommended | enum | Position in the workflow. Vocabulary is **configurable** (§8) and carries no meaning to the tool. |
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
@@ -259,8 +259,8 @@ The defining record type of this specification.
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `statement` | mandatory | text | The desired state itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
-| `probe` | recommended | text | The evidence that would prove the statement false. Named before the work starts. |
+| `desired_state` | mandatory | text | The condition itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
+| `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **A single entry may be written bare and is treated as a one-element list**, following the format's own handling of `verified`. |
 | `deliverable` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | optional | wikilink | The attempt currently targeting it, if any. |
 | `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
@@ -271,7 +271,15 @@ A retired outcome is archived via `lifecycle_status`, never deleted, and is excl
 
 > **Two pending decisions**, both `OPEN-QUESTIONS.md` §18. Whether outcomes attach to a deliverable or a wave — modelled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modelled as a record because it owns tasks and evidence, which need identity.
 
-**Naming note:** the statement field is deliberately not called `claim`, which would collide with claiming a task (§4.5).
+**On these field names.**
+
+`desired_state` rather than `statement`, `condition`, or `must`, because the name has to do pedagogical work: the discipline this unit rests on is *state, not action*, and `desired_state` makes writing a verb phrase feel wrong in a way `must` does not — "must run the tests" reads naturally and is exactly the mistake. It also keeps the model's own vocabulary consistent, since an outcome is the unit of desired state (§2.1). Not `claim`, which would collide with claiming a task (§4.5).
+
+**The `title` stays a short, stable handle** — `dry-run safety` — while `desired_state` carries the normative content. This matters because identity is path-based and outcomes are *expected* to be tightened, split, and rewritten as work reveals things (§2.4). If the statement were the title, every refinement would rename the file and change the record's identity, breaking inbound links. Separating them means the handle can stay fixed while the statement is free to improve.
+
+`verify_by` rather than `probe` or `verification`. `verification` is ambiguous — it could name the method or the result, and `verified` sits directly beneath it holding results. `verify_by` is unmistakably the method, pairs with `verified` as a matched set, and is plain English rather than borrowed vocabulary.
+
+> **Open — is `verify_by` prose or something runnable?** Some checks are a command with an exit code; others are a description a human or agent interprets, and a health or document outcome will never be executable. The field is typed as text for now, and whether it later gains structure — a description alongside an optional command — is left to be discovered by using it (`OPEN-QUESTIONS.md` §21).
 
 ### 4.5 `backlog/task`
 
@@ -280,7 +288,7 @@ A retired outcome is archived via `lifecycle_status`, never deleted, and is excl
 | `deliverable` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | recommended | wikilink | The attempt this task belongs to. |
 | `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
-| `state` | recommended | enum | Execution state. Configurable (§8), no meaning to the tool. |
+| `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. |
 | `depends_on` | optional | list of wikilink | Tasks that must finish first. |
 | `runs_with` | optional | list of wikilink | Tasks with no ordering relationship to this one; safe to run at the same time. |
 | `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
@@ -360,7 +368,7 @@ Actors working in separate git worktrees **must have an up-to-date view and must
 
 *To be written.* Defaults ship as an editable file rather than behavior compiled into the binary.
 
-Known to belong here: task states, priority values, dimension names, templates, hooks, and **display labels for units** (§2.1) — the last of which lets a team call deliverables *stories* or *projects* without changing anything a machine reads.
+Known to belong here: workflow status vocabularies, priority values, dimension names, templates, hooks, and **display labels for units** (§2.1) — the last of which lets a team call deliverables *stories* or *projects* without changing anything a machine reads.
 
 ## 9. Command interface
 
