@@ -76,7 +76,9 @@ That axis does three jobs: it is why completion is measured on outcomes and neve
 
 **What it is.** The unit of delivery. **A deliverable *is* a backlog item** — when someone asks what is on the backlog, deliverables are the answer. It is the thing that gets listed, ranked, picked up, and delivered: a bounded body of work that, once complete, hands something over.
 
-Size is not part of the definition. A deliverable may be a week or a year, and it is bounded by *what it delivers* rather than by how much work it takes. It is normally smaller than what teams call an epic: an epic groups several deliverables, and belongs among the dimensions (§2.7).
+A deliverable is bounded by *what it delivers* rather than by how much work it takes — but in practice that means **an hour to a month, rarely longer.** It is normally smaller than what teams call an epic: an epic groups several deliverables, and belongs among the dimensions (§2.7).
+
+> **Why length matters even though size does not define it.** A deliverable's duration *is* the feedback loop, because nothing is confirmed until something is handed over. A deliverable that runs a year is a year in which being wrong goes undetected — and the answer is never to run it longer, but to break it into deliverables that each hand something over sooner. A backlog full of year-long deliverables is a backlog that has stopped decomposing work, and the model should make that visible rather than comfortable.
 
 The name is deliberately demanding. Calling this a deliverable obliges every entry on the backlog to answer **what gets handed over** — which is exactly the question open-ended work avoids.
 
