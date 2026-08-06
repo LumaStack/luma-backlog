@@ -184,23 +184,55 @@ States are expected to be configurable and carry no meaning to the tool. But the
 
 There is a second, harder version. Shared claims would stop two actors working the same *known* task. They would not stop two actors independently *inventing* the same task on separate branches, because neither branch can see records created on the other until they merge.
 
-### A distinction that may resolve the first problem
+### A distinction that shapes every option
 
-**Claim state is not branch-local in nature.** "This actor is working this task, since this time" is a fact about the world at this moment, not about the content of a branch. The same is true of lease expiry. Whereas a task's description, criteria, and history are durable content that plainly belong in version control.
+**Claim state is not branch-local in nature.** "This actor is working this task, since this time" is a fact about the world at this moment, not about the content of a branch. Whereas a task's description, criteria, and history are durable content that plainly belongs in version control. Ephemeral coordination state is also safe to lose — leases expire regardless — so it need not be protected the way records must be.
 
-That suggests splitting along the durable/ephemeral line rather than by file: records versioned in git, coordination state somewhere every worktree can see. It stays consistent with the principles because ephemeral state is safe to lose — leases expire regardless, so a coordination store that vanishes costs a pause, not correctness.
+### The decision is really two decisions
 
-### Candidate directions
+Storage topology and coordination mechanism are separable, and most viable designs are a pairing of one from each list.
 
-- **Split durable content from ephemeral coordination.** Records stay branch-local and versioned; claims and leases live in shared storage. Solves double-claiming, not double-invention.
-- **The backlog is not branch-local at all.** One canonical location every worktree reads and writes regardless of what it has checked out. Solves both problems, at the cost of the backlog no longer branching with the code it describes.
-- **Accept staleness and reconcile on merge.** Simplest, and probably inadequate — reconciliation happens after the wasted work.
+#### Where the records live
+
+| Topology | How it behaves |
+|---|---|
+| **A — Branch-local (ordinary files)** | The backlog is tracked like code and branches with it. Clone works, `git status` shows changes, pull requests include backlog edits, reverting a branch reverts them. Actors on different branches see different backlogs. **No setup.** |
+| **B — Dedicated branch, permanently checked out** | Backlog history lives on its own branch, checked out once into a folder that never moves. **Nothing ever switches branches.** One shared backlog, clean code history, no staleness. Costs a one-time setup per clone, and the folder can reach odd states that need repair. |
+| **C — Shared folder in git's common directory** | All worktrees of a repository share one git directory, so anything placed there is visible from every worktree with no symlinks and no configuration. **Shares between worktrees but not between people** — that directory is not pushed. |
+| **D — Separate repository** | The backlog is its own repo, with its own remote, possibly shared across several code repositories. Fully independent. Loses adjacency to the code, which is the stated reason for using git at all. |
+
+**Ruled out — submodule.** A submodule is referenced by a commit pointer stored in the parent tree, and that pointer is branch-local. Every branch would pin its own backlog version, turning an implicit divergence into an explicit one requiring a second commit to reconcile. It delivers the isolation the requirement is trying to escape, with added ceremony.
+
+#### How actors avoid colliding
+
+| Mechanism | What it gives |
+|---|---|
+| **1 — Nothing** | Accept collisions; detect at merge. Cheapest, and the duplicated work has already happened by the time anyone notices. |
+| **2 — Read across branches** | At query time, consult other local and remote branches to see what exists and what is claimed elsewhere. Gives **visibility without atomicity** — you can see a claim, but two actors can still create one simultaneously. A known pattern in this space, shipped and viable. **Caution:** implementations typically resolve divergence by "most recent wins," which silently discards the loser and contradicts the principle that conflicting writes are surfaced rather than resolved. Divergence should be reported instead. |
+| **3 — Sync inside the commands that need it** | Claiming becomes pull, write, push. **Git push is already atomic and rejects non-fast-forward updates**, so the loser of a race is told it lost, re-reads, and reports that the task is already claimed. This is genuine mutual exclusion across machines, using nothing but git. Requires network at claim time; degrades to optimistic claiming when offline. |
+| **4 — Claims as git refs** | Refs live in the shared git directory, are pushable, and support atomic compare-and-swap. Correct and ephemeral by nature. Claims stop being plain files, which is acceptable for coordination state but not for records. |
+| **5 — Partition upstream** | The workflow layer hands each actor a disjoint slice before it starts, so no claim is ever needed. Coordination moves up a layer, which fits the mechanism/policy split. Fails when actors self-select work rather than being assigned it. |
+
+### Viable pairings
+
+- **A + 2** — simplest thing that is not naive. No setup, visibility across branches, occasional duplicate work. Ships fastest.
+- **B + 3** — reliable claiming across machines and clean code history, at the cost of setup and a maintenance surface.
+- **A + 5** — no coordination machinery at all, if work is always assigned rather than self-selected.
+- **A + 3** — awkward: with no shared line, it is ambiguous which branch a sync should target.
+
+### What was learned while exploring this
+
+- **Nothing switches branches in any option.** A dedicated branch is checked out once into a permanent folder; branch switching under a working actor was never on the table.
+- **Commit volume is a feature, not a cost.** Every claim and status change being a commit produces an attributed, timestamped, immutable history — which answers much of §2 for free and is the context that justified using git in the first place. It only reads as noise in code review, where interfaces cannot filter by path. That is an argument for separating the two histories, not for producing fewer commits. It depends on the tool writing meaningful messages and committing **once per logical action rather than once per file write.**
+- **The hazard to specify explicitly:** a tool that commits *everything* will sweep up a person's half-finished manual edits. It must commit only the files it wrote.
 
 ### What it costs to get wrong
 
-This decides the on-disk layout (§7 of the specification), whether claiming works at all, and whether "parallel is the normal case" is honoured or merely asserted.
+This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, and whether "parallel is the normal case" is honoured or merely asserted.
 
-*Settled by:* deciding whether the backlog is branch-local. Everything else follows from that answer.
+**Migration between topologies is cheap.** Records are byte-identical in all of them; only their location changes. That makes this decision far more reversible than it first appeared, and argues for starting simple and moving when the pain is demonstrated rather than predicted.
+
+*Settled by:* answering two questions. **Are actors self-selecting work, or is something upstream assigning it?** — if assigned, mechanism 5 dissolves most of the problem. And **is occasional duplicated work acceptable at the start, or is reliable claiming a day-one requirement?** — if day one, `SPEC.md` §7 requires topology B.
 
 ---
 
