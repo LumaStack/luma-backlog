@@ -20,20 +20,26 @@ Neither stage is required. A deliverable may begin at the loop with no preamble.
 
 **One vocabulary, one level.** Every phase is a plainly named, distinct act. There is no second set of internal phase names — where a phase has internal structure, it is described in its own sentence rather than given a parallel vocabulary. Two names for one moment is a comprehension tax with no compensating information.
 
+Each phase answers its own unique questions. If two phases answer the same one, one of them is redundant.
+
 **Each wave:**
 
-| Phase | What happens |
-|---|---|
-| **Observe** | Gather the current state — read what exists, collect context, establish where things actually stand before deciding anything. |
-| **Articulate** | Reason about the problem, and declare what done means as outcomes. |
-| **Measure** | Decide how each outcome will be checked — before any work begins. |
-| **Plan** | Break the work into tasks and sequence them. |
-| **Advance** | Do the work. |
-| **Verify** | Check each outcome against real evidence. Nothing counts as done without it, and *"should work"* is not evidence. |
-| **Redefine** | Change the outcomes where reality proved them wrong (§2.2). |
-| **Learn** | Capture how to work better next time. |
+| Phase | Answers | In short |
+|---|---|---|
+| **Observe** | *Where do things actually stand?* | Gather current state before deciding anything. |
+| **Articulate** | *What does done look like?* | Declare the desired states as outcomes. |
+| **Measure** | *How would we know?* | Decide how each outcome gets checked, before work begins. |
+| **Plan** | *How do we get there, and in what order?* | Break work into tasks and sequence them. |
+| **Advance** | *Are we closer?* | Do the work. |
+| **Verify** | *Have we proven it to be true?* | Check each outcome against real evidence. |
+| **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. |
+| **Learn** | *How should we work differently next time?* | Capture improvements to the method. |
 
-**When the deliverable closes:** **Propagate** — promote decisions, update documentation and references, mark things stale, archive what is finished.
+**When the deliverable closes:**
+
+| Phase | Answers | In short |
+|---|---|---|
+| **Propagate** | *What should outlive this deliverable?* | Promote decisions, update references, mark stale, archive. |
 
 ### 2.1 How the phases sit against waves
 
@@ -46,7 +52,61 @@ They are not evenly distributed, and that is informative:
 
 So the wave is not an arbitrary container. It is the unit those last three phases attach to.
 
-### 2.2 Redefine — what it is, and what stops it being abused
+### 2.2 Observe — *where do things actually stand?*
+
+**What.** Gather current state before committing to anything — what exists, what changed, what is already claimed.
+
+**Earns its keep.** The only phase that looks backward before anything is decided. Skip it and everything after runs on assumption.
+
+**Watch for.** Skipping it because you already know the codebase — the most common failure, and how confident duplicate work happens. Also observing in order to justify a solution already chosen.
+
+### 2.3 Articulate — *what does done look like?*
+
+**What.** Declare the desired states as outcomes.
+
+**Earns its keep.** Produces the standard every later phase is measured against. Ambiguity is the largest source of wasted work: a vague target produces confident motion in an arbitrary direction.
+
+**Example.** *"Make the tool faster"* becomes: startup under fifty milliseconds; output unchanged; memory under twenty megabytes.
+
+**Watch for.** Actions instead of states — *add caching* is a guess at a solution, not an outcome. And one outcome that is secretly three.
+
+### 2.4 Measure — *how would we know?*
+
+**What.** Decide how each outcome gets checked, before any work begins.
+
+**Earns its keep.** Makes self-measurement possible, and therefore unattended work. An outcome without a check is an opinion.
+
+**The inversion.** Ask what evidence would prove it **false**. If you cannot answer, the outcome is not specific enough — which sends you back to Articulate before anything is wasted.
+
+**Watch for.** Deferring this until after Advance. It is the most damaging shortcut in the loop, because the check ends up shaped to fit the result.
+
+### 2.5 Plan — *how do we get there, and in what order?*
+
+**What.** Break the work into tasks and express what must follow what.
+
+**Earns its keep.** The only phase producing claimable, orderable units — the substrate all parallel work rests on.
+
+**Watch for.** Planning beyond the current wave, which Redefine will waste. And sequencing everything serially out of caution, which quietly destroys the parallelism the model exists to enable.
+
+### 2.6 Advance — *are we closer?*
+
+**What.** Do the work.
+
+**The rule.** Progress is measured **only against outcomes** — not tasks closed, not hours spent. *Three of six outcomes hold* is progress; *I worked all afternoon* is not.
+
+**Watch for.** Starting without claiming, which is how two actors do the same job.
+
+### 2.7 Verify — *have we proven it to be true?*
+
+**What.** Check each outcome against real evidence, and record what was found.
+
+**Earns its keep.** The only phase that converts belief into record. Completion, reporting, and trust all read what it wrote.
+
+**Detail.** Verification is a **list, not a flag**. Independent checks accumulate on one outcome, and a check performed by a person raises the derived trust tier with nothing extra stored (`SPEC.md` §4.7).
+
+**Watch for.** Accepting assertion as evidence, and verifying against a check invented after the result was known.
+
+### 2.8 Redefine — *was that the right definition of done?*
 
 **This is the phase most open to abuse**, because it is the one that changes the definition of done. That deserves stating before anything else, along with what prevents it.
 
@@ -71,7 +131,25 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Redefine is not Learn.** They act on different objects. *Redefine* changes **the outcomes of this deliverable** — what done means, here, now. *Learn* changes **how future deliverables are worked** — and touches nothing about this one. If it helps: one fixes the target, the other fixes the method.
 
-### 2.3 On the phase names
+### 2.9 Learn — *how should we work differently next time?*
+
+**What.** Capture improvements to the method.
+
+**Earns its keep.** The only phase that changes **future** runs rather than this one. Without it, every wave repeats the same mistakes fluently.
+
+**Example.** *"Outcomes written before reading the existing error handling were wrong twice. Observe before articulating, not alongside."*
+
+**Watch for.** Recording facts instead of improvements — *we used Postgres* is not a lesson. And confusing it with Redefine: this fixes the method, that fixes the target.
+
+### 2.10 Propagate — *what should outlive this deliverable?*
+
+**What.** Promote decisions, update documentation and references, mark things stale, archive what is finished.
+
+**Earns its keep.** The only phase that acts **outside** the deliverable. Knowledge left inside a closed one is lost.
+
+**Watch for.** Promoting everything, which dilutes the global space until nobody reads it, and promoting nothing, which loses it. And deferring it — once a deliverable closes, nobody comes back.
+
+### 2.11 On the phase names
 
 Every name was chosen to be **self-evident**. A phase name needing a glossary defeats its purpose, most of all for the steps a team is being asked to adopt.
 
