@@ -265,4 +265,17 @@ Known to belong here: task states, priority values, dimension names, templates, 
 
 ## 11. Terminal and web real-time interfaces
 
-*To be written.* A first-class real-time web interface will eventually be available alongside the real-time interactive terminal interface, for managing, editing, prioritizing, creating, filtering, and browsing the dimensions and core units of work.
+*To be written.* A real-time interactive terminal interface for managing, editing, prioritizing, creating, filtering, and browsing dimensions and the core units of work.
+
+**The terminal interface is the primary surface.** It is where the tool is met and used, and it is held to the same standard as the command interface itself.
+
+### 11.1 Why a web interface exists
+
+A web application is a **nice-to-have follow-up**, not a co-equal surface. It exists for two specific reasons, and they determine what it has to be:
+
+- **Reach.** Some people do not want to work in a terminal, and the backlog should not be closed to them.
+- **Anywhere.** It should work properly **on a phone**, so that work can be checked and agents directed from away from a desk.
+
+Two consequences follow. It must be **genuinely web-native and responsive** — a terminal streamed into a browser satisfies neither reason, being neither approachable for people avoiding terminals nor comfortable on a phone. And its priority is **observing and steering rather than authoring**: the common actions away from a desk are seeing where things stand, unblocking, and redirecting — not composing records.
+
+**It is a client, not a privileged view.** The web application consumes the same documented contract as any external integration (§9), which is what keeps that contract honest — exercised by first-party code rather than merely published.

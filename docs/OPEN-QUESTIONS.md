@@ -85,7 +85,21 @@ The log has the strongest independent case. `SPEC.md` §5 relies on it for trans
 
 ## 3. Implementation language
 
-**Status:** Open — down to two finalists: **Go** and **TypeScript with OpenTUI**.
+**Status:** **Settled.** The core, the command-line interface, and the terminal board are written in **Go**, using **Bubbletea** for the terminal interface. The web application, if and when it is built, is a **TypeScript** application consuming the same documented contract as any other client.
+
+### Why
+
+**The terminal interface is the primary component**, and Bubbletea is mature, production-proven, pure Go, and purpose-built for exactly this — a framerate-based renderer, a dedicated high-performance renderer for scrollable regions, mouse support, and a component library covering viewports, filterable lists, tables, and inputs. The alternative in TypeScript, OpenTUI, genuinely fixes the limits that disqualified Ink, but it does so with a **pre-1.0, fast-moving, natively-compiled dependency placed at the centre of the primary component** — which is the worst possible location for churn in a project whose stated principle is to be boring on purpose.
+
+Go also wins the things that remain load-bearing after single-binary distribution and startup cost were both demoted to nice-to-haves: **concurrency and file-integrity tooling**, and **decade-scale dependency stability**. That the distribution story is also trivially good is now a bonus rather than a requirement.
+
+**The argument that actually decided it was about risk, not features.** Python with Textual was genuinely competitive — Textual is mature, arguably the best of the three for complex layouts, and `textual-serve` would have collapsed the entire web phase into a few lines by streaming the same application into a browser. But that advantage was **contingent on a streamed terminal being an acceptable web experience**, and it is not: the web application must work properly on a phone. Had Python been chosen and that bet failed, a TypeScript frontend would have been needed anyway — leaving no distinguishing advantage and a weaker stability story. **Go's position does not depend on that bet resolving either way**, and that asymmetry settled it.
+
+### What this means in practice
+
+Two toolchains, deliberately. The split is clean because it follows a boundary that already exists: the web application is **a client of the documented contract**, not a privileged view. It talks to the tool the same way any external integration does, which means the public contract is exercised by first-party code rather than merely asserted. Types can be generated from the contract's schema, so sharing a language was never required to share types.
+
+`embed.FS` can ship the built web assets inside the binary, so the web board costs a user nothing extra to install — available, though no longer required.
 
 ### What the tool actually has to do
 
@@ -133,7 +147,7 @@ Meanwhile the dimension where Go is clearly and *maturely* ahead — the termina
 
 This is the one factual question that could decide it outright, and it should be tested rather than assumed.
 
-*Settled by:* answering the verification above, and then weighing one language and one toolchain against a mature, dependency-light terminal stack. Current lean is **Go**.
+*Settled by:* the maintainer, on the risk asymmetry above. The Bun native-compilation verification became moot once the terminal stack decided it.
 
 ---
 
