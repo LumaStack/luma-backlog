@@ -85,13 +85,55 @@ The log has the strongest independent case. `SPEC.md` §5 relies on it for trans
 
 ## 3. Implementation language
 
-**Status:** Open — leaning Go.
+**Status:** Open — down to two finalists: **Go** and **TypeScript with OpenTUI**.
 
-What bears on it: a single binary with no runtime, first-class `brew` distribution, generated man pages and shell completions, correctness under concurrent access, and a long stability horizon that makes dependency churn a genuine liability.
+### What the tool actually has to do
 
-Go fits those directly, and its compatibility guarantee matches the "boring, on purpose" principle better than the alternatives. The counter-argument is maintainer fluency, which is not a small thing for a project intended to be maintained rather than merely written.
+Sharpened considerably since this question was first written, and worth restating because it is what the comparison is measured against:
 
-*Settled by:* the maintainer's judgment about what he wants to maintain. No further analysis improves this.
+- **A real-time terminal interface is the primary component.** The web interface is a nice-to-have follow-up, not a co-equal surface. Whatever is weakest at the terminal pays its tax at the centre of the product.
+- **Agents invoke the binary constantly**, so startup cost is paid hundreds of times a session.
+- **Concurrency and file integrity are load-bearing** — atomic writes, leases, claim races, careful git interaction.
+- **Distribution must be trivial**: `brew`, a single artifact, no runtime for the user to install.
+- **It must stay boring for a decade.** Dependency churn is a direct liability under the stability principle.
+
+### Why Python was eliminated
+
+Not on capability — `uv` genuinely fixed the ergonomics, and Textual is a first-rate terminal framework, arguably the best of the three for complex layouts. It loses on the two things that cannot be fixed later: **there is no honest single-binary story** (PyInstaller and Nuitka are fragile), and **startup is the slowest of the three** at roughly 50–150 ms, which is the wrong cost to pay hundreds of times a session in an agent-first tool.
+
+### The two finalists
+
+| | **Go** | **TypeScript + OpenTUI** |
+|---|---|---|
+| **Terminal UI** | Bubbletea, with a framerate-based renderer, a separate high-performance renderer for scrollable regions, and mouse support. Bubbles supplies viewport, filterable and paginated list, table, text input and textarea, progress, spinner, help, and key bindings. Lipgloss handles multi-column layout and borders. Years in production across many shipped tools. | OpenTUI is a native Zig core with TypeScript bindings, React and SolidJS reconcilers, extensive mouse support, and components for Text, Box, Input, Select, Code, and ScrollBox. Dialogs come via a companion package. Powers a production coding tool today. **Fixes Ink's disqualifying limits** — a hardcoded 30 FPS cap, a 50 MB-plus footprint for basic apps, full-screen flicker, and no overlay or modal support. |
+| **TUI maturity** | Stable, versioned, pure Go, no native dependencies. Large component ecosystem. | Pre-1.0 with no stated version, roughly 1,000 commits, and well over 100 open pull requests — genuine, fast-moving development. Third-party component ecosystem is sparse. |
+| **Startup** | ~3–8 ms. | ~20–40 ms compiled. |
+| **Distribution** | Cross-compiles to every platform from any machine with no C toolchain. One static binary, ~10–20 MB. `goreleaser` handles the tap, checksums, man pages, and completions. | `bun build --compile` produces a binary, and `goreleaser` supports Bun. **But OpenTUI has a native core loaded through Bun's FFI**, so a single self-contained cross-platform artifact is materially harder — see the open verification below. |
+| **Concurrency & file safety** | The language's core competence. | Adequate — this is I/O bound — but with fewer sharp tools for locking and leases. |
+| **Dependency stability** | Compatibility promise, small trees, culture of restraint. Best match for "boring, on purpose." | Highest churn of the three, and OpenTUI adds a pre-1.0 dependency **with a compiled core** at the most critical point in the product. Bun itself is also young. |
+| **Web interface later** | Frontend built separately, embedded with `embed.FS` so it still ships in one binary. | One language and one toolchain across CLI and web, with shared types. |
+| **Model fluency** | Strong, slightly behind. | Very high. |
+
+### The argument that decides it as currently understood
+
+Two of TypeScript's three advantages were **demoted by the maintainer's own constraints**:
+
+- **Fluency is secondary**, and learning a language is not considered a significant cost — so the velocity advantage largely evaporates.
+- **The web interface is a follow-up**, so shared types matter much less. That advantage was already weak, because the structured output is a **versioned public contract** and types can be generated from a schema for consumers in any language — something that must be solved regardless, since integrations will not all be TypeScript.
+
+What remains is one language and one toolchain, which is real but modest.
+
+Meanwhile the dimension where Go is clearly and *maturely* ahead — the terminal interface — was promoted to the primary component.
+
+**The sharpest framing:** OpenTUI genuinely answers the capability objection, and it should be credited for that. But it answers it by putting a **young, fast-moving, natively-compiled dependency at the exact centre of the product**, in a project whose stated principle is to be boring on purpose. Bubbletea is the boring choice precisely where boring is worth most.
+
+### Open verification before choosing TypeScript
+
+**Does `bun build --compile` produce a genuinely self-contained, cross-compilable binary when a native FFI library is involved?** OpenTUI's core is Zig, exposed over a C ABI and loaded through Bun's FFI, and building the packages requires Zig on the machine. If per-platform native artifacts must be produced and shipped alongside, the single-binary story — already TypeScript's weaker ground — degrades further.
+
+This is the one factual question that could decide it outright, and it should be tested rather than assumed.
+
+*Settled by:* answering the verification above, and then weighing one language and one toolchain against a mature, dependency-light terminal stack. Current lean is **Go**.
 
 ---
 
