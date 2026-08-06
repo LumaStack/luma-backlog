@@ -479,3 +479,19 @@ The property and the structure it forms may want different words:
 The lean is **sequencing** for the property and **dependency graph** for the structure, on the grounds that parallelism is the absence of a constraint rather than a separate thing to name.
 
 *Settled by:* picking one and using it consistently before the specification is written any further.
+
+---
+
+## 20. Whether any dimensions ship as defaults
+
+**Status:** Open — under consideration.
+
+Dimensions are user-defined and carry no mechanics (`SPEC.md` §2.7). The question is whether the tool nonetheless *defines* a few out of the box — `project` most likely, possibly `epic` and `milestone`.
+
+**For:** most teams will want them, and an entirely blank slate is unhelpful on first use. Shipping the common ones also makes import from external trackers land somewhere sensible without configuration.
+
+**Against:** any default is an opinion, and this document has consistently pushed opinions into configuration rather than into the binary. A default dimension is a mild version of the same thing §6 warns about.
+
+The likely resolution is the one already used elsewhere: ship them in the **default configuration file** rather than in code, so they are present on first use, visible, and deletable. That is a starting point rather than a rule, which is the distinction that has settled several of these questions already.
+
+*Settled by:* writing the default configuration file (§15) and seeing whether an empty dimension list feels broken or clean.

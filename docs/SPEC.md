@@ -167,7 +167,11 @@ This also makes the task the natural unit of ownership: it is the smallest thing
 
 ### 2.7 Dimensions
 
-Dimensions — epics, milestones, initiatives, phases, releases, sprints, or whatever a team already uses — are **user-defined and not core to this project**. They carry no mechanics of their own.
+Dimensions — projects, epics, milestones, initiatives, phases, releases, sprints, or whatever a team already uses — are **user-defined and not core to this project**. They carry no mechanics of their own.
+
+> **`project` belongs here.** Once the unit of delivery became a deliverable, *project* was free — and it lands naturally as a dimension, because that is the scale it already has everywhere else: a container holding many deliverables. This also removes the interop mismatch that made `project` awkward as a unit name. An external tracker's project maps to a dimension of the same name and the same scale, rather than to a unit several sizes smaller.
+>
+> **Under consideration:** shipping `project`, and possibly `epic` and `milestone`, as dimensions defined by default rather than left entirely to configuration. The argument for is that most teams will want them and a blank slate is unhelpful; the argument against is that any default is an opinion, and this document has consistently pushed opinions into configuration. Not yet decided.
 
 A dimension is an axis a record is classified along, and **a record may sit on several at once**: a deliverable can belong to a milestone *and* an initiative without the two competing. A dimension may also have **levels that nest** — an initiative holding epics holding milestones is one axis with a hierarchy, in the way a geography dimension holds country, region, and city. Both properties come from the word: independent axes that combine freely, with roll-up levels inside any one of them.
 
