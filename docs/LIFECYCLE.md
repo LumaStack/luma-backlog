@@ -20,18 +20,52 @@ Neither stage is required, and a deliverable may begin at the loop with no pream
 
 | Conceptual loop | Internal execution phases | Purpose |
 |---|---|---|
-| **Articulate** | Observe, Think | Understand the problem and define what done means. |
-| **Define probes** | Plan | Decide how every success criterion will be verified. |
-| **Build** | Build, Execute | Actually perform the work. |
-| **Fold in** | Verify, and revise if needed | Update the specification against reality. |
-| **Learn** | Learn | Capture improvements for future runs. |
+| **Articulate** | Observe, Think | Understand the problem and declare what done means, as outcomes. |
+| **Measure** | Plan | Decide how every outcome will be checked, before any work begins. |
+| **Advance** | Build, Execute | Actually perform the work. |
+| **Revise** | Verify, then reshape | Check the outcomes against reality, and change the outcomes where reality proved them wrong. |
+| **Learn** | Learn | Capture improvements to *how we work*, for future runs. |
 | **Propagate** | — | Push what was learned outward: promote decisions, update documentation and references, mark things stale, archive what is finished. |
+
+### 2.1 The three levels of feedback
+
+The middle phases are easy to conflate, and they operate at different levels. Each asks a different question about the same run:
+
+| Question | Phase | Changes |
+|---|---|---|
+| **Did this outcome hold?** | Verify — inside *Revise* | Nothing. Evidence is recorded against the outcome. |
+| **Was it the right outcome?** | **Revise** | The outcomes themselves. |
+| **How should we work differently?** | **Learn** | The way future runs are conducted. |
+
+Verification is how you *find out*. Revision is what you do about it. Learning is what you take from having done it.
+
+**Revise exists as its own phase because the default behaviour is to skip it.** Faced with an outcome that turned out to be wrong, people defend the original plan, or quietly do work nobody specified. Naming the phase says plainly: **the specification is expected to change, and changing it is not failure.**
+
+Four things happen to an outcome in this phase — it may be **added** (one was missing), **split** (it was secretly two), **tightened** (*fast* becomes *under one second*), or **killed** (it rested on an assumption that proved false).
+
+A worked example, deliberately outside software:
+
+> **Articulate:** resting heart rate under 55.
+> **Measure:** take a reading each morning.
+> **Advance:** eight weeks of training.
+> **Revise:** the readings swing six beats depending on sleep, so a single one proves nothing. The outcome is unmeasurable as written. It becomes *seven-day average resting heart rate under 55*.
+
+The work did not fail. The definition was wrong, and the definition is what changed.
 
 The loop repeats. Each pass through it is a **wave** (`SPEC.md` §2.3), and how many are needed is not knowable in advance.
 
-**On the last phase's name.** *Propagate* was chosen for its symmetry with *Fold in*: fold in pulls reality **into** the specification, propagate pushes learning **out** to the wider corpus. That pairing makes the loop's shape legible — every pass absorbs, then radiates.
+### 2.2 On the phase names
 
-Rejected: *consolidate* (good on tidying, weak on the outward motion), *graduate* (precise for promotion, silent on everything else), *curate* (right for maintenance, understates promotion), *ratify* (right for decisions only).
+The loop draws on an existing methodology, and several phases were **renamed to be self-evident** — a phase name that needs a glossary defeats the purpose, especially for the steps a team is being asked to adopt.
+
+| Renamed from | To | Why |
+|---|---|---|
+| Name the Probe | **Measure** | *Probe* is borrowed vocabulary, and the field it writes is already `verify_by`. **Measure** names the property that matters — a system that can check itself — and needs no explanation in a list that sits before *Advance*. |
+| Climb | **Advance** | *Climb* imports a hill metaphor; *build* is wrong the moment the deliverable is a health target or a document. **Advance** is domain-neutral and carries motion toward something. It also has an exact technical sense — in tunnelling, the *advance* is the distance gained per round of work, which is precisely progress per wave. |
+| Fold In | **Revise** | A cooking metaphor for incorporating an ingredient without deflating the mixture. Vivid to bakers, opaque to everyone else. **Revise** says exactly what happens to the outcomes. |
+| — | **Propagate** | Added; the source loop ends at *Learn*. Chosen for its symmetry with the inward motion of *Revise* — every pass takes reality in, then sends learning out. Rejected: *consolidate* (weak on the outward motion), *graduate* (silent on tidying), *curate* (understates promotion), *ratify* (decisions only). |
+
+*Articulate* and *Learn* were kept: both are ordinary English that already say what the phase does.
 
 ## 3. Promotion
 
@@ -56,9 +90,9 @@ The useful part of this document. Each phase implies capability, and anything mi
 |---|---|
 | **Discovery** | Exploration records, at either level. Decisions at deliverable level. Somewhere for context material — **currently a gap** (`OPEN-QUESTIONS.md` §2). |
 | **Articulate** | Create a deliverable and its outcomes. Read the context an actor should have before starting. |
-| **Define probes** | Record `verify_by` on each outcome before work begins (`SPEC.md` §4.4). |
-| **Build** | Create tasks, express sequencing, claim work exclusively, record progress (`SPEC.md` §4.5, §6.5). |
-| **Fold in** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Record evidence against outcomes (`SPEC.md` §4.7). |
+| **Measure** | Record `verify_by` on each outcome before work begins (`SPEC.md` §4.4). |
+| **Advance** | Create tasks, express sequencing, claim work exclusively, record progress (`SPEC.md` §4.5, §6.5). |
+| **Revise** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Record evidence against outcomes (`SPEC.md` §4.7). |
 | **Learn** | A place to write what was learned, at a wave boundary. Detect that a wave has closed. |
 | **Propagate** | Promote decisions. Mark records stale. Archive. Rewrite links when records are renamed. |
 
