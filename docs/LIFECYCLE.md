@@ -25,11 +25,13 @@ Neither stage is required, and a deliverable may begin at the loop with no pream
 | **Build** | Build, Execute | Actually perform the work. |
 | **Fold in** | Verify, and revise if needed | Update the specification against reality. |
 | **Learn** | Learn | Capture improvements for future runs. |
-| **Propagate** *(name pending)* | — | Push what was learned outward: promote decisions, update documentation and references, mark things stale, archive what is finished. |
+| **Propagate** | — | Push what was learned outward: promote decisions, update documentation and references, mark things stale, archive what is finished. |
 
 The loop repeats. Each pass through it is a **wave** (`SPEC.md` §2.3), and how many are needed is not knowable in advance.
 
-**On the last phase's name.** *Propagate* is a working choice, taken for its symmetry with *Fold in*: fold in pulls reality **into** the specification, propagate pushes learning **out** to the wider corpus. Alternatives considered: *consolidate* (good on tidying, weak on the outward motion), *graduate* (precise for promotion, silent on everything else), *curate* (right for maintenance, understates promotion), *ratify* (right for decisions only).
+**On the last phase's name.** *Propagate* was chosen for its symmetry with *Fold in*: fold in pulls reality **into** the specification, propagate pushes learning **out** to the wider corpus. That pairing makes the loop's shape legible — every pass absorbs, then radiates.
+
+Rejected: *consolidate* (good on tidying, weak on the outward motion), *graduate* (precise for promotion, silent on everything else), *curate* (right for maintenance, understates promotion), *ratify* (right for decisions only).
 
 ## 3. Promotion
 
