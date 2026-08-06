@@ -32,7 +32,7 @@ Each phase answers its own unique questions. If two phases answer the same one, 
 | **Plan** | *How do we get there, and in what order?* | Break work into tasks and sequence them. |
 | **Advance** | *Are we closer?* | Do the work. |
 | **Verify** | *Have we proven it to be true?* | Check each outcome against real evidence. |
-| **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. |
+| **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. **Requires governance** — this is where goalposts get moved (§2.8). |
 | **Learn** | *How should we work differently next time?* | Capture improvements to the method. |
 
 **When the deliverable closes:**
@@ -191,7 +191,7 @@ The useful part of this document. Each phase implies capability, and anything mi
 | **Plan** | Create tasks and express sequencing (`SPEC.md` §4.5). |
 | **Advance** | Claim work exclusively, record progress (`SPEC.md` §6.5). |
 | **Verify** | Record evidence against outcomes (`SPEC.md` §4.7). |
-| **Redefine** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Archive rather than delete, so a lowered bar stays visible. |
+| **Redefine** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Archive rather than delete, so a lowered bar stays visible. **And record which operation occurred**, so a workflow layer can gate the ones that lower the bar without obstructing the ones that raise it — the tool cannot enforce that asymmetry itself, but it must make it expressible. |
 | **Learn** | A place to write what was learned, at a wave boundary. Detect that a wave has closed. |
 | **Propagate** | Promote decisions. Mark records stale. Archive. Rewrite links when records are renamed. |
 
