@@ -852,10 +852,12 @@ So the mechanisms are ordered by how close to the moment they act.
 **1. Capture is one command, and smaller than an entry.**
 
 ```
-backlog note "syncoid --use-hold pins the source snapshot; costs space during outages"
+backlog journal "--use-hold pins the source snapshot; costs space during a long outage"
 ```
 
-`note` appends to the newest entry, opening one for today if none exists (§9.2). No file to open, no heading to write, no decision about where it goes.
+Appends to the newest entry, opening one for today if none exists (§9.2). No file to open, no heading to write, no decision about where it goes. With no argument the same verb shows the journal, following the convention of every command-line tool where a bare noun lists and an argument creates.
+
+**The verb is the name of the thing**, which is the point: `journal.md` on disk, the journal in this document, `journal` on the command line. Nothing further to learn once §5.5 has been read. It pairs with `log`, which reads the machine record (§9.2) — two artifacts, two commands, the same two names.
 
 **This is the load-bearing mechanism**, because friction is what causes the loss. If the smallest unit of capture is a composed entry, everything is deferred to the boundary — and deferral *is* forgetting. A learning arrives as one sentence and has to be writable as one sentence.
 
@@ -1247,7 +1249,7 @@ Domain verbs, on the types they belong to:
 | `move` | deliverable | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
 | `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
-| `note` | any | Append one line to the journal, opening today's entry if needed (§5.5). The capture verb. |
+| `journal` | any | With an argument, append one line to the journal, opening today's entry if needed. With none, show it (§5.5). |
 | `close` | wave, deliverable | The explicit act, validated against the arithmetic (§5.3). |
 | `promote` | decision | Copy to the global space, linked back (§4.8.1). |
 
