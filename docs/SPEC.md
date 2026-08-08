@@ -111,24 +111,63 @@ The name is deliberately demanding. Calling this a deliverable obliges every ent
 
 > **A design property worth keeping.** Wrap-up at deliverable level should be close to a formality — if a deliverable-level audit routinely catches problems, the discipline below it is too weak. The catch rate is a diagnostic for everything underneath.
 
-#### 2.2.1 How formed is it?
+#### 2.2.1 Formation — how far along the planning is
 
-A backlog is only useful if **capturing something is cheap**. But a board full of half-thoughts is useless in a different way, so the difference has to be visible at a glance — and stay visible, or unformed things quietly accumulate the authority of planned work simply by sitting there long enough.
+A backlog is only useful if **capturing something is cheap**. But a board of half-thoughts is useless in a different way, so the difference has to be visible at a glance — and *stay* visible, or unformed things quietly accumulate the authority of planned work simply by sitting there long enough.
 
-**The format already carries this.** `lifecycle_status` is a maturity ladder:
+Formation lives in **`workflow_status`** rather than a field of its own. The lowest rungs describe how far the *thinking* has gone; the rest describe where the *work* is:
 
 | Value | Means |
 |---|---|
-| `draft` | An idea. Recorded so it is not lost; not thought through. |
-| `provisional` | Shaped. Worth acting on, may still change substantially. |
-| `stable` | Formed. Ready to be worked. |
-| `archived` | Retired, and kept. |
+| `idea` | Just an idea. Captured so it is not lost. |
+| `planning` | Needs planning, and that work is happening now. |
+| `actionable` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
+| `todo`, `doing`, `blocked`, `closed` | Where the work is (§8, §5.3.1). |
 
-It is deliberately **orthogonal to workflow status** — the format named it `lifecycle_status` precisely to avoid colliding with a tool's own. *Workflow status says where the work is; lifecycle status says how much the record can be relied on.* A deliverable can be `stable` and sitting in `backlog`, or `draft` and urgent.
+**`planning` is broader than its name.** Getting something from an idea to actionable is rarely just writing a plan — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. All of it lands in the same bucket.
 
-Display labels (§2.1) can render these as *idea*, *shaping*, and *ready* for people who find those plainer.
+That is deliberate. Modelling *which* preparatory activity is underway would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern. A team that wants to distinguish a spike from an estimate has dimensions (§2.7) and its own records to do it with — exploration produced along the way is an ordinary record (§7.2), and it usually appears during this stage.
 
-**`stale_after` is the other half.** A record may declare when it should be re-examined, and one that passes that date without being touched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgement to a person.
+**`actionable` is named for the decision it enables, not the state it describes.** Someone scanning a backlog is not asking *is this planned* — they are asking *can I pull this*. The word answers the question actually being asked.
+
+##### Confirmation tightens `actionable` rather than adding a rung
+
+Planning is not agreement. Work is often specified thoroughly and never shown to the person who asked for it, and a backlog that cannot distinguish those makes the same mistake every time.
+
+But that is not another stage — it is a **stricter bar for the same one**. A team without review calls something actionable when the plan is complete; a team with review calls it actionable only once somebody else has signed off. So confirmation is **opt-in configuration** (§8), not a value, and it is checkable rather than asserted: a deliverable's `verified` entries are independent confirmations and `created.by` names the author, so *confirmed by someone other than the author* is a count. The format's trust tiers distinguish a person's sign-off from an agent's at no extra cost.
+
+##### Declared, and checked against the record
+
+`workflow_status` is **declared** — somebody sets it. That is what makes it a single, familiar field rather than two competing ones, and it is what lets it map to board columns.
+
+It also means it can decay, which is the failure this was meant to prevent. So the tool **derives what formation the record's structure implies** and reports any disagreement (§5.2):
+
+| Structure | Implies |
+|---|---|
+| No outcomes | `idea` |
+| Outcomes exist, some without a `verify_by` | `planning` |
+| Every outcome has a `verify_by` | `actionable` |
+
+A one-line deliverable marked `actionable` is a claim its own structure contradicts, and the tool says so — as an observation, not a refusal. Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
+
+**What this cannot know** is whether the outcomes present are *all* the outcomes needed — nothing can detect what nobody wrote. So the claim stays narrow: **ready to start, not fully specified forever.** Finding the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8).
+
+##### What is deliberately not on this ladder
+
+- **Blockedness.** A well-planned deliverable waiting on something else has not become less formed — that is `blocked`.
+- **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly actionable deliverable that nobody has scheduled is an ordinary thing.
+
+##### Formation and `lifecycle_status`
+
+The format's `lifecycle_status` — `draft`, `provisional`, `stable`, `archived` — stays what it is: **a person's declaration**, saying how much the record can be relied upon. It is orthogonal to workflow status by the format's own design, and now also companion to derived formation.
+
+Keeping both is deliberate. Derived formation is free, current, and uncheatable, but measures **structure rather than quality** — three vacuous outcomes with lazy checks read as *planned*. A person can say *this is still half-baked* when the boxes are ticked, and they may be right.
+
+**Their disagreement is itself worth surfacing.** A record declared `stable` with no outcomes is claiming something its own structure contradicts, and the tool should point at that rather than resolve it.
+
+**What derived formation cannot know** is whether the outcomes present are *all* the outcomes needed — you cannot detect what nobody wrote. So the claim is deliberately narrow: **ready to start, not fully specified forever.** Discovering the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8), and claiming more would be the overconfidence that makes planning status untrustworthy in the first place.
+
+**`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgement to a person.
 
 > **Why this is what makes capture cheap.** Recording an idea is only free if discarding it is also free — and here **archiving is lossless** (§7.1). Nothing is deleted, nothing moves, and the record stays findable forever. So there is no cost to writing something down that might not survive, and no cost to letting it go, which is precisely the condition under which people record things instead of losing them.
 >
@@ -468,8 +507,11 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
+| `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
 Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
+
+> **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This deliverable is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
 
 Three of them describe failure modes specific to agents working unattended, and are worth naming for that reason:
 
@@ -743,8 +785,16 @@ labels:
   deliverable: story              # what people see; records still say deliverable
 
 workflow_status:
-  deliverable: [backlog, todo, doing, blocked, closed]
+  deliverable: [idea, planning, actionable, todo, doing, blocked, closed]
   task:        [todo, doing, blocked, closed]
+
+columns:                          # statuses grouped into board columns (§11)
+  Backlog:     [idea, planning, actionable]
+  To Do:       [todo]
+  In Progress: [doing, blocked]
+  Closed:      [closed]
+
+actionable_requires_confirmation: false   # §2.2.1
 
 priority:
   values:  [low, medium, high, urgent]
@@ -770,7 +820,7 @@ hooks:                            # proposal — see §5.4
 
 Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
 
-Two notes on the default status vocabulary. **`backlog` precedes `todo`** — captured but not yet committed to, which is what keeps a backlog from being a to-do list everyone has already agreed to do. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
+Three notes on the defaults. The first three statuses describe **how far the planning has gone** rather than where the work is (§2.2.1). **Columns group statuses**, so seven statuses render as four columns — which also lets a team put `doing` and `blocked` together without pretending they are the same thing. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
 
 ### 8.3 Defaults are written, not compiled
 
@@ -1103,6 +1153,8 @@ Dimensions (§2.7) filter and group every view rather than adding views of their
 
 **Interaction patterns worth adopting**, drawn from boards that already work:
 
+- **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without colour. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
+- **Columns group statuses** (§8), so a board stays legible while the vocabulary underneath stays precise.
 - **Counts in column headers**, so the shape of the backlog is legible before reading a single card.
 - **A modal move mode** — enter it, reposition with the arrow keys across columns and within one, confirm or cancel. It makes reordering keyboard-complete and reversible, and its footer replaces the normal one so the available keys are always the current ones.
 - **A detail overlay** over the board rather than a separate screen, so context is never lost on the way in or out.
