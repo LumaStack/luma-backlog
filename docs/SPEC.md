@@ -991,6 +991,8 @@ A directory structure may only reflect properties that are effectively permanent
     postgres-over-sqlite.md
 ```
 
+**Type Definitions are written last, not first.** `_types/` publishes what records actually contain; authored before the records exist it is a guess, and authored after it is transcription. Nothing in the format requires them — the only hard conformance requirement is a non-empty `type`, declarations are published intent rather than enforcement, and unknown fields are never an error. Records are therefore fully conformant while `_types/` is still empty, and stay conformant if it never fills up.
+
 `_types/` is reserved by the format. At the repository root, `index.md` is derived navigation — a cache, rebuildable, and deleting it loses nothing.
 
 **Inside a deliverable, `index.md` *is* the deliverable record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
