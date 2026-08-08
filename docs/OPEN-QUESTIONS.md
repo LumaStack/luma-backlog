@@ -607,7 +607,7 @@ The cost of an unfamiliar word is largely paid back by configuration: a team may
 
 ## 17. Default sections for each unit
 
-**Status:** Open.
+**Status:** **Drafted, not settled** — first pass in `.claude/skills/backlog-new/SKILL.md`, to be judged by use rather than review.
 
 Every unit needs a default body structure — the headings a new record starts with. This is a genuine tension rather than a formatting choice: **structure improves the quality of what gets written, and every section costs tokens on every read and every write.** "Less is more" was an explicit design criterion, and a heavy template violates it on the most common operation in the system.
 
@@ -624,6 +624,16 @@ Open beneath that:
 - **Are templates configurable?** They should be. Templates are exactly where a methodology reaches into a tool, and keeping them in configuration rather than in code is what allows the methodology to change without the tool changing (§12).
 
 *Settled by:* drafting one of each by hand and noticing which headings were actually useful and which were filled in out of obligation.
+
+---
+
+### First pass
+
+Deliverable: *The problem* · *What is being delivered* · *Out of scope* · *Constraints*. Outcome: why it matters, briefly — the frontmatter carries the substance. Task: what is to be done and how it will be verified. Decision: context, what was chosen, **what was not taken and why**. Exploration: the question, what was found, what it means.
+
+With one instruction that matters more than the list: **leave a section out rather than writing nothing under it.** A heading with a sentence written to satisfy the heading is worse than no heading, and it is the failure mode every template has.
+
+*Settled by:* writing several of each and noticing which headings were used and which were filled in out of obligation.
 
 ---
 
