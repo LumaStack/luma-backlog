@@ -320,6 +320,35 @@ What this does change is emphasis. Claiming is load-bearing from day one, so it 
 
 **The trigger for moving to the heavier design is therefore observed collision frequency**, not any question about how work is assigned. Build for self-selection because it is certain, build nothing for delegation because it needs nothing, and build for high collision rates only after seeing one.
 
+### ⚠ Proposal — take claims out of the records
+
+**Not adopted. Recorded because it may dissolve most of this question, and it has not been evaluated properly.**
+
+Every pairing in the tables above is an attempt to make a **task file** hold something that is not really about a task file. This section already says so:
+
+> *"Claim state is not branch-local in nature. 'This actor is working this task, since this time' is a fact about the world at this moment, not about the content of a branch."*
+
+And then the claim is stored in the record's frontmatter, which is branch content. The proposal is to stop doing that.
+
+**The idea in one line: a claim becomes a small marker stored beside the repository's history rather than inside a file.** Git already has a place for markers like this, shared automatically by every worktree of a repository, and it can update one **atomically** — two actors race, one wins, the other is told the task is taken.
+
+What that would buy:
+
+- **Claiming works across worktrees with no setup**, because the storage is shared by default.
+- **Claiming works across machines**, because the shared server accepts exactly one of two competing updates. This is the guarantee `SPEC.md` §7 asks for and that no pairing above delivers without a dedicated branch.
+- **Records stop churning.** Claims are among the most frequent writes in the system (§7.3); removing them means task files stop changing, and stop conflicting on merge, under the write that happens most.
+- **Topology stops being a correctness question.** A versus B would no longer decide whether claiming works — only whether backlog changes travel with a pull request or stay out of code review. Both are defensible, so by `SPEC.md` §5.0 that is configuration with a default rather than a decision the tool makes.
+
+What it would cost:
+
+- **A claim is no longer plain text in the file.** You could not see who holds a task by opening it, or take one by hand-editing. The tool would render claims on the board and in `show`, and `claim` / `release` / `steal` would be the only way to change them.
+- **Claim history leaves git history.** It would have to move to the log, which `SPEC.md` §5.5 already names as the home for exactly this — *"a claim stolen from a live holder."*
+- **It is unfamiliar.** Nothing else in this design reaches past plain files, and that is a real cost even where the mechanism is sound.
+
+It would change `SPEC.md` §4.5 (`claimed_by` and `lease_expires` would leave the task record), §6.5, §6.8, and §7.
+
+*Evaluated by:* someone reading it fresh and deciding whether the loss of plain-text claims is worth atomic ones. Until then it is an idea, not a lean.
+
 ### What was learned while exploring this
 
 - **Nothing switches branches in any option.** A dedicated branch is checked out once into a permanent folder; branch switching under a working actor was never on the table.
