@@ -591,7 +591,7 @@ A **condition** is re-derivable: ask at any time and get the current answer. An 
 
 Conditions win for a reason that matters here: **a workflow layer that was not running can still catch up.** It asks what is true now and proceeds. Nothing was missed, because nothing was ever in flight. That property is worth more than immediacy for a tool whose consumers are agents that start, stop, and are replaced.
 
-The exception is **transitions that current state cannot reconstruct** — something closed and reopened, an outcome that passed and later regressed, a claim that was stolen. Those are genuinely historical, and they are what the log is for (§5.5).
+The exception is **transitions that current state cannot reconstruct** — something closed and reopened, an outcome that passed and later regressed, a claim that was stolen. Those are genuinely historical, and git history is what holds them (§5.5).
 
 ### 5.2 The conditions the tool answers
 
@@ -689,11 +689,32 @@ Four properties hold whichever way blocking lands:
 
 **A practical caution.** Several hooks on one boundary means several processes started for one action, on a boundary that may be crossed constantly. If that becomes a cost, the answer is to run them in one process rather than to fire fewer boundaries.
 
-### 5.5 What the log is for
+### 5.5 Event history, and the journal
 
-Conditions describe the present. The log records what **happened** — specifically the transitions that current state cannot reconstruct: a wave closed and reopened, an outcome that passed and later regressed, a claim stolen from a live holder, a close forced past a failing check.
+Conditions describe the present. Two other things describe what **happened**, and they are deliberately separate — mixing them ruins the second.
 
-Its exact shape is unresolved — specifically whether machine-written transitions and human or agent narrative share one entry format (`OPEN-QUESTIONS.md` §2). Where it lives is settled: `journal.md`, beside the deliverable it belongs to (§7.2).
+#### Event history is git
+
+Transitions that current state cannot reconstruct — a wave closed and reopened, an outcome that passed and later regressed, a claim stolen from a live holder, a close forced past a failing check — are recorded as **commits**, not in a file.
+
+**There is no events file, and that is the point.** A per-deliverable append-only file would be the single hottest path in the system: every claim, status change, and verification appending to the same place, colliding at the end of the file. That is exactly the contention one-record-per-file was chosen to eliminate (§6.1), reintroduced by the one file that touches every operation.
+
+Git already stores what such a file would: **attributed, timestamped, immutable, and ordered.** It costs nothing extra, because these writes were being committed anyway. Two rules make it a history rather than noise, and both are stated as requirements in §6.7:
+
+- **One commit per logical action**, not per file write.
+- **Messages a person can read** — *claim task add-retry-queue (agent:opus-5/1)* rather than *update*.
+
+**Portability is served by derivation, not duplication.** The `log` command (§9.2) renders the same events in a portable form for anything that cannot read a repository (§10). Derived, rebuildable, and never a second source of truth — the same posture as `index.md`.
+
+> **The honest cost.** Copy `.backlog/` out of its repository and the event history does not come with it. That is a real loss for a stated goal, and the mitigation is exporting the history alongside the records rather than keeping a duplicate file permanently hot.
+
+#### The journal is for what was learned
+
+`journal.md` (§7.2) holds the other kind: **why an approach was abandoned, what a wave revealed, what would be done differently.** Reflective, low-volume, written by people and agents, and actually read.
+
+It is a separate file because **volume destroys it**. Nobody finds a paragraph of hard-won reasoning inside four hundred status-change entries, and the entries have somewhere better to be. Being low-volume also means the append contention above never applies to it.
+
+Its internal structure is unresolved (`OPEN-QUESTIONS.md` §2).
 
 ### 5.6 What this must never become
 
@@ -758,7 +779,7 @@ A claim records that an actor holds a task: `claimed_by` carries who and since w
 
 **An expired lease does not release itself.** This is deliberate and follows from the principles: silently returning work to the pool would resolve a conflict by rule rather than surfacing it, and an actor that is merely slow would have its work taken without anyone noticing. Instead, an expired claim is **reported as stale** and becomes *stealable*.
 
-**Stealing is explicit and recorded.** Taking a stale claim is an action a person or agent performs deliberately, and the takeover is written to the log — because the previous holder may still be working, and that fact must survive.
+**Stealing is explicit and recorded.** Taking a stale claim is an action a person or agent performs deliberately, and the takeover is recorded — because the previous holder may still be working, and that fact must survive.
 
 **Lease duration is set by the claimant, not by the tool.** An agent that refreshes while working takes a short lease; a person who claims something before lunch takes a long one. A fixed duration would either strand work behind dead agents or accuse people of abandoning tasks they went to a meeting about.
 
@@ -773,6 +794,10 @@ A human editing records by hand while agents work is ordinary use, and three pro
 ### 6.7 What the tool must never do
 
 **Never commit files it did not write.** A synchronising operation that stages everything will sweep up a person's half-finished manual edits into a commit they did not intend, and possibly push them. Every commit the tool makes is confined to the specific files that operation changed. This is easy to implement, catastrophic to get wrong, and is stated here as a rule rather than left to implementation taste.
+
+**Never commit per file write.** One command produces **one commit**, even when it touches several files. Commit history is the system's event log (§5.5), and one entry per logical action is a history while one per field write is noise.
+
+**Never write a commit message a person cannot read.** *Claim task `add-retry-queue` (`agent:opus-5/1`)* is a history. *update* four hundred times is something everyone learns to ignore, which quietly costs the system its audit trail.
 
 **Never resolve a conflict by recency.** Preferring the most recent version discards the other silently, and the loser has no way to discover what happened.
 
@@ -803,7 +828,7 @@ A directory structure may only reflect properties that are effectively permanent
 ```
 .backlog/
   config.yml                      configuration (§8)
-  journal.md                      repository-level append-only history
+  journal.md                      cross-deliverable learning
   index.md                        derived navigation — a cache, never a source
   _types/                         Type Definitions, one per type
     deliverable.md
@@ -815,7 +840,7 @@ A directory structure may only reflect properties that are effectively permanent
   deliverables/
     payments-v2/
       index.md                    the deliverable record itself
-      journal.md                  this deliverable's append-only history
+      journal.md                  what was learned — not an event log (§5.5)
       outcomes/
         dry-run-safety.md
         retry-durability.md
@@ -833,11 +858,15 @@ A directory structure may only reflect properties that are effectively permanent
     postgres-over-sqlite.md
 ```
 
-`_types/` and `index.md` are reserved by the format. `index.md` is derived at the repository root and rebuildable — deleting it loses nothing; inside a deliverable it is the deliverable's own record, following the format's convention that a folder's `index.md` *is* the folder.
+`_types/` is reserved by the format. At the repository root, `index.md` is derived navigation — a cache, rebuildable, and deleting it loses nothing.
 
-**`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite. It will not sit empty for long, because the tool appends transitions to it (§5.5).
+**Inside a deliverable, `index.md` *is* the deliverable record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
 
-> **Naming.** The format reserves `log.md` for this file. `journal.md` is the name used here because it describes what the file actually accumulates — narrative alongside events — and using it requires a change request against the format (`OPEN-QUESTIONS.md` §2).
+**`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
+
+**It is not an event log.** Status changes, claims, and verifications are commits, not entries (§5.5). What goes here is what was *learned* — why an approach was abandoned, what a wave revealed. Keeping the two apart is what makes this file worth opening.
+
+> **Nothing is called `log.md`.** The format reserves that name for an event history, and there is no such file here, so the name simply goes unused — no change request needed. `journal` is not a rename of it; it is a different file with a different job.
 
 **Decisions sit where they were made** (§4.8) — inside the deliverable that produced them, or at the top level when no deliverable did. That is a legal path fact under §7.1 because *where* a decision was made never changes, even though what it governs may outgrow the work entirely. Promotion **copies to the top level** rather than moving (§4.8.1), so the original stays beside the reasoning that produced it.
 

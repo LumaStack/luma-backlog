@@ -69,7 +69,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ## 2. Where exploration and the journal live
 
-**Status:** **Settled — both live in the deliverable folder** (`SPEC.md` §7.2, §7.2.1). Context is resolved separately, below. Two smaller things remain open.
+**Status:** **Settled — both live in the deliverable folder** (`SPEC.md` §7.2, §7.2.1), and event history turned out to need no file at all. Context is resolved separately, below. One thing remains open: the journal's internal structure.
 
 Three things were wanted from the beginning and had no place in the unit model.
 
@@ -89,16 +89,23 @@ The reasoning that settled it is about **leakage, not filing**. An idea recorded
 
 A single `exploration.md` that grows into a folder later was considered and rejected: **archiving is per record**, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end is also most of what makes it findable, which is the only reason it was kept.
 
-### Journal — settled in place, open in name
+### The journal, and event history — settled as two separate things
 
-**`journal.md`, created with the deliverable, mandatory, append-only.** Mandatory because somewhere to write has to exist before anyone needs it. Not left empty in practice, since the tool appends transitions to it.
+They were treated as one question for a long time. Separating them answers both.
 
-Two things about it are still open:
+**Event history is git.** Transitions that current state cannot reconstruct are **commits**, not entries in a file (`SPEC.md` §5.5). A per-deliverable append-only events file would be the hottest path in the system — every claim, status change, and verification appending to one place — which is exactly the contention that one-record-per-file exists to eliminate. Git already stores the same thing, attributed and immutable, and these writes were being committed anyway. Portability comes from the `log` command rendering history on demand, not from maintaining a duplicate.
 
-- **The name.** The format reserves `log.md` for this file. `journal.md` is preferred here because the file accumulates narrative alongside events, and *log* undersells the half that matters. Using it requires a change request against the format.
-- **Its internal structure.** Entries are appended, but their shape is undecided — specifically whether machine-written transitions (`SPEC.md` §5.5) and human or agent narrative share one entry format. The lean is that they should: one file in time order, with narrative as an entry kind rather than a separate document, so the reasoning sits beside the event that prompted it.
+The cost, recorded rather than argued away: **copy `.backlog/` out of its repository and the history does not come with it.**
 
-*Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
+**The journal is what was learned** — why an approach was abandoned, what a wave revealed. `journal.md`, created with the deliverable, mandatory, append-only. Mandatory because somewhere to write has to exist before anyone needs it.
+
+**They are separate files because volume destroys the second.** Nobody finds a paragraph of hard-won reasoning inside four hundred status-change entries.
+
+This also dissolves the naming question. `journal.md` is **not** a renamed `log.md` — the format reserves that name for an event history, there is no such file here, so the name goes unused and **no change request is needed**.
+
+**Still open:** the journal's internal structure. Entries are appended, but their shape is undecided.
+
+*Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, that event history was already being written to git and did not need a file, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
 
 ---
 
