@@ -89,36 +89,26 @@ The reasoning that settled it is about **leakage, not filing**. An idea recorded
 
 A single `exploration.md` that grows into a folder later was considered and rejected: **archiving is per record**, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end is also most of what makes it findable, which is the only reason it was kept.
 
-### The journal, and event history — settled as two separate things
+### The journal — settled as memory, and as a log with more in it
 
-They were treated as one question for a long time. Separating them answers both.
+**The journal is the deliverable's memory** (`SPEC.md` §5.5). A session loses its memory when it ends and an actor takes theirs away; the deliverable's stays with the deliverable, committed beside the work.
 
-**Event history is git.** Transitions that current state cannot reconstruct are **commits**, not entries in a file (`SPEC.md` §5.5). A per-deliverable append-only events file would be the hottest path in the system — every claim, status change, and verification appending to one place — which is exactly the contention that one-record-per-file exists to eliminate. Git already stores the same thing, attributed and immutable, and these writes were being committed anyway. Portability comes from the `log` command rendering history on demand, not from maintaining a duplicate.
+**It is a log and more than a log.** Not narrative kept apart from the record of events, but the readable stream carrying both — significant events *and* the reasoning behind them. Git records **what got done**, completely; the journal records **why**, plus enough of the what to make the why legible.
 
-The cost, recorded rather than argued away: **copy `.backlog/` out of its repository and the history does not come with it.**
+**The criterion for inclusion is relitigation risk:** *anything that should not have to be argued a second time.* Not importance and not completeness. What that admits — decisions and the options rejected, a retired outcome and its reason, a learning pass, a wrap-up, a close and its reason, an override — is a first cut expected to be tuned by use. What it excludes is everything high-volume that nobody reopens: field writes, status changes, routine claiming, creation, reordering.
 
-**The journal carries meaning, and its job is resumption.** `journal.md`, created with the deliverable, mandatory. It holds *why* — reasoning, dead ends, what is still unknown — written so that whoever picks the work up next continues **without re-deriving anything**. Its test is *could someone arriving cold carry on from this?*, which is a harder bar than *was the work recorded*.
+**Selective on the way in, never edited after.** Nothing is reorganised, summarised away, or pruned, which is also why it stays cheap: appending costs almost nothing, and reading is bounded by the resume pointer rather than by the length of the file.
 
-**They are separate files because each ruins the other.** Reasoning inside an audit trail makes it unqueryable and buries the reasoning; events inside the journal destroy it by volume. Nobody finds the one paragraph that mattered among four hundred status changes.
+**The entry shape is settled from journals in daily use** — and notably, from where those journals **diverged from their own template**. Newest first, prepended, never rewritten: the template said newest-at-the-bottom, and every long-running project ended up putting the newest at the top, with the longest inventing an explicit *resume pointer* declaring everything below it historical. Chronological order does not survive forty entries, because assembling the present means reading backwards and getting it wrong. Fixed sections did not survive either — headings ended up named after what they settle.
 
-This also dissolves the naming question. `journal.md` is **not** a renamed `log.md` — the format reserves that name for an event history, there is no such file here, so the name goes unused and **no change request is needed**.
+**Two arguments that were made here and turned out to be wrong**, recorded so they are not made again:
 
-**The entry shape is settled** (`SPEC.md` §5.5), from journals in daily use rather than from first principles — and notably, from where those journals **diverged from their own template**.
+- **"Events and reasoning must be separate files."** The case rested on append contention, which has a standard fix — a union merge attribute concatenates concurrent appends instead of conflicting — and it under-weighted the decisive fact that **an actor reads files, not `git log`.** Knowledge that requires running a command to find is knowledge that will not be found.
+- **"Most of a journal is never read again."** True, and not a criticism. Most of an audit trail is never read either. The value is not the average line; it is the one occasion when nothing else in the system can help.
 
-**Newest first, prepended, never rewritten.** The template said chronological with the newest entry at the bottom; the long-running projects all ended up putting the newest at the top, and the longest one invented an explicit *resume pointer* block declaring everything below it historical. That is evidence rather than taste: chronological order does not survive a deliverable with forty entries, because assembling the present means reading backwards and getting it wrong.
+**Why not a harness memory store:** those are local to a machine, scoped to one user, and outside version control, so they vanish on a rebuild and are invisible to the next actor. A deliverable's memory has to travel with the deliverable.
 
-This also dissolves the apparent conflict between *append-only* and *cheap to reach the present*. Prepending is not rewriting. Nothing is destroyed, and the present costs one block.
-
-**Fixed sections did not survive either.** The template's five headings gave way in practice to headings **named after what they settle** — *Proxmox versus bare metal — decided: bare metal* rather than *Observations*. So the specification records what an entry should carry and declines to impose a template.
-
-**Two things the resumption framing did not predict, both learned from real entries:**
-
-- **Decisions are recorded with their reasoning, explicitly so they are not re-argued.** Real journals say *don't re-litigate* and preserve reasoning verbatim. Recording the choice alone invites the next actor — who has no idea it was ever settled — to reopen it.
-- **What was ruled out matters as much as what was done.** Negative knowledge is the most expensive kind to rediscover and the only kind nothing else in the system captures.
-
-**It is also the default destination**, which is a rule about capture rather than about content: anything worth keeping that has no obvious home goes here immediately, rather than being held in someone's head or given a new file nobody will look in. The asymmetry justifies it — an unnecessary capture costs a paragraph, a missed one is silent and permanent. Promotion to a decision record or outward to durable documentation happens later, at a boundary, once it is clear what earned it.
-
-One difference from the system this came from, and it is deliberate: there the journal is created **as needed**, on the principle that a file should earn its place. Here it is created with the deliverable, because the tool creates it — the authoring ceremony that made *as needed* correct does not exist when nobody has to make the file.
+**Still open:** which events are worth recording is a first cut, deliberately. The criterion is the durable part.
 
 *Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, that event history was already being written to git and did not need a file, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
 

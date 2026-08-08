@@ -690,61 +690,96 @@ Four properties hold whichever way blocking lands:
 
 **A practical caution.** Several hooks on one boundary means several processes started for one action, on a boundary that may be crossed constantly. If that becomes a cost, the answer is to run them in one process rather than to fire fewer boundaries.
 
-### 5.5 Event history, and the journal
+### 5.5 The machine record, and the journal
 
-Conditions describe the present. Two other things describe what **happened**, and they are deliberately separate — mixing them ruins the second.
+Conditions describe the present. Two other things describe what **happened**, and they answer different questions: git records everything and interprets nothing; the journal records the significant and explains it.
 
-#### Event history is git
+#### The machine record is git
 
-Transitions that current state cannot reconstruct — a wave closed and reopened, an outcome that passed and later regressed, a claim stolen from a live holder, a close forced past a failing check — are recorded as **commits**, not in a file.
+**Every action is a commit, and no file duplicates them.** Claims, releases, status changes, edits, creation, reordering — all of it lands in git and nowhere else.
 
-**There is no events file, and that is the point.** A per-deliverable append-only file would be the single hottest path in the system: every claim, status change, and verification appending to the same place, colliding at the end of the file. That is exactly the contention one-record-per-file was chosen to eliminate (§6.1), reintroduced by the one file that touches every operation.
+Git already stores what an events file would: **attributed, timestamped, immutable, and ordered.** It costs nothing extra, because these writes were being committed anyway. And keeping the complete record out of a file avoids making one path the hottest in the system — every operation appending to the same place is exactly the contention one-record-per-file was chosen to eliminate (§6.1).
 
-Git already stores what such a file would: **attributed, timestamped, immutable, and ordered.** It costs nothing extra, because these writes were being committed anyway. Two rules make it a history rather than noise, and both are stated as requirements in §6.7:
+> **This is why the journal can carry events without inheriting that problem:** it takes only the significant ones (§5.5), which are rare. A per-deliverable file that every operation touches would be contended; one that a handful of decisions and closings touch is not. Where concurrent appends do meet, a union merge attribute concatenates them rather than conflicting.
+
+Two rules make git history a record rather than noise, and both are stated as requirements in §6.7:
 
 - **One commit per logical action**, not per file write.
 - **Messages a person can read** — *claim task add-retry-queue (agent:opus-5/1)* rather than *update*.
 
 **Portability is served by derivation, not duplication.** The `log` command (§9.2) renders the same events in a portable form for anything that cannot read a repository (§10). Derived, rebuildable, and never a second source of truth — the same posture as `index.md`.
 
+**Nobody is expected to read it.** That is not a defect: its job is to be complete and trustworthy when something is in doubt, which is a different job from being useful on arrival. The journal is what gets read.
+
 > **The honest cost.** Copy `.backlog/` out of its repository and the event history does not come with it. That is a real loss for a stated goal, and the mitigation is exporting the history alongside the records rather than keeping a duplicate file permanently hot.
 
-#### The journal carries meaning
+#### The journal is the deliverable's memory
 
-`journal.md` (§7.2) holds the other kind, and the distinction is not one of format:
+That is the whole idea, and most of the design falls out of it.
 
-| | Event history | Journal |
+A session has memory and loses it when it ends. An actor has memory and takes it away when it leaves. **A deliverable has memory too, and this is where it is kept** — so that ending a session, replacing an agent, or coming back in three weeks costs nothing but reading.
+
+**It is a log and more than a log.** Not a narrative kept apart from the record of what happened, but the readable stream that carries both: significant events *and* the reasoning behind them. Git holds **what got done**, completely and unforgeably. The journal holds **why**, alongside enough of the what to make the why make sense.
+
+**It is deliberately incomplete**, and that is what separates it from git. Everything is committed; only some things are journalled.
+
+##### What goes in
+
+> **Anything that should not have to be argued a second time.**
+
+That is the criterion. Not importance, not completeness — **relitigation risk.** A thing that will be reopened by someone who does not know it was settled, and reopened worse, because the reasoning that settled it is gone.
+
+| Moment | What to write |
+|---|---|
+| **A discussion settles something** | What was decided, **what was decided against, and why.** The decision record holds the rule (§4.8); the journal holds the argument. Rejected options especially — a rule with no visible alternatives looks arbitrary and invites a rerun. |
+| **An outcome is retired** | **Why.** This is the operation that lowers the bar (`LIFECYCLE.md` §2.8), and the one most likely to be questioned later. |
+| **A learning pass runs** | What was found. Propagation then works **from the journal** — promoting what proved durable outward (§2.6). |
+| **A session or a wave wraps up** | Where things stand, what is next, what is unknown. The resume pointer. |
+| **A deliverable closes** | The reason. Delivered, cancelled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
+| **An outcome is verified, or regresses** | What the evidence was. Completion rests on this, and a regression is not reconstructible from current state. |
+| **A check is overridden** | If a team permits overriding a refusal (§6, open), the override must be visible — otherwise it is indistinguishable afterwards from the check having passed. |
+
+**What stays out of it:** field writes, status changes, routine claiming and releasing, creation, reordering, priority. High volume, nobody relitigates them, and git already has every one.
+
+This list is a starting point and **expected to be tuned by use.** The criterion is the durable part; the rows are a first guess at what satisfies it.
+
+##### Why memory lives here
+
+Agent harnesses offer their own memory stores, and they are the wrong place for this. They are **local to a machine, scoped to one user, and outside version control** — so they vanish on a rebuild, are invisible to a colleague, and are not there at all for the next agent on different hardware.
+
+A deliverable's memory has to travel with the deliverable. Committed beside the work, it is portable, shared, reviewable, and survives everything except deleting the repository.
+
+##### How it differs from the machine record
+
+| | Git history | The journal |
 |---|---|---|
 | **Question** | *What happened?* | *Why, and what do we now understand?* |
-| **Purpose** | A transaction audit. Trust and recovery. | Context. Picking the work back up. |
-| **Content** | Strict events, nothing else. | Long form — reasoning, dead ends, what changed our minds. |
-| **Written by** | The tool, per action. | People and agents, at boundaries. |
-| **Read by** | Anything checking what occurred. | Whoever works this next. |
+| **Completeness** | Total. A gap is a defect. | Selective. A gap is normal. |
+| **Written by** | The tool, per action. | People and agents, when something is learned. |
+| **Can become wrong?** | No. The event occurred. | Yes — understanding improves, and later entries supersede earlier ones. |
+| **Read** | Rarely, by query, when something is in doubt. | On arrival, by whoever works this next. |
 
-**The journal's job is resumption.** End a session, replace an agent, come back in three weeks — whoever picks the work up should read the journal and continue **without re-deriving anything.** Not only what was done, but why it was done that way, what was ruled out, and what is still not known.
+The last row is why it is one file rather than a place to query: **an actor reads files, not `git log`.** Knowledge that requires running a command to discover is knowledge that will not be discovered.
 
-That gives it a test worth stating plainly:
+> **Frequency is not the measure.** Most of the journal is never read again, in the same way most of an audit trail is never read again. The value is not the average line — it is the one occasion when there is nothing else, and on that occasion it is the only thing in the system that can help.
+
+**The test, stated plainly:**
 
 > **Could someone arriving cold carry on from this?**
 
-It is a harder bar than *was the work recorded*, and it is the bar that matters, because the alternative is the next actor rebuilding an understanding that already existed and was thrown away.
+Harder than *was the work recorded*, and the bar that matters — because the alternative is the next actor rebuilding an understanding that already existed and was thrown away.
 
-**Neither may leak into the other**, and each leak has a distinct cost:
-
-- **Reasoning in the event history** makes an audit trail unqueryable, and buries the reasoning where nobody will look for it.
-- **Events in the journal** destroy it by volume. Four hundred status changes and the one paragraph that mattered are not findable in the same file.
-
-**This is not the same as `references`** (§4.1.2), and the two are complementary. References are opaque pointers to material that exists elsewhere — read this before starting. The journal is context **produced by the work itself**, which is why this tool holds it: nothing else was ever going to have it. A context engine may well feed the journal to an actor alongside everything it resolves.
+**This is not the same as `references`** (§4.1.2), and the two are complementary. References point at material that exists elsewhere; the journal is memory **produced by the work itself**, which is why this tool holds it — nothing else was ever going to have it.
 
 ##### The entry shape
 
 **Newest first.** Each entry is dated and **prepended**, never rewritten — older entries stay below it, and the top of the file is always the present.
 
-**The newest entry is the resume pointer.** It says where things stand, what to do next in order, and what is still unknown, and it **explicitly marks everything below as historical** so a reader knows where to stop. This is what makes append-only and resumption compatible: nothing is edited, and the present costs one block rather than a full read.
+**The newest entry is the resume pointer.** It says where things stand, what to do next in order, and what is still unknown, and it **explicitly marks everything below as historical** so a reader knows where to stop. This is what makes an append-only file survivable at length: nothing is edited, the present costs one block, and volume never buries it.
 
 > Chronological order was tried first and does not survive a long-running deliverable. A reader arriving at a file with forty entries has to work backwards to assemble the current picture, and does it wrong. The newest-first pointer emerged from that pressure rather than from preference.
 
-**Headings are named after what they settle**, not drawn from a fixed template. *Proxmox versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will, and a reader looking for one thing finds it without reading the entry.
+**Headings are named after what they settle**, not drawn from a fixed template. *Proxmox versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will.
 
 What an entry is expected to carry, in whatever shape the work calls for:
 
@@ -753,61 +788,54 @@ What an entry is expected to carry, in whatever shape the work calls for:
 | **Where things stand** | Concretely — sizes, hostnames, flags, what is running. Vague state is not resumable. |
 | **What to do next, in order** | The single most-used part of the file. |
 | **Open questions** | Honest unknowns. Most often skipped, most valuable. |
-| **Decisions and their reasoning** | So they are not re-argued. Recording *why* is what makes a decision durable; recording only the choice invites it to be relitigated by the next actor, who has no idea it was ever settled. |
-| **What was ruled out, and why** | Negative knowledge is the most expensive kind to rediscover, and the only kind nothing else in the system records. A wrong theory that was chased and disproved saves the next actor the same days. |
+| **Decisions and their reasoning** | Including what was rejected. Recording only the choice invites it to be reopened by someone who has no idea it was settled. |
+| **What was ruled out, and why** | The most expensive knowledge to rediscover, and the only kind nothing else in the system records. |
 | **Exact commands, values, and gotchas** | Verbatim, so they can be re-run rather than reconstructed. |
-| **On close, where knowledge was promoted** | The final entry says what left the deliverable and where it landed, so the archived record still points at the durable version. |
+| **On close, where knowledge was promoted** | So the archived record still points at the durable version. |
 
-**Write an entry whenever a future actor would need it to pick up cleanly.** Wave boundaries are the obvious moment, but the trigger is need rather than ceremony — a session that discovered something surprising and shipped nothing still owes an entry, and is arguably the case that most does.
+**Append, never curate.** Entries are selective on the way in and untouched afterwards. Nothing is reorganised, summarised away, or pruned — which is also why it costs almost nothing: appending is cheap, and reading is bounded by the resume pointer rather than by the length of the file.
 
-> **The tool does not author entries and does not impose a template.** It creates the file, appends nothing to it, and never judges what is in one. What an entry should say is the workflow layer's business (§5.0); the shape above is recorded because it was learned expensively, not because it is enforced.
+> **The tool does not author narrative entries and does not impose a template.** It creates the file, appends the events above, and never judges what anyone else writes. What an entry should say is the workflow layer's business (§5.0); the shape here is recorded because it was learned expensively, not because it is enforced.
 
-##### Keeping it current
+##### Making sure it gets written
 
-A journal convention written as instructions is followed by whoever was going to follow it anyway. Three mechanisms, in ascending order of force — and the first is the one that matters most.
+The failure to prevent is **forgetting in the moment** — learning something at midday that is gone by evening. A boundary gate does not solve that: by the time it fires, the thing is already lost, and what gets written is whatever can still be remembered.
 
-**1. Reading is served, not instructed.** `claim` returns **the newest journal entry** with the task. So does opening a deliverable on the board. An actor cannot begin work without having been handed the resume pointer, which makes the rule unnecessary rather than unenforced — there is nothing to bypass and nothing to remember.
+So the mechanisms are ordered by how close to the moment they act.
 
-This is the cheapest of the three and does the most, because the failure it prevents is silent: an actor that skipped the journal does not know it skipped anything, and rediscovers what was already known.
+**1. Capture is one command, and smaller than an entry.**
 
-**2. Staleness is a condition.** `journal.stale` reports **records changed since the newest entry** (§5.2). Observable, unarguable, and thresholded in configuration rather than in the binary, because how much work may accumulate before an entry is owed differs by team.
+```
+backlog note "syncoid --use-hold pins the source snapshot; costs space during outages"
+```
 
-The tool reports it and draws no conclusion. It cannot judge whether an entry is any good, and does not try (§5.0).
+`note` appends to the newest entry, opening one for today if none exists (§9.2). No file to open, no heading to write, no decision about where it goes.
 
-**3. Enforcement is declared, never shipped.** A team may bind a boundary — a wave closing, a deliverable closing — to a gate that refuses while `journal.stale` holds. The tool carries the gate; the team authors it; a repository declaring nothing behaves as though none of this existed. That is the arrangement in §5.0, and hooks are the candidate mechanism (§5.4, still a proposal).
+**This is the load-bearing mechanism**, because friction is what causes the loss. If the smallest unit of capture is a composed entry, everything is deferred to the boundary — and deferral *is* forgetting. A learning arrives as one sentence and has to be writable as one sentence.
 
-> **This is the strongest concrete case for hooks so far**, and it is worth recording as evidence rather than argument. `OPEN-QUESTIONS.md` §22 says the hook question is settled by *running the loop and seeing whether anything important gets skipped*. The journal is the thing that gets skipped, its absence is silent, and the cost lands on the next actor rather than the one who skipped it — which is precisely the shape a guardrail exists for.
+**2. Prompting happens where learning happens.** Certain operations mean something was just discovered, and are the moment to ask — not the wave close: a failed `verify`, an outcome revised or retired, a task blocked, a decision recorded, an exploration archived. The prompt is a suggestion, never a refusal.
+
+**3. Staleness is a condition.** `journal.stale` reports records changed since the newest entry (§5.2) — observable, and thresholded in configuration rather than in the binary.
+
+**4. Enforcement at a boundary is declared, never shipped.** A team may bind a wave or deliverable closing to a gate that refuses while `journal.stale` holds. The tool carries the gate, the team authors it, and a repository declaring nothing behaves as though none of this existed (§5.0). Hooks are the candidate mechanism (§5.4, still a proposal).
+
+This is last rather than first for a reason: **a gate produces an entry, not the entry that was lost.**
+
+**5. Reading is served rather than instructed.** `claim` returns the newest journal entry with the task, and so does opening a deliverable on the board. An actor cannot begin without having been handed the resume pointer.
+
+> **The honest limit.** The tool cannot detect an unwritten learning. Only the actor knows something was discovered, so every mechanism above is a proxy. None can tell that the one thing that mattered was left out.
 
 ##### It is the default destination
 
-**When something is worth keeping and has no obvious home, it goes in the journal — immediately, without deciding where it belongs.** Three kinds in particular:
-
-- **A learning.** Anything discovered that was not known before.
-- **Reusable context.** A command, a constraint, a piece of how-it-works that the next actor would otherwise reconstruct.
-- **What is next, when it is not yet a task.** A direction that is real but not shaped enough to be work.
-
-**The routing rule is one line:**
+**When something is worth keeping and has no obvious home, it goes in the journal — immediately, without deciding where it belongs.** A learning, a piece of reusable context, a next step that is not yet shaped enough to be a task.
 
 > **Has an obvious home — a task, an outcome, a decision, an exploration? Put it there. Otherwise the journal, now.**
 
-**The asymmetry is what makes this the right default.** A capture that turns out to be unnecessary costs a paragraph someone skims. A capture that never happens is **silent and permanent** — nobody discovers what was not written down, and the next actor pays for it without ever knowing why. Those two costs are not close, so hesitating is the more expensive habit.
+**The asymmetry is what makes this the right default.** A capture that turns out to be unnecessary costs a paragraph someone skims. A capture that never happens is **silent and permanent** — nobody discovers what was not written down. Those costs are not close, so hesitating is the more expensive habit.
 
-Two failure modes it exists to prevent: **holding it in your head**, which ends when the session does, and **inventing a new file for it**, which puts the knowledge somewhere nobody will look.
+Two failure modes it exists to prevent: **holding it in your head**, which ends when the session does, and **inventing a new file for it**, which puts the knowledge where nobody will look.
 
-**Capture is cheap and unsorted; promotion is deliberate.** The journal is where knowledge lands, not necessarily where it stays. A learning that proves durable becomes a decision record (§4.8); one that changes what the work *is* belongs in the deliverable record; one that outlives the backlog entirely gets promoted outward. That sorting happens at the boundary, once it is clear which things earned it — never at the moment of writing, which is when the pressure to skip is highest.
-
-##### What it does not hold
-
-Only what already has a better home, for the reason that putting it here as well would make the file unreadable:
-
-| Not in the journal | Where it lives |
-|---|---|
-| A list of files touched, commands run, status changes | Git history (§5.5) |
-| What remains to be done, as trackable items | Tasks |
-| What done means | Outcomes |
-| A settled rule | A decision record (§4.8) — the journal carries the *reasoning*, the record carries the rule |
-
-This is a routing table, **not a bar to clear.** Anything that fails to match a row belongs in the journal by default.
+**Capture is cheap and unsorted; promotion is deliberate.** A learning that proves durable becomes a decision record (§4.8); one that changes what the work *is* belongs in the deliverable record; one that outlives the backlog gets promoted outward. That sorting happens at a boundary, once it is clear what earned it — never at the moment of writing, which is when the pressure to skip is highest.
 
 ### 5.6 What this must never become
 
@@ -1166,6 +1194,7 @@ Domain verbs, on the types they belong to:
 | `move` | deliverable | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
 | `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
+| `note` | any | Append one line to the journal, opening today's entry if needed (§5.5). The capture verb. |
 | `close` | wave, deliverable | The explicit act, validated against the arithmetic (§5.3). |
 | `promote` | decision | Copy to the global space, linked back (§4.8.1). |
 
