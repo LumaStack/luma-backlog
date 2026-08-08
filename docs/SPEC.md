@@ -122,7 +122,7 @@ Formation lives in **`workflow_status`** rather than a field of its own. The low
 | `idea` | Just an idea. Captured so it is not lost. |
 | `preparing` | Work is being done to make it actionable. |
 | `actionable` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
-| `todo`, `doing`, `blocked`, `closed` | Where the work is (§8, §5.3.1). |
+| `todo`, `in_progress`, `closed` | Where the work is (§8, §5.3.1). |
 
 **`preparing` covers every activity, and names none.** Getting from an idea to actionable is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
 
@@ -156,7 +156,7 @@ Where a disagreement is found it is reported as an observation, not a refusal (�
 
 ##### What is deliberately not on this ladder
 
-- **Blockedness.** A well-planned deliverable waiting on something else has not become less formed — that is `blocked`.
+- **Blockedness.** A well-planned deliverable waiting on something else has not become less formed. It is not a stage at all — it is a separate field (§4.2.1).
 - **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly actionable deliverable that nobody has scheduled is an ordinary thing.
 
 ##### `lifecycle_status` remains a separate, human judgement
@@ -321,11 +321,30 @@ So the division is:
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
+| `blocked` | optional | map | Present means blocked (§4.2.1). |
 | `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`OPEN-QUESTIONS.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
 
 A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
 
 **Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`OPEN-QUESTIONS.md` §17).
+
+#### 4.2.1 `blocked`
+
+Blocked is **not a workflow status**, because a record can be blocked while `preparing` just as easily as while `in_progress`. Making it a stage would force a choice between recording *where the work is* and *that it is stuck* — and would lose the former when you set the latter, leaving nothing to return to when the block clears.
+
+It is a field, present only when it applies:
+
+```yaml
+blocked:
+  since: 2026-08-07
+  by:    waiting on the vendor contract     # free text, or a link to a record
+```
+
+**`since` is the useful half.** *Blocked* on its own says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, which means the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate.
+
+**`by` is deliberately loosely typed**, like `verify_by` (§4.4.2). A blocker may be another record, a person, a vendor, a decision nobody has made, or a sentence explaining the situation. Constraining it would only exclude the cases that matter most.
+
+**How long is too long is not the tool's judgement.** It reports what is blocked and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
 
 ### 4.3 `backlog/wave`
 
@@ -405,6 +424,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. |
 | `depends_on` | optional | list of wikilink | Tasks that must finish first. |
 | `runs_with` | optional | list of wikilink | Tasks with no ordering relationship to this one; safe to run at the same time. |
+| `blocked` | optional | map | Present means blocked (§4.2.1). |
 | `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
 | `lease_expires` | optional | datetime | When an unrefreshed claim lapses. |
 | `follows` | optional | wikilink | The task this one succeeds after a failed or unfinished attempt (§4.6). |
@@ -504,6 +524,7 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
 | `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
+| `record.blocked` | Blocked, and for how long (§4.2.1). The tool reports the duration; what counts as too long is not its judgement. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
@@ -783,13 +804,13 @@ labels:
   deliverable: story              # what people see; records still say deliverable
 
 workflow_status:
-  deliverable: [idea, preparing, actionable, todo, doing, blocked, closed]
-  task:        [todo, doing, blocked, closed]
+  deliverable: [idea, preparing, actionable, todo, in_progress, closed]
+  task:        [todo, in_progress, closed]
 
 columns:                          # statuses grouped into board columns (§11)
   Backlog:     [idea, preparing, actionable]
   To Do:       [todo]
-  In Progress: [doing, blocked]
+  In Progress: [in_progress]
   Closed:      [closed]
 
 actionable_requires_confirmation: false   # §2.2.1
@@ -818,7 +839,9 @@ hooks:                            # proposal — see §5.4
 
 Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
 
-Three notes on the defaults. The first three statuses describe **how far the planning has gone** rather than where the work is (§2.2.1). **Columns group statuses**, so seven statuses render as four columns — which also lets a team put `doing` and `blocked` together without pretending they are the same thing. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
+Three notes on the defaults. The first three statuses describe **how far the planning has gone** rather than where the work is (§2.2.1). **Columns group statuses**, so a precise vocabulary still renders as a legible board. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
+
+**Blocked is not among them** — it is a field, because a record can be blocked while preparing *or* while in progress (§4.2.1).
 
 ### 8.3 Defaults are written, not compiled
 
@@ -1153,6 +1176,7 @@ Dimensions (§2.7) filter and group every view rather than adding views of their
 
 - **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without colour. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
 - **Columns group statuses** (§8), so a board stays legible while the vocabulary underneath stays precise.
+- **Blocked renders as a marker on the card, never as a column** (§4.2.1) — so a blocked item stays where the work actually is, and *three of eight in progress are blocked* is visible at a glance. Showing how long it has been blocked is what makes the marker worth having.
 - **Counts in column headers**, so the shape of the backlog is legible before reading a single card.
 - **A modal move mode** — enter it, reposition with the arrow keys across columns and within one, confirm or cancel. It makes reordering keyboard-complete and reversible, and its footer replaces the normal one so the available keys are always the current ones.
 - **A detail overlay** over the board rather than a separate screen, so context is never lost on the way in or out.
