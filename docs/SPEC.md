@@ -961,7 +961,7 @@ A directory structure may only reflect properties that are effectively permanent
 ```
 .backlog/
   config.yml                      configuration (§8)
-  journal.md                      cross-deliverable learning
+  journal.md                      cross-deliverable learning — see the caution below
   index.md                        derived navigation — a cache, never a source
   _types/                         Type Definitions, one per type
     deliverable.md
@@ -994,6 +994,8 @@ A directory structure may only reflect properties that are effectively permanent
 `_types/` is reserved by the format. At the repository root, `index.md` is derived navigation — a cache, rebuildable, and deleting it loses nothing.
 
 **Inside a deliverable, `index.md` *is* the deliverable record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
+
+> **The root-level `journal.md` is not settled** (`OPEN-QUESTIONS.md` §2). A deliverable's memory has an obvious owner and an obvious reader; a repository-wide one has neither, and the risk is that it becomes the junk drawer this design has otherwise avoided. It is shown here because cross-deliverable learning has to land somewhere, not because the case for it is made. The per-deliverable file below is the settled part.
 
 **`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
 

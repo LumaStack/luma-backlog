@@ -114,7 +114,13 @@ Not taken because the reasoning that transfers best does not fit a field: *we tr
 
 **This is deferred, not closed.** Re-open trigger: wanting to *query* across reasoning — "show every outcome retired for the same reason," "what did we expect from this and did we get it." Prose cannot answer that, and the two are not exclusive; a typed field could sit alongside the narrative rather than replacing it. Dissatisfaction with prose alone does not qualify.
 
-**Still open:** which events are worth recording is a first cut, deliberately. The criterion is the durable part.
+**Still open — the repository-level journal.** `SPEC.md` §7.2 shows a `journal.md` at the root of `.backlog/` for cross-deliverable learning, and that half is **not settled**.
+
+A deliverable's journal has an obvious owner, an obvious reader, and a natural end. A repository-wide one has none of the three, which is the profile of a junk drawer — the thing rejected outright for exploration (§2, above). Cross-deliverable learning is real and has to land somewhere, but *has to land somewhere* is exactly the argument that produces junk drawers.
+
+*Settled by:* dogfooding. Run several deliverables with per-deliverable journals and see whether anything genuinely cross-cutting accumulates with nowhere to go. If it does, that is the case for a root journal, made by evidence. If instead the durable things all promote outward into decisions or documentation, the root file was never needed.
+
+**Also still open:** which events are worth recording is a first cut, deliberately. The criterion is the durable part.
 
 *Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, that event history was already being written to git and did not need a file, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
 
