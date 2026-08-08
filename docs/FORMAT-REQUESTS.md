@@ -27,7 +27,7 @@ A record then writes `type: task`, meaning `luma/backlog/task`. A fully qualifie
 
 **Conflicts must be loud.** If a short name could resolve to more than one type, that is an error a consumer reports — never a silent pick. Qualification is then required for the ambiguous names only, not for the whole corpus. Precedence rules and search orders were considered and are not wanted: quiet resolution is how the wrong type gets chosen and nobody finds out.
 
-**Note it belongs on `index.md`, not in a tool's own configuration.** It is a format-level declaration, so it has to live where a format consumer looks — otherwise only this tool can read its own records.
+**It has to be readable where a format consumer looks.** A tool that understands the format but not this one must be able to resolve `type: task` without parsing a private configuration file. In this project the declaration is authored in `config.yml` and **generated onto the bundle root `index.md`**, so there is one place to edit and one place the format can find it.
 
 ---
 

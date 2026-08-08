@@ -1,5 +1,9 @@
 # luma-backlog configuration — see docs/SPEC.md §8
-# Deliberately minimal. Keys are added when something needs them, not in advance.
+# The source of truth. Deliberately minimal; keys are added when something
+# needs them, not in advance.
+
+lkf_version:    0.0.2          # format grammar this bundle is written against
+type_namespace: luma/backlog   # records write short type names; this resolves them
 
 workflow_status:
   deliverable: [idea, preparing, actionable, todo, in_progress, closed]

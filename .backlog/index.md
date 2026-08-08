@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/bundle
+type: bundle
 title: Backlog
 lkf_version: 0.0.2
 type_namespace: luma/backlog
@@ -7,8 +7,8 @@ type_namespace: luma/backlog
 
 # Backlog
 
-The bundle root. `type_namespace` means records here write `type: task` rather than `type: luma/backlog/task`; a fully qualified value is always legal and always wins, and an ambiguous short name is an error rather than a guess.
+**Generated. Do not edit — change `config.yml` instead.**
 
-Both keys are format-level declarations, so they live here rather than in `config.yml` — a format consumer that knows nothing about this tool must still be able to resolve types.
+This file exists so a tool that understands the knowledge format, but knows nothing about this one, can resolve `type: task` to `luma/backlog/task`. `config.yml` is the source of truth; these keys are copied here, and the file can be deleted and rebuilt without loss.
 
-Navigation below this line is derived and rebuildable.
+Anything reading this programmatically should prefer `backlog config` over parsing the file.

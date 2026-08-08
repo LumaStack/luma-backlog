@@ -44,6 +44,14 @@ The reasoning is that **every record in a bundle shares a namespace**, so repeat
 
 **This required a format change**, which is the point rather than a complication. `type_namespace` does not exist in the format today; we are shipping ahead of it and have recorded the ask.
 
+**Decided: configuration is the source of truth; the bundle root is generated from it.**
+
+`type_namespace` was briefly authored on `.backlog/index.md`, on the reasoning that a format-level fact must live where a format consumer looks. That reasoning is sound and the placement was not: our own layout calls the root `index.md` derived navigation, *a cache, rebuildable, deleting it loses nothing* — so it held an authoritative declaration in a file we describe as safe to delete.
+
+Resolved by making it derived in fact as well as in name. **`config.yml` is edited; `index.md` is generated from it.** One place to change, one place the format can find it, and the copy can be deleted and rebuilt without loss because it is rebuildable from its source.
+
+**And a third layer that matters more than either file:** neither is how an agent should discover this. `backlog config` and `backlog contract` report it directly, and asking the tool beats parsing its storage. The interface is the contract; file layout is not part of it. This generalises — anywhere we are tempted to make a file more discoverable, the better answer is usually a command that serves it.
+
 **Decided: proposing format changes is normal until 1.0.**
 
 This project is the format's first consumer and the format is pre-1.0 and explicitly unstable. **Hitting a limit is evidence about the format, not a reason to contort around it.** Six requests had accumulated across the design phase without anyone counting them; they now live in `docs/FORMAT-REQUESTS.md`, each marked blocked, shipping ahead, or waiting.

@@ -285,10 +285,10 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 **Type names are namespaced organization, domain, type** — `luma/backlog/deliverable`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration` — **and records write the short form.**
 
-The bundle root declares the namespace once:
+Configuration declares the namespace once:
 
 ```yaml
-# .backlog/index.md
+# .backlog/config.yml — the source of truth
 lkf_version:    0.0.2
 type_namespace: luma/backlog
 ```
@@ -297,7 +297,9 @@ so a record writes `type: task` and means `luma/backlog/task`. Every record in a
 
 **An ambiguous short name is an error, never a guess.** If a name could resolve to more than one type, the tool reports it and requires qualification — for those names only, not for the corpus. Precedence rules and search orders were considered and rejected: quiet resolution is how the wrong type gets picked and nobody finds out.
 
-The declaration lives on `index.md` rather than in `config.yml` because it is a **format-level** fact ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1). Putting it in this tool's configuration would mean only this tool could read its own records.
+**It is also copied onto the bundle root `index.md`, which is generated from configuration** and can be deleted and rebuilt without loss. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1).
+
+**Neither file is how an agent should discover this.** `config` and `contract` (§9.2, §9.7) report it directly, and asking the tool beats parsing its storage — the interface is the contract, and file layout is not part of it.
 
 The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
 
@@ -1138,6 +1140,9 @@ It is committed because it **defines what records mean**. A workflow status voca
 ### 8.2 What it holds
 
 ```yaml
+lkf_version:    0.0.2             # format grammar this bundle is written against
+type_namespace: luma/backlog      # resolves short type names (§4.1)
+
 labels:
   deliverable: story              # what people see; records still say deliverable
 
