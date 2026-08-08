@@ -615,11 +615,12 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
 | `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgement. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
+| `journal.stale` † | Records changed since the newest journal entry — the context needed to resume has fallen behind the work (§5.5). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
-Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
+Those last seven detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
-> **† These three carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgement — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgement attached, which is the honest default.
+> **† These four carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgement — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgement attached, which is the honest default.
 
 > **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This deliverable is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
 
@@ -708,13 +709,87 @@ Git already stores what such a file would: **attributed, timestamped, immutable,
 
 > **The honest cost.** Copy `.backlog/` out of its repository and the event history does not come with it. That is a real loss for a stated goal, and the mitigation is exporting the history alongside the records rather than keeping a duplicate file permanently hot.
 
-#### The journal is for what was learned
+#### The journal carries meaning
 
-`journal.md` (§7.2) holds the other kind: **why an approach was abandoned, what a wave revealed, what would be done differently.** Reflective, low-volume, written by people and agents, and actually read.
+`journal.md` (§7.2) holds the other kind, and the distinction is not one of format:
 
-It is a separate file because **volume destroys it**. Nobody finds a paragraph of hard-won reasoning inside four hundred status-change entries, and the entries have somewhere better to be. Being low-volume also means the append contention above never applies to it.
+| | Event history | Journal |
+|---|---|---|
+| **Question** | *What happened?* | *Why, and what do we now understand?* |
+| **Purpose** | A transaction audit. Trust and recovery. | Context. Picking the work back up. |
+| **Content** | Strict events, nothing else. | Long form — reasoning, dead ends, what changed our minds. |
+| **Written by** | The tool, per action. | People and agents, at boundaries. |
+| **Read by** | Anything checking what occurred. | Whoever works this next. |
 
-Its internal structure is unresolved (`OPEN-QUESTIONS.md` §2).
+**The journal's job is resumption.** End a session, replace an agent, come back in three weeks — whoever picks the work up should read the journal and continue **without re-deriving anything.** Not only what was done, but why it was done that way, what was ruled out, and what is still not known.
+
+That gives it a test worth stating plainly:
+
+> **Could someone arriving cold carry on from this?**
+
+It is a harder bar than *was the work recorded*, and it is the bar that matters, because the alternative is the next actor rebuilding an understanding that already existed and was thrown away.
+
+**Neither may leak into the other**, and each leak has a distinct cost:
+
+- **Reasoning in the event history** makes an audit trail unqueryable, and buries the reasoning where nobody will look for it.
+- **Events in the journal** destroy it by volume. Four hundred status changes and the one paragraph that mattered are not findable in the same file.
+
+**This is not the same as `references`** (§4.1.2), and the two are complementary. References are opaque pointers to material that exists elsewhere — read this before starting. The journal is context **produced by the work itself**, which is why this tool holds it: nothing else was ever going to have it. A context engine may well feed the journal to an actor alongside everything it resolves.
+
+##### The entry shape
+
+**Newest first.** Each entry is dated and **prepended**, never rewritten — older entries stay below it, and the top of the file is always the present.
+
+**The newest entry is the resume pointer.** It says where things stand, what to do next in order, and what is still unknown, and it **explicitly marks everything below as historical** so a reader knows where to stop. This is what makes append-only and resumption compatible: nothing is edited, and the present costs one block rather than a full read.
+
+> Chronological order was tried first and does not survive a long-running deliverable. A reader arriving at a file with forty entries has to work backwards to assemble the current picture, and does it wrong. The newest-first pointer emerged from that pressure rather than from preference.
+
+**Headings are named after what they settle**, not drawn from a fixed template. *Proxmox versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will, and a reader looking for one thing finds it without reading the entry.
+
+What an entry is expected to carry, in whatever shape the work calls for:
+
+| | Why it belongs |
+|---|---|
+| **Where things stand** | Concretely — sizes, hostnames, flags, what is running. Vague state is not resumable. |
+| **What to do next, in order** | The single most-used part of the file. |
+| **Open questions** | Honest unknowns. Most often skipped, most valuable. |
+| **Decisions and their reasoning** | So they are not re-argued. Recording *why* is what makes a decision durable; recording only the choice invites it to be relitigated by the next actor, who has no idea it was ever settled. |
+| **What was ruled out, and why** | Negative knowledge is the most expensive kind to rediscover, and the only kind nothing else in the system records. A wrong theory that was chased and disproved saves the next actor the same days. |
+| **Exact commands, values, and gotchas** | Verbatim, so they can be re-run rather than reconstructed. |
+| **On close, where knowledge was promoted** | The final entry says what left the deliverable and where it landed, so the archived record still points at the durable version. |
+
+**Write an entry whenever a future actor would need it to pick up cleanly.** Wave boundaries are the obvious moment, but the trigger is need rather than ceremony — a session that discovered something surprising and shipped nothing still owes an entry, and is arguably the case that most does.
+
+> **The tool does not author entries and does not impose a template.** It creates the file, appends nothing to it, and never judges what is in one. What an entry should say is the workflow layer's business (§5.0); the shape above is recorded because it was learned expensively, not because it is enforced.
+
+##### Keeping it current
+
+A journal convention written as instructions is followed by whoever was going to follow it anyway. Three mechanisms, in ascending order of force — and the first is the one that matters most.
+
+**1. Reading is served, not instructed.** `claim` returns **the newest journal entry** with the task. So does opening a deliverable on the board. An actor cannot begin work without having been handed the resume pointer, which makes the rule unnecessary rather than unenforced — there is nothing to bypass and nothing to remember.
+
+This is the cheapest of the three and does the most, because the failure it prevents is silent: an actor that skipped the journal does not know it skipped anything, and rediscovers what was already known.
+
+**2. Staleness is a condition.** `journal.stale` reports **records changed since the newest entry** (§5.2). Observable, unarguable, and thresholded in configuration rather than in the binary, because how much work may accumulate before an entry is owed differs by team.
+
+The tool reports it and draws no conclusion. It cannot judge whether an entry is any good, and does not try (§5.0).
+
+**3. Enforcement is declared, never shipped.** A team may bind a boundary — a wave closing, a deliverable closing — to a gate that refuses while `journal.stale` holds. The tool carries the gate; the team authors it; a repository declaring nothing behaves as though none of this existed. That is the arrangement in §5.0, and hooks are the candidate mechanism (§5.4, still a proposal).
+
+> **This is the strongest concrete case for hooks so far**, and it is worth recording as evidence rather than argument. `OPEN-QUESTIONS.md` §22 says the hook question is settled by *running the loop and seeing whether anything important gets skipped*. The journal is the thing that gets skipped, its absence is silent, and the cost lands on the next actor rather than the one who skipped it — which is precisely the shape a guardrail exists for.
+
+##### What it does not hold
+
+Streamlining a journal is mostly deciding what to leave out, and the model already answers it: **an entry carries only what has no other home.**
+
+| Not in the journal | Where it lives |
+|---|---|
+| A list of files touched, commands run, status changes | Git history (§5.5) |
+| What remains to be done, as trackable items | Tasks |
+| What done means | Outcomes |
+| A settled decision, as a standing rule | A decision record (§4.8) — the journal carries the *reasoning*, and the record carries the rule |
+
+What survives that filter is the reasoning, the paths ruled out, the unknowns, and where things stand. Which is the whole of what a journal is for, and none of what makes one unreadable.
 
 ### 5.6 What this must never become
 
@@ -864,7 +939,7 @@ A directory structure may only reflect properties that are effectively permanent
 
 **`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
 
-**It is not an event log.** Status changes, claims, and verifications are commits, not entries (§5.5). What goes here is what was *learned* — why an approach was abandoned, what a wave revealed. Keeping the two apart is what makes this file worth opening.
+**It is not an event log.** Status changes, claims, and verifications are commits, not entries (§5.5). What goes here is **why** — the reasoning, the dead ends, what is still unknown — written so that whoever picks the work up next can continue without re-deriving it.
 
 > **Nothing is called `log.md`.** The format reserves that name for an event history, and there is no such file here, so the name simply goes unused — no change request needed. `journal` is not a rename of it; it is a different file with a different job.
 
@@ -976,6 +1051,7 @@ thresholds:                       # when a pattern is worth naming (§5.2)
   drifted_after_waves:      1     # waves of activity with nothing verified or revised
   not_converging_after:     3     # waves with no change in outcomes passing
   churn_records_per_pass:   20    # records created per outcome newly passing
+  journal_stale_after:      10    # records changed since the newest journal entry
 
 standing_outcomes:                # applied to every new deliverable (§4.4.1)
   - desired_state: the test suite passes

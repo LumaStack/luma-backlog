@@ -69,7 +69,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ## 2. Where exploration and the journal live
 
-**Status:** **Settled — both live in the deliverable folder** (`SPEC.md` §7.2, §7.2.1), and event history turned out to need no file at all. Context is resolved separately, below. One thing remains open: the journal's internal structure.
+**Status:** **Settled.** Both live in the deliverable folder (`SPEC.md` §7.2, §7.2.1), event history turned out to need no file at all, and the journal's entry shape is settled from a working system. Context is resolved separately, below.
 
 Three things were wanted from the beginning and had no place in the unit model.
 
@@ -97,13 +97,26 @@ They were treated as one question for a long time. Separating them answers both.
 
 The cost, recorded rather than argued away: **copy `.backlog/` out of its repository and the history does not come with it.**
 
-**The journal is what was learned** — why an approach was abandoned, what a wave revealed. `journal.md`, created with the deliverable, mandatory, append-only. Mandatory because somewhere to write has to exist before anyone needs it.
+**The journal carries meaning, and its job is resumption.** `journal.md`, created with the deliverable, mandatory. It holds *why* — reasoning, dead ends, what is still unknown — written so that whoever picks the work up next continues **without re-deriving anything**. Its test is *could someone arriving cold carry on from this?*, which is a harder bar than *was the work recorded*.
 
-**They are separate files because volume destroys the second.** Nobody finds a paragraph of hard-won reasoning inside four hundred status-change entries.
+**They are separate files because each ruins the other.** Reasoning inside an audit trail makes it unqueryable and buries the reasoning; events inside the journal destroy it by volume. Nobody finds the one paragraph that mattered among four hundred status changes.
 
 This also dissolves the naming question. `journal.md` is **not** a renamed `log.md` — the format reserves that name for an event history, there is no such file here, so the name goes unused and **no change request is needed**.
 
-**Still open:** the journal's internal structure. Entries are appended, but their shape is undecided.
+**The entry shape is settled** (`SPEC.md` §5.5), from journals in daily use rather than from first principles — and notably, from where those journals **diverged from their own template**.
+
+**Newest first, prepended, never rewritten.** The template said chronological with the newest entry at the bottom; the long-running projects all ended up putting the newest at the top, and the longest one invented an explicit *resume pointer* block declaring everything below it historical. That is evidence rather than taste: chronological order does not survive a deliverable with forty entries, because assembling the present means reading backwards and getting it wrong.
+
+This also dissolves the apparent conflict between *append-only* and *cheap to reach the present*. Prepending is not rewriting. Nothing is destroyed, and the present costs one block.
+
+**Fixed sections did not survive either.** The template's five headings gave way in practice to headings **named after what they settle** — *Proxmox versus bare metal — decided: bare metal* rather than *Observations*. So the specification records what an entry should carry and declines to impose a template.
+
+**Two things the resumption framing did not predict, both learned from real entries:**
+
+- **Decisions are recorded with their reasoning, explicitly so they are not re-argued.** Real journals say *don't re-litigate* and preserve reasoning verbatim. Recording the choice alone invites the next actor — who has no idea it was ever settled — to reopen it.
+- **What was ruled out matters as much as what was done.** Negative knowledge is the most expensive kind to rediscover and the only kind nothing else in the system captures.
+
+One difference from the system this came from, and it is deliberate: there the journal is created **as needed**, on the principle that a file should earn its place. Here it is created with the deliverable, because the tool creates it — the authoring ceremony that made *as needed* correct does not exist when nobody has to make the file.
 
 *Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, that event history was already being written to git and did not need a file, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
 
@@ -744,6 +757,17 @@ This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail
 - **Where does a hook run?** Under the branch-local topology (§8), on whose machine, in which worktree? An agent's boundary crossing and a person's may fire the same hook in very different environments.
 - **What is a hook in an agent world?** Most of what is wanted at a boundary — audits, applying learning, promoting decisions — is agent work rather than script work. A tool shelling out to a script is ordinary; a tool needing to invoke an agent is a different proposition, though a script that happens to call one keeps the tool ignorant of the difference.
 - **Failure must be legible or the feature is worse than nothing.** A hook that fails obscurely trains people to reach for a force flag, at which point the guardrail is decorative and everyone believes they are protected.
+
+### The concrete case that argues for hooks
+
+**Keeping the journal current** (`SPEC.md` §5.5) is the strongest use encountered so far, and it has the shape a guardrail is actually for:
+
+- **The failure is silent.** An actor that skipped writing does not know it skipped anything.
+- **The cost lands elsewhere.** It is paid by the next actor, who rediscovers what was already known — so the one who skipped has no feedback and never corrects.
+- **Prose does not work.** The system this convention came from states the rule plainly in its instructions and ships no hooks behind it. Compliance is therefore whatever each actor decides, which is the condition this question exists to resolve.
+- **It is observable.** *Records changed since the newest entry* is a computable fact, so a gate would enforce something checkable rather than something judged.
+
+**But the first mechanism is not a hook**, and that is the finding. Reading the journal is enforced by **serving it** — `claim` returns the newest entry with the task, so no actor can start without it. There is nothing to bypass and no rule to remember. Only the *writing* half needs a boundary, which narrows what hooks would have to carry.
 
 ### The finding that may resolve this
 
