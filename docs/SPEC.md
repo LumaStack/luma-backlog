@@ -743,12 +743,18 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one deliverable writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
-**One scheme, two allocation strategies.** The key is always a decimal value; what changes is how it is chosen:
+**Keys are written to three decimal places** — `10.000`, `15.000`, `10.500` — which keeps them a consistent width, legible at a glance, and gives a thousand positions between any two whole numbers.
 
-- **Room available** → take a round number. Records seed at `10`, `20`, `30`; an insertion between them becomes `15`, then `12`.
-- **Room tight** → subdivide. Between `10` and `11` comes `10.5`, then `10.25`.
+Allocation is by **bisection**: take the midpoint of the neighbouring keys.
 
-The common case therefore reads like plainly numbered items, and decimals appear only where a gap has closed. There is no second mode to implement and **no rebalance**, because subdivision continues indefinitely.
+| Situation | Key |
+|---|---|
+| Seeding a new backlog | `10.000`, `20.000`, `30.000` |
+| Between `10.000` and `20.000` | `15.000` |
+| Between `10.000` and `11.000` | `10.500` |
+| Squeezed | `10.001` |
+
+**Three decimals is the normal form, not a hard limit.** Roughly ten bisections at the *same* position exhaust it — `10.500`, `10.250`, `10.125`, and so on down to `10.001`. At that point precision **extends** rather than the scheme failing, and a fourth decimal appears. That case is rare enough that most backlogs will never contain one, and it exists solely so that **a rebalance is never mandatory** — the alternative is a multi-record write arriving in the middle of someone dragging a card.
 
 Two details that matter:
 
