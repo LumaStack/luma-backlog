@@ -2,7 +2,9 @@
 
 A git-native backlog worked by people and agents at the same time. Records are markdown in `.backlog/`, conforming to the Luma Knowledge Format.
 
-**Phase: design only. Do not write code.** The specification is still being written; there is no implementation and none is wanted yet.
+**Phase: implementation.** The specification is settled enough to build against. `.backlog/` is live and this project tracks itself in it — read it before starting work.
+
+**Bootstrap order:** lead with a skill, backfill the command, then rewrite the skill to call it. The skill is not thrown away — it ends up holding *when and why*, while the command holds *how*. **Every command must work standalone**, with no skill involved: there is no privileged path (`PRINCIPLES.md`). What promotes a step from prose to command is **not friction alone** — the maintainer works alone, so multi-actor failures produce no friction here. Three drivers: friction where it appears, **divergence** where we provoke it (same instruction, two agents, diff the records), and **invariants prose cannot hold** — measured compliance with prose-only rules runs far below what a guarantee requires.
 
 ## Where things live
 

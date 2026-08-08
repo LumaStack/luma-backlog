@@ -1,0 +1,12 @@
+# luma-backlog configuration — see docs/SPEC.md §8
+# Deliberately minimal. Keys are added when something needs them, not in advance.
+
+workflow_status:
+  deliverable: [idea, preparing, actionable, todo, in_progress, closed]
+  task:        [todo, in_progress, closed]
+
+columns:
+  Backlog:     [idea, preparing, actionable]
+  To Do:       [todo]
+  In Progress: [in_progress]
+  Closed:      [closed]

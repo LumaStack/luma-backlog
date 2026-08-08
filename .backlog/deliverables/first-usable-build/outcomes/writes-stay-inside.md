@@ -1,0 +1,17 @@
+---
+type: luma/backlog/outcome
+title: The tool writes nothing outside the backlog
+desired_state: No command modifies any path outside `.backlog/`, including when run from a nested directory, through a symlink, or with a hostile record.
+verify_by:
+  - Snapshot the whole working tree, run every command, diff; expect changes confined to `.backlog/`.
+  - Run from a nested directory and through a symlinked path; expect the same.
+  - Confirm the upward walk stops at the fence rather than finding an outer repository.
+deliverable: "[[deliverables/first-usable-build]]"
+workflow_status: todo
+lifecycle_status: provisional
+created: { by: "human:benjamin", at: 2026-08-08T06:00:00Z }
+---
+
+# The tool writes nothing outside the backlog
+
+The failure this guards against is not a loud escape — it is the upward walk finding the developer's real repository, where commands **succeed** and the test reports green (`docs/TESTING.md`). Snapshot-and-diff is used because it catches the silent case; an assertion about intent would not.
