@@ -658,7 +658,109 @@ Known to belong here: workflow status vocabularies, priority values, dimension n
 
 ## 9. Command interface
 
-*To be written.* The public contract: command surface, output shapes, exit codes, and the versioning and deprecation policy governing both.
+The interface **is** the contract (`PRINCIPLES.md`). Everything reachable through a board or a view is reachable here, there is no privileged internal path, and output shapes are as much a part of the contract as command names.
+
+> **The rules below are reasoned; the specific names are provisional.** Which verbs exist and what they are called will move with use. That structured output is canonical, that exit codes are distinguishable, and that mutations are idempotent will not.
+
+### 9.1 Shape
+
+**Noun, then verb** — `backlog task list`, `backlog outcome verify`. Adding a record type touches no existing command, and completion has something to offer at every position.
+
+**The same verbs mean the same thing on every noun.** An actor learns one verb set rather than one per type, which is what keeps the surface small enough to hold in a cold context.
+
+**Aliases are accepted, canonical names are emitted.** If a repository calls deliverables *stories*, `backlog story list` works (§2.1). The structured output still says `deliverable`, every time, everywhere.
+
+**Unambiguous prefixes resolve**, as abbreviated revisions do in version control (§7.4): `backlog task show add-retry` finds `add-retry-queue` when nothing else matches. Ambiguity is an error, never a guess.
+
+### 9.2 Verbs
+
+Universal across record types:
+
+| Verb | Does |
+|---|---|
+| `new` | Create. Idempotent by name (§9.5). |
+| `show` | Read one. |
+| `list` | Read many, with filters. |
+| `set` | Change fields non-interactively — the verb agents use. |
+| `edit` | Open in an editor — the verb people use. |
+| `archive` | Retire. **Never deletes**, and never moves the record (§7.1). |
+
+Domain verbs, on the types they belong to:
+
+| Verb | On | Does |
+|---|---|---|
+| `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
+| `verify` | outcome | Record evidence that the desired state holds (§4.7). |
+| `close` | wave, deliverable | The explicit act, validated against the arithmetic (§5.3). |
+| `promote` | decision | Copy to the global space, linked back (§4.8.1). |
+
+Top-level:
+
+| Command | Does |
+|---|---|
+| `init` | Create `.backlog/` and a default configuration. |
+| `board` | Open the terminal board (§11). Also the behaviour with no arguments. |
+| `serve` | Start the web interface. |
+| `check` | Evaluate the named conditions (§5.2). |
+| `log` | Read history, including as a portable export. |
+| `contract` | Emit the full interface description (§9.6). |
+| `config` | Read and write configuration (§8). |
+
+### 9.3 Output
+
+**Standard output carries data. Standard error carries everything else** — progress, warnings, diagnostics. A caller redirecting standard output gets exactly the answer and nothing to strip.
+
+**`--json` produces the machine contract**, always using canonical names regardless of local display labels, and always the same shape for the same command. Human-readable output is free to change; structured output is not.
+
+**Empty results are not errors.** A list matching nothing exits zero with an empty collection. Agents must not have to distinguish "none" from "failed."
+
+### 9.4 Exit codes
+
+Distinguishable, because an agent's next move depends on *why* something failed — retrying a conflict is correct, retrying a refusal is a loop.
+
+| Code | Meaning | An actor should |
+|---|---|---|
+| `0` | Success | Continue. |
+| `1` | Unexpected error | Stop and surface it. |
+| `2` | Usage error | Fix the invocation; never retry unchanged. |
+| `3` | Not found | Stop; the target does not exist. |
+| `4` | **Conflict** — the record changed underneath (§6.3) | **Re-read and retry.** |
+| `5` | **Refused** — a validated act did not pass its check (§5.3) | Do not retry; satisfy the condition first. |
+| `6` | **Already claimed** | Choose different work. |
+
+### 9.5 Idempotency
+
+**Agents retry** — on timeout, on lost context, on supervisor restart. A mutation that is not safely repeatable will silently duplicate the backlog.
+
+**Creation is idempotent by name.** `new` takes a caller-supplied name; running it twice with the same name and the same content is a no-op that succeeds and returns the existing record, with structured output distinguishing created from already-present. Same name, *different* content is a conflict (`4`), never a silent overwrite.
+
+**Claiming is idempotent for the holder.** Claiming something you already hold refreshes the lease rather than failing.
+
+### 9.6 Self-description
+
+**`backlog contract` emits the entire interface**: record types and their fields, verbs, conditions, exit codes, output shapes, and the local display labels.
+
+This exists because an actor arriving in an unfamiliar repository should **bootstrap from the binary, not from documentation someone forgot to update**. It is also what makes local vocabulary discoverable — an agent learns that this repository says *story* by asking, rather than by being told out of band.
+
+### 9.7 Non-interactive by default
+
+**No command ever waits for input unless a terminal is attached and the caller has not said otherwise.** A prompt that appears in an automated context is a hang, and a hang inside an agent loop is invisible until something times out.
+
+Anything that would prompt either takes a flag or fails with a usage error naming the flag it needed.
+
+### 9.8 Versioning
+
+Structured output carries a contract version. Additions — new fields, new commands, new conditions — do not change it. **Removals and shape changes are breaking**, are preceded by deprecation, and consumers are given a release in which both forms work.
+
+Unrecognised fields in output are to be ignored by consumers rather than treated as errors, so that additions never break anyone.
+
+### 9.9 What must never happen
+
+- **Structured output changing shape between repositories.** Local labels are display only; the contract is universal.
+- **Prompting in a non-interactive context.**
+- **A conflict reported as a generic failure.** The distinction between `4` and `5` is what makes correct retry behaviour possible.
+- **`archive` deleting or moving anything** (§7.1).
+- **Commands the board can do that the interface cannot.** The board is a client, not a privileged surface.
 
 ## 10. Import and export
 
