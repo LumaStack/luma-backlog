@@ -293,7 +293,33 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 **Unrecognized fields are preserved untouched** (§3.1 of the principles). Anything upstream may annotate any record without this tool interpreting or losing it.
 
-#### 4.1.1 References — pointers this tool does not follow
+#### 4.1.1 What belongs in a status, and what does not
+
+A status is a **position in a sequence**. Its values are mutually exclusive by construction — a record is at exactly one, and moving to another means leaving the one before.
+
+That gives a test, and it is the whole rule:
+
+> **Can this be true at the same time as one of the other values?**
+> **If yes, it is not a status. It is a separate field.**
+
+`blocked` fails plainly: work can be blocked while `preparing` and blocked while `in_progress`. So do priority, assignment, due dates, and the reason something closed. None of them is a *place in the sequence*; each is a fact that travels alongside wherever the record happens to be.
+
+##### Why this matters more than it looks
+
+Modelling `blocked` as a status is a common flaw, and it costs four things:
+
+- **It destroys information.** Setting the status overwrites where the work actually was, so when the block clears there is nothing to return to. Tools that do this end up storing a hidden "previous status" — an admission the model was wrong.
+- **It forces a false choice.** You may record the stage *or* the impediment, never both, though both are true.
+- **It corrupts the board.** One column mixes blocked-while-preparing with blocked-while-in-progress, which are entirely different situations that happen to share an adjective.
+- **It hides duration.** A status has no age. *Blocked* says almost nothing; *blocked for three weeks* says everything, and a flag cannot tell you which one you are looking at.
+
+The same rule produced two other decisions here: `blocked` carries **when and why** rather than being a state (§4.2.1), and closing carries **a reason** rather than splitting into separate `done`, `cancelled`, and `superseded` statuses (§5.3.1).
+
+##### For agents arriving from other tools
+
+`status: blocked` is a deeply worn habit, and an actor will reach for it. This rule is therefore part of what generated instructions must **explain rather than merely enforce** — an agent that knows *why* orthogonal facts are separate fields will apply the reasoning to cases this document never anticipated, instead of learning one exception by rote and reproducing the flaw everywhere else.
+
+#### 4.1.2 References — pointers this tool does not follow
 
 Any record may carry **`references`**: material an actor should read before working on it. A path, a link, an identifier in some other system, a name only a particular loader understands.
 
@@ -330,7 +356,7 @@ A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
 
 #### 4.2.1 `blocked`
 
-Blocked is **not a workflow status**, because a record can be blocked while `preparing` just as easily as while `in_progress`. Making it a stage would force a choice between recording *where the work is* and *that it is stuck* — and would lose the former when you set the latter, leaving nothing to return to when the block clears.
+Blocked is **not a workflow status**, for the reason set out in §4.1.1: a record can be blocked while `preparing` just as easily as while `in_progress`, so it is not a position in the sequence.
 
 It is a field, present only when it applies:
 
@@ -553,7 +579,7 @@ Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If
 
 #### 5.3.1 Closed is not the same as delivered
 
-Work ends for more reasons than success, and a terminal state called *done* cannot express that. **The terminal state is `closed`, and every closing records why:**
+Work ends for more reasons than success, and a terminal state called *done* cannot express that. Nor should the reasons become separate statuses — a record is closed *and* cancelled, not one or the other, which is the test in §4.1.1. **So the terminal state is `closed`, and every closing records why:**
 
 | Reason | Gated on completion? |
 |---|---|
