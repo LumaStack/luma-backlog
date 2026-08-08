@@ -111,6 +111,29 @@ The name is deliberately demanding. Calling this a deliverable obliges every ent
 
 > **A design property worth keeping.** Wrap-up at deliverable level should be close to a formality — if a deliverable-level audit routinely catches problems, the discipline below it is too weak. The catch rate is a diagnostic for everything underneath.
 
+#### 2.2.1 How formed is it?
+
+A backlog is only useful if **capturing something is cheap**. But a board full of half-thoughts is useless in a different way, so the difference has to be visible at a glance — and stay visible, or unformed things quietly accumulate the authority of planned work simply by sitting there long enough.
+
+**The format already carries this.** `lifecycle_status` is a maturity ladder:
+
+| Value | Means |
+|---|---|
+| `draft` | An idea. Recorded so it is not lost; not thought through. |
+| `provisional` | Shaped. Worth acting on, may still change substantially. |
+| `stable` | Formed. Ready to be worked. |
+| `archived` | Retired, and kept. |
+
+It is deliberately **orthogonal to workflow status** — the format named it `lifecycle_status` precisely to avoid colliding with a tool's own. *Workflow status says where the work is; lifecycle status says how much the record can be relied on.* A deliverable can be `stable` and sitting in `backlog`, or `draft` and urgent.
+
+Display labels (§2.1) can render these as *idea*, *shaping*, and *ready* for people who find those plainer.
+
+**`stale_after` is the other half.** A record may declare when it should be re-examined, and one that passes that date without being touched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgement to a person.
+
+> **Why this is what makes capture cheap.** Recording an idea is only free if discarding it is also free — and here **archiving is lossless** (§7.1). Nothing is deleted, nothing moves, and the record stays findable forever. So there is no cost to writing something down that might not survive, and no cost to letting it go, which is precisely the condition under which people record things instead of losing them.
+>
+> The corollary is that **drafts should stay off the main board by default.** Capture is generous; the working surface is not.
+
 ### 2.3 Wave
 
 > **On the name.** *Wave* is borrowed deliberately from **rolling wave planning**, the established project-management technique in which near-term work is planned in detail, later work is planned coarsely, and the plan is elaborated progressively as each pass teaches something. The number of waves is not knowable at the outset — which is the defining property of this unit, and the reason the word fits rather than merely being available.
@@ -424,6 +447,7 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
 | `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
+| `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 
 Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
@@ -1050,7 +1074,7 @@ Enough to work the model, and no more:
 
 | View | Shows |
 |---|---|
-| **Backlog** | Deliverables in rank order, in columns by workflow status. The kanban surface. |
+| **Backlog** | Deliverables in rank order, in columns by workflow status. The kanban surface. **Drafts are hidden by default** (§2.2.1) — capture is generous, the working surface is not. |
 | **Deliverable** | One deliverable: its outcomes and their evidence, its waves, its tasks. |
 | **Wave** | The current attempt — what is claimed, by whom, what is blocked. |
 | **Health** | Whatever conditions are currently firing across the repository. |
