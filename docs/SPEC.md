@@ -511,7 +511,7 @@ The format's `verified` field is the mechanism: a list of independent confirmati
 | `promoted_from` | optional | wikilink | The deliverable-level decision this was promoted from (§4.8.1). |
 | `affects` | optional | list of wikilink | Records this decision constrains. Optional, because a decision frequently outlives everything it touched. |
 
-A decision never completes (§2.6). Its `lifecycle_status` records whether it is draft, provisional, ratified, or retired — and **while it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision is ratified.
+A decision never completes (§2.6). Its `lifecycle_status` uses the format's own values — `draft`, `provisional`, `stable`, `archived` — which read in this context as proposed, in force but still open to change, ratified, and retired. **While it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision reaches `stable`.
 
 **Decisions live where they were made.** Most sit inside the deliverable that produced them; those made outside any deliverable sit at the top level (§7.2). *Where a decision was made never changes*, so this is a legal path fact under §7.1, and a derived index makes decisions globally browsable regardless of where they sit.
 
