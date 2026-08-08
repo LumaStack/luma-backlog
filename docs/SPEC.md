@@ -1419,7 +1419,9 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 
 **Three seams carry it:**
 
-- **All filesystem access goes through a root-scoped handle** that cannot traverse out, including via `..` or a symlink. The tool holds a bounded root and never reaches the filesystem directly. The escape then becomes unrepresentable rather than untested.
+- **All filesystem access goes through a root-scoped handle** that resists traversal out, including via `..` and symlinks. The tool holds a bounded root and never reaches the filesystem directly.
+
+> **This is depth, not a guarantee.** The standard library's implementation is a per-component check rather than a single kernel operation, it has had escapes patched more than once, and it disclaims bind mounts and device files outright. It raises the cost of the bug considerably and does not remove it — so the minimum Go version is pinned to one carrying the current fixes, and the environment lockdown ([`TESTING.md`](TESTING.md)) is the other half rather than a redundancy.
 - **Root discovery is separated from root use.** Finding the root must walk upward — that is what discovery is. It happens once, in one function, and everything downstream receives an already-bounded root. One small surface to test exhaustively, instead of a property the whole codebase must maintain.
 - **Execution of commands that came from records sits behind an injected interface** — `verify_by`, hooks, anything a record can cause to run. Almost every test substitutes a fake and executes nothing, which shrinks "tests that run arbitrary commands" from a category to a handful.
 
@@ -1429,7 +1431,7 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 
 **The rule is machine-enforced, not conventional.** Continuous integration rejects direct filesystem calls outside the one package allowed to make them. This project expects agents to write its tests, and an agent does not carry a convention reliably across sessions — so a guardrail that depends on remembering is not a guardrail. The same reasoning the design applies to the backlog applies to its own source.
 
-**What remains for the tests themselves:** a temporary directory per test, a redirected home, neutralised global and system git configuration, and **no terminal prompting** — an unattended agent that hits a credential prompt hangs forever, which is a liveness failure rather than a safety one and is free to prevent.
+**The failure actually worth designing against is not an escape.** It is the upward walk leaving the fixture and finding the developer's own repository, where git commands **succeed** and the test reports green. A container makes that class invisible rather than safe, since inside one there is no other repository to hit. So the countermeasure is a fenced git environment, set in a specific order, detailed in [`TESTING.md`](TESTING.md).
 
 **A development container is optional**, for a reproducible toolchain across the supported Go versions. It is deliberately **not** the safety story: the two layers above are, and treating a container as the answer would hide exactly the defects worth finding. Compilation stays on the host; only execution needs isolating, and only for the small set of tests that execute anything.
 

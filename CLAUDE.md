@@ -13,7 +13,7 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 ## Working rules
 
-- **Never name another project in committed output.** Research prior art freely in conversation; keep the names out of the files.
+- **Never name a competing project in committed output.** This is about rivals, not references — tools we depend on, borrow technique from, or interoperate with are named normally.
 - **Never abbreviate terminology to initials.** Spell every phrase out.
 - **Discuss before writing.** On anything exploratory — naming, modelling, structure — reach agreement first. Do not draft the answer and present it as the discussion.
 - **Do not anchor on the maintainer's earlier research.** It contains ideas already abandoned. Reason from the problem instead.
