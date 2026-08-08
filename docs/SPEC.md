@@ -320,7 +320,7 @@ Most regeneration replaces **part** of a file, and calling that "a generated fil
 **How a regenerated section is delimited is unresolved** (`OPEN-QUESTIONS.md` §24) — explicit markers, a named heading, or a heading declared in frontmatter. The obligations below hold whichever wins:
 
 - **Everything outside the boundary is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`FORMAT-REQUESTS.md` §4), not an exception.
-- **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears.
+- **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears. But **a section that was removed is not the same as one that never existed** — re-adding the first is overriding a decision someone made. Where the two are distinguishable, absence is reported rather than silently repaired (`OPEN-QUESTIONS.md` §24).
 - **Content inside is lost on the next write**, so a reader must be able to tell that from the file itself. Whatever delimiter is chosen has to carry that warning — an unmarked region that silently eats edits is the worst outcome of the three.
 
 **Prefer a section to a file** wherever a person might reasonably want to add something. A whole generated file forbids that permanently, and the cost of finding out later is a file people work around rather than use.

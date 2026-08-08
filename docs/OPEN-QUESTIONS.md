@@ -930,6 +930,22 @@ generated_sections: [Navigation]
 
 The body stays clean, the declaration is machine-readable, and it sits where metadata belongs. The rename problem remains, and the warning is one file-length away from the content it governs rather than beside it.
 
+### A missing section is two different situations
+
+*Missing* means either **never had one** — a new file, where appending is simply correct — or **had one and it was removed**, which is a person making a decision. Silently re-adding the second is the tool arguing with someone who already answered.
+
+They deserve different treatment, so the tool has to be able to tell them apart:
+
+| Situation | Response |
+|---|---|
+| Never had one | Append. Not an event. |
+| Declared, and absent | **Warn.** The file contradicts itself — it says it carries a section it does not have. |
+| Declared, absent, and a team has said this matters | Refuse, if that gate is declared (§5.0). |
+
+Warning rather than refusing by default follows the standing posture: permissive by default, strictness opt-in. Deleting a generated section is a legitimate thing to do — the accompanying fix is removing its declaration, and a warning says so without blocking anyone's work.
+
+**This is a new argument for the frontmatter option, and possibly the deciding one.** It is the only candidate that can distinguish the two cases at all: a declaration outlives the section it names, so *declared but absent* is detectable. With comment markers or a bare heading, a removed section and one that never existed look identical, and the tool has no choice but to guess — which means silently recreating whatever someone just deleted.
+
 ### What decides it
 
 **How often files are read directly, in an editor, rather than through the board or the command line.** If that is rare, markers cost nothing and buy precision. If it is the common case — and for a tool storing plain markdown in a repository it may well be — two lines of machinery per section is a real tax on the thing the format exists for.
