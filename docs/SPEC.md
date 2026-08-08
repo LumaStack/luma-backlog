@@ -297,7 +297,7 @@ so a record writes `type: task` and means `luma/backlog/task`. Every record in a
 
 **An ambiguous short name is an error, never a guess.** If a name could resolve to more than one type, the tool reports it and requires qualification — for those names only, not for the corpus. Precedence rules and search orders were considered and rejected: quiet resolution is how the wrong type gets picked and nobody finds out.
 
-**It is also copied onto the bundle root `index.md`, which is generated from configuration** and can be deleted and rebuilt without loss. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1).
+**It is also copied onto the bundle root `index.md` as regenerated keys**, sourced from configuration. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1).
 
 **Both stay, permanently.** They serve different readers rather than being stages of the same thing: `config` and `contract` (§9.2, §9.7) answer an agent that has the tool, and the generated file answers one that does not — an importer, a search index, a person reading on the web. Asking the tool is the better path where it exists, and it does not exist for everyone.
 
@@ -306,6 +306,30 @@ so a record writes `type: task` and means `luma/backlog/task`. Every record in a
 Two things back that up rather than replace it. It stays **safe to delete**, so a missing copy is never an error. And drift is **reported** as a condition — the backstop for the one case regeneration cannot cover, a file edited by hand.
 
 Copies are cheap. Unmaintained copies are a defect, not an inconvenience: a stale namespace makes a format-aware reader mis-resolve every type in the bundle and say nothing.
+
+##### Three granularities, named separately
+
+Most regeneration replaces **part** of a file, and calling that "a generated file" is how authored content gets destroyed. The three are distinguished by vocabulary because they carry different obligations:
+
+| Term | What it means | The obligation |
+|---|---|---|
+| **Regenerated file** | The whole file is output. No authored content anywhere in it. | Delete and rewrite. Says so at the top. |
+| **Regenerated section** | A bounded region inside an authored file. | **Never touch a byte outside the markers.** |
+| **Regenerated key** | Named frontmatter keys the tool owns. | Every other key is preserved untouched (§4.1). |
+
+**A regenerated section is delimited explicitly**, and the markers are part of the contract:
+
+```markdown
+<!-- luma-backlog:generated:begin outcomes -->
+...regenerated content...
+<!-- luma-backlog:generated:end outcomes -->
+```
+
+- **Everything outside the markers is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`FORMAT-REQUESTS.md` §4), not an exception.
+- **Missing markers are appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears.
+- **Content inside the markers is lost on the next write**, which is why the marker names the tool: a reader who edits there should be able to see that it will not survive.
+
+**Prefer a section to a file** wherever a person might reasonably want to add something. A whole generated file forbids that permanently, and the cost of finding out later is a file people work around rather than use.
 
 The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
 

@@ -7,8 +7,9 @@ type_namespace: luma/backlog
 
 # Backlog
 
-**Generated. Do not edit — change `config.yml` instead.**
+The bundle root. This file is **authored**; `lkf_version` and `type_namespace` are **regenerated keys** sourced from `config.yml`, which is where they are edited.
 
-This file exists so a tool that understands the knowledge format, but knows nothing about this one, can resolve `type: task` to `luma/backlog/task`. `config.yml` is the source of truth; these keys are copied here, and the file can be deleted and rebuilt without loss.
+They are mirrored here so a tool that understands the knowledge format, but knows nothing about this one, can resolve `type: task` to `luma/backlog/task` without parsing a private configuration file. Anything reading this programmatically should prefer `backlog config`.
 
-Anything reading this programmatically should prefer `backlog config` over parsing the file.
+<!-- luma-backlog:generated:begin navigation -->
+<!-- luma-backlog:generated:end navigation -->
