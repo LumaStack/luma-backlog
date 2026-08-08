@@ -652,9 +652,79 @@ Actors working in separate git worktrees **must have an up-to-date view and must
 
 ## 8. Configuration
 
-*To be written.* Defaults ship as an editable file rather than behavior compiled into the binary.
+Configuration is where opinions live so the binary can stay free of them. Every choice this document leaves to a team — what states exist, what things are called, how work is classified — resolves here rather than in code.
 
-Known to belong here: workflow status vocabularies, priority values, dimension names, templates, hooks, and **display labels for units** (§2.1) — the last of which lets a team call deliverables *stories* or *projects* without changing anything a machine reads.
+### 8.1 Where it lives
+
+**One file, `.backlog/config.yml`, committed with the repository.** YAML, because records already carry YAML frontmatter and one format in a repository is worth more than a marginally better second one.
+
+It is committed because it **defines what records mean**. A workflow status vocabulary that differed between two people would make the same record say different things to each of them.
+
+### 8.2 What it holds
+
+```yaml
+labels:
+  deliverable: story              # what people see; records still say deliverable
+
+workflow_status:
+  deliverable: [todo, doing, blocked, delivered]
+  task:        [todo, doing, blocked, done]
+
+priority:
+  values:  [low, medium, high, urgent]
+  default: medium
+  derive_from: [impact, effort]   # omit to set priority by hand
+
+dimensions:
+  - project
+  - milestone
+
+templates:
+  deliverable: templates/deliverable.md
+
+hooks:                            # proposal — see §5.4
+  deliverable.closed: ./scripts/wrap-up.sh
+```
+
+Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
+
+### 8.3 Defaults are written, not compiled
+
+`init` **writes the defaults into the file**, rather than leaving them implicit in the binary. A team's first encounter with a default is therefore a line they can read and change, not behaviour they have to discover and then find a way to override.
+
+Built-in fallbacks still exist for every key, so that a configuration written today keeps working when new keys are added later. The two are not in tension: the fallbacks provide compatibility, and writing them out provides discoverability.
+
+### 8.4 Repository settings and personal ones
+
+A person may hold their own preferences, and there is one rule governing what may live there:
+
+**Nothing personal may change what a record means.** Theme, editor, board density, default output format — fine. Status vocabularies, dimension names, priority values, labels — never. The moment two people can disagree about what a field *is*, the backlog stops being a shared artifact and the contract stops being universal.
+
+The test: if changing a setting would alter what `--json` returns for the same record, it is a repository setting.
+
+### 8.5 Unknown keys
+
+**Preserved untouched, never interpreted, never a reason to reject the file** — the same rule records follow (§4.1). It is how a workflow layer keeps its own settings without this tool needing to know the concept exists.
+
+### 8.6 The limit: vocabulary, not behaviour
+
+Configuration is the natural place for process rules to accumulate, and a configuration format expressive enough to describe conditional workflow **is a rules engine wearing different clothes**. That is `OPEN-QUESTIONS.md` §6 arriving by a side door.
+
+The test is simple:
+
+> **Configuration declares vocabulary and bindings. It never declares behaviour.**
+>
+> If a setting would need an `if`, it belongs in a script the configuration *points at* — not in the configuration.
+
+So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close, if three or more outcomes were retired, require approval from someone other than the closer"* is behaviour, belongs in `wrap-up.sh`, and would make this tool an interpreter of somebody's process if it lived in a settings file.
+
+### 8.7 Errors
+
+**Configuration is strict where records are permissive**, and deliberately so. A record with an unrecognised field is tolerated because knowledge arrives incomplete; a *misspelt configuration key* is a silent behaviour change, which is far worse than an error.
+
+- A **malformed or unparseable** file fails loudly, at load, naming the line.
+- A **known key with an invalid value** fails loudly — a status vocabulary that is not a list, a priority default absent from its own values.
+- An **unknown key** is preserved and ignored (§8.5), because it may belong to something else.
 
 ## 9. Command interface
 
