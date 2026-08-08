@@ -1407,13 +1407,35 @@ Dependencies follow the distinction in `PRINCIPLES.md`: **nothing the user has t
 
 **One cost of Cobra worth naming:** its help text and error formatting become part of the human-facing surface. Machine-readable output stays entirely ours (§9.3), so the coupling stops at prose.
 
-### 9a.4 Tests are contract tests
+### 9a.4 Containment is structural first
+
+This tool's whole job is mutating a filesystem and a git repository, it discovers its root by **walking up** the directory tree, and it may execute commands that came from data in records. Nearly every meaningful test therefore touches the world.
+
+The instinct is to isolate the tests. That is the weaker half, because of an asymmetry worth stating plainly:
+
+> **Test isolation protects the developer. Structural containment protects the user.** Only one of the two ships in the binary.
+
+A sandbox means a path-escape bug never reaches *our* machine. It does nothing for the person who installs this and has it write outside their repository. So containment is designed in, and isolation is what remains.
+
+**Three seams carry it:**
+
+- **All filesystem access goes through a root-scoped handle** that cannot traverse out, including via `..` or a symlink. The tool holds a bounded root and never reaches the filesystem directly. The escape then becomes unrepresentable rather than untested.
+- **Root discovery is separated from root use.** Finding the root must walk upward — that is what discovery is. It happens once, in one function, and everything downstream receives an already-bounded root. One small surface to test exhaustively, instead of a property the whole codebase must maintain.
+- **Command execution sits behind an injected interface.** Almost every test substitutes a fake and executes nothing, which shrinks "tests that run arbitrary commands" from a category to a handful — the executor's own.
+
+**The rule is machine-enforced, not conventional.** Continuous integration rejects direct filesystem calls outside the one package allowed to make them. This project expects agents to write its tests, and an agent does not carry a convention reliably across sessions — so a guardrail that depends on remembering is not a guardrail. The same reasoning the design applies to the backlog applies to its own source.
+
+**What remains for the tests themselves:** a temporary directory per test, a redirected home, neutralised global and system git configuration, and **no terminal prompting** — an unattended agent that hits a credential prompt hangs forever, which is a liveness failure rather than a safety one and is free to prevent.
+
+**A development container is optional**, for a reproducible toolchain across the supported Go versions. It is deliberately **not** the safety story: the two layers above are, and treating a container as the answer would hide exactly the defects worth finding. Compilation stays on the host; only execution needs isolating, and only for the small set of tests that execute anything.
+
+### 9a.5 Tests are contract tests
 
 Table-driven tests throughout, and **a golden file for every output shape.**
 
 That follows from a principle rather than from taste. If output shapes are part of the contract, a diff in a golden file **is** a breaking change — which turns "good coverage" into something with a meaning, rather than a percentage to chase. The behaviours that most need pinning are the ones other systems will be written against: `--json` shapes, exit codes (§9.4), and the `contract` output.
 
-### 9a.5 Distribution
+### 9a.6 Distribution
 
 One release tool covering static binaries per platform, checksums, a Homebrew tap, man pages, and shell completions. Continuous integration runs the tests across the supported Go versions.
 
