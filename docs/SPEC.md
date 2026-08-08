@@ -266,7 +266,7 @@ The defining record type of this specification.
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
 | `desired_state` | mandatory | text | The condition itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
-| `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **Deliberately unconstrained** (§4.4.1). A single entry may be written bare and is treated as a one-element list, following the format's own handling of `verified`. |
+| `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **Deliberately unconstrained** (§4.4.2). A single entry may be written bare and is treated as a one-element list, following the format's own handling of `verified`. |
 | `deliverable` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | optional | wikilink | The attempt currently targeting it, if any. |
 | `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
