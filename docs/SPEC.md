@@ -743,22 +743,28 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one deliverable writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
-**Keys are written to three decimal places** — `10.000`, `15.000`, `10.500` — which keeps them a consistent width, legible at a glance, and gives a thousand positions between any two whole numbers.
+**Keys are fixed-width: four digits, a point, three decimals** — `0010.000`, `0020.000`, `0010.500`.
+
+That width is doing real work. **Zero-padding makes lexicographic order identical to numeric order**, so anything that can compare text sorts correctly — a script piping through `sort`, an editor plugin, a derived index, a tool nobody wrote for this project. There is no comparator to implement and therefore no way to get ordering silently wrong. Keys also align in a column, which is what makes a file of them readable.
 
 Allocation is by **bisection**: take the midpoint of the neighbouring keys.
 
 | Situation | Key |
 |---|---|
-| Seeding a new backlog | `10.000`, `20.000`, `30.000` |
-| Between `10.000` and `20.000` | `15.000` |
-| Between `10.000` and `11.000` | `10.500` |
-| Squeezed | `10.001` |
+| Seeding a new backlog | `0010.000`, `0020.000`, `0030.000` |
+| Between `0010.000` and `0020.000` | `0015.000` |
+| Between `0010.000` and `0011.000` | `0010.500` |
+| Squeezed | `0010.001` |
 
-**Three decimals is the normal form, not a hard limit.** Roughly ten bisections at the *same* position exhaust it — `10.500`, `10.250`, `10.125`, and so on down to `10.001`. At that point precision **extends** rather than the scheme failing, and a fourth decimal appears. That case is rare enough that most backlogs will never contain one, and it exists solely so that **a rebalance is never mandatory** — the alternative is a multi-record write arriving in the middle of someone dragging a card.
+**The width is a normal form, not a hard limit.** Roughly ten bisections at the *same* position exhaust three decimals — `0010.500`, `0010.250`, `0010.125`, down to `0010.001`. Precision then **extends** rather than the scheme failing. Most backlogs will never contain a fourth decimal; it exists so that **a rebalance is never mandatory**, the alternative being a multi-record write arriving mid-drag.
+
+The four-digit integer range is likewise soft. Appending past `9990.000` bisects toward the ceiling rather than failing, and reaching it at all would take thousands of deliverables at one level.
 
 Two details that matter:
 
-**The key is stored as a string and compared as a number.** Not because comparison is difficult, but because floating-point values round-trip badly — `10.25` can return from a parser as `10.250000000000001`, producing spurious diffs in a format built on clean diffs and byte-preserving rewrites. A string holds exactly what was written.
+**The key is stored as a string, and may be compared either way.** Because the width is fixed and zero-padded, **text order and numeric order are the same order** — a consumer can sort however is convenient and cannot get a different answer.
+
+Storing it as a string rather than a number is deliberate: floating-point values round-trip badly, and a parser returning `10.250000000000001` for `10.25` would produce spurious diffs in a format built on clean diffs and byte-preserving rewrites. A string holds exactly what was written, and the padding survives — which is what keeps the two orderings agreeing.
 
 **There is a precision limit, and it is acceptable.** Repeated subdivision *at the same position* eventually exhausts precision — roughly fifty consecutive insertions between the identical pair. The remedy is renumbering that local span, which is a bounded, rare, recoverable multi-record write rather than the routine one that integer positions would force on every insertion.
 
