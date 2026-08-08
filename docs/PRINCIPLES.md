@@ -16,7 +16,7 @@ This project assumes a world where a backlog is worked **continuously and in par
 
 **What it is not** is the thing that decides what happens next. Driving agents, running workflows, sequencing effort, and judging quality are expected to live in a separate system. That system is expected to change rapidly. This one is expected to hold still.
 
-How much intelligence belongs on this side of that line is open. "Dumb store" is not the goal, and neither is a workflow engine. The useful question for any given capability is not *is this allowed* but **does putting it here make this tool need to change every time working styles change** — and that question is answered case by case.
+How much intelligence belongs on this side of that line is open. "Dumb store" is not the goal, and neither is a workflow engine. But the *method* for deciding is not open: almost no capability sits wholly on one side, so the question is not which side it goes on but **where the line runs through it** — the tool holding a neutral mechanism, and a team supplying the opinion it carries. `SPEC.md` §5.0 states that test and the two rules that bound it.
 
 ## The interface is the contract
 
@@ -75,5 +75,5 @@ Current positions, held loosely, and expected to be revisited as the boundary wi
 
 - **Deciding what to work on next.** Prioritization and readiness feel like they belong upstream.
 - **Running or prompting agents.** This tool holds no prompts and no model configuration.
-- **Enforcing process.** Genuinely undecided — see `OPEN-QUESTIONS.md` §6. The tool may end up holding a mechanism for gates that it does not itself author.
+- **Enforcing process.** The tool may carry a gate a repository declares, and ships none of its own. It refuses only what a caller's own record contradicts — see `SPEC.md` §5.0. What remains open is whether a declared gate can be overridden (`OPEN-QUESTIONS.md` §6).
 - **Being an organization's system of record.** External trackers may own the work; this stays a repository-local representation that gives agents context.

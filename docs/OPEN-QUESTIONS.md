@@ -4,7 +4,9 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §2 (exploration and the log still have no home).
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §2 (exploration and the log still have no home); §22 (how behaviour attaches at a boundary).
+
+§12 — the boundary with the workflow layer — is **settled as a test rather than an answer** (`SPEC.md` §5.0), which narrows §6 and removes the in-principle objection in §22.
 
 All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
 
@@ -187,41 +189,35 @@ What remains open is smaller and lives elsewhere: how supersession is represente
 
 ## 6. Whether the tool enforces checkpoints
 
-**Status:** Open — deliberately undecided. This is a real fork, not a question awaiting the right argument.
+**Status:** Mostly settled by §12. What remains is narrow.
 
-A checkpoint is a point where something must happen before proceeding — verify this, review that, audit before closing. The question is whether this tool **enforces** such a rule or merely makes the boundary visible and lets something else decide.
+A checkpoint is a point where something must happen before proceeding — verify this, review that, audit before closing. The question was whether this tool **enforces** such a rule or merely makes the boundary visible.
 
-### Why it is not already answered
+### What §12 settled
 
-The instinct to say "the tool never enforces process" is wrong on its own terms, because **the tool already enforces something**: completion derives from evidence and cannot simply be asserted. That is a rule about when work may be considered finished, held by the tool.
+The instinct to say "the tool never enforces process" was always wrong on its own terms, because **the tool already enforces something**: completion derives from evidence and cannot be asserted. So the question was never *whether*, but *what class of rule*.
 
-So the question was never *whether* to enforce, but *what class of rule* is safe to enforce.
+`SPEC.md` §5.0 answers it with a bound rather than a category:
 
-| Class | Examples | Cost of enforcing |
-|---|---|---|
-| **Model invariants** | A claim is exclusive. Verification requires evidence. Completion is derived. | Low. These *are* the data model; enforcing them is what makes it coherent. They do not change when working styles change. |
-| **Process sequences** | Work may not start before review. A deliverable may not close before an audit. | High. These vary by team, change often, and may differ between systems operating on the same backlog. |
+> **The tool may refuse only what the caller's own record contradicts.**
 
-The working lean is to enforce the first and be suspicious of the second. It is a lean, not a law.
+That draws the line where the earlier table wanted it, but for a reason that survives contact with new cases. Refusing to close as *delivered* with a failing outcome is holding a team to **their own declaration**. Refusing to start work before a review would be holding them to **somebody else's process**, and nothing in the record says they agreed to it.
 
-**A data point pulling the other way.** `SPEC.md` §2.3 now says that verification and applied learning **always** happen at the boundary of a unit of iteration. If that word is meant strictly, the tool is already being asked to enforce a process sequence — which would settle this question in favour of enforcement, at least at that one boundary. Whether "always" is a description of intent or a requirement on the tool is worth resolving explicitly rather than by inference.
+It also settles the mechanism: **the tool may carry a gate a repository declares, and ships none of its own.** A repository declaring nothing behaves exactly as it does today. That is the shape the format already uses for validation — off by default, opted into, never a conformance gate.
 
-### The genuine counter-argument
+**The `always` in §2.3** — that verification and applied learning happen at every wave boundary — reads as a description of the intended loop, not a requirement on the binary. Under this rule the tool can *observe* that a wave closed without verification (`deliverable.drifted`) and cannot *refuse* the close, because nothing in the record promised otherwise.
 
-A gate that is not enforced is not a gate. An unenforced checkpoint is advice, and advice gets routed around. If the point of a checkpoint is that it is not optional, a tool that merely announces the boundary has described the feature rather than delivered it.
+### The genuine counter-argument, still standing
 
-### If enforcement lands, the shape to follow
+A gate that is not enforced is not a gate. An unenforced checkpoint is advice, and advice gets routed around. This is answered for *declared* gates, which are enforced. It is not answered for anyone who wants a gate without declaring one, and it may be that teams will not do the declaring.
 
-The precedent exists in the format: validation is off by default, opted into explicitly, and never a conformance gate. Applied here, the tool could hold the *mechanism* for gating while shipping no gates of its own — a repository declares its checkpoints, the tool enforces what was declared, and a repository declaring nothing behaves as it does today.
+### What is actually still open
 
-Hooks are the likely mechanism, which makes this a question about hook semantics rather than a separate feature.
-
-### Unresolved sub-questions
-
-- **Can an enforced gate be overridden?** Humans need escape hatches, but an overridable gate is advisory in practice — which may collapse the distinction.
+- **Can a declared gate be overridden?** Humans need escape hatches, but an overridable gate is advisory in practice. If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 - **Whose rule wins** when two systems operate on one backlog and declare conflicting gates?
 - **Does a blocked transition fail loudly or silently no-op?** This determines whether callers must understand gates to be correct.
-- **Does a failing hook block?** Guardrails imply yes. But hook failure must then be legible enough that people do not reach for a force flag, at which point the guardrail is decorative.
+
+The first of those is the live one; the other two only matter once gates exist.
 
 ---
 
@@ -411,22 +407,23 @@ Note the interaction with `SPEC.md` §2.3, which currently says verification and
 
 ## 12. Where the boundary with the workflow layer actually falls
 
-**Status:** Open by design — but the *method* for deciding it should not be.
+**Status:** Settled — as a test rather than an answer. See `SPEC.md` §5.0.
 
-`PRINCIPLES.md` deliberately declines to fix this boundary, and that remains right. But every feature raises the question again, and answering it by instinct each time will produce an incoherent tool. What is needed is not the answer but a **test** that can be applied repeatedly.
+The question was never going to resolve into a list of which features go where, because **almost no feature has a side.** A status vocabulary is not ours or theirs; the tool holds an ordered list and a team fills it. Columns, standing outcomes, and hook configuration all have that same shape. The line runs *through* capabilities rather than between them.
 
-Two candidate tests, both currently in use informally:
+So the settlement is a test applied in order: hold it whole if the right answer does not depend on how anyone works; **split it into mechanism plus configured opinion if it does** — which is where most things land; send it upstream if it will not split. Step 2 is guarded by having to name a second opinion the mechanism genuinely supports, which is what keeps *configurable* from being a costume worn by one methodology.
 
-- **Does this need to change when working styles change?** If yes, it belongs upstream. This is the question `PRINCIPLES.md` already poses.
-- **Can the tool be correct about this without knowing anyone's methodology?** Counting whether criteria pass requires no methodology. Deciding whether a review was rigorous enough requires one.
+A second question governs how much the tool is allowed to do with what it knows: **what does it cost to be wrong?** A wrong observation is ignored; a wrong refusal stops work and gets routed around. Hence a long table of conditions and a single refusal, bounded by the rule that **the tool may refuse only what the caller's own record contradicts.**
 
-### The part that matters for the minimum viable product
+### What it changed
 
-Some workflow logic will live in this repository early on. The risk is not that it lives here — it is that it becomes **entangled** here, so extraction later means a rewrite rather than a move.
+Three conditions embedded thresholds that no methodology-free answer exists for — `deliverable.drifted`, `deliverable.not-converging`, `deliverable.churning`. They now report the series they observed, and the threshold that names it a problem moved to configuration (`SPEC.md` §5.2, §8.2).
 
-The mitigation is cheap and worth adopting now: **write that logic as a consumer of this tool's own interface, not as internals.** If the temporary workflow layer talks to the backlog exactly the way an external system would, extracting it is a relocation. If it reaches into internal state, it is a rewrite, and it will not happen.
+### What remains
 
-*Settled by:* not settling it — but choosing a test, and keeping early workflow logic behind the public interface so the boundary stays movable.
+The **structural** half, which is a practice rather than a decision: early workflow logic will live in this repository, and must talk to the backlog through the published interface exactly as an outside system would. Written that way it is later *moved*; written against internals it must be *rewritten*, and so it never leaves.
+
+*Settled by:* choosing a test instead of an answer, and keeping early workflow logic behind the public interface so the boundary stays movable.
 
 ---
 
@@ -697,7 +694,7 @@ This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail
 ### Why hooks are hard
 
 - **The tool becomes an executor**, which brings environments, timeouts, isolation, and failure handling into a layer deliberately kept free of them.
-- **Blocking is the whole point and also the problem.** A hook that cannot refuse is advice, and advice gets routed around. A hook that can refuse makes the tool an enforcer of policy it did not author (§6).
+- **Blocking is the whole point and also the problem.** A hook that cannot refuse is advice, and advice gets routed around. §12 removes the objection in principle — the tool supplies the mechanism and a team authors the gate, so it enforces policy it did not author *on that team's instruction*. What it does not remove is the cost: a blocking hook is still the difference between a tool that reports and a tool that stops people.
 - **Where does a hook run?** Under the branch-local topology (§8), on whose machine, in which worktree? An agent's boundary crossing and a person's may fire the same hook in very different environments.
 - **What is a hook in an agent world?** Most of what is wanted at a boundary — audits, applying learning, promoting decisions — is agent work rather than script work. A tool shelling out to a script is ordinary; a tool needing to invoke an agent is a different proposition, though a script that happens to call one keeps the tool ignorant of the difference.
 - **Failure must be legible or the feature is worse than nothing.** A hook that fails obscurely trains people to reach for a force flag, at which point the guardrail is decorative and everyone believes they are protected.

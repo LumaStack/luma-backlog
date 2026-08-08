@@ -543,9 +543,45 @@ They were accepted because an outcome does more than a checkbox: it owns tasks a
 
 ## 5. Boundaries and hooks
 
-> **⚠ Proposal, not settled design.** This section is written to be argued with. §5.1 through §5.3 follow reasonably from the principles; **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §22 for the alternative that was set aside and why it may be better.
+> **⚠ Mostly proposal.** §5.0 is settled and applies to the whole document. §5.1 through §5.3 follow reasonably from the principles. **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §22 for the alternative that was set aside and why it may be better.
 
 A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behaviour attaches.
+
+### 5.0 Where the line falls
+
+This tool is meant to sit alongside a separate system that drives agents and runs workflows. Which capability belongs to which comes up on nearly every feature, and answering it by instinct each time produces an incoherent tool. This is the test used throughout this document.
+
+**The line is not between capabilities. It runs through them.**
+
+Almost nothing belongs wholly to one side. A status vocabulary is not ours or theirs: the tool holds an ordered list, and a team says what is in it. The same split appears in columns, in standing outcomes, and in hook configuration — **the tool holds a mechanism, and someone else supplies the opinion.** Asking which side a feature goes on keeps failing because most features have a bit of both.
+
+#### The test
+
+Applied to any capability, in order:
+
+1. **Is there a right answer that does not depend on how anyone works?** Then the tool holds it whole. *Counting whether evidence exists. Detecting an expired lease. Sorting by rank.*
+2. **If not, does it separate into a neutral mechanism and an opinion that is not neutral?** Then the tool holds the mechanism, configuration carries the opinion, and a workflow layer authors it. **Most capabilities land here.**
+3. **If it will not separate, it belongs upstream entirely.** *What to work on next. Whether a review was thorough. Whether three weeks blocked is a crisis.*
+
+**The check on step 2**, which is what stops it becoming a rubber stamp: **name a second opinion the mechanism genuinely supports, that some real team would actually want.** If nothing comes to mind, the mechanism encodes one methodology and is merely being described as neutral. `workflow_status` passes — a team preferring `idea · ready · doing · done` is served by the same machinery. A setting like `waves must close before the next opens` would not; it admits one answer and is a process rule with a configuration key bolted on.
+
+#### Observe liberally, refuse narrowly
+
+Placement follows a second question: **what does it cost to be wrong?**
+
+A wrong observation gets ignored. A wrong refusal stops work, teaches people to reach for a force flag, and destroys the guardrail — the argument §5.4 makes about hooks holds generally. The two errors are nothing alike, so the tool's posture is not symmetric either: **a long table of conditions (§5.2), and exactly one refusal (§5.3).**
+
+What makes the one refusal defensible is the rule that bounds it:
+
+> **The tool may refuse only what the caller's own record contradicts.**
+
+Closing as *delivered* while an outcome is failing is refused because **the team wrote that outcome** — not because the tool holds a view about what finished means. It holds a caller to their own words, never to its opinion. That is also why cancelling is not gated (§5.3.1): nothing in the record claims the work succeeded, so there is nothing to contradict.
+
+#### What this permits, and what it does not
+
+- **A blocking hook is permitted** (§5.4), because the tool supplies only the mechanism and a team authors the gate. What is not permitted is *shipping* a gate. A repository that declares nothing gets nothing.
+- **A condition may report a pattern, but not a verdict** — and any threshold deciding when a pattern is worth naming is configuration rather than a constant (§5.2).
+- **Early workflow logic may live in this repository**, and probably will. The requirement is only that it reaches the backlog through the published interface, exactly as an outside system would. Logic written that way is later **moved**; logic that reaches into internals has to be **rewritten**, which is another way of saying it never leaves.
 
 ### 5.1 Conditions, not events
 
@@ -573,15 +609,17 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `outcome.unmeasured` | An outcome with no `verify_by` — the *Measure* phase was skipped. |
 | `task.advances-nothing` | A task attached to no outcome. |
 | `deliverable.unarticulated` | A deliverable with no outcomes at all. |
-| `deliverable.drifted` | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
-| `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
-| `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
+| `deliverable.drifted` † | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
+| `deliverable.not-converging` † | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
+| `deliverable.churning` † | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
 | `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgement. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
 Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
+
+> **† These three carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgement — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgement attached, which is the honest default.
 
 > **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This deliverable is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
 
@@ -877,6 +915,11 @@ dimensions:
   - project
   - milestone
 
+thresholds:                       # when a pattern is worth naming (§5.2)
+  drifted_after_waves:      1     # waves of activity with nothing verified or revised
+  not_converging_after:     3     # waves with no change in outcomes passing
+  churn_records_per_pass:   20    # records created per outcome newly passing
+
 standing_outcomes:                # applied to every new deliverable (§4.4.1)
   - desired_state: the test suite passes
     verify_by:     make test
@@ -890,7 +933,9 @@ hooks:                            # proposal — see §5.4
   deliverable.closed: ./scripts/wrap-up.sh
 ```
 
-Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
+Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), condition thresholds (§5.2), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
+
+**Thresholds are opinions, so they live here** rather than in the binary (§5.0). They are also the one part of this file that may be **left unset on purpose**: omit them and the affected conditions report what they observed without naming it a problem.
 
 Three notes on the defaults. The first three statuses describe **how far the planning has gone** rather than where the work is (§2.2.1). **Columns group statuses**, so a precise vocabulary still renders as a legible board. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
 
