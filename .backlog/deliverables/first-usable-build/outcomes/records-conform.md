@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/outcome
+type: outcome
 title: Records conform to the format
 desired_state: Every record the tool writes is a conformant Concept, and a record hand-edited in an editor round-trips without loss.
 verify_by:

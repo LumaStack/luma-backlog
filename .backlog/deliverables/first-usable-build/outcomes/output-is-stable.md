@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/outcome
+type: outcome
 title: Output shapes are pinned
 desired_state: Every machine-readable output shape and every exit code has a test that fails when it changes.
 verify_by:

@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/outcome
+type: outcome
 title: Capture costs one command
 desired_state: A single invocation appends a line to the right journal, creating today's entry when there is none, with no file opened and no heading written.
 verify_by: backlog journal "a thing worth keeping" && grep -q "a thing worth keeping" .backlog/deliverables/*/journal.md

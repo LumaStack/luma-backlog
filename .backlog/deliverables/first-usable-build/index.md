@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/deliverable
+type: deliverable
 title: First usable build
 description: The smallest binary that lets this project keep its own backlog.
 workflow_status: in_progress

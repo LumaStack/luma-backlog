@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/outcome
+type: outcome
 title: The tool writes nothing outside the backlog
 desired_state: No command modifies any path outside `.backlog/`, including when run from a nested directory, through a symlink, or with a hostile record.
 verify_by:

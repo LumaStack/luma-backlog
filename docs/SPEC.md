@@ -283,7 +283,21 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 ### 4.1 Conventions
 
-**Type names are namespaced organization, domain, type:** `luma/backlog/deliverable`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration`.
+**Type names are namespaced organization, domain, type** — `luma/backlog/deliverable`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration` — **and records write the short form.**
+
+The bundle root declares the namespace once:
+
+```yaml
+# .backlog/index.md
+lkf_version:    0.0.2
+type_namespace: luma/backlog
+```
+
+so a record writes `type: task` and means `luma/backlog/task`. Every record in a bundle shares a namespace, so carrying it in each one repeats a constant in the place it never varies. **A fully qualified value is always legal and always wins**, and is how a record built from a foreign vocabulary says so.
+
+**An ambiguous short name is an error, never a guess.** If a name could resolve to more than one type, the tool reports it and requires qualification — for those names only, not for the corpus. Precedence rules and search orders were considered and rejected: quiet resolution is how the wrong type gets picked and nobody finds out.
+
+The declaration lives on `index.md` rather than in `config.yml` because it is a **format-level** fact ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1). Putting it in this tool's configuration would mean only this tool could read its own records.
 
 The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
 

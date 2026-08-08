@@ -1,5 +1,5 @@
 ---
-type: luma/backlog/outcome
+type: outcome
 title: Completion is computed, not asserted
 desired_state: Closing a deliverable as delivered while any live outcome lacks passing evidence is refused, and the refusal names the outcome.
 verify_by:

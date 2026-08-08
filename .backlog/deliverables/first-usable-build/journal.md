@@ -32,4 +32,22 @@ Lead with a skill, backfill the command, then rewrite the skill to call it. The 
 
 That is the same split the design already applies to itself (`SPEC.md` §5.0): the command is mechanism, the skill is the opinion about using it. It also inherits the same rule — **every command must work standalone**, because there is no privileged path (`PRINCIPLES.md`). A command that only works when driven by a skill would be an internal API wearing a public name.
 
+**Decided: records write short type names; the bundle declares the namespace.**
+
+`type: task`, not `type: luma/backlog/task`. The bundle root carries `type_namespace: luma/backlog` once, and every record resolves against it.
+
+The reasoning is that **every record in a bundle shares a namespace**, so repeating it per record states a constant in the one place it never varies. The token cost is genuinely trivial — thirteen characters, a few hundred tokens across a whole corpus — so that was never the real argument. The real cost is that frontmatter reads busier, and busier frontmatter is skimmed.
+
+**Conflicts are loud.** An ambiguous short name is an error requiring qualification for *those names only*, never a silent pick. Precedence rules and search orders were considered and not taken: quiet resolution is how the wrong type gets chosen with nobody finding out. Full qualification stays legal everywhere and always wins, which is how a record from a foreign vocabulary declares itself.
+
+**What was weighed against it:** the format makes `type` its single hard requirement precisely so a file is self-describing on its own, and a bundle-relative short name partially undoes that — a record that travels alone now says `task`, which is honest and nearly contentless. Accepted because records travel as bundles, and the bundle carries the declaration. **Re-open if records start being handled individually**, outside a bundle, in a way that matters.
+
+**This required a format change**, which is the point rather than a complication. `type_namespace` does not exist in the format today; we are shipping ahead of it and have recorded the ask.
+
+**Decided: proposing format changes is normal until 1.0.**
+
+This project is the format's first consumer and the format is pre-1.0 and explicitly unstable. **Hitting a limit is evidence about the format, not a reason to contort around it.** Six requests had accumulated across the design phase without anyone counting them; they now live in `docs/FORMAT-REQUESTS.md`, each marked blocked, shipping ahead, or waiting.
+
+That posture expires. A mature consumer works around a stable format; an early one shapes it. The window is open until this project reaches 1.0 and should be used while it is.
+
 **Open questions carried in.** Whether a repository-level journal accumulates anything (`OPEN-QUESTIONS.md` §2); whether tasks are worth storing at all (§18); default body sections (§17). All three are expected to answer themselves through this deliverable rather than through discussion.
