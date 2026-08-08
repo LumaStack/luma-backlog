@@ -884,7 +884,76 @@ Unrecognised fields in output are to be ignored by consumers rather than treated
 
 ## 10. Import and export
 
-*To be written.* An external tracker may be the system of record. Identity that survives round-tripping is the hard part, and the format's identifiers are path-based.
+> **⚠ Proposal, not settled design.** Nothing here has been exercised, and it rests on an unresolved question — how a record keeps an identity that survives a round trip (`OPEN-QUESTIONS.md` §10). Written to be argued with.
+
+An external tracker may be the system of record for an organisation. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`PRINCIPLES.md`).
+
+### 10.1 Which side owns what
+
+Bidirectional synchronisation without an ownership rule produces silent data loss, so **each mapped field declares an owner**: this repository, or the external system. The non-owner may read it and may propose changes, but never overwrites.
+
+Ownership usually splits along the same line the units do (§2.2). External systems own what an organisation coordinates on — status, assignee, priority, the classification a portfolio is reported by. This tool owns what it alone models: outcomes, their evidence, waves, and the sequencing between tasks.
+
+**Where both sides changed, the conflict is surfaced, never resolved by rule** (`PRINCIPLES.md`). Preferring whichever was written last would silently discard the other, and nobody would learn that it happened.
+
+### 10.2 The mapping
+
+Mapping is **explicit and declared, never inferred from names** — the names collide in the worst possible way, because an external *project* is a container of many deliverables, which is a dimension here (§2.7), not our unit of the same name.
+
+| Ours | Theirs | Fidelity |
+|---|---|---|
+| **deliverable** | story, backlog item, work item, issue | Good — same granularity. |
+| **task** | sub-task, task | Good. |
+| **dimension** | project, epic, initiative, component, fix version, label | Good — these are member-side references on both sides (§3.2). |
+| workflow status, priority | status, priority | Good, once vocabularies are mapped value by value. |
+| claim | assignee | Partial. An assignee has no lease and does not expire (§6.5). |
+| **wave** | — | Poor. Sprints are time-boxed and orthogonal; nothing means *attempt number*. |
+| **outcome** | acceptance criteria | **Poor, and this is the important one.** |
+| **decision** | — | Poor. Usually a wiki page elsewhere, if it exists at all. |
+
+### 10.3 Identity
+
+A synchronised record carries a block naming its counterpart and what was last seen of it:
+
+```yaml
+external:
+  system:    jira
+  id:        PROJ-123
+  url:       https://…
+  synced_at: 2026-08-07T10:14:00Z
+  seen:      "9f2c…"        # fingerprint of the remote state at that moment
+```
+
+`seen` is what makes change detection possible: comparing it to the remote's current state says whether *they* changed, and comparing the local record to its own last-synced state says whether *we* did. Both are needed — one alone cannot tell a conflict from a one-sided edit.
+
+**The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`OPEN-QUESTIONS.md` §10), a rename must be followed by a synchronisation, and one that is skipped leaves a dangling reference on the other side.
+
+### 10.4 What does not survive the trip
+
+**Outcomes are where this tool differs from everything it will talk to.** Elsewhere, acceptance criteria are unstructured text inside an item. Here they are records that own evidence, verification history, and attribution (§4.4).
+
+So a round trip degrades them: they **export** as a rendered checklist, which is readable and useful, and **cannot be imported back** as structure — the checkbox survives, and who verified it, when, and with what evidence does not.
+
+Two ways to soften it, neither free:
+
+- **Keep this side authoritative for outcomes**, exporting them for visibility and never importing them. Simple, and the loss becomes a non-issue because the trip is one-way.
+- **Round-trip a serialised copy through a custom field**, if the external system has one. Lossless, and it makes the external record carry data only this tool understands.
+
+Waves and decisions face the same problem more mildly, having no counterpart at all.
+
+### 10.5 Synchronisation writes only real differences
+
+A synchronisation pass that rewrites every record — refreshing timestamps, reformatting frontmatter, reordering keys — is a **churn bomb on a schedule**, and it defeats the diff and merge properties the layout was designed for (§7.5).
+
+So a pass compares and writes **only records that genuinely differ**, and never reformats a record it is not otherwise changing. Unrecognised fields survive untouched, as everywhere else (§4.1).
+
+### 10.6 What must never happen
+
+- **Silently overwriting a local change**, whichever side owns the field.
+- **Mapping by name.** Their *project* is our dimension; their *epic* is not our deliverable.
+- **Dropping evidence.** If outcomes cannot round-trip losslessly, they do not round-trip at all (§10.4) — losing verification history is worse than not syncing it.
+- **Touching records that did not change.**
+- **Importing a status vocabulary the configuration does not declare** (§8). An unmapped value fails loudly rather than being invented.
 
 ## 11. Terminal and web real-time interfaces
 
