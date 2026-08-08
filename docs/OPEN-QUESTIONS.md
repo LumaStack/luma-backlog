@@ -108,9 +108,11 @@ A single `exploration.md` that grows into a folder later was considered and reje
 
 **Why not a harness memory store:** those are local to a machine, scoped to one user, and outside version control, so they vanish on a rebuild and are invisible to the next actor. A deliverable's memory has to travel with the deliverable.
 
-**A third option, considered and rejected:** making *why* a **typed field** rather than prose — a `purpose` and `expected_improvement` on each change record, queryable, with the running log left thin and receipt-like. A working system in this space does exactly that, so it is a real design and not an oversight.
+**A third option, considered and not taken for now:** making *why* a **typed field** rather than prose — a `purpose` and `expected_improvement` on each record, queryable, with the running log left thin and receipt-like. A working system in this space does exactly that, so it is a real design rather than an oversight.
 
-Rejected because the reasoning that actually transfers does not fit a field. *We tried X, it failed because Y, so do not* is a paragraph, and a form asking for a purpose gets a purpose written to satisfy the form. Structured why is easier to query and worse to read, and this artifact is read by whoever has to continue — not queried.
+Not taken because the reasoning that transfers best does not fit a field: *we tried X, it failed because Y, so do not* is a paragraph, and a form asking for a purpose tends to get a purpose written to satisfy the form. Prose is also the shape actors already produce.
+
+**This is deferred, not closed.** Re-open trigger: wanting to *query* across reasoning — "show every outcome retired for the same reason," "what did we expect from this and did we get it." Prose cannot answer that, and the two are not exclusive; a typed field could sit alongside the narrative rather than replacing it. Dissatisfaction with prose alone does not qualify.
 
 **Still open:** which events are worth recording is a first cut, deliberately. The criterion is the durable part.
 

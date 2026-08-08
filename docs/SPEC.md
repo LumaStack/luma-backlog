@@ -530,7 +530,9 @@ Promotion therefore does not archive the original. Nothing is retired — the lo
 
 **Deciding that something deserves promotion is policy.** The tool provides the operation and never judges.
 
-**Body:** the context, what was chosen, what was rejected, and why. The reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
+**Body:** the context, what was chosen, what was not taken, and why. The reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
+
+**Distinguish deferred from dead**, for the reason set out in §5.5: an option written up as *rejected* is read as permanently closed, and an actor arriving later will not raise it again even once the reason has expired. An option that could return should say **what would bring it back**. One that genuinely cannot should say so plainly — the distinction is only useful because most options are the first kind.
 
 ### 4.9 What modelling outcomes as records costs
 
@@ -790,10 +792,16 @@ What an entry is expected to carry, in whatever shape the work calls for:
 | **Where things stand** | Concretely — sizes, hostnames, flags, what is running. Vague state is not resumable. |
 | **What to do next, in order** | The single most-used part of the file. |
 | **Open questions** | Honest unknowns. Most often skipped, most valuable. |
-| **Decisions and their reasoning** | Including what was rejected. Recording only the choice invites it to be reopened by someone who has no idea it was settled. |
-| **What was ruled out, and why** | The most expensive knowledge to rediscover, and the only kind nothing else in the system records. |
+| **Decisions and their reasoning** | Including the options not taken. Recording only the choice invites it to be reopened by someone who has no idea it was settled. |
+| **What was not taken, why, and what would reopen it** | The most expensive knowledge to rediscover, and the only kind nothing else records. See the caution below on how to phrase it. |
 | **Exact commands, values, and gotchas** | Verbatim, so they can be re-run rather than reconstructed. |
 | **On close, where knowledge was promoted** | So the archived record still points at the durable version. |
+
+> **Record a path not taken as deferred, not as dead — unless it is genuinely dead.** *Rejected* reads as permanent, and an actor arriving later treats it as settled and will not raise the option again even when circumstances have changed. That is the journal's own purpose running backwards: it was written to stop things being re-argued needlessly, not to stop them being reconsidered when the reason has expired.
+>
+> So a path not taken carries **why not, and what would bring it back**. *Deferred; re-open when we need to query across reasoning. Finding prose untidy does not qualify.* A named trigger makes the option genuinely available again without inviting it to be relitigated on a whim — which is the balance the whole file is trying to strike.
+>
+> Some things really are ruled out, by a reason that cannot change. Say so plainly when that is true. The distinction matters precisely because most things are not.
 
 **Append, never curate.** Entries are selective on the way in and untouched afterwards. Nothing is reorganised, summarised away, or pruned — which is also why it costs almost nothing: appending is cheap, and reading is bounded by the resume pointer rather than by the length of the file.
 
