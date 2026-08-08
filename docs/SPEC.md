@@ -693,7 +693,7 @@ Four properties hold whichever way blocking lands:
 
 Conditions describe the present. The log records what **happened** — specifically the transitions that current state cannot reconstruct: a wave closed and reopened, an outcome that passed and later regressed, a claim stolen from a live holder, a close forced past a failing check.
 
-Its exact shape is unresolved, along with where exploration and context material live (`OPEN-QUESTIONS.md` §2).
+Its exact shape is unresolved — specifically whether machine-written transitions and human or agent narrative share one entry format (`OPEN-QUESTIONS.md` §2). Where it lives is settled: `journal.md`, beside the deliverable it belongs to (§7.2).
 
 ### 5.6 What this must never become
 
@@ -803,7 +803,7 @@ A directory structure may only reflect properties that are effectively permanent
 ```
 .backlog/
   config.yml                      configuration (§8)
-  log.md                          repository-level append-only history
+  journal.md                      repository-level append-only history
   index.md                        derived navigation — a cache, never a source
   _types/                         Type Definitions, one per type
     deliverable.md
@@ -811,9 +811,11 @@ A directory structure may only reflect properties that are effectively permanent
     outcome.md
     task.md
     decision.md
+    exploration.md
   deliverables/
     payments-v2/
-      deliverable.md              the deliverable record itself
+      index.md                    the deliverable record itself
+      journal.md                  this deliverable's append-only history
       outcomes/
         dry-run-safety.md
         retry-durability.md
@@ -823,16 +825,42 @@ A directory structure may only reflect properties that are effectively permanent
       tasks/
         add-retry-queue.md
         wire-dead-letter-path.md
-      log.md                      this deliverable's append-only history
-  decisions/
+      explorations/               absent until there is one
+        queue-vs-outbox.md
+      decisions/                  decisions made inside this deliverable
+        retry-on-write.md
+  decisions/                      made outside any deliverable, or promoted here
     postgres-over-sqlite.md
 ```
 
-`_types/`, `index.md`, and `log.md` are reserved by the format. `index.md` is derived and rebuildable — deleting it loses nothing. `log.md` is append-only: writers add to it and never rewrite it.
+`_types/` and `index.md` are reserved by the format. `index.md` is derived at the repository root and rebuildable — deleting it loses nothing; inside a deliverable it is the deliverable's own record, following the format's convention that a folder's `index.md` *is* the folder.
 
-**Decisions sit at the top level** because they belong to nothing and outlive whatever produced them (§2.6). Filing them under a deliverable would assert an ownership that does not exist.
+**`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite. It will not sit empty for long, because the tool appends transitions to it (§5.5).
 
-> **Not yet placed.** Exploration records, context material, and the exact structure of `log.md` have no defined home (`OPEN-QUESTIONS.md` §2). The layout above leaves room for them without guessing at their shape.
+> **Naming.** The format reserves `log.md` for this file. `journal.md` is the name used here because it describes what the file actually accumulates — narrative alongside events — and using it requires a change request against the format (`OPEN-QUESTIONS.md` §2).
+
+**Decisions sit where they were made** (§4.8) — inside the deliverable that produced them, or at the top level when no deliverable did. That is a legal path fact under §7.1 because *where* a decision was made never changes, even though what it governs may outgrow the work entirely. Promotion **copies to the top level** rather than moving (§4.8.1), so the original stays beside the reasoning that produced it.
+
+### 7.2.1 Exploration is kept separate on purpose
+
+Exploration is ideas, research, spikes, and investigations — including the ones that went nowhere. It lives in `explorations/` inside the deliverable it belongs to, or as a deliverable in its own right when the investigation *is* the work (§2.1).
+
+**Its own directory, and its own type, because the whole risk is leakage.** An idea recorded while thinking must never be mistaken for something the team committed to. That is already true structurally — **a deliverable is judged on its outcomes and on nothing else** (§2.4) — and keeping exploration visibly apart makes it true on inspection as well, for a reader skimming rather than querying.
+
+**Nothing moves out of exploration except by an explicit act.** Turning an investigation into work means someone creating an outcome or a task from it, deliberately. There is no promotion the tool performs and no inference it draws.
+
+**Promotion copies; it never moves** — the same rule decisions follow (§2.6). The exploration record stays where it is, and the outcome or task created from it references it. Moving would erase the reasoning at the exact moment it becomes worth having.
+
+**Both endings are non-destructive.** An exploration either produces work or does not, and neither outcome is a deletion:
+
+| Ending | What happens |
+|---|---|
+| **Derived into action** | An outcome or task is created from it. The exploration stays, referenced by what it produced. |
+| **Kept as learning** | Nothing is built. The record is archived (`lifecycle_status`), and remains findable so the ground is not re-covered. |
+
+**One file per exploration, from the first one.** A single `exploration.md` that grows into a folder later would be cheaper on day one and wrong by the second entry: archiving is per record, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end — `queue-vs-outbox.md` — is also most of what makes it findable, which is the entire reason it was kept.
+
+> **Not yet placed.** Context material and the exact structure of `journal.md` have no defined home (`OPEN-QUESTIONS.md` §2). The layout above leaves room for them without guessing at their shape.
 
 ### 7.3 Why deliverable membership is the only path fact
 

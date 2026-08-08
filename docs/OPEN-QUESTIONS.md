@@ -4,7 +4,7 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §2 (exploration and the log still have no home); §22 (how behaviour attaches at a boundary).
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §22 (how behaviour attaches at a boundary); §17 (default sections for each unit).
 
 §12 — the boundary with the workflow layer — is **settled as a test rather than an answer** (`SPEC.md` §5.0), which narrows §6 and removes the in-principle objection in §22.
 
@@ -67,9 +67,9 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ---
 
-## 2. Where exploration and the log live
+## 2. Where exploration and the journal live
 
-**Status:** Partly settled. **Context is resolved** (`SPEC.md` §4.1.2); exploration and the log remain open.
+**Status:** **Settled — both live in the deliverable folder** (`SPEC.md` §7.2, §7.2.1). Context is resolved separately, below. Two smaller things remain open.
 
 Three things were wanted from the beginning and had no place in the unit model.
 
@@ -77,18 +77,28 @@ Three things were wanted from the beginning and had no place in the unit model.
 
 **Context loading belongs to a separate, swappable engine.** One repository might resolve against a generated wiki, another against a commercial knowledge graph, another against a folder of documents — entirely different engines, and a backlog that understood any of them would be coupled to it.
 
-So this tool holds **`references`**: opaque pointers stored with the record they belong to, never resolved, ranked, or interpreted here. Deciding what an actor should read, and how much of it, is the engine's work.
+So this tool holds **`references`**: opaque pointers stored with the record they belong to, never resolved, ranked, or interpreted here (`SPEC.md` §4.1.2). Deciding what an actor should read, and how much of it, is the engine's work.
 
 That is why context was hard to place — it was never a record type or a unit. It is a field, and the interesting part of it lives somewhere else entirely.
 
-### Still open
+### Exploration — settled
 
-- **Exploration** — ideas, research, investigations, briefs. Their value is that abandoned directions stay findable, so the same ground is not re-covered. Settled in shape (`SPEC.md` §7.2 gives it a home at either level, and it is archived rather than deleted), but not in whether it carries any mechanics.
-- **A log or journal** — the record of what happened, including transitions that current state cannot reconstruct: something closed and reopened, an outcome that passed and later regressed, a claim that was stolen.
+**`explorations/` inside the deliverable, one file per exploration, or a deliverable of its own when the investigation *is* the work.**
 
-The log has the strongest independent case. `SPEC.md` §5 relies on it for transitions that current state cannot re-derive, and §8 below may add a second dependency: if coordination state is shared across worktrees, the record of who did what and when becomes the only durable account of activity that happened outside any one branch.
+The reasoning that settled it is about **leakage, not filing**. An idea recorded while thinking must never be mistaken for something the team committed to, so exploration is kept visibly apart and **nothing leaves it except by an explicit act** — someone creating an outcome or task from it. There is no promotion the tool performs and no inference it draws. And promotion **copies rather than moves**, following the rule decisions already use, so the reasoning survives the moment it becomes useful.
 
-*Settled by:* deciding whether either needs mechanics or merely a place to live.
+A single `exploration.md` that grows into a folder later was considered and rejected: **archiving is per record**, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end is also most of what makes it findable, which is the only reason it was kept.
+
+### Journal — settled in place, open in name
+
+**`journal.md`, created with the deliverable, mandatory, append-only.** Mandatory because somewhere to write has to exist before anyone needs it. Not left empty in practice, since the tool appends transitions to it.
+
+Two things about it are still open:
+
+- **The name.** The format reserves `log.md` for this file. `journal.md` is preferred here because the file accumulates narrative alongside events, and *log* undersells the half that matters. Using it requires a change request against the format.
+- **Its internal structure.** Entries are appended, but their shape is undecided — specifically whether machine-written transitions (`SPEC.md` §5.5) and human or agent narrative share one entry format. The lean is that they should: one file in time order, with narrative as an entry kind rather than a separate document, so the reasoning sits beside the event that prompted it.
+
+*Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
 
 ---
 
