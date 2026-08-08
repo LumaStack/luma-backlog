@@ -986,13 +986,68 @@ Whether that synchroniser is this tool, an external program, or a script somebod
 
 These are the hard boundaries referred to in §10.1. If synchronisation never becomes a first-class capability here, this list is the contract that keeps whatever does it from corrupting the backlog.
 
-## 11. Terminal and web real-time interfaces
+## 11. The board
 
-*To be written.* A real-time interactive terminal interface for managing, editing, prioritizing, creating, filtering, and browsing dimensions and the core units of work.
+**The terminal board is the primary surface.** It is where the tool is met and used, and it is held to the same standard as the command interface itself. `backlog board` opens it; so does `backlog` with no arguments.
 
-**The terminal interface is the primary surface.** It is where the tool is met and used, and it is held to the same standard as the command interface itself.
+> **The rules below are reasoned; the specific views are provisional.** What a board should show and refuse is argued from the model. Which panes exist and how they are arranged will not survive contact with real use, and should not be treated as settled.
 
-### 11.1 Why a web interface exists
+### 11.1 What a board shows that a file cannot
+
+Opening a record in an editor tells you **what it says**. The board tells you **what is true** — and the difference is everything this design computes rather than stores:
+
+- **Completion**, derived by counting outcomes with evidence (§2.4). It appears nowhere on disk, because storing it would let it drift.
+- **Whether a claim is live or stale** (§6.5), which is a function of a lease and the current time.
+- **Which conditions are firing** (§5.2) — drift, non-convergence, churn, an outcome with no check. Those are the failures nobody notices by reading records one at a time, and they are exactly what a board is for.
+
+That is the board's reason to exist. Anything a file already says plainly is a secondary feature.
+
+### 11.2 Views
+
+Enough to work the model, and no more:
+
+| View | Shows |
+|---|---|
+| **Backlog** | Deliverables in rank order, in columns by workflow status. The kanban surface. |
+| **Deliverable** | One deliverable: its outcomes and their evidence, its waves, its tasks. |
+| **Wave** | The current attempt — what is claimed, by whom, what is blocked. |
+| **Health** | Whatever conditions are currently firing across the repository. |
+
+Dimensions (§2.7) filter and group every view rather than adding views of their own — that is the whole point of them being attributes.
+
+### 11.3 Staying current
+
+Records change constantly underneath a board, because agents are writing while a person is reading. Three rules keep that tolerable:
+
+**Selection follows the record, not the row.** When a list re-sorts because something changed, the cursor stays on the thing the person was looking at. Anchoring to position instead means the selection jumps whenever an agent writes, which makes the board unusable precisely when it is most interesting.
+
+**Updates are coalesced.** A synchronisation or a bulk creation touches many files in quick succession; the board redraws once when it settles, not once per file.
+
+**Nothing is locked to keep the display still.** The board is a reader (§6.1). A stale view is a minor annoyance; a board that blocks an agent's write is a serious one.
+
+### 11.4 Editing
+
+The board edits through the same interface as everything else — **every action maps to a command** (§9). The board can therefore *show* the command it is about to run, which makes it a way to learn the interface rather than an alternative to it, and guarantees parity by construction rather than by discipline.
+
+**Conflicts surface here as everywhere.** A person editing a description while an agent changes the same record gets told (§6.3), not silently overruled and not silently overruling.
+
+**Task views serve both scanning and authoring** (§2.1.1). A team delegating heavily mostly reads them; a team delegating little mostly writes them; the board cannot be optimised for one at the other's expense.
+
+### 11.5 Degradation
+
+**Everything is reachable by keyboard.** Mouse support is an accelerator, never a requirement — terminals over a connection, inside another multiplexer, or on a machine where mouse reporting is off are all ordinary.
+
+The board must remain usable **without colour** and **in a narrow terminal**. Colour may carry emphasis but never meaning on its own, and a layout that needs a wide window is a layout that fails on a laptop beside a conference call.
+
+### 11.6 What the board must never do
+
+- **Show completion as anything other than computed.** There is no field to display and none to set (§2.4).
+- **Do something the command interface cannot.** The board is a client (§9.10); a capability that exists only here is a bug in the interface.
+- **Hold a lock, or block a writer**, to keep a display consistent.
+- **Discard an edit it did not see**, in either direction.
+- **Require a mouse.**
+
+### 11.7 Why a web interface exists
 
 A web application is a **nice-to-have follow-up**, not a co-equal surface. It exists for two specific reasons, and they determine what it has to be:
 
