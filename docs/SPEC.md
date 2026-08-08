@@ -299,7 +299,9 @@ so a record writes `type: task` and means `luma/backlog/task`. Every record in a
 
 **It is also copied onto the bundle root `index.md`, which is generated from configuration** and can be deleted and rebuilt without loss. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1).
 
-**Neither file is how an agent should discover this.** `config` and `contract` (§9.2, §9.7) report it directly, and asking the tool beats parsing its storage — the interface is the contract, and file layout is not part of it.
+**Both stay, permanently.** They serve different readers rather than being stages of the same thing: `config` and `contract` (§9.2, §9.7) answer an agent that has the tool, and the generated file answers one that does not — an importer, a search index, a person reading on the web. Asking the tool is the better path where it exists, and it does not exist for everyone.
+
+> **Every derived copy owes a freshness story.** A generated file that stops being regenerated is worse than no file, because it is confidently wrong rather than absent — edit configuration by hand, never run the tool, and a format-aware reader silently mis-resolves every type. So a derived artifact must be **rebuilt on a defined trigger**, **safe to delete**, and **reported when it has drifted from its source.** Copies are cheap; unmaintained copies are not.
 
 The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
 
