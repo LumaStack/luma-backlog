@@ -241,7 +241,7 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
-| `rank` | optional | text | Ordering key within a priority, for manual board ordering. **Pending** `OPEN-QUESTIONS.md` §14 — but the storage scheme must be chosen before a board ships, because a naive one rewrites every neighbour on each move. |
+| `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`OPEN-QUESTIONS.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
 
 A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
 
@@ -741,9 +741,22 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Most operations write exactly one file, and that is not an accident.** Membership lives on the member (§3.2), promotion copies rather than moves (§4.8.1), succession creates rather than edits (§4.6). Each of those rules exists partly so that the common case never needs a transaction.
 
-**Ordering is designed to stay in that case.** Reordering uses a **sparse ordering key** rather than positions, so moving one deliverable writes one record and leaves its neighbours untouched. Positional ordering would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
+**Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one deliverable writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
-The caller never sees the key. `move --before`, `--after`, `--top`, `--bottom` express intent; the tool computes a key between the neighbours.
+**One scheme, two allocation strategies.** The key is always a decimal value; what changes is how it is chosen:
+
+- **Room available** → take a round number. Records seed at `10`, `20`, `30`; an insertion between them becomes `15`, then `12`.
+- **Room tight** → subdivide. Between `10` and `11` comes `10.5`, then `10.25`.
+
+The common case therefore reads like plainly numbered items, and decimals appear only where a gap has closed. There is no second mode to implement and **no rebalance**, because subdivision continues indefinitely.
+
+Two details that matter:
+
+**The key is stored as a string and compared as a number.** Not because comparison is difficult, but because floating-point values round-trip badly — `10.25` can return from a parser as `10.250000000000001`, producing spurious diffs in a format built on clean diffs and byte-preserving rewrites. A string holds exactly what was written.
+
+**There is a precision limit, and it is acceptable.** Repeated subdivision *at the same position* eventually exhausts precision — roughly fifty consecutive insertions between the identical pair. The remedy is renumbering that local span, which is a bounded, rare, recoverable multi-record write rather than the routine one that integer positions would force on every insertion.
+
+The caller never sees the key. `move --before`, `--after`, `--top`, `--bottom` express intent; the tool chooses the value.
 
 **Some operations are irreducibly multi-record**, and this is where the guarantees have to be stated:
 

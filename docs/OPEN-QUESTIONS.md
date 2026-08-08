@@ -457,11 +457,11 @@ If `deliverables/` becomes unwieldy at scale, **sharding by creation period is l
 
 **Ranking** is a different thing: a total order that says what comes first *within* a priority, which is what a board's vertical position expresses. The question is whether the minimum viable product has one.
 
-The reason it is not merely a nice-to-have deferred: **how ranking is stored decides whether it is affordable.** Naive integer positions mean reordering one item rewrites all its neighbours — churn on every drag, and contention when two actors reorder at once. A sparse or fractional ordering key means a move writes exactly one record, which is the same commutative-write property that makes membership work (§3.2).
+**The storage scheme is settled** (`SPEC.md` §9.6), because it had to be chosen before a board ships and is painful to retrofit afterwards. Positions would rewrite every neighbour on each move — churn on the most visible operation in the product, and contention whenever two actors reorder at once. A **decimal ordering key** means a move writes exactly one record, the same commutative-write property that makes membership work (§3.2).
 
-So the real decision is not "ranking or not" but "if ranking ever arrives, is the storage scheme chosen now?" Retrofitting one after a board exists is painful.
+What remains open is only whether **manual ranking is exposed in the first release**, which costs nothing to defer now that the scheme exists.
 
-*Settled by:* deciding whether the board needs manual ordering. If it plausibly ever does, pick the ordering-key scheme before shipping, even if ranking is not exposed initially.
+*Settled by:* deciding whether the board needs manual ordering at launch, or whether priority ordering suffices to begin with.
 
 ---
 
