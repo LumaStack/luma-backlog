@@ -903,7 +903,9 @@ A record's **references** — the files, links, and material an actor should rea
 
 ## 24. How a regenerated section is delimited
 
-**Status:** Open. Both candidates stay live; the deciding evidence is how often files are actually read in an editor.
+**Status:** Open, and the surrounding design is a first approach rather than a settled one. All three candidates stay live; the deciding evidence is how often files are actually read in an editor.
+
+The **vocabulary** — regenerated file, section, key — is the part worth keeping, because it stops partial regeneration being described as whole-file regeneration, which is how authored content gets destroyed. The **mechanics** below are a working guess, and the policy on missing sections along with them.
 
 A regenerated section is a bounded region inside an authored file (`SPEC.md` §4.1). The obligations are settled — nothing outside it is touched, a missing boundary is appended rather than inferred, and a reader must be able to tell that edits inside will not survive. **How the boundary is expressed is not.**
 

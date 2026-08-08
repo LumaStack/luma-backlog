@@ -309,6 +309,8 @@ Copies are cheap. Unmaintained copies are a defect, not an inconvenience: a stal
 
 ##### Three granularities, named separately
 
+> **A first approach, expected to move.** Regeneration has not been exercised against real use — nobody has yet watched what happens when a person edits a generated region, or found out how often records are opened in an editor at all. What follows is a shape to work with, not a settled contract. The vocabulary is the durable part; the mechanics are the guess.
+
 Most regeneration replaces **part** of a file, and calling that "a generated file" is how authored content gets destroyed. The three are distinguished by vocabulary because they carry different obligations:
 
 | Term | What it means | The obligation |
