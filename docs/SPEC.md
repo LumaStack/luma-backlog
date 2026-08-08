@@ -336,11 +336,13 @@ It is a field, present only when it applies:
 
 ```yaml
 blocked:
-  since: 2026-08-07
-  by:    waiting on the vendor contract     # free text, or a link to a record
+  on: 2026-08-07
+  by: waiting on the vendor contract     # free text, or a link to a record
 ```
 
-**`since` is the useful half.** *Blocked* on its own says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, which means the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate.
+**`on` is the half that earns its place.** *Blocked* alone says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, so the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate.
+
+The key follows the format's convention: `on` for a date, `at` for a full timestamp. Every date in the corpus reads the same way.
 
 **`by` is deliberately loosely typed**, like `verify_by` (§4.4.2). A blocker may be another record, a person, a vendor, a decision nobody has made, or a sentence explaining the situation. Constraining it would only exclude the cases that matter most.
 
