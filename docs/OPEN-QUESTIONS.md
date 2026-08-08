@@ -196,18 +196,25 @@ This is the one factual question that could decide it outright, and it should be
 
 ## 4. Where evidence lives
 
-**Status:** Open — two candidates.
+**Status:** **Settled — evidence is a field we own, not part of the verification event.** Settled by constraint rather than preference.
 
-A criterion should close on evidence produced by a tool — command output, a response, a screenshot, a diff — rather than on an assertion that something works. The format's `verified` field is the right mechanism: a list of independent confirmation events, from which trust tiers derive without being stored.
+A criterion should close on evidence produced by a tool — command output, a response, a screenshot, a diff — rather than on an assertion that something works. The format's `verified` field is the natural mechanism: a list of independent confirmation events, from which trust tiers derive without being stored.
 
-**The gap:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. Attribution without the artifact is exactly the unbacked assertion this design distrusts.
+**The gap that made this a question:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. Attribution without the artifact is exactly the unbacked assertion this design distrusts.
 
-1. **Extend the event with an optional evidence key** — smallest change, keeps evidence beside the actor who produced it, and benefits every consumer of the format.
-2. **Record evidence as a source and reference it from the event** — no format change, but splits one fact across two fields.
+### What settled it
 
-This is the first change this project asks of the format, and should be raised there rather than worked around locally.
+`verified` is a **core** field, and the format's inheritance is **add-only** — a type "MUST NOT redefine or remove an inherited field, core or domain." So extending the verification event with an evidence key is not something this project can do in a Type Definition. It would have to be a change to the format itself.
 
-*Settled by:* deciding whether evidence is intrinsic to a verification event or a separately-attributable artifact.
+That could be asked for, and may still be worth asking for. It is not worth **waiting** for: the format is early and unstable, and blocking record shapes on an upstream change would stall work that has no other reason to stop.
+
+So evidence is **separately attributable** — a field on the outcome, alongside `verified` rather than inside it. The cost is honest: one fact lives in two places, and a consumer wanting *who confirmed this, and on what basis* reads both.
+
+### What stays open upstream
+
+Whether the format should carry an optional evidence key on `actor_event` is a **reasonable request to raise**, and it would benefit every consumer rather than only this one. If it lands, this design migrates toward it — the local field becomes redundant rather than wrong.
+
+*Settled by:* the format's add-only inheritance rule, which removed the first option without anyone having to choose.
 
 ---
 
