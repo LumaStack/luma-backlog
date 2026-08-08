@@ -325,7 +325,13 @@ Most regeneration replaces **part** of a file, and calling that "a generated fil
 - **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears. But **a section that was removed is not the same as one that never existed** — re-adding the first is overriding a decision someone made. Where the two are distinguishable, absence is reported rather than silently repaired (`OPEN-QUESTIONS.md` §24).
 - **Content inside is lost on the next write**, so a reader must be able to tell that from the file itself. Whatever delimiter is chosen has to carry that warning — an unmarked region that silently eats edits is the worst outcome of the three.
 
-**Prefer a section to a file** wherever a person might reasonably want to add something. A whole generated file forbids that permanently, and the cost of finding out later is a file people work around rather than use.
+**Whole-file regeneration is the exception and needs a reason.** It permanently forbids anyone adding anything, and the cost of getting that wrong is discovered late — as a file people work around instead of using, or as writing that quietly disappeared. Three reasons qualify:
+
+- **Nobody would ever want to write there.** Pure output — a report, an export, a machine-read index. The test is not *is it derived* but *would a person ever have something to add*.
+- **A section genuinely cannot express it.** A last resort, and worth stating as one rather than reaching for first.
+- **An efficiency that earns an exception**, named explicitly. Rewriting beats parsing-and-splicing at some volume, and that is a real reason — but it is a claim about cost, so it should be made out loud rather than assumed.
+
+**If none of the three applies, use a section.** The default is that files have authors, and the tool is a guest in them.
 
 The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
 
