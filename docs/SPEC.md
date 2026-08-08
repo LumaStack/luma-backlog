@@ -1421,7 +1421,11 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 
 - **All filesystem access goes through a root-scoped handle** that cannot traverse out, including via `..` or a symlink. The tool holds a bounded root and never reaches the filesystem directly. The escape then becomes unrepresentable rather than untested.
 - **Root discovery is separated from root use.** Finding the root must walk upward — that is what discovery is. It happens once, in one function, and everything downstream receives an already-bounded root. One small surface to test exhaustively, instead of a property the whole codebase must maintain.
-- **Command execution sits behind an injected interface.** Almost every test substitutes a fake and executes nothing, which shrinks "tests that run arbitrary commands" from a category to a handful — the executor's own.
+- **Execution of commands that came from records sits behind an injected interface** — `verify_by`, hooks, anything a record can cause to run. Almost every test substitutes a fake and executes nothing, which shrinks "tests that run arbitrary commands" from a category to a handful.
+
+> **This does not extend to git, which is never faked.** The two cases are opposites: record-supplied commands are untrusted content, so faking them removes the risk; git is the dependency we are trying to be *correct about*, so faking it tests our beliefs rather than the thing. Comparable projects have migrated away from stubbing git for exactly this reason ([`TESTING.md`](TESTING.md)).
+
+- **Time comes from an injected source**, never read directly. Every record carries `created`, `modified`, and `verified`, so an uncontrollable clock makes byte-stable output impossible — which makes golden files impossible, which removes the contract tests below. A constraint on the tool, not only on its tests.
 
 **The rule is machine-enforced, not conventional.** Continuous integration rejects direct filesystem calls outside the one package allowed to make them. This project expects agents to write its tests, and an agent does not carry a convention reliably across sessions — so a guardrail that depends on remembering is not a guardrail. The same reasoning the design applies to the backlog applies to its own source.
 
@@ -1434,6 +1438,10 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 Table-driven tests throughout, and **a golden file for every output shape.**
 
 That follows from a principle rather than from taste. If output shapes are part of the contract, a diff in a golden file **is** a breaking change — which turns "good coverage" into something with a meaning, rather than a percentage to chase. The behaviours that most need pinning are the ones other systems will be written against: `--json` shapes, exit codes (§9.4), and the `contract` output.
+
+**One gap to know about in advance:** the script-test frameworks in this ecosystem assert success or failure, not a *specific* exit status — so §9.4's seven codes, the most machine-facing part of the contract, need ordinary Go tests or a custom command rather than the obvious tool.
+
+Practice, and the survey behind it, is in [`TESTING.md`](TESTING.md).
 
 ### 9a.6 Distribution
 
