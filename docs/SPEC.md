@@ -140,19 +140,19 @@ But that is not another stage — it is a **stricter bar for the same one**. A t
 
 ##### Declared, and checked against the record
 
-`workflow_status` is **declared** — somebody sets it. That is what makes it a single, familiar field rather than two competing ones, and it is what lets it map to board columns.
+`workflow_status` is **declared** — somebody sets it. That is what makes it a single familiar field rather than two competing ones, and what lets it map to board columns.
 
-It also means it can decay, which is the failure this was meant to prevent. So the tool **derives what formation the record's structure implies** and reports any disagreement (§5.2):
+It also means it can decay, which is the failure this was meant to prevent. So the tool checks the one claim structure can actually contradict:
 
-| Structure | Implies |
-|---|---|
-| No outcomes | `idea` |
-| Outcomes exist, some without a `verify_by` | `preparing` |
-| Every outcome has a `verify_by` | `actionable` |
+> **A deliverable marked `actionable` whose outcomes lack checks is over-claiming.** If done is not yet provable, it is not yet pullable.
 
-A one-line deliverable marked `actionable` is a claim its own structure contradicts, and the tool says so — as an observation, not a refusal. Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
+That is the claim worth catching, because it is the one another actor relies on. Someone pulls an `actionable` deliverable expecting to know when they are finished, and discovers nobody wrote it down.
 
-**What this cannot know** is whether the outcomes present are *all* the outcomes needed — nothing can detect what nobody wrote. So the claim stays narrow: **ready to start, not fully specified forever.** Finding the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8).
+**The `idea`/`preparing` boundary is not checkable, and the tool does not pretend otherwise.** The difference is whether somebody has picked it up, which only they know — a well-formed record nobody has touched and a rough one being actively worked look identical from the outside. Structure can say *this could not honestly be actionable*; it cannot say *nobody is working on this*.
+
+Where a disagreement is found it is reported as an observation, not a refusal (§5.2). Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
+
+**What none of this can know** is whether the outcomes present are *all* the outcomes needed — nothing detects what nobody wrote. So the claim stays narrow: **ready to start, not fully specified forever.** Finding the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8).
 
 ##### What is deliberately not on this ladder
 
