@@ -884,21 +884,48 @@ Unrecognised fields in output are to be ignored by consumers rather than treated
 
 ## 10. Import and export
 
-> **⚠ Proposal, not settled design.** Nothing here has been exercised, and it rests on an unresolved question — how a record keeps an identity that survives a round trip (`OPEN-QUESTIONS.md` §10). Written to be argued with.
+> **⚠ Proposal, and deliberately incomplete.** How much this tool participates in synchronisation is **undecided**, and this section does not settle it. What it does settle is what must be true of the data regardless.
 
-An external tracker may be the system of record for an organisation. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`PRINCIPLES.md`).
+At enterprise scale, a tracker will often be the system of record. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`PRINCIPLES.md`).
 
-### 10.1 Which side owns what
+### 10.1 How much this tool does is undecided
 
-Bidirectional synchronisation without an ownership rule produces silent data loss, so **each mapped field declares an owner**: this repository, or the external system. The non-owner may read it and may propose changes, but never overwrites.
+Three positions are all plausible, and the choice is premature:
 
-Ownership usually splits along the same line the units do (§2.2). External systems own what an organisation coordinates on — status, assignee, priority, the classification a portfolio is reported by. This tool owns what it alone models: outcomes, their evidence, waves, and the sequencing between tasks.
+- **Nothing.** The tool provides an interface clean enough that something else moves the data. Records go in and come out; synchronisation is somebody else's program.
+- **Some.** Helpers for the parts that are awkward to get right from outside — detecting what changed, avoiding needless rewrites.
+- **First class.** Synchronisation is a supported capability with declared mappings and scheduled passes.
 
-**Where both sides changed, the conflict is surfaced, never resolved by rule** (`PRINCIPLES.md`). Preferring whichever was written last would silently discard the other, and nobody would learn that it happened.
+**This section commits to none of them.** What it commits to is that whoever does the work — us, an external tool, a script, or a person — finds a data model that makes it **clean, reliable, and free of churn and conflict**. Those properties are ours to provide whether or not we ever move a record ourselves.
 
-### 10.2 The mapping
+### 10.2 What must be true regardless
 
-Mapping is **explicit and declared, never inferred from names** — the names collide in the worst possible way, because an external *project* is a container of many deliverables, which is a dimension here (§2.7), not our unit of the same name.
+Independent of who synchronises:
+
+- **Records must be addressable individually**, so a pass touches only what changed.
+- **Change must be detectable on both sides**, or a synchroniser cannot tell a one-sided edit from a conflict.
+- **Field ownership must be expressible**, because bidirectional movement without an ownership rule produces silent loss. Ownership tends to split along the same line the units do (§2.2): a tracker owns what an organisation coordinates on — status, assignee, priority, portfolio classification — and this tool owns what it alone models, being outcomes, evidence, waves, and sequencing.
+- **Conflicts must surface, never resolve by rule.** Preferring the later write discards the other and tells nobody (`PRINCIPLES.md`).
+- **A pass must be able to write only genuine differences**, which requires that records not be reformatted merely by being read.
+
+### 10.3 What already makes this possible
+
+Most of it is in place, arrived at for unrelated reasons — which is reasonable evidence the model is sound:
+
+| Property | Decided in | What it gives a synchroniser |
+|---|---|---|
+| One record per file | §4 | Per-record work; no whole-file rewrites. |
+| Membership on the member | §3.2 | Matches how trackers reference containers — nothing to invert. |
+| Attributes, not directories | §7.1 | A status change never moves a file, so identity is stable across the churn a sync creates most of. |
+| Unknown fields preserved | §4.1 | A synchroniser stores its own state *on the record* without this tool knowing the concept exists. |
+| Creation idempotent by name | §9.5 | Re-importing does not duplicate. |
+| Conflict detection on write | §6.3 | A pass is told when it would clobber something it never read. |
+
+The one genuine gap is **identity that survives a round trip** (`OPEN-QUESTIONS.md` §10, and §10.5 below).
+
+### 10.4 Where the names collide
+
+Mapping must be **explicit, never inferred from names**, because the names collide in the worst possible way: an external *project* is a container of many deliverables, which is a **dimension** here (§2.7) rather than the unit sharing its name.
 
 | Ours | Theirs | Fidelity |
 |---|---|---|
@@ -911,9 +938,9 @@ Mapping is **explicit and declared, never inferred from names** — the names co
 | **outcome** | acceptance criteria | **Poor, and this is the important one.** |
 | **decision** | — | Poor. Usually a wiki page elsewhere, if it exists at all. |
 
-### 10.3 Identity
+### 10.5 Identity — the one real gap
 
-A synchronised record carries a block naming its counterpart and what was last seen of it:
+A synchronised record would need to name its counterpart and what was last seen of it. A shape that would work:
 
 ```yaml
 external:
@@ -928,7 +955,7 @@ external:
 
 **The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`OPEN-QUESTIONS.md` §10), a rename must be followed by a synchronisation, and one that is skipped leaves a dangling reference on the other side.
 
-### 10.4 What does not survive the trip
+### 10.6 What does not survive the trip
 
 **Outcomes are where this tool differs from everything it will talk to.** Elsewhere, acceptance criteria are unstructured text inside an item. Here they are records that own evidence, verification history, and attribution (§4.4).
 
@@ -941,19 +968,23 @@ Two ways to soften it, neither free:
 
 Waves and decisions face the same problem more mildly, having no counterpart at all.
 
-### 10.5 Synchronisation writes only real differences
+### 10.7 Churn is the failure mode to design against
 
 A synchronisation pass that rewrites every record — refreshing timestamps, reformatting frontmatter, reordering keys — is a **churn bomb on a schedule**, and it defeats the diff and merge properties the layout was designed for (§7.5).
 
 So a pass compares and writes **only records that genuinely differ**, and never reformats a record it is not otherwise changing. Unrecognised fields survive untouched, as everywhere else (§4.1).
 
-### 10.6 What must never happen
+### 10.8 The boundaries a synchroniser must respect
 
-- **Silently overwriting a local change**, whichever side owns the field.
-- **Mapping by name.** Their *project* is our dimension; their *epic* is not our deliverable.
-- **Dropping evidence.** If outcomes cannot round-trip losslessly, they do not round-trip at all (§10.4) — losing verification history is worse than not syncing it.
-- **Touching records that did not change.**
-- **Importing a status vocabulary the configuration does not declare** (§8). An unmapped value fails loudly rather than being invented.
+Whether that synchroniser is this tool, an external program, or a script somebody wrote in an afternoon, the same rules hold — and stating them is useful precisely *because* the work may not be ours:
+
+- **Never silently overwrite a local change**, whichever side owns the field.
+- **Never map by name.** Their *project* is our dimension; their *epic* is not our deliverable.
+- **Never drop evidence.** If outcomes cannot round-trip losslessly, do not round-trip them at all (§10.6) — losing verification history is worse than not synchronising it.
+- **Never touch records that did not change**, and never reformat one being read.
+- **Never invent a vocabulary value.** A status the configuration does not declare (§8) fails loudly rather than being created.
+
+These are the hard boundaries referred to in §10.1. If synchronisation never becomes a first-class capability here, this list is the contract that keeps whatever does it from corrupting the backlog.
 
 ## 11. Terminal and web real-time interfaces
 
