@@ -10,5 +10,6 @@ A backlog that lives inside your git repository as plain markdown, built to be w
 - [Specification](docs/SPEC.md) — the units, the rules records follow, and how the tool behaves.
 - [Lifecycle](docs/LIFECYCLE.md) — how a deliverable is expected to move, and what that requires of the tool.
 - [Open Questions](docs/OPEN-QUESTIONS.md) — what is deliberately unsettled, and what would settle it.
+- [Journal](docs/JOURNAL.md) — the design work's own memory. Start at the top.
 
 Records conform to the [Luma Knowledge Format](https://github.com/LumaStack/luma-knowledge-format).
