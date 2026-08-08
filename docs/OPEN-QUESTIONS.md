@@ -69,7 +69,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ## 2. Where exploration and the log live
 
-**Status:** Partly settled. **Context is resolved** (`SPEC.md` §4.1.1); exploration and the log remain open.
+**Status:** Partly settled. **Context is resolved** (`SPEC.md` §4.1.2); exploration and the log remain open.
 
 Three things were wanted from the beginning and had no place in the unit model.
 
