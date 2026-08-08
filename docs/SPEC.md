@@ -689,6 +689,7 @@ Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
+| `move` | deliverable | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
 | `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
 | `close` | wave, deliverable | The explicit act, validated against the arithmetic (§5.3). |
@@ -736,25 +737,49 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Claiming is idempotent for the holder.** Claiming something you already hold refreshes the lease rather than failing.
 
-### 9.6 Self-description
+### 9.6 Ordering, and operations that touch more than one record
+
+**Most operations write exactly one file, and that is not an accident.** Membership lives on the member (§3.2), promotion copies rather than moves (§4.8.1), succession creates rather than edits (§4.6). Each of those rules exists partly so that the common case never needs a transaction.
+
+**Ordering is designed to stay in that case.** Reordering uses a **sparse ordering key** rather than positions, so moving one deliverable writes one record and leaves its neighbours untouched. Positional ordering would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
+
+The caller never sees the key. `move --before`, `--after`, `--top`, `--bottom` express intent; the tool computes a key between the neighbours.
+
+**Some operations are irreducibly multi-record**, and this is where the guarantees have to be stated:
+
+- Splitting an outcome — create two, archive one.
+- Rebalancing ordering keys when repeated insertions exhaust the space between two of them.
+- Bulk creation, where an actor produces many records in one call.
+
+For these, two things hold:
+
+**Committed history is never partial.** All records changed by one operation are committed together, and a commit either exists or does not. Whatever a reader observes in history is a state the operation intended.
+
+**The working tree may briefly be partial, so operations are ordered to make partial states valid and re-running them completes the work.** Splitting creates the new outcomes *before* archiving the original, so an interruption leaves a duplicate rather than a hole — recoverable, and obvious. Re-running converges rather than duplicating, because creation is idempotent by name (§9.5).
+
+That distinction is the one that matters: **a partial result that is merely wrong is recoverable; one that has lost information is not.** Every multi-record operation is ordered so that interruption costs correctness, never data.
+
+**An interrupted operation is discoverable.** What was intended is recorded before it is attempted, so a partial application can be found afterwards rather than silently living on.
+
+### 9.7 Self-description
 
 **`backlog contract` emits the entire interface**: record types and their fields, verbs, conditions, exit codes, output shapes, and the local display labels.
 
 This exists because an actor arriving in an unfamiliar repository should **bootstrap from the binary, not from documentation someone forgot to update**. It is also what makes local vocabulary discoverable — an agent learns that this repository says *story* by asking, rather than by being told out of band.
 
-### 9.7 Non-interactive by default
+### 9.8 Non-interactive by default
 
 **No command ever waits for input unless a terminal is attached and the caller has not said otherwise.** A prompt that appears in an automated context is a hang, and a hang inside an agent loop is invisible until something times out.
 
 Anything that would prompt either takes a flag or fails with a usage error naming the flag it needed.
 
-### 9.8 Versioning
+### 9.9 Versioning
 
 Structured output carries a contract version. Additions — new fields, new commands, new conditions — do not change it. **Removals and shape changes are breaking**, are preceded by deprecation, and consumers are given a release in which both forms work.
 
 Unrecognised fields in output are to be ignored by consumers rather than treated as errors, so that additions never break anyone.
 
-### 9.9 What must never happen
+### 9.10 What must never happen
 
 - **Structured output changing shape between repositories.** Local labels are display only; the contract is universal.
 - **Prompting in a non-interactive context.**
