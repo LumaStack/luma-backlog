@@ -347,32 +347,56 @@ So the division is:
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
-| `blocked` | optional | map | Present means blocked (§4.2.1). |
+| `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
+| `paused` | optional | map | Present means deliberately paused (§4.2.1). |
 | `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`OPEN-QUESTIONS.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
 
 A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
 
 **Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`OPEN-QUESTIONS.md` §17).
 
-#### 4.2.1 `blocked`
+#### 4.2.1 `blocked` and `paused`
 
-Blocked is **not a workflow status**, for the reason set out in §4.1.1: a record can be blocked while `preparing` just as easily as while `in_progress`, so it is not a position in the sequence.
+Neither is a workflow status, for the reason set out in §4.1.1: a record can be blocked while `preparing` just as easily as while `in_progress`, so neither is a position in the sequence.
 
-It is a field, present only when it applies:
+They are **two fields rather than one**, because both can be true at once — you can be waiting on a vendor *and* have deliberately parked the work. A single field with a `kind` would force a choice between two facts that coexist, which is the same error one level down.
+
+Both take the **same two keys**, `on` and `why`:
 
 ```yaml
-blocked:
-  on: 2026-08-07
-  by: waiting on the vendor contract     # free text, or a link to a record
+blocked:                                     # a list, or a single entry written bare
+  - { on: 2026-08-07, why: vendor contract }
+  - { on: 2026-08-09, why: "[[decisions/data-residency]]" }
+
+paused: { on: 2026-08-12, why: deprioritised in favour of payments }
 ```
 
-**`on` is the half that earns its place.** *Blocked* alone says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, so the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate.
+**They differ in cardinality, because the concepts do.**
 
-The key follows the format's convention: `on` for a date, `at` for a full timestamp. Every date in the corpus reads the same way.
+**`blocked` is a list**, since being blocked by two things at once is ordinary. A single-valued field silently loses the second: you clear the vendor issue, mark it unblocked, and find it was never the only problem. Each entry carrying its own `on` also distinguishes a fresh blocker from one that has sat for a month.
 
-**`by` is deliberately loosely typed**, like `verify_by` (§4.4.2). A blocker may be another record, a person, a vendor, a decision nobody has made, or a sentence explaining the situation. Constraining it would only exclude the cases that matter most.
+**`paused` is singular**, because you cannot be paused twice. One decision, one date, one reason.
 
-**How long is too long is not the tool's judgement.** It reports what is blocked and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
+A single entry may be **written bare and treated as a one-element list**, following the format's handling of `verified` — so the common case stays a one-liner:
+
+```yaml
+blocked: { on: 2026-08-07, why: vendor contract }
+```
+
+**`on` is the half that earns its place.** *Blocked* alone says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, so the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate. The key follows the format's convention: `on` for a date, `at` for a full timestamp.
+
+**`why` rather than `by`, in both.** *Blocked by the vendor contract* is the more idiomatic English, but the format already uses **`by` to mean the actor who acted** — it is half of `actor_event`. Reusing that key for *the thing standing in the way* would give one word two meanings across the corpus, and an agent reading `by:` would have to infer which from context. `why` costs a little idiom and buys an unambiguous key, plus one shape to learn instead of two.
+
+**`why` is deliberately loosely typed**, like `verify_by` (§4.4.2). A blocker may be a record, a person, a vendor, an unmade decision, or a sentence, and constraining it would exclude the cases that matter most.
+
+**They mean different things and imply different remedies**, which is why the distinction is kept:
+
+| | Meaning | Remedy |
+|---|---|---|
+| `blocked` | You **cannot** proceed. Something external. | Chase it. |
+| `paused` | You **will not** proceed. A choice. | Revisit the choice. |
+
+**How long is too long is not the tool's judgement.** It reports what is stalled and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
 
 ### 4.3 `backlog/wave`
 
@@ -452,7 +476,8 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. |
 | `depends_on` | optional | list of wikilink | Tasks that must finish first. |
 | `runs_with` | optional | list of wikilink | Tasks with no ordering relationship to this one; safe to run at the same time. |
-| `blocked` | optional | map | Present means blocked (§4.2.1). |
+| `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
+| `paused` | optional | map | Present means deliberately paused (§4.2.1). |
 | `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
 | `lease_expires` | optional | datetime | When an unrefreshed claim lapses. |
 | `follows` | optional | wikilink | The task this one succeeds after a failed or unfinished attempt (§4.6). |
@@ -552,7 +577,7 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
 | `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
-| `record.blocked` | Blocked, and for how long (§4.2.1). The tool reports the duration; what counts as too long is not its judgement. |
+| `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgement. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
@@ -1204,7 +1229,7 @@ Dimensions (§2.7) filter and group every view rather than adding views of their
 
 - **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without colour. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
 - **Columns group statuses** (§8), so a board stays legible while the vocabulary underneath stays precise.
-- **Blocked renders as a marker on the card, never as a column** (§4.2.1) — so a blocked item stays where the work actually is, and *three of eight in progress are blocked* is visible at a glance. Showing how long it has been blocked is what makes the marker worth having.
+- **Blocked and paused render as markers on the card, never as columns** (§4.2.1) — so a stalled item stays where the work actually is, and *three of eight in progress are blocked* is visible at a glance. Showing **how long** is what makes the marker worth having.
 - **Counts in column headers**, so the shape of the backlog is legible before reading a single card.
 - **A modal move mode** — enter it, reposition with the arrow keys across columns and within one, confirm or cancel. It makes reordering keyboard-complete and reversible, and its footer replaces the normal one so the available keys are always the current ones.
 - **A detail overlay** over the board rather than a separate screen, so context is never lost on the way in or out.
