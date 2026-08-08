@@ -8,7 +8,7 @@ The goals and values behind this project, and the reasoning underneath them.
 >
 > [Luma Knowledge Format](https://github.com/LumaStack/luma-knowledge-format) is under rapid development and it is expected that this project will need to request changes to the specification.
 
-This project assumes a world where a backlog is worked **continuously and in parallel**, by people and agents at the same time, and where the way agents work changes far faster than the backlog itself does.
+This project assumes a world where a backlog is worked **continuously and concurrently**, by people and agents at the same time, and where the way agents work changes far faster than the backlog itself does.
 
 ## What this is
 

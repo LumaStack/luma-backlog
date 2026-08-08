@@ -215,9 +215,9 @@ It is also the **stopping condition**. Without one, an agent has no principled r
 
 **Why it exists.** Work has to be divisible into pieces an actor can hold and complete.
 
-**How it earns its place.** It is the only unit at which **ordering and parallelism** can be expressed — whether two pieces of work may proceed at once, or whether one must wait. That is a property of what the work touches, so it cannot be stated anywhere else. A task therefore declares its own sequencing relationships rather than inheriting them from a container.
+**How it earns its place.** It is the only unit at which **what must come first, and what may overlap,** can be expressed — whether two pieces of work may proceed at once, or whether one must wait. That is a property of what the work touches, so it cannot be stated anywhere else. A task therefore declares this itself rather than inheriting it from a container (§4.5.1).
 
-This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the sequencing graph is what keeps concurrent actors out of each other's way.
+This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the ordering graph is what keeps concurrent actors out of each other's way.
 
 > **Tasks are coordination, not specification.** What *should be true* is stated by an outcome (§2.4). A task is how the work of getting there is divided, ordered, and owned — it exists because actors work concurrently, not because anybody needs a plan. Where an agent generates its own tasks from an outcome, tasks become derived and possibly disposable while the outcome remains durable. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18.
 
@@ -480,8 +480,8 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `wave` | recommended | wikilink | The attempt this task belongs to. |
 | `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
 | `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. |
-| `depends_on` | optional | list of wikilink | Tasks that must finish first. |
-| `runs_with` | optional | list of wikilink | Tasks with no ordering relationship to this one; safe to run at the same time. |
+| `parallel_group` | optional | list of text | Labels granting permission to overlap. Two tasks may run at the same time if they share at least one (§4.5.1). |
+| `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or deliverable boundary (§4.5.1). |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
 | `paused` | optional | map | Present means deliberately paused (§4.2.1). |
 | `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
@@ -489,9 +489,39 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `follows` | optional | wikilink | The task this one succeeds after a failed or unfinished attempt (§4.6). |
 | `follows_reason` | optional | enum | Why a successor exists — `retry`, `defect`, `unfinished`, or a team's own value. |
 
-`depends_on` and `runs_with` together express **sequencing** — the property that decides what may proceed at once. Parallelism is the *absence* of a constraint rather than a separate thing to declare (`OPEN-QUESTIONS.md` §19).
-
 **Body:** what is to be done, and how it will be verified.
+
+#### 4.5.1 Work is sequential unless something says otherwise
+
+**Tasks run one at a time, in rank order, and overlap only where a task says it may.**
+
+The default is on the safe side because **the two mistakes are not equal.** Forgetting to declare that work must be ordered puts two actors on the same files at once, and the damage is a bad merge nobody notices. Forgetting to declare that work may overlap costs time. One of those is recoverable by waiting.
+
+That is the reverse of the usual arrangement, and deliberately so: in a system where the normal case is several agents on one deliverable, the annotation people forget must be the one whose absence is merely slow.
+
+> **This is not the same claim as "concurrent access is the normal case"** (`PRINCIPLES.md`). That is about many actors *reaching* the backlog at once, which is expected and always allowed. This is about many tasks being *worked* at once, which is permitted only where declared. The words are kept apart on purpose.
+
+##### `parallel_group`
+
+A **label**, not a relationship. Tasks carrying a common label may run at the same time:
+
+```yaml
+parallel_group: [docs]
+```
+
+**A list, because permission is not transitive.** One label across three tasks would assert that all three *pairs* are safe, and frequently they are not — A may overlap with B, A may overlap with C, and B and C may still collide. With a list, A carries both labels and B and C carry one each: A overlaps with either, and B and C never meet.
+
+**A label rather than pairwise links**, for cost and for how it fails. Five mutually compatible tasks are five lines rather than twenty cross-references that must all agree and all be edited when a sixth arrives. And a mistyped label puts a task in a group of its own, so it runs alone — slower, still correct, which is the same direction as everything else here.
+
+**Labels are free text**, needing no registry, in the manner of dimensions (§2.7). **They grant permission and never cause anything to start:** a label means *these may overlap if they are otherwise ready*, never *run these now*.
+
+A team that labels everything identically is back to unrestricted parallelism — which is allowed, because they said so. The failure being guarded against is forgetting, not deciding.
+
+##### `depends_on`
+
+Rank already orders the tasks within a wave, so **`depends_on` is for orderings rank cannot express** — waiting on a task in another wave, or in another deliverable. Using it to restate the order of adjacent tasks is redundant, and the redundancy goes stale the moment either is reranked.
+
+> **This gives rank a second job.** It was a display and prioritisation preference (§9.6); it is now also execution order. That is a real widening, recorded here because a reader would otherwise be surprised — and because if rank turns out to be a poor carrier for both, this is the seam where it will show.
 
 ### 4.6 Succession
 

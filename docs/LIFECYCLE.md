@@ -86,7 +86,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Earns its keep.** The only phase producing claimable, orderable units — the substrate all parallel work rests on.
 
-**Watch for.** Planning beyond the current wave, which Redefine will waste. And sequencing everything serially out of caution, which quietly destroys the parallelism the model exists to enable.
+**Watch for.** Planning beyond the current wave, which Redefine will waste. And ordering everything serially out of caution, which quietly destroys the parallelism the model exists to enable.
 
 ### 2.6 Advance — *are we progressing?*
 
@@ -188,7 +188,7 @@ The useful part of this document. Each phase implies capability, and anything mi
 | **Observe** | Read current state cheaply: what exists, what is claimed, what has changed. |
 | **Articulate** | Create a deliverable and its outcomes. |
 | **Measure** | Record `verify_by` on each outcome before work begins (`SPEC.md` §4.4). |
-| **Plan** | Create tasks and express sequencing (`SPEC.md` §4.5). |
+| **Plan** | Create tasks, order them, and mark what may overlap (`SPEC.md` §4.5.1). |
 | **Advance** | Claim work exclusively, record progress (`SPEC.md` §6.5). |
 | **Verify** | Record evidence against outcomes (`SPEC.md` §4.7). |
 | **Redefine** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Archive rather than delete, so a lowered bar stays visible. **And record which operation occurred**, so a workflow layer can gate the ones that lower the bar without obstructing the ones that raise it — the tool cannot enforce that asymmetry itself, but it must make it expressible. |

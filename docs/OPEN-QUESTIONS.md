@@ -678,22 +678,41 @@ If that holds, the wave is not "the unit that repeats" but **the unit that repea
 
 ---
 
-## 19. What to call the ordering and parallelism property of tasks
+## 19. How tasks say what may run at the same time
 
-**Status:** Open, and minor — but it needs a name because the specification keeps describing it in a phrase.
+**Status:** **Settled — work is sequential by default; overlap is declared** (`SPEC.md` §4.5.1).
 
-A task carries the answer to "must this follow that, or may they run at the same time?" The specification currently calls this "ordering and parallelism," which is accurate and clumsy.
+This began as a naming question — what to call "ordering and parallelism" — and the naming turned out to be the small half.
 
-The property and the structure it forms may want different words:
+### The decision that mattered: which way the default points
 
-- **Sequencing** — the best single word for the property, because it covers both halves: parallel work is simply unsequenced. Neutral, precise, no baggage.
-- **Dependency graph** or **work graph** — the right name for the structure formed across many tasks, and the thing an agent actually traverses.
-- **Ordering** — plainer, but implies a total order when what exists is a partial one.
-- **Scheduling** — accurate in the abstract, but suggests time and assignment, which this is not.
+The specification had parallelism as the default, with ordering declared by `depends_on`. That is the usual arrangement and it is the wrong way round here, because **the two mistakes are not equal**: forgetting to declare an ordering puts two actors on the same files and produces a bad merge nobody notices; forgetting to declare overlap costs time. Only one is recoverable by waiting.
 
-The lean is **sequencing** for the property and **dependency graph** for the structure, on the grounds that parallelism is the absence of a constraint rather than a separate thing to name.
+So the annotation people forget must be the one whose absence is merely slow. Tasks run one at a time, in rank order, and overlap only where a task says it may.
 
-*Settled by:* picking one and using it consistently before the specification is written any further.
+### `parallel_group`, a label rather than a relationship
+
+`runs_with` read as a relationship, which is what it is not.
+
+**A list of labels, with overlap permitted where two tasks share one.** A single label per task would assert transitivity — three tasks under one label claims all three *pairs* are safe, and often A can overlap with B and with C while B and C collide.
+
+**A label rather than pairwise links** because five compatible tasks are five lines rather than twenty cross-references that must agree, and because a mistyped label leaves a task in a group of one: it runs alone, slower and still correct.
+
+### `depends_on` kept, but narrowed
+
+Rank orders tasks within a wave, so `depends_on` is only for orderings rank cannot express — across a wave or a deliverable. Restating adjacent order is redundant and goes stale on the next rerank.
+
+**Dropping it entirely was considered.** Not taken because cross-boundary waiting has no other expression. Re-open if it goes unused in practice: an unused field is worth removing, and one less field is a smaller model.
+
+### The consequence to watch
+
+**Rank now has two jobs** — display and prioritisation order, and execution order. That is a genuine widening, and it is the seam most likely to complain first: reordering the board would silently reorder execution. Recorded rather than resolved, because it needs use before it can be judged.
+
+### On the naming question that started this
+
+No collective term is used. "Sequencing" appeared in several places and was removed — it was invented here, means nothing to anyone arriving, and the two field names say what they do without a word standing over them. "Ordering" was unavailable regardless: `order` already means a record's position on the backlog.
+
+*Settled by:* deciding which failure the default should produce, after which the names followed.
 
 ---
 
