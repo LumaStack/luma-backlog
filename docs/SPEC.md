@@ -709,7 +709,9 @@ Two rules make git history a record rather than noise, and both are stated as re
 
 **Portability is served by derivation, not duplication.** The `log` command (§9.2) renders the same events in a portable form for anything that cannot read a repository (§10). Derived, rebuildable, and never a second source of truth — the same posture as `index.md`.
 
-**Nobody is expected to read it.** That is not a defect: its job is to be complete and trustworthy when something is in doubt, which is a different job from being useful on arrival. The journal is what gets read.
+**Nobody is expected to read it, and nothing feeds it to an actor.** That is intent rather than an accident. Its job is to be complete and trustworthy when something is in doubt, which is a different job from being useful on arrival — and a complete event stream in an actor's context is expensive noise that crowds out the entry that would have helped. The journal is what gets read.
+
+**It is a feed, not a duplicate.** The journal draws on the same events without copying the stream, and neither is authoritative for the other: git says an outcome was retired, the journal says why.
 
 > **The honest cost.** Copy `.backlog/` out of its repository and the event history does not come with it. That is a real loss for a stated goal, and the mitigation is exporting the history alongside the records rather than keeping a duplicate file permanently hot.
 
@@ -919,6 +921,8 @@ A human editing records by hand while agents work is ordinary use, and three pro
 **Never commit per file write.** One command produces **one commit**, even when it touches several files. Commit history is the system's event log (§5.5), and one entry per logical action is a history while one per field write is noise.
 
 **Never write a commit message a person cannot read.** *Claim task `add-retry-queue` (`agent:opus-5/1`)* is a history. *update* four hundred times is something everyone learns to ignore, which quietly costs the system its audit trail.
+
+**Never let a journal write break the operation that caused it.** Appending to the journal is a side effect of doing something, not part of doing it. A full disk, a lock, or a malformed file must produce a visible warning and leave the actual work committed — an operation that fails *because its own record-keeping failed* teaches people to turn the record-keeping off.
 
 **Never resolve a conflict by recency.** Preferring the most recent version discards the other silently, and the loser has no way to discover what happened.
 
