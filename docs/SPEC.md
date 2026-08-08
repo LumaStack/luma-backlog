@@ -283,7 +283,13 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 ### 4.1 Conventions
 
-**Type names are namespaced by domain:** `backlog/deliverable`, `backlog/wave`, `backlog/outcome`, `backlog/task`, `backlog/decision`. This follows the format's own recommendation to namespace by domain, and reads self-describingly.
+**Type names are namespaced organization, domain, type:** `luma/backlog/deliverable`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration`.
+
+The format recommends namespacing and contemplates a further dimension beyond domain; three levels answer two different questions rather than one. **`backlog/`** says which vocabulary a record belongs to — `task` and `decision` are the two names any other system is most likely to want, and they are the two most expensive to fight over. **`luma/`** says whose vocabulary it is, which is what makes the types safe to publish and vendor elsewhere.
+
+**A Type Definition lives at the path its name spells** — `_types/luma/backlog/task.md`. The format puts definitions in `_types/` and resolves them by type name, but does not say how a namespaced name maps to a path; mirroring the name is the obvious reading and is adopted here as a first-consumer decision, to be fed back rather than kept local.
+
+The cost is real and paid on every record: a longer `type` value, against a stated preference for saying less. It is accepted because the alternative is discovering the collision later, when the fix is rewriting every record and breaking every external consumer that filtered on the old value.
 
 **Every record carries the format's core fields** — `type`, `title`, `description`, `created`, `modified`, `lifecycle_status`, `tags` — and those are not repeated in the tables below. Only domain fields are listed.
 
@@ -339,7 +345,7 @@ So the division is:
 
 **Not to be confused with `sources`**, which the format already defines. `sources` records what a record *derives from* — provenance, looking backwards. `references` records what someone should *read before acting* — preparation, looking forwards. A deliverable's sources might be the research that produced it; its references are the code and documents needed to do the work.
 
-### 4.2 `backlog/deliverable`
+### 4.2 `luma/backlog/deliverable`
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
@@ -398,7 +404,7 @@ blocked: { on: 2026-08-07, why: vendor contract }
 
 **How long is too long is not the tool's judgement.** It reports what is stalled and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
 
-### 4.3 `backlog/wave`
+### 4.3 `luma/backlog/wave`
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
@@ -410,7 +416,7 @@ blocked: { on: 2026-08-07, why: vendor contract }
 
 **Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
 
-### 4.4 `backlog/outcome`
+### 4.4 `luma/backlog/outcome`
 
 The defining record type of this specification.
 
@@ -466,7 +472,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 
 **A consequence to be aware of.** Because the field is uninterpreted, **the tool records verdicts rather than producing them** — whoever verifies runs the check and reports what they found. Whether a command should ever execute checks itself is a genuine mechanism-versus-policy question, since executing needs an environment, timeouts, and isolation; it is left open (`OPEN-QUESTIONS.md` §21). If it is ever wanted, the tool must be able to tell a runnable entry from prose, and the lean is a second optional field rather than typed entries — less structure, and the prose stays useful for a person even where a command exists.
 
-### 4.5 `backlog/task`
+### 4.5 `luma/backlog/task`
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
@@ -503,7 +509,7 @@ The format's `verified` field is the mechanism: a list of independent confirmati
 
 **The gap:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. This is the first change this project asks of the format, and it is tracked there rather than worked around locally (`OPEN-QUESTIONS.md` §4).
 
-### 4.8 `backlog/decision`
+### 4.8 `luma/backlog/decision`
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
@@ -963,13 +969,14 @@ A directory structure may only reflect properties that are effectively permanent
   config.yml                      configuration (§8)
   journal.md                      cross-deliverable learning — see the caution below
   index.md                        derived navigation — a cache, never a source
-  _types/                         Type Definitions, one per type
-    deliverable.md
-    wave.md
-    outcome.md
-    task.md
-    decision.md
-    exploration.md
+  _types/                         Type Definitions, one per type (§4.0)
+    luma/backlog/
+      deliverable.md
+      wave.md
+      outcome.md
+      task.md
+      decision.md
+      exploration.md
   deliverables/
     payments-v2/
       index.md                    the deliverable record itself

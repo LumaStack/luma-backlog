@@ -697,6 +697,26 @@ The lean is **sequencing** for the property and **dependency graph** for the str
 
 ---
 
+## 19a. How type names are namespaced
+
+**Status:** **Settled — `luma/backlog/<type>`**, organization then domain then type.
+
+The format recommends namespacing types and gives two-level examples, while contemplating a further dimension at larger scale. Three levels are used because the two prefixes answer different questions: **`backlog/`** names the vocabulary a record belongs to, and **`luma/`** names whose vocabulary it is.
+
+`task` and `decision` are the type names any other system is most likely to want, and the most expensive to fight over — a bundle can hold only one `_types/task.md`, and a record with `type: task` in a merged bundle is ambiguous with no recovery except renaming everything.
+
+### What was not taken
+
+**Bare names** — `task`, `outcome`, `deliverable`. Defensible, and nearly chosen: `.backlog/` is itself a Bundle, so type names are already scoped by the bundle boundary, and a collision needs someone to merge bundles or vendor our types deliberately. The format also does not specify how a namespaced name resolves to a path, so namespacing means deciding that ourselves.
+
+Not taken because the failure is asymmetric. Namespacing costs a longer string on every record, forever, and is recoverable. Not namespacing costs nothing until it costs a rewrite of every record plus every external consumer that filtered on the old value — and by then the corpus is the thing making it expensive.
+
+### What this obliges us to define
+
+`_types/luma/backlog/task.md` — a Type Definition at the path its name spells. The format is silent on this, so it is a **first-consumer decision that should be fed back upstream** rather than left as local behaviour, along with the observation that its namespacing examples are all two-level.
+
+---
+
 ## 20. Whether any dimensions ship as defaults
 
 **Status:** Open — under consideration.
