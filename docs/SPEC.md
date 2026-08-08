@@ -429,6 +429,23 @@ The two closings differ, and the difference matters:
 
 Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 
+#### 5.3.1 Closed is not the same as delivered
+
+Work ends for more reasons than success, and a terminal state called *done* cannot express that. **The terminal state is `closed`, and every closing records why:**
+
+| Reason | Gated on completion? |
+|---|---|
+| **delivered** | **Yes.** Every live outcome passes. |
+| **cancelled** | No. The work is no longer wanted. |
+| **superseded** | No. Another deliverable replaced it. |
+| **abandoned** | No. It was attempted and given up on. |
+
+This distinction matters more than vocabulary. **Gating cancellation on completion would be absurd** — you would be unable to stop work precisely because it was unfinished, which is the only reason anyone ever cancels anything. So the gate belongs to *delivered* alone, and the other reasons close freely.
+
+What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A cancelled deliverable with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
+
+That is also what keeps this distinct from Redefine (`LIFECYCLE.md` §2.8): retiring an outcome changes what done means, while cancelling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
+
 ### 5.4 Hooks — *the least settled part of this document*
 
 > **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`OPEN-QUESTIONS.md` §22). What follows is a shape to criticise.
@@ -667,8 +684,8 @@ labels:
   deliverable: story              # what people see; records still say deliverable
 
 workflow_status:
-  deliverable: [todo, doing, blocked, delivered]
-  task:        [todo, doing, blocked, done]
+  deliverable: [backlog, todo, doing, blocked, closed]
+  task:        [todo, doing, blocked, closed]
 
 priority:
   values:  [low, medium, high, urgent]
@@ -687,6 +704,8 @@ hooks:                            # proposal — see §5.4
 ```
 
 Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
+
+Two notes on the default status vocabulary. **`backlog` precedes `todo`** — captured but not yet committed to, which is what keeps a backlog from being a to-do list everyone has already agreed to do. And the terminal state is **`closed`, not `done`**, because work ends for several reasons and only one of them is success (§5.3.1).
 
 ### 8.3 Defaults are written, not compiled
 
@@ -988,7 +1007,9 @@ These are the hard boundaries referred to in §10.1. If synchronisation never be
 
 ## 11. The board
 
-**The terminal board is the primary surface.** It is where the tool is met and used, and it is held to the same standard as the command interface itself. `backlog board` opens it; so does `backlog` with no arguments.
+**Which surface is primary depends on who is asking.** For a person, it is the terminal board — where the tool is met, and where most of a day's interaction happens. For an agent, it is the command interface; an agent has no use for a rendered column and every use for structured output.
+
+Both are therefore held to the same standard, and neither is a convenience layer over the other. `backlog board` opens the board; so does `backlog` with no arguments, because the no-argument case is a person.
 
 > **The rules below are reasoned; the specific views are provisional.** What a board should show and refuse is argued from the model. Which panes exist and how they are arranged will not survive contact with real use, and should not be treated as settled.
 
@@ -1014,6 +1035,17 @@ Enough to work the model, and no more:
 | **Health** | Whatever conditions are currently firing across the repository. |
 
 Dimensions (§2.7) filter and group every view rather than adding views of their own — that is the whole point of them being attributes.
+
+**Interaction patterns worth adopting**, drawn from boards that already work:
+
+- **Counts in column headers**, so the shape of the backlog is legible before reading a single card.
+- **A modal move mode** — enter it, reposition with the arrow keys across columns and within one, confirm or cancel. It makes reordering keyboard-complete and reversible, and its footer replaces the normal one so the available keys are always the current ones.
+- **A detail overlay** over the board rather than a separate screen, so context is never lost on the way in or out.
+- **A split list-and-detail view** as the alternative to columns, for working through many records without losing the one in hand.
+- **Contextual footers.** The visible keys are the keys that currently work.
+- **Empty states that explain themselves**, naming the filters in force and how to clear them. An empty board should never be ambiguous between *nothing matched* and *nothing exists*.
+
+**Filters — search, status, priority, dimension — are deferred past the first release**, but the views are laid out expecting them, because retrofitting a filter bar tends to reshape everything beneath it.
 
 ### 11.3 Staying current
 

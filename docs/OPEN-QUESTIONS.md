@@ -716,3 +716,22 @@ Under that split, query-and-mark is not the weaker option. It is **half of a mec
 Whether **enforcement** is genuinely required, and whether it is required on **human-driven** boundaries specifically. If boundaries only need *something to happen eventually*, query-and-mark plus harness hooks is sufficient and free. If a boundary must **stop** work — the governance case for retiring an outcome (`LIFECYCLE.md` §2.8) is the strongest example — and must stop it when a person is driving, then only a mechanism inside this tool will do.
 
 *Settled by:* running the loop with query-and-mark and seeing whether anything important gets skipped. If it does, that is the case for hooks, made by evidence rather than anticipation.
+
+---
+
+## 23. Standing outcomes
+
+**Status:** Open — a shape worth considering, not yet a decision.
+
+Some conditions apply to *every* deliverable rather than to one: tests pass, types check, linting is clean, documentation is updated. Boards in this space often carry them as a second checklist alongside the item's own acceptance criteria, distinct from what that particular piece of work is trying to achieve.
+
+In our model those are plainly **outcomes** — binary, evidence-backed, checkable — that happen to be declared once and to apply everywhere. Two ways they could work:
+
+- **Declared in configuration and materialised** onto each deliverable when it is created, after which they are ordinary outcomes with their own evidence and history. Simple, and it makes a deliverable's record self-contained.
+- **Declared once and referenced**, never copied. Less duplication, but a deliverable's outcomes then live in two places, and completion arithmetic has to consult both.
+
+**The tension worth naming.** Standing outcomes are the closest thing in the model to a mandated process, which is exactly what this tool has avoided owning (`OPEN-QUESTIONS.md` §6). Declaring them in configuration keeps that on the right side of the line — the team authors the rule, the tool only counts. But they would make every deliverable start with unmet outcomes it did not choose, and a team that finds them noise will disable them, at which point they enforce nothing.
+
+Related and unresolved: a record's **references** — the files, links, and material an actor should read before starting. Boards elsewhere carry them per item, and this is the same gap as context material having no home (§2).
+
+*Settled by:* using the tool without them and seeing whether the same outcomes get written by hand on every deliverable. If they do, that is the case for declaring them once.
