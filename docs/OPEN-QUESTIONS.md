@@ -698,6 +698,28 @@ So the annotation people forget must be the one whose absence is merely slow. Ta
 
 **A label rather than pairwise links** because five compatible tasks are five lines rather than twenty cross-references that must agree, and because a mistyped label leaves a task in a group of one: it runs alone, slower and still correct.
 
+### Why the name is `parallel_group`
+
+Roughly fifty candidates. The test that decided it: **does it say what it means without a manual?**
+
+**Keep the word "parallel."** Every name that dropped it — `overlap_group`, `cohort`, `peer_group`, `isolation_group` — failed immediately. They describe the mechanism or the relationship and leave the effect to be looked up, on a field whose entire purpose is that people do not get it wrong.
+
+**Prior art rules out several names by inverting them.** This is the most useful finding, because each is a name a reasonable person would otherwise reach for:
+
+| Name | Where it already means something else | Meaning there |
+|---|---|---|
+| `concurrency_group` | continuous-integration systems | members **cancel or queue** each other — mutually exclusive |
+| message or ordering group | queueing and messaging systems | members are processed **in strict order** |
+| `lane`, `thread`, `stream`, `partition`, `channel` | everywhere | sharing one means **single-file**; parallelism comes from having several |
+
+All three are backwards from our meaning. A name that is merely unfamiliar costs an explanation; a name that is confidently misread costs a bad merge.
+
+**The `_with` suffix was rejected** — `parallel_with`, `swarm_with` — because it reads as a relationship, and would keep pulling people back toward listing sibling tasks instead of a label.
+
+**`swarm` was the closest rival**, and is recorded as deferred rather than dead. It is one short word, carries simultaneity in itself, is native to agent orchestration, and sits naturally beside `wave` as collective-motion vocabulary. Its collision — agile "swarming," many people onto one item — is **same-direction**, unlike the three above, so a reader arrives at the right idea at the wrong granularity and self-corrects.
+
+Not taken because it still needs a sentence: *many at once* is not quite *these may run at the same time as each other*. **Re-open if `parallel_group` proves too heavy in practice** — every task carrying one, on a project that values saying less. Preferring how it sounds does not qualify.
+
 ### `depends_on` kept, but narrowed
 
 Rank orders tasks within a wave, so `depends_on` is only for orderings rank cannot express — across a wave or a deliverable. Restating adjacent order is redundant and goes stale on the next rerank.
