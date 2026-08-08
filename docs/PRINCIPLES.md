@@ -34,9 +34,11 @@ The backlog is markdown files in a git repository, conforming to the [Luma Knowl
 
 The reason the work lives in git at all is that it gives agents context they cannot otherwise get. That purpose outranks tidiness when the two conflict.
 
-## Parallel is the normal case
+## Concurrent access is the normal case
 
-Concurrent access by many actors is the expected condition, not an edge case to harden against later.
+Many actors touching the backlog at the same time is the expected condition, not an edge case to harden against later.
+
+> **This is about access, not execution.** Whether two *tasks* may be worked at the same time is a separate question with the opposite default — work is sequential unless something says otherwise, because forgetting to declare an ordering should cost speed rather than correctness (`SPEC.md` §4.5). Concurrency here means many actors reaching the same records; parallelism there means many tasks running at once. The words are kept apart deliberately.
 
 - **Independent work should proceed independently.** Actors not touching the same thing should not wait on each other.
 - **Contention should be bounded** to the records actually being changed.
