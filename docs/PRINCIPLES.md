@@ -69,7 +69,12 @@ For the same reason the tool is permissive by default. It does not reject a reco
 
 This tool should change slowly. Stability is a feature of infrastructure, and the volatile parts of the system have deliberately been placed elsewhere — as far as is currently understood.
 
-That is paid for in dependency restraint, a small surface area, and reluctance about features that encode a particular way of working. Reluctance, not refusal: a capability that makes the tool markedly more useful may well be worth the churn it invites. The question is asked every time, not answered once.
+That is paid for in a small surface area and reluctance about features that encode a particular way of working. Reluctance, not refusal: a capability that makes the tool markedly more useful may well be worth the churn it invites. The question is asked every time, not answered once.
+
+**Dependency restraint means something specific**, and the two kinds are not comparable:
+
+- **Anything the user must install** is what restraint is really about, and the target is **none**. A tool that needs a runtime installed first has already lost people before it does anything, and every version of that runtime becomes a support burden. This is a hard aim, and the reason the terminal tool is a single compiled binary.
+- **Libraries compiled into that binary** cost maintenance and supply-chain attention, not user friction. They still deserve a reason on the record — but a library that removes real work is usually worth it, and treating it like the first kind is a mistake.
 
 ## Where the edges are today
 

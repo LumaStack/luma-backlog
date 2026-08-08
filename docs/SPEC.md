@@ -1368,6 +1368,57 @@ Unrecognised fields in output are to be ignored by consumers rather than treated
 - **`archive` deleting or moving anything** (§7.1).
 - **Commands the board can do that the interface cannot.** The board is a client, not a privileged surface.
 
+## 9a. Repository and build
+
+How the project is laid out, built, and shipped. Decided together, and separately from the design above — none of it constrains the record model.
+
+### 9a.1 Module, layout, and the public surface
+
+**Module path `github.com/lumastack/luma-backlog`**, lowercase — an uppercase segment is escaped in the module cache (`!luma!stack`) and stays ugly forever.
+
+```
+cmd/luma-backlog/     the entry point
+internal/             everything else
+docs/                 the specification
+```
+
+**Everything that is not the entry point lives under `internal/`**, and that is a decision rather than a habit. The contract is **the command line** — its verbs, output shapes, and exit codes (§9). Exporting Go packages would create a second public surface carrying a second compatibility obligation, taken on by accident rather than on purpose. If a library is ever wanted, it can be promoted deliberately; the reverse is not available.
+
+### 9a.2 The binary is `luma-backlog`, installed with a `backlog` alias
+
+The name to type is `backlog`; the name that survives contact with other tools is `luma-backlog`. Both ship — the binary under its full name, a symlink under the short one.
+
+**The full name is the canonical one because it keeps a third option open at no cost.** Git and kubectl both resolve `git foo` and `kubectl foo` to a `git-foo` or `kubectl-foo` executable on the path. A future `luma` dispatcher would therefore find `luma-backlog` with nothing renamed, and find every other `luma-*` alongside it. Naming the binary `backlog` closes that path.
+
+Whether the stack eventually presents as `luma <command>` is deliberately **not** decided here — it is a decision about several tools and cannot be made well from inside one of them.
+
+### 9a.3 Versions and dependencies
+
+**Go floor: the two most recent minor releases**, matching Go's own support window, declared in `go.mod`.
+
+Dependencies follow the distinction in `PRINCIPLES.md`: **nothing the user has to install**, which the single static binary guarantees, and **a recorded reason for every library** compiled into it.
+
+| Dependency | Reason |
+|---|---|
+| Bubbletea, Lipgloss | The terminal board (§11). Settled with the language choice (`OPEN-QUESTIONS.md` §3). |
+| Cobra | Command routing, **shell completions, and man pages** — the last two were requirements, and hand-writing completions across bash, zsh, and fish is the expensive part it removes. Its command tree is also data, so `contract` (§9.7) is a walk over a structure that already exists rather than a document maintained by hand. |
+| A YAML parser | Frontmatter. |
+| A markdown parser | Bodies and section-aware edits. |
+
+**One cost of Cobra worth naming:** its help text and error formatting become part of the human-facing surface. Machine-readable output stays entirely ours (§9.3), so the coupling stops at prose.
+
+### 9a.4 Tests are contract tests
+
+Table-driven tests throughout, and **a golden file for every output shape.**
+
+That follows from a principle rather than from taste. If output shapes are part of the contract, a diff in a golden file **is** a breaking change — which turns "good coverage" into something with a meaning, rather than a percentage to chase. The behaviours that most need pinning are the ones other systems will be written against: `--json` shapes, exit codes (§9.4), and the `contract` output.
+
+### 9a.5 Distribution
+
+One release tool covering static binaries per platform, checksums, a Homebrew tap, man pages, and shell completions. Continuous integration runs the tests across the supported Go versions.
+
+**Licence: MIT**, matching the organization's other projects. A patent-granting licence was considered and is not needed here: both are on every corporate allowlist, and the patent grant earns its keep when code is incorporated into a shipped product in a patent-exposed domain, which this is not. The one reason to revisit is donating the project to a foundation — some require a specific licence, and relicensing later needs every contributor's agreement.
+
 ## 10. Import and export
 
 > **⚠ Proposal, and deliberately incomplete.** How much this tool participates in synchronisation is **undecided**, and this section does not settle it. What it does settle is what must be true of the data regardless.

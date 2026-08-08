@@ -12,6 +12,8 @@ All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
+Repository scaffolding — module path, layout, binary name, licence, dependencies, testing, and distribution — is settled in `SPEC.md` §9a rather than tracked here, since none of it constrains the record model.
+
 ---
 
 ## 1. What the unit of iteration is called
