@@ -317,17 +317,11 @@ Most regeneration replaces **part** of a file, and calling that "a generated fil
 | **Regenerated section** | A bounded region inside an authored file. | **Never touch a byte outside the markers.** |
 | **Regenerated key** | Named frontmatter keys the tool owns. | Every other key is preserved untouched (§4.1). |
 
-**A regenerated section is delimited explicitly**, and the markers are part of the contract:
+**How a regenerated section is delimited is unresolved** (`OPEN-QUESTIONS.md` §24) — explicit markers, a named heading, or a heading declared in frontmatter. The obligations below hold whichever wins:
 
-```markdown
-<!-- luma-backlog:generated:begin outcomes -->
-...regenerated content...
-<!-- luma-backlog:generated:end outcomes -->
-```
-
-- **Everything outside the markers is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`FORMAT-REQUESTS.md` §4), not an exception.
-- **Missing markers are appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears.
-- **Content inside the markers is lost on the next write**, which is why the marker names the tool: a reader who edits there should be able to see that it will not survive.
+- **Everything outside the boundary is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`FORMAT-REQUESTS.md` §4), not an exception.
+- **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears.
+- **Content inside is lost on the next write**, so a reader must be able to tell that from the file itself. Whatever delimiter is chosen has to carry that warning — an unmarked region that silently eats edits is the worst outcome of the three.
 
 **Prefer a section to a file** wherever a person might reasonably want to add something. A whole generated file forbids that permanently, and the cost of finding out later is a file people work around rather than use.
 

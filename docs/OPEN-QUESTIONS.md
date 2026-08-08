@@ -898,3 +898,41 @@ Referencing therefore saves no storage and costs indirection: completion arithme
 ### Still open, and separate
 
 A record's **references** — the files, links, and material an actor should read before starting — remain homeless. That is the context half of §2 rather than anything to do with standing outcomes, and settling this did not settle that.
+
+---
+
+## 24. How a regenerated section is delimited
+
+**Status:** Open. Both candidates stay live; the deciding evidence is how often files are actually read in an editor.
+
+A regenerated section is a bounded region inside an authored file (`SPEC.md` §4.1). The obligations are settled — nothing outside it is touched, a missing boundary is appended rather than inferred, and a reader must be able to tell that edits inside will not survive. **How the boundary is expressed is not.**
+
+### Explicit markers
+
+```markdown
+<!-- luma-backlog:generated:begin navigation -->
+<!-- luma-backlog:generated:end navigation -->
+```
+
+Unambiguous, invisible when rendered, and able to wrap anything including headings. **Costs raw readability** — two lines of machinery in a format chosen for being pleasant to read, on every file that has one.
+
+### A named heading
+
+The section *is* a heading, and it runs to the next heading of the same or higher level. Nothing extra in the file at all, and a person reading it sees an ordinary document.
+
+Two weaknesses. **The boundary is implicit**, so renaming the heading loses the region — and the likely failure is a duplicate section appended rather than an error. And **nothing warns an editor** that the content is generated, which is the obligation above, unmet.
+
+### A heading declared in frontmatter
+
+```yaml
+generated_sections: [Navigation]
+```
+
+The body stays clean, the declaration is machine-readable, and it sits where metadata belongs. The rename problem remains, and the warning is one file-length away from the content it governs rather than beside it.
+
+### What decides it
+
+**How often files are read directly, in an editor, rather than through the board or the command line.** If that is rare, markers cost nothing and buy precision. If it is the common case — and for a tool storing plain markdown in a repository it may well be — two lines of machinery per section is a real tax on the thing the format exists for.
+
+*Settled by:* using the tool for a while and noticing how often anyone actually opens a record in an editor.
+
