@@ -4,7 +4,7 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §2 (exploration, log, and context still have no home).
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §12 (the boundary with the workflow layer), because it is asked again by every feature; §18 (how outcomes relate to the other units); §2 (exploration and the log still have no home).
 
 All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
 
@@ -65,21 +65,28 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ---
 
-## 2. Where exploration, the log, and context live
+## 2. Where exploration and the log live
 
-**Status:** Open — and currently a gap.
+**Status:** Partly settled. **Context is resolved** (`SPEC.md` §4.1.1); exploration and the log remain open.
 
-Three things were wanted from the beginning and have no place in the unit model:
+Three things were wanted from the beginning and had no place in the unit model.
 
-- **Exploration** — ideas, research, investigations, briefs. Their value is that abandoned directions stay findable, so the same ground is not re-covered.
-- **A log or journal** — the record of what happened, including transitions that current state cannot reconstruct (something closed and reopened, a criterion that passed and later regressed, a claim that was stolen).
-- **Context** — material an actor should read before working on something.
+### Context — settled, by not modelling it
 
-None of these is obviously a *unit* in the sense of `SPEC.md` §2.1 — they may be records without mechanics, attributes, or conventions about files rather than modeled things. They were not dropped on purpose; the unit model simply has not reached them.
+**Context loading belongs to a separate, swappable engine.** One repository might resolve against a generated wiki, another against a commercial knowledge graph, another against a folder of documents — entirely different engines, and a backlog that understood any of them would be coupled to it.
+
+So this tool holds **`references`**: opaque pointers stored with the record they belong to, never resolved, ranked, or interpreted here. Deciding what an actor should read, and how much of it, is the engine's work.
+
+That is why context was hard to place — it was never a record type or a unit. It is a field, and the interesting part of it lives somewhere else entirely.
+
+### Still open
+
+- **Exploration** — ideas, research, investigations, briefs. Their value is that abandoned directions stay findable, so the same ground is not re-covered. Settled in shape (`SPEC.md` §7.2 gives it a home at either level, and it is archived rather than deleted), but not in whether it carries any mechanics.
+- **A log or journal** — the record of what happened, including transitions that current state cannot reconstruct: something closed and reopened, an outcome that passed and later regressed, a claim that was stolen.
 
 The log has the strongest independent case. `SPEC.md` §5 relies on it for transitions that current state cannot re-derive, and §8 below may add a second dependency: if coordination state is shared across worktrees, the record of who did what and when becomes the only durable account of activity that happened outside any one branch.
 
-*Settled by:* deciding whether each needs mechanics or merely a place to live.
+*Settled by:* deciding whether either needs mechanics or merely a place to live.
 
 ---
 

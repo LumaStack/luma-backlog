@@ -256,6 +256,26 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 **Unrecognized fields are preserved untouched** (§3.1 of the principles). Anything upstream may annotate any record without this tool interpreting or losing it.
 
+#### 4.1.1 References — pointers this tool does not follow
+
+Any record may carry **`references`**: material an actor should read before working on it. A path, a link, an identifier in some other system, a name only a particular loader understands.
+
+**The values are opaque.** This tool stores them, shows them, and hands them over. It does not resolve them, rank them, fetch them by default, validate them, or know what they mean.
+
+That is deliberate, because **context loading belongs to a different layer and is expected to be swappable**. One repository might resolve references against a generated wiki, another against a commercial knowledge graph, another against a folder of documents. Those are entirely different engines, and a backlog that understood any one of them would be coupled to it.
+
+So the division is:
+
+| This tool | The context engine |
+|---|---|
+| Stores the pointers | Resolves them |
+| Keeps them with the record they belong to | Decides what is relevant, and how much to load |
+| Renders them as text | Understands what each one *is* |
+
+**A primitive convenience is allowed, and is not the mechanism.** Showing the contents of a reference that happens to be a file in this repository is a reasonable courtesy. *Choosing* what an actor should read — ranking, budgeting, summarising — is the engine's work, and doing any of it here would be a workflow layer growing inside the wrong project.
+
+**Not to be confused with `sources`**, which the format already defines. `sources` records what a record *derives from* — provenance, looking backwards. `references` records what someone should *read before acting* — preparation, looking forwards. A deliverable's sources might be the research that produced it; its references are the code and documents needed to do the work.
+
 ### 4.2 `backlog/deliverable`
 
 | Field | Obligation | Field type | Meaning |
