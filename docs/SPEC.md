@@ -120,13 +120,15 @@ Formation lives in **`workflow_status`** rather than a field of its own. The low
 | Value | Means |
 |---|---|
 | `idea` | Just an idea. Captured so it is not lost. |
-| `planning` | Needs planning, and that work is happening now. |
+| `preparing` | Work is being done to make it actionable. |
 | `actionable` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
 | `todo`, `doing`, `blocked`, `closed` | Where the work is (§8, §5.3.1). |
 
-**`planning` is broader than its name.** Getting something from an idea to actionable is rarely just writing a plan — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. All of it lands in the same bucket.
+**`preparing` covers every activity, and names none.** Getting from an idea to actionable is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
 
-That is deliberate. Modelling *which* preparatory activity is underway would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern. A team that wants to distinguish a spike from an estimate has dimensions (§2.7) and its own records to do it with — exploration produced along the way is an ordinary record (§7.2), and it usually appears during this stage.
+Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modelling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern.
+
+A team wanting to distinguish a spike from an estimate has dimensions (§2.7) and its own records for it. Exploration produced along the way is an ordinary record (§7.2), and this is the stage where it usually appears.
 
 **`actionable` is named for the decision it enables, not the state it describes.** Someone scanning a backlog is not asking *is this planned* — they are asking *can I pull this*. The word answers the question actually being asked.
 
@@ -145,7 +147,7 @@ It also means it can decay, which is the failure this was meant to prevent. So t
 | Structure | Implies |
 |---|---|
 | No outcomes | `idea` |
-| Outcomes exist, some without a `verify_by` | `planning` |
+| Outcomes exist, some without a `verify_by` | `preparing` |
 | Every outcome has a `verify_by` | `actionable` |
 
 A one-line deliverable marked `actionable` is a claim its own structure contradicts, and the tool says so — as an observation, not a refusal. Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
@@ -157,21 +159,17 @@ A one-line deliverable marked `actionable` is a claim its own structure contradi
 - **Blockedness.** A well-planned deliverable waiting on something else has not become less formed — that is `blocked`.
 - **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly actionable deliverable that nobody has scheduled is an ordinary thing.
 
-##### Formation and `lifecycle_status`
+##### `lifecycle_status` remains a separate, human judgement
 
-The format's `lifecycle_status` — `draft`, `provisional`, `stable`, `archived` — stays what it is: **a person's declaration**, saying how much the record can be relied upon. It is orthogonal to workflow status by the format's own design, and now also companion to derived formation.
-
-Keeping both is deliberate. Derived formation is free, current, and uncheatable, but measures **structure rather than quality** — three vacuous outcomes with lazy checks read as *planned*. A person can say *this is still half-baked* when the boxes are ticked, and they may be right.
-
-**Their disagreement is itself worth surfacing.** A record declared `stable` with no outcomes is claiming something its own structure contradicts, and the tool should point at that rather than resolve it.
-
-**What derived formation cannot know** is whether the outcomes present are *all* the outcomes needed — you cannot detect what nobody wrote. So the claim is deliberately narrow: **ready to start, not fully specified forever.** Discovering the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8), and claiming more would be the overconfidence that makes planning status untrustworthy in the first place.
+The format's `lifecycle_status` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; lifecycle status says *how much the record can be relied upon*. A deliverable can be `actionable` and `draft` if the plan is complete but nobody trusts it yet.
 
 **`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgement to a person.
 
-> **Why this is what makes capture cheap.** Recording an idea is only free if discarding it is also free — and here **archiving is lossless** (§7.1). Nothing is deleted, nothing moves, and the record stays findable forever. So there is no cost to writing something down that might not survive, and no cost to letting it go, which is precisely the condition under which people record things instead of losing them.
+> **Why this makes capture cheap.** Recording an idea is only free if discarding it is also free — and here **archiving is lossless** (§7.1). Nothing is deleted, nothing moves, and the record stays findable forever. So there is no cost to writing down something that may not survive, and none to letting it go, which is precisely the condition under which people record things instead of losing them.
 >
-> The corollary is that **drafts should stay off the main board by default.** Capture is generous; the working surface is not.
+> That is also why the stage names need not carry permission to fail. Things may be abandoned at any point, and the mechanism rather than the vocabulary is what makes it safe.
+>
+> The corollary: **ideas stay off the main board by default.** Capture is generous; the working surface is not.
 
 ### 2.3 Wave
 
@@ -785,11 +783,11 @@ labels:
   deliverable: story              # what people see; records still say deliverable
 
 workflow_status:
-  deliverable: [idea, planning, actionable, todo, doing, blocked, closed]
+  deliverable: [idea, preparing, actionable, todo, doing, blocked, closed]
   task:        [todo, doing, blocked, closed]
 
 columns:                          # statuses grouped into board columns (§11)
-  Backlog:     [idea, planning, actionable]
+  Backlog:     [idea, preparing, actionable]
   To Do:       [todo]
   In Progress: [doing, blocked]
   Closed:      [closed]
