@@ -778,18 +778,36 @@ The tool reports it and draws no conclusion. It cannot judge whether an entry is
 
 > **This is the strongest concrete case for hooks so far**, and it is worth recording as evidence rather than argument. `OPEN-QUESTIONS.md` §22 says the hook question is settled by *running the loop and seeing whether anything important gets skipped*. The journal is the thing that gets skipped, its absence is silent, and the cost lands on the next actor rather than the one who skipped it — which is precisely the shape a guardrail exists for.
 
+##### It is the default destination
+
+**When something is worth keeping and has no obvious home, it goes in the journal — immediately, without deciding where it belongs.** Three kinds in particular:
+
+- **A learning.** Anything discovered that was not known before.
+- **Reusable context.** A command, a constraint, a piece of how-it-works that the next actor would otherwise reconstruct.
+- **What is next, when it is not yet a task.** A direction that is real but not shaped enough to be work.
+
+**The routing rule is one line:**
+
+> **Has an obvious home — a task, an outcome, a decision, an exploration? Put it there. Otherwise the journal, now.**
+
+**The asymmetry is what makes this the right default.** A capture that turns out to be unnecessary costs a paragraph someone skims. A capture that never happens is **silent and permanent** — nobody discovers what was not written down, and the next actor pays for it without ever knowing why. Those two costs are not close, so hesitating is the more expensive habit.
+
+Two failure modes it exists to prevent: **holding it in your head**, which ends when the session does, and **inventing a new file for it**, which puts the knowledge somewhere nobody will look.
+
+**Capture is cheap and unsorted; promotion is deliberate.** The journal is where knowledge lands, not necessarily where it stays. A learning that proves durable becomes a decision record (§4.8); one that changes what the work *is* belongs in the deliverable record; one that outlives the backlog entirely gets promoted outward. That sorting happens at the boundary, once it is clear which things earned it — never at the moment of writing, which is when the pressure to skip is highest.
+
 ##### What it does not hold
 
-Streamlining a journal is mostly deciding what to leave out, and the model already answers it: **an entry carries only what has no other home.**
+Only what already has a better home, for the reason that putting it here as well would make the file unreadable:
 
 | Not in the journal | Where it lives |
 |---|---|
 | A list of files touched, commands run, status changes | Git history (§5.5) |
 | What remains to be done, as trackable items | Tasks |
 | What done means | Outcomes |
-| A settled decision, as a standing rule | A decision record (§4.8) — the journal carries the *reasoning*, and the record carries the rule |
+| A settled rule | A decision record (§4.8) — the journal carries the *reasoning*, the record carries the rule |
 
-What survives that filter is the reasoning, the paths ruled out, the unknowns, and where things stand. Which is the whole of what a journal is for, and none of what makes one unreadable.
+This is a routing table, **not a bar to clear.** Anything that fails to match a row belongs in the journal by default.
 
 ### 5.6 What this must never become
 

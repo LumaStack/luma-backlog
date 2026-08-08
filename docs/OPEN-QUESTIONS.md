@@ -116,6 +116,8 @@ This also dissolves the apparent conflict between *append-only* and *cheap to re
 - **Decisions are recorded with their reasoning, explicitly so they are not re-argued.** Real journals say *don't re-litigate* and preserve reasoning verbatim. Recording the choice alone invites the next actor — who has no idea it was ever settled — to reopen it.
 - **What was ruled out matters as much as what was done.** Negative knowledge is the most expensive kind to rediscover and the only kind nothing else in the system captures.
 
+**It is also the default destination**, which is a rule about capture rather than about content: anything worth keeping that has no obvious home goes here immediately, rather than being held in someone's head or given a new file nobody will look in. The asymmetry justifies it — an unnecessary capture costs a paragraph, a missed one is silent and permanent. Promotion to a decision record or outward to durable documentation happens later, at a boundary, once it is clear what earned it.
+
 One difference from the system this came from, and it is deliberate: there the journal is created **as needed**, on the principle that a file should earn its place. Here it is created with the deliverable, because the tool creates it — the authoring ceremony that made *as needed* correct does not exist when nobody has to make the file.
 
 *Settled by:* deciding that exploration's separateness is the feature rather than an artifact of filing, that event history was already being written to git and did not need a file, and that a mandatory journal costs one empty file against the certainty that an optional one goes unwritten.
