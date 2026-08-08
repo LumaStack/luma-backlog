@@ -285,7 +285,21 @@ A retired outcome is archived via `lifecycle_status`, never deleted, and is excl
 
 `verify_by` rather than `probe` or `verification`. `verification` is ambiguous — it could name the method or the result, and `verified` sits directly beneath it holding results. `verify_by` is unmistakably the method, pairs with `verified` as a matched set, and is plain English rather than borrowed vocabulary.
 
-#### 4.4.1 Why `verify_by` is deliberately unconstrained
+#### 4.4.1 Standing outcomes
+
+Some conditions apply to every deliverable rather than to one: the test suite passes, types check, documentation is current. A team **declares these once in configuration** (§8), and each new deliverable is created carrying them as **ordinary outcomes** — with their own `verify_by`, their own evidence, and their own history.
+
+Elsewhere this is called a definition of done. Here it needs no new concept, because a standing outcome *is* an outcome; only its authorship differs.
+
+**They are materialised, never referenced.** Evidence is per-deliverable by nature — the suite passing for one deliverable is a different fact, checked at a different moment, than for another. A referenced outcome would still need somewhere per-deliverable to record who verified it and when, so referencing saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry.
+
+**Changing the standard is not retroactive.** Deliverables already in flight keep the outcomes they were created with. Silently adding a requirement to work already underway is goalpost-moving in the opposite direction, and the design refuses it in both directions equally.
+
+Instead the divergence is **surfaced** — `deliverable.missing-standing-outcome` (§5.2) reports work created before the standard changed. Adopting it is then an explicit act by someone who decided it was warranted, which is the same treatment every other detected drift receives.
+
+**Where this sits relative to the policy line.** Standing outcomes are the closest thing in the model to a mandated process, so it is worth being precise: **the team authors the rule, and the tool only counts.** That is the same arrangement as status vocabularies and priority values — configuration holds the opinion, the binary holds none. A team that declares nothing gets nothing.
+
+#### 4.4.2 Why `verify_by` is deliberately unconstrained
 
 An entry may be prose, an ordered list of steps, a pointer to a test, a runnable command, or anything else that tells someone how to look. **The tool does not interpret it**, and it is left open on purpose until real use shows what belongs there.
 
@@ -409,6 +423,7 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.drifted` | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
 | `deliverable.not-converging` | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
 | `deliverable.churning` | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
+| `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
 
 Those last six detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
@@ -695,6 +710,12 @@ priority:
 dimensions:
   - project
   - milestone
+
+standing_outcomes:                # applied to every new deliverable (§4.4.1)
+  - desired_state: the test suite passes
+    verify_by:     make test
+  - desired_state: documentation reflects the change
+
 
 templates:
   deliverable: templates/deliverable.md

@@ -721,17 +721,22 @@ Whether **enforcement** is genuinely required, and whether it is required on **h
 
 ## 23. Standing outcomes
 
-**Status:** Open — a shape worth considering, not yet a decision.
+**Status:** **Settled — they exist, declared in configuration and materialised onto each deliverable.** Specified in `SPEC.md` §4.4.1.
 
-Some conditions apply to *every* deliverable rather than to one: tests pass, types check, linting is clean, documentation is updated. Boards in this space often carry them as a second checklist alongside the item's own acceptance criteria, distinct from what that particular piece of work is trying to achieve.
+Some conditions apply to every deliverable rather than one: the test suite passes, types check, documentation is current. Elsewhere this is a *definition of done*; here it needs no new concept, because a standing outcome **is** an outcome — only its authorship differs.
 
-In our model those are plainly **outcomes** — binary, evidence-backed, checkable — that happen to be declared once and to apply everywhere. Two ways they could work:
+### Why materialised rather than referenced
 
-- **Declared in configuration and materialised** onto each deliverable when it is created, after which they are ordinary outcomes with their own evidence and history. Simple, and it makes a deliverable's record self-contained.
-- **Declared once and referenced**, never copied. Less duplication, but a deliverable's outcomes then live in two places, and completion arithmetic has to consult both.
+**Evidence is per-deliverable by nature.** The suite passing for one deliverable is a different fact, checked at a different moment, than for another. So a referenced standing outcome would still need somewhere per-deliverable to record who verified it and when — meaning a record per deliverable either way.
 
-**The tension worth naming.** Standing outcomes are the closest thing in the model to a mandated process, which is exactly what this tool has avoided owning (`OPEN-QUESTIONS.md` §6). Declaring them in configuration keeps that on the right side of the line — the team authors the rule, the tool only counts. But they would make every deliverable start with unmet outcomes it did not choose, and a team that finds them noise will disable them, at which point they enforce nothing.
+Referencing therefore saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry. Materialising wins on every axis that was in question.
 
-Related and unresolved: a record's **references** — the files, links, and material an actor should read before starting. Boards elsewhere carry them per item, and this is the same gap as context material having no home (§2).
+### Two consequences
 
-*Settled by:* using the tool without them and seeing whether the same outcomes get written by hand on every deliverable. If they do, that is the case for declaring them once.
+**Changing the standard is not retroactive.** Work already in flight keeps the outcomes it was created with. Silently adding a requirement to work underway is goalpost-moving in the opposite direction, and the design refuses it symmetrically. The divergence is surfaced instead, as a condition, and adopting it is an explicit act.
+
+**The policy line holds.** Standing outcomes are the closest thing in the model to a mandated process, so the arrangement is stated precisely: the team authors the rule, the tool only counts. Identical to status vocabularies and priority values — configuration holds the opinion, the binary holds none, and a team declaring nothing gets nothing.
+
+### Still open, and separate
+
+A record's **references** — the files, links, and material an actor should read before starting — remain homeless. That is the context half of §2 rather than anything to do with standing outcomes, and settling this did not settle that.
