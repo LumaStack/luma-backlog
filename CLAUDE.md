@@ -27,4 +27,5 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 - Argue from the principles, not from what other tools do.
 - Keep section numbers and cross-references consistent after any insert.
+- **Do not treat an example as a decision.** Sample names and values in layout or configuration blocks show shape only. If a decision is needed, check `OPEN-QUESTIONS.md` or ask — reasoning from an illustration invents settled facts nobody agreed to.
 - Commit messages say **why**, not what.

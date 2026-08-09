@@ -21,6 +21,10 @@ A **caller** invokes the interface — a person at a terminal, an agent, or a sc
 
 Some callers drive work according to a methodology they own. **In the ideal, all such logic lives outside this project**, in a separate intelligence layer, so that the way work is driven can change without this tool changing. That is an ideal direction, not a boundary that has been found: during early development some of it will live in this repository, and is expected to be extracted as the seam becomes clear. Where this document assumes the separation, it is describing the destination.
 
+**Examples are illustrative unless they say otherwise.** Sample names, sample values, and the contents of layout and configuration blocks show *shape*, not settled choices — `payments-v2` is not a real deliverable and never was a decision about naming. Where an example does carry a decision, the surrounding text says so.
+
+This is stated because the opposite reading has already caused rework twice: an unconsidered filename in a layout block was later cited as a settled convention, and reasoned from as though it conflicted with a rule elsewhere. **An illustration read as normative is worse than no illustration**, because it is a decision nobody made and nobody can remember making.
+
 **Terminology is written out in full.** Multi-word concepts are always spelled out — in this specification, in the interface, in output, and in generated documentation. Abbreviating them to initials is prohibited.
 
 ## 2. Units
