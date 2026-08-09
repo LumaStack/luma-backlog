@@ -3,7 +3,7 @@ type: task
 title: Injectable clock and environment
 deliverable: "[[deliverables/first-usable-build]]"
 rank: "0020.000"
-workflow_status: todo
+workflow_status: closed
 ---
 
 # Injectable clock and environment

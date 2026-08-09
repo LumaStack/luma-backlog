@@ -24,7 +24,19 @@ Two shapes worth keeping. `Main` takes its streams as arguments rather than reac
 
 **The first test found a real defect on its first run.** With no subcommands registered, Cobra treats an unknown command as a positional argument and exits 0 — so `luma-backlog definitely-not-a-command` silently succeeded. Fixed with `Args: cobra.NoArgs`. Worth recording because it is the kind of thing that would have shipped: the happy path looked perfect, and nothing about it looked wrong by inspection.
 
-**Next.** The injectable clock, then root discovery and containment. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: the injectable clock and actor** (`internal/env`). Time and actor are values a command is handed, never things it reaches for.
+
+Three decisions inside it worth not re-deriving:
+
+**Timestamps are always UTC**, normalised on the way out rather than stored as written. Records are merged across machines in different zones, and two timestamps that cannot be compared without knowing where they were written are not much use. It also makes output identical wherever the tests run.
+
+**`at` and `on` are separate formatters**, because the format separates them — a moment versus a day. Conflating them produces fields that look comparable and are not.
+
+**Actor detection never fails.** Environment variable first, then the operating system user as a human, then a process fallback. Refusing to act because provenance is unclear would be a refusal nothing in the caller's record justifies (§5.0), and an unattributed record is worse than a roughly attributed one. `LUMA_BACKLOG_ACTOR` is the override agents are expected to set.
+
+Parsing is deliberately permissive: unknown kinds are somebody else's vocabulary rather than an error, a bare name is read as a human, and the split is on the **first** colon so a producer containing one survives.
+
+**Next.** Root discovery and containment. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 
