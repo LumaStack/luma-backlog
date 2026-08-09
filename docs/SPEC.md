@@ -109,7 +109,9 @@ The name is deliberately demanding. Calling this a deliverable obliges every ent
 >
 > Two units describe **the world**; two describe **how we organize ourselves to change it**. *Release* grates in this position because it is a producer-facing word in a recipient-facing slot: it names something we did, where the model wants something they got.
 >
-> This is not only about a word. It explains three rules that were arrived at separately. A deliverable is judged on its outcomes and **never on its tasks** — because only world-facing units say anything about whether the world changed. Tasks are coordination rather than specification, for the same reason. And completion is evidenced rather than declared, because a producer can always assert a release, whereas whether a condition holds is settled by the world and not by the claimant.
+> This is not only about a word. It explains three rules that were arrived at separately. A deliverable is judged on its outcomes and **never on its tasks** — because only world-facing units say anything about whether the world changed.
+
+That is not because tasks specify nothing. **They specify a different thing:** outcomes say *what done is, and why the work is worth doing*; tasks say *how we intend to get there.* Both are specification. Only one of them is the bar, which is why work can be replanned freely without moving the goal — and why replacing every task changes nothing about whether the deliverable succeeded. And completion is evidenced rather than declared, because a producer can always assert a release, whereas whether a condition holds is settled by the world and not by the claimant.
 >
 > It also gives a test for any unit proposed later: **does this describe the world, or describe us?** If the second, it cannot carry completion — it is scaffolding.
 
@@ -1277,6 +1279,20 @@ So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close
 The interface **is** the contract (`PRINCIPLES.md`). Everything reachable through a board or a view is reachable here, there is no privileged internal path, and output shapes are as much a part of the contract as command names.
 
 > **The rules below are reasoned; the specific names are provisional.** Which verbs exist and what they are called will move with use. That structured output is canonical, that exit codes are distinguishable, and that mutations are idempotent will not.
+
+### 9.0 The author thinks about the work, never about the format
+
+**Nobody authoring a record should have to know how this tool stores things.** Not the frontmatter keys, not the type names, not wikilink syntax, not which fields are mandatory. They think about the work — what done looks like, or how they intend to get there — and the structure is added for them.
+
+This matters most for the case it would be easiest to neglect. **The common path is that an agent writes the tasks and a person reviews them.** But a person takes the pen whenever they want more control, or where they do not trust an agent's judgement — and that is exactly when they are thinking hardest about *how the work should go*, and least willing to spend attention on a schema. A tool that taxes them at that moment gets edited around.
+
+Three consequences:
+
+- **Creation accepts intent, not structure.** `new` takes a sentence and fills in the rest. Everything derivable is derived: the type from what was asked for, the deliverable from context, timestamps and actor from the environment, the filename from the title.
+- **Nothing required is asked for twice.** If a field can be inferred, it is not a prompt.
+- **Being wrong is cheap.** A record is prose plus frontmatter; correcting it is editing a file, and the tool never punishes a hand-edit (§4.1).
+
+The format is the tool's problem. The work is the author's.
 
 ### 9.1 Shape
 
