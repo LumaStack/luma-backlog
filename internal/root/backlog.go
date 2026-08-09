@@ -2,6 +2,7 @@ package root
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -115,4 +116,21 @@ func (b *Backlog) WriteFileAtomic(name string, data []byte, perm os.FileMode) er
 		return fmt.Errorf("renaming %s to %s: %w", tmp, name, err)
 	}
 	return nil
+}
+
+// Walk visits every file in the backlog, giving each path relative to it.
+//
+// Paths are slash-separated whatever the platform — io/fs guarantees it —
+// which matters because they end up in output that is part of the contract
+// and in records that travel between machines.
+func (b *Backlog) Walk(fn func(relPath string) error) error {
+	return fs.WalkDir(b.root.FS(), ".", func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		return fn(p)
+	})
 }
