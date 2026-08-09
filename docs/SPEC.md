@@ -466,9 +466,9 @@ blocked: { on: 2026-08-07, why: vendor contract }
 
 **Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
 
-> **`ordinal` fails two tests at once** (`OPEN-QUESTIONS.md` §1a). Its absence says nothing — a wave without one could be the first attempt or the fourth — so *recommended* is the wrong obligation whichever way it resolves. And it **restates the filename**: the layout puts waves at `waves/1.md`, `waves/2.md`, so the ordinal is already in the path, and a field holding it is a second copy that can disagree.
+> **`ordinal` is unresolved because its absence says nothing** (`OPEN-QUESTIONS.md` §1a) — a wave without one could be the first attempt or the fourth, so no obligation level fits. Mandatory is wrong if it can be derived; recommended is wrong because omitting it tells a reader nothing.
 >
-> That exposes a third inconsistency worth recording rather than patching: §7.4 says filenames are slugs derived from titles and that **numeric identifiers are deliberately not used** — while the wave layout uses exactly those. One of the two is wrong. Waves are out of the first build, so this is flagged rather than resolved.
+> Whether it can be derived depends on **how waves are named, which was never decided.** An earlier version of the layout showed `waves/1.md`, which was an unconsidered example rather than a choice — slugs, ordinals, and opaque identifiers are all still open, and they answer this field differently. Waves are out of the first build, so both stay unresolved.
 
 ### 4.4 `luma/backlog/outcome`
 
@@ -1070,9 +1070,7 @@ A directory structure may only reflect properties that are effectively permanent
       outcomes/
         dry-run-safety.md
         retry-durability.md
-      waves/
-        1.md
-        2.md
+      waves/                      naming unresolved (`OPEN-QUESTIONS.md` §1a)
       tasks/
         add-retry-queue.md
         wire-dead-letter-path.md
