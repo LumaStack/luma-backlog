@@ -58,6 +58,12 @@ func Main(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 // Run is Main with the ambient state supplied, which is how tests drive it.
 func Run(app *App, args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	root := newRootCommand(app)
+	// Cobra falls back to os.Args when given nil, which would make the whole
+	// point of passing arguments in — not touching the process — quietly
+	// false. Found when `go test -update` leaked its own flag into the tool.
+	if args == nil {
+		args = []string{}
+	}
 	root.SetArgs(args)
 	root.SetIn(stdin)
 	root.SetOut(stdout)
@@ -93,5 +99,7 @@ func newRootCommand(app *App) *cobra.Command {
 	}
 	root.AddCommand(newInitCommand(app))
 	root.AddCommand(newNewCommand(app))
+	root.AddCommand(newShowCommand(app))
+	root.AddCommand(newListCommand(app))
 	return root
 }

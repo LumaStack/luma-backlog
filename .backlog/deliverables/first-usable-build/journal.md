@@ -88,7 +88,19 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **A new outcome was stamped `idea`.** The status fallback went to the deliverable's vocabulary, and the formation ladder is not a general thing — **the extra rungs describe how far planning has gone on a *backlog item*, and only a deliverable is one.** An outcome is never "an idea we might drop". Worse than odd: `idea` would have filed it in the Backlog column. Unknown units now fall back to the task vocabulary.
 
-**Next.** `show` and `list`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `show` and `list`**, with the first golden files.
+
+**The JSON shapes are explicit structs, not marshalled internals.** Marshalling a record directly would make every refactor a breaking change that nobody notices. The `fields` map carries the frontmatter as written, including keys this tool knows nothing about — dropping them would quietly hide another system's state from anything reading our output.
+
+**An empty listing is `[]`, not `null`, and exits zero.** A caller iterating the response should not special-case "nothing yet", and an empty backlog is ordinary rather than a failure.
+
+**An ambiguous reference is an error that names the candidates.** Guessing is how the wrong record gets edited and nobody finds out until later — same rule as ambiguous type names.
+
+**Found: `SetArgs(nil)` makes Cobra fall back to `os.Args`.** That made the whole point of passing arguments in — not touching the process — quietly false. It surfaced when `go test -update` leaked its own flag into the tool and the root command failed to parse it. A real defect in the harness, found by an unrelated flag colliding with it.
+
+**The golden-file harness has its warning built into the failure message**, not only into the documentation: *run with -update, then READ the diff before committing it.* A golden updated by reflex records the bug as expected behaviour, and the moment that matters is when someone is staring at a red test.
+
+**Next.** `set`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

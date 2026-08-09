@@ -1,0 +1,34 @@
+[
+  {
+    "path": "deliverables/payments-v2/index.md",
+    "type": "deliverable",
+    "slug": "payments-v2",
+    "title": "Payments v2",
+    "status": "idea",
+    "deliverable": "payments-v2"
+  },
+  {
+    "path": "deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+    "type": "outcome",
+    "slug": "the-retry-queue-drains",
+    "title": "The retry queue drains",
+    "status": "todo",
+    "deliverable": "payments-v2"
+  },
+  {
+    "path": "deliverables/payments-v2/tasks/add-the-retry-queue.md",
+    "type": "task",
+    "slug": "add-the-retry-queue",
+    "title": "Add the retry queue",
+    "status": "todo",
+    "deliverable": "payments-v2"
+  },
+  {
+    "path": "deliverables/search-relevance/index.md",
+    "type": "deliverable",
+    "slug": "search-relevance",
+    "title": "Search relevance",
+    "status": "idea",
+    "deliverable": "search-relevance"
+  }
+]

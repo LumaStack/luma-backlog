@@ -1,0 +1,22 @@
+{
+  "path": "deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+  "type": "outcome",
+  "slug": "the-retry-queue-drains",
+  "title": "The retry queue drains",
+  "status": "todo",
+  "deliverable": "payments-v2",
+  "fields": {
+    "created": {
+      "at": "2026-08-09T12:00:00Z",
+      "by": "agent:test"
+    },
+    "deliverable": "[[deliverables/payments-v2]]",
+    "desired_state": "",
+    "lifecycle_status": "draft",
+    "title": "The retry queue drains",
+    "type": "outcome",
+    "verify_by": "",
+    "workflow_status": "todo"
+  },
+  "body": "# The retry queue drains\n\nWhy this matters, and anything needed to read the check correctly.\n"
+}

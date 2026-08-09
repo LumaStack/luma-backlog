@@ -1,0 +1,10 @@
+[
+  {
+    "path": "deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+    "type": "outcome",
+    "slug": "the-retry-queue-drains",
+    "title": "The retry queue drains",
+    "status": "todo",
+    "deliverable": "payments-v2"
+  }
+]

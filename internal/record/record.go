@@ -179,6 +179,13 @@ func (r *Record) SetRaw(key, yamlValue string) error {
 	return nil
 }
 
+// Node returns the value node for a key, so a caller can decode a shape this
+// package does not model. Nil when absent.
+func (r *Record) Node(key string) *yaml.Node {
+	_, v := r.find(key)
+	return v
+}
+
 // Keys lists the frontmatter keys in the order they appear.
 func (r *Record) Keys() []string {
 	if r.frontmatter == nil {

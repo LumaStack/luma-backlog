@@ -5,7 +5,7 @@ deliverable: "[[deliverables/first-usable-build]]"
 advances: ["[[deliverables/first-usable-build/outcomes/the-backlog-is-kept-by-the-tool]]"]
 rank: "0070.000"
 parallel_group: [commands]
-workflow_status: todo
+workflow_status: closed
 ---
 
 # `show` and `list`
