@@ -4,7 +4,25 @@
 
 ---
 
-## ▶ 2026-08-08 — the backlog exists; what "earns a command" means
+## ▶ 2026-08-09 — outcomes reworked, tasks written
+
+**Where things stand.** Five outcomes and eleven tasks. Still no code. The specification moved a long way after the first outcomes were written, and re-reading them against it found three problems worth recording.
+
+**`writes-stay-inside` was simply wrong.** It said *no command modifies any path outside `.backlog/`* — but the tool commits, which writes to `.git/`. It would have failed on the first commit. Now bounded to `.backlog/` plus the git objects recording those changes, with the note that a commit sweeping up unrelated edits fails it just as surely as writing to the wrong directory.
+
+**`output-is-stable` was not an outcome and has been demoted to a constraint.** *Every output shape has a test that fails when it changes* describes our test suite, not the world — and it can be satisfied by a golden file pinning nonsense. An outcome has to be a state of the world; a rule about how we work is a constraint. Worth remembering as a test: **if it is satisfiable by doing the wrong thing carefully, it is not an outcome.**
+
+**The most important outcome was missing entirely.** Every one of the five was a *property* — conformance, containment, arithmetic — and none said the thing the build is for: **the backlog is kept by the tool.** All the properties can hold in a binary nobody can stand to use. It is now the bar, and it is deliberately not *the tool is finished* but *the tool has replaced the hand-authoring it exists to replace*, which is checkable and fails honestly if a command is too awkward to reach for.
+
+Expect it to fail on friction rather than capability.
+
+**Two tasks advance no outcome, and that is left visible.** Scaffolding and the injectable clock are infrastructure; the tool will report them under `task.advances-nothing`. That is the condition working, not a gap to paper over by inventing a link.
+
+**Next.** Scaffold the module. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+
+---
+
+## 2026-08-08 — the backlog exists; what "earns a command" means
 
 **Where things stand.** The specification is settled across units, record shapes, layout, concurrency, the policy boundary, scaffolding, containment, and testing. No Go code exists. `.backlog/` was created by hand today, which is itself the first act of dogfooding.
 
