@@ -92,5 +92,6 @@ func newRootCommand(app *App) *cobra.Command {
 		},
 	}
 	root.AddCommand(newInitCommand(app))
+	root.AddCommand(newNewCommand(app))
 	return root
 }

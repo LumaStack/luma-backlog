@@ -48,11 +48,20 @@ func Parse(data []byte) (*Record, error) {
 	}
 	rest := text[len(fence)+1:]
 
-	end := strings.Index(rest, "\n"+fence)
-	if end < 0 {
-		return nil, fmt.Errorf("unterminated frontmatter: no closing %s", fence)
+	// The closing fence may be the very next line, giving empty frontmatter.
+	// Searching only for "\n---" misses that case, because there is nothing
+	// before it — a record with no fields yet then fails to parse at all.
+	var raw string
+	var end int
+	if strings.HasPrefix(rest, fence) {
+		raw, end = "", -1
+	} else {
+		end = strings.Index(rest, "\n"+fence)
+		if end < 0 {
+			return nil, fmt.Errorf("unterminated frontmatter: no closing %s", fence)
+		}
+		raw = rest[:end]
 	}
-	raw := rest[:end]
 
 	// After the closing fence comes the newline that ends the fence line,
 	// then conventionally a blank line before the body. Strip both, and put
@@ -138,6 +147,36 @@ func (r *Record) Set(key, value string) {
 		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: key},
 		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: value},
 	)
+}
+
+// SetRaw assigns a field from YAML source, so a value can be a map or a list
+// rather than a string.
+//
+// Set writes a scalar, which is right for a title and wrong for a timestamped
+// actor: quoting "{by: …, at: …}" produces a string that looks structured and
+// is not, and every reader afterwards has to re-parse it by hand.
+func (r *Record) SetRaw(key, yamlValue string) error {
+	var doc yaml.Node
+	if err := yaml.Unmarshal([]byte(yamlValue), &doc); err != nil {
+		return fmt.Errorf("parsing value for %s: %w", key, err)
+	}
+	if len(doc.Content) == 0 {
+		return fmt.Errorf("value for %s is empty", key)
+	}
+	value := doc.Content[0]
+
+	if r.frontmatter == nil {
+		r.frontmatter = &yaml.Node{Kind: yaml.MappingNode, Tag: "!!map"}
+	}
+	if _, existing := r.find(key); existing != nil {
+		*existing = *value
+		return nil
+	}
+	r.frontmatter.Content = append(r.frontmatter.Content,
+		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: key},
+		value,
+	)
+	return nil
 }
 
 // Keys lists the frontmatter keys in the order they appear.

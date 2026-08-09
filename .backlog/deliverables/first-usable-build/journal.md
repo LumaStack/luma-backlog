@@ -76,7 +76,19 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **Verified outside the tests too**, in a throwaway repository: `init`, then `init` again, then `git status` — only `.backlog/` appears. Cheap, and it exercises the real working directory rather than a fixture.
 
-**Next.** `new`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `new`** (`internal/backlog`, plus the command). A title is enough — the filename is slugified from it, the deliverable comes from `--deliverable` or from the working directory, and the timestamp and actor come from the environment.
+
+**Idempotent by name.** Creating the same record twice reports the first and leaves it alone. An agent retrying after a dropped connection must not destroy the work of its first attempt, and the test edits the record before re-running to prove it.
+
+**Three bugs, all found by running it rather than by testing it.** Worth recording as a pattern: the tests passed while the output was wrong, because they asserted on fields rather than on the file a person would read.
+
+**Empty frontmatter did not parse.** `---\n---\n` failed, because the parser searched for `\n---` and the closing fence had no newline before it. That is where *every* new record starts, so it is the first thing the parser meets rather than an edge case — and the record package had eleven tests without one for it.
+
+**`created` was written as a quoted string.** `'{by: …, at: …}'` looks structured and is not, and every reader afterwards would have had to re-parse it by hand. `Set` writes scalars; the field needed a map, so `SetRaw` now parses YAML source into the node.
+
+**A new outcome was stamped `idea`.** The status fallback went to the deliverable's vocabulary, and the formation ladder is not a general thing — **the extra rungs describe how far planning has gone on a *backlog item*, and only a deliverable is one.** An outcome is never "an idea we might drop". Worse than odd: `idea` would have filed it in the Backlog column. Unknown units now fall back to the task vocabulary.
+
+**Next.** `show` and `list`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

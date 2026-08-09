@@ -74,10 +74,14 @@ func TestDefaultStatusIsTheFirstConfiguredValue(t *testing.T) {
 	if got, want := c.DefaultStatusFor("task"), "todo"; got != want {
 		t.Errorf("task default = %q, want %q", got, want)
 	}
-	// An unknown unit falls back to the deliverable's vocabulary rather than
-	// to nothing, so a new unit type is usable before it is configured.
-	if got, want := c.DefaultStatusFor("wave"), "idea"; got != want {
-		t.Errorf("unknown unit default = %q, want %q", got, want)
+	// An unknown unit falls back to the TASK vocabulary. The extra rungs
+	// describe how far planning has gone on a backlog item, and only a
+	// deliverable is one — stamping a new outcome "idea" would file it in
+	// the Backlog column.
+	for _, unit := range []string{"outcome", "exploration", "wave"} {
+		if got, want := c.DefaultStatusFor(unit), "todo"; got != want {
+			t.Errorf("%s default = %q, want %q", unit, got, want)
+		}
 	}
 }
 

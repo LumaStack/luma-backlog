@@ -153,6 +153,26 @@ func TestParseRejectsUnterminatedFrontmatter(t *testing.T) {
 	}
 }
 
+func TestParseAcceptsEmptyFrontmatter(t *testing.T) {
+	// A record with no fields yet is where every new record starts, so this
+	// is the first thing the parser meets rather than an edge case.
+	r, err := Parse([]byte("---\n---\n"))
+	if err != nil {
+		t.Fatalf("empty frontmatter did not parse: %v", err)
+	}
+	if len(r.Keys()) != 0 {
+		t.Errorf("Keys = %v, want none", r.Keys())
+	}
+	r.Set("type", "task")
+	out, err := r.Bytes()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := string(out), "---\ntype: task\n---\n"; got != want {
+		t.Errorf("Bytes = %q, want %q", got, want)
+	}
+}
+
 func TestParseAcceptsAnEmptyBody(t *testing.T) {
 	r, err := Parse([]byte("---\ntype: task\n---\n"))
 	if err != nil {

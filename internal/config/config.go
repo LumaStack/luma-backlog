@@ -66,10 +66,21 @@ func Parse(data []byte) (Config, error) {
 	return c, nil
 }
 
-// StatusesFor returns the workflow vocabulary for a unit, falling back to the
-// deliverable's when a unit has none of its own.
+// StatusesFor returns the workflow vocabulary for a unit.
+//
+// A unit with none of its own falls back to the TASK vocabulary, not the
+// deliverable's. The extra rungs — idea, preparing, actionable — describe how
+// far the planning has gone on a backlog item, and a deliverable is the
+// backlog item. An outcome or an exploration is never "an idea we might drop";
+// it is todo, in progress, or closed.
+//
+// Falling back to the deliverable's list instead would stamp a new outcome
+// "idea", which is not merely odd — it would place it in the Backlog column.
 func (c Config) StatusesFor(unit string) []string {
 	if s, ok := c.WorkflowStatus[unit]; ok && len(s) > 0 {
+		return s
+	}
+	if s, ok := c.WorkflowStatus["task"]; ok && len(s) > 0 {
 		return s
 	}
 	return c.WorkflowStatus["deliverable"]
