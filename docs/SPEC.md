@@ -1286,11 +1286,27 @@ The interface **is** the contract (`PRINCIPLES.md`). Everything reachable throug
 
 This matters most for the case it would be easiest to neglect. **The common path is that an agent writes the tasks and a person reviews them.** But a person takes the pen whenever they want more control, or where they do not trust an agent's judgement — and that is exactly when they are thinking hardest about *how the work should go*, and least willing to spend attention on a schema. A tool that taxes them at that moment gets edited around.
 
-Three consequences:
+#### 9.0.1 The obligation is on the system, not on any one command
 
-- **Creation accepts intent, not structure.** `new` takes a sentence and fills in the rest. Everything derivable is derived: the type from what was asked for, the deliverable from context, timestamps and actor from the environment, the filename from the title.
-- **Nothing required is asked for twice.** If a field can be inferred, it is not a prompt.
-- **Being wrong is cheap.** A record is prose plus frontmatter; correcting it is editing a file, and the tool never punishes a hand-edit (§4.1).
+This is a requirement that **some surface** accepts plain intent — not that every surface does, and specifically **not** that the command line must parse sentences.
+
+The distinction matters because the two audiences want opposite things. **Agents want flags:** precise, unambiguous, scriptable, nothing inferred that could be inferred wrong. Making an agent phrase a sentence so the tool can extract intent back out of it is worse for the caller that will make most of the calls. **People want to describe the work** and have the rest handled.
+
+Those are served by different layers rather than by one compromise. A skill, the board, or an interactive prompt can turn intent into a record and call the command underneath with everything specified.
+
+What this does rule out:
+
+- **A command whose only path requires knowing field names.** A title given positionally must be enough to produce a valid record, with everything else derived or simply absent.
+- **Prompting for anything inferable** — type from what was asked for, deliverable from context, timestamps and actor from the environment, filename from the title.
+- **Punishing a hand-edit.** A record is prose plus frontmatter; correcting one is editing a file (§4.1).
+
+#### 9.0.2 Start with flags
+
+**Flags first, richer input later.** Not as a compromise — as the correct order.
+
+Flags are unambiguous, so they can be tested exactly, and they are the substrate everything else calls. Natural-language creation, interactive prompting, and inference from context are all **layers over a precise command**, and each is easier to build, replace, and reason about once the thing underneath is settled and has no opinions of its own.
+
+Building the inference first produces a tool whose behaviour depends on how a sentence was phrased, with no exact path underneath to fall back to or to test against. **Anything clever is added on top of something dull, and the dull thing ships first.**
 
 The format is the tool's problem. The work is the author's.
 
