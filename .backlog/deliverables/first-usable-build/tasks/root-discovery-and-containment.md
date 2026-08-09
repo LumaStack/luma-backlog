@@ -4,7 +4,7 @@ title: Root discovery and containment
 deliverable: "[[deliverables/first-usable-build]]"
 advances: ["[[deliverables/first-usable-build/outcomes/writes-stay-inside]]"]
 rank: "0030.000"
-workflow_status: todo
+workflow_status: closed
 ---
 
 # Root discovery and containment

@@ -36,7 +36,21 @@ Three decisions inside it worth not re-deriving:
 
 Parsing is deliberately permissive: unknown kinds are somebody else's vocabulary rather than an error, a bare name is read as a human, and the split is on the **first** colon so a producer containing one survives.
 
-**Next.** Root discovery and containment. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: root discovery and containment** (`internal/root`, `internal/policy`).
+
+`Discover` is the only function that walks upward, and it does nothing else. Everything downstream takes a `*root.Backlog` — a handle bounded to `.backlog/` that cannot be escaped through `..` or a symlink. Both escapes are tested by trying them and then checking the filesystem, rather than by trusting the error.
+
+**Two things found while writing it, neither of which was in the plan:**
+
+`.git` **is sometimes a file, not a directory** — that is how git marks a linked worktree or a submodule. A discovery that only looks for a directory silently fails to find the root inside any worktree, which is exactly the environment this tool is meant to support. Now `Lstat`, so both count.
+
+**Paths must be symlink-resolved before comparison**, or the ceiling never matches. On macOS a temporary directory is handed out as `/var/folders/...` while its real path is `/private/var/folders/...`, so an unresolved ceiling is silently inert and the walk escapes. This is the same trap the research turned up in `GIT_CEILING_DIRECTORIES`, arriving from a different direction — worth noting as a pattern rather than two coincidences.
+
+**The rule is enforced by a test, not by continuous integration alone.** `internal/policy` parses every non-test source file and fails on direct filesystem calls outside `internal/root`. It runs on every `go test`, because a guardrail you have to push to discover is one people learn to work around.
+
+**And the guard was verified by breaking it**: a deliberate `os.ReadFile` in `internal/cli` was added, the test failed with the file and line, and it was removed. A check that has never failed is not known to work.
+
+**Next.** Record read and write. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 
