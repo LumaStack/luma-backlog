@@ -73,3 +73,46 @@ func (b *Backlog) Exists(name string) bool {
 
 // Rename moves a path within the backlog.
 func (b *Backlog) Rename(from, to string) error { return b.root.Rename(from, to) }
+
+// WriteFileAtomic writes to a temporary file in the same directory, flushes
+// it, and renames it over the target.
+//
+// A reader therefore sees either the previous content or the new content and
+// never a half-written file — which matters as much for a person with the
+// file open in an editor as for a concurrent process (docs/SPEC.md §6.2).
+func (b *Backlog) WriteFileAtomic(name string, data []byte, perm os.FileMode) error {
+	if dir := filepath.Dir(name); dir != "." {
+		if err := b.root.MkdirAll(dir, 0o755); err != nil {
+			return err
+		}
+	}
+
+	// The temporary file sits beside the target so the rename stays within
+	// one filesystem, and carries the process id so two writers racing on the
+	// same path do not corrupt each other's staging file.
+	tmp := name + fmt.Sprintf(".tmp-%d", os.Getpid())
+
+	f, err := b.root.OpenFile(tmp, os.O_WRONLY|os.O_CREATE|os.O_EXCL|os.O_TRUNC, perm)
+	if err != nil {
+		return fmt.Errorf("creating %s: %w", tmp, err)
+	}
+	if _, err := f.Write(data); err != nil {
+		f.Close()
+		b.root.Remove(tmp)
+		return fmt.Errorf("writing %s: %w", tmp, err)
+	}
+	if err := f.Sync(); err != nil {
+		f.Close()
+		b.root.Remove(tmp)
+		return fmt.Errorf("flushing %s: %w", tmp, err)
+	}
+	if err := f.Close(); err != nil {
+		b.root.Remove(tmp)
+		return fmt.Errorf("closing %s: %w", tmp, err)
+	}
+	if err := b.root.Rename(tmp, name); err != nil {
+		b.root.Remove(tmp)
+		return fmt.Errorf("renaming %s to %s: %w", tmp, name, err)
+	}
+	return nil
+}

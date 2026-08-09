@@ -50,7 +50,21 @@ Parsing is deliberately permissive: unknown kinds are somebody else's vocabulary
 
 **And the guard was verified by breaking it**: a deliberate `os.ReadFile` in `internal/cli` was added, the test failed with the file and line, and it was removed. A check that has never failed is not known to work.
 
-**Next.** Record read and write. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: record read and write** (`internal/record`, plus atomic writes on the handle).
+
+**Frontmatter is held as a YAML node, not a map**, and that is the decision the package turns on. A map loses key order, so every write would reshuffle the block and produce a diff touching lines nobody changed — which fights clean diffs and makes review useless. Holding the node keeps order, and keeps unknown keys with it for free.
+
+**Parsing is pure — no filesystem at all.** The package can be tested exhaustively without fixtures, and the one package allowed to do input and output stays small.
+
+**`Set` replaces in place when the key exists, appends when it does not.** Same reason: an edit should be a one-line diff, not a reordering.
+
+**Found: the tool normalises YAML formatting on write, and cannot reasonably avoid it.** `{ on: X, why: Y }` comes back as `{on: X, why: Y}` — the encoder's canonical flow style. Content is untouched; only spacing moves.
+
+Not fought, and recorded as a test rather than left to be discovered: chasing byte-preservation of arbitrary formatting is where YAML round-trippers go to die, and the cost here is bounded — one line, once, per hand-written record that used a different spelling. **Our own examples and records should adopt the canonical form** so there is nothing to normalise; the spec's `blocked` examples currently use the spaced form.
+
+**Also decided:** two-space indentation, fixed. A change to it rewrites every file in the corpus, so it is pinned by the round-trip test rather than left to a default that could shift under a dependency upgrade.
+
+**Next.** `init`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

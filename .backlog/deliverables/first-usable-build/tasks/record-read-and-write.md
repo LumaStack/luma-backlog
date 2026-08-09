@@ -4,7 +4,7 @@ title: Record read and write
 deliverable: "[[deliverables/first-usable-build]]"
 advances: ["[[deliverables/first-usable-build/outcomes/records-conform]]"]
 rank: "0040.000"
-workflow_status: todo
+workflow_status: closed
 ---
 
 # Record read and write
