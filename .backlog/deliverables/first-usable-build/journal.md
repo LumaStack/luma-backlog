@@ -18,7 +18,13 @@ Expect it to fail on friction rather than capability.
 
 **Two tasks advance no outcome, and that is left visible.** Scaffolding and the injectable clock are infrastructure; the tool will report them under `task.advances-nothing`. That is the condition working, not a gap to paper over by inventing a link.
 
-**Next.** Scaffold the module. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: the module is scaffolded** (`737420b`). Go 1.26.5 on the host; the floor in `go.mod` is `1.25.12` — a patch version rather than a minor, because root-scoped filesystem access has had escapes fixed *within* a minor series.
+
+Two shapes worth keeping. `Main` takes its streams as arguments rather than reaching for the process ones, so tests drive the whole command tree without a subprocess. And exit codes are named constants from the start, because they are published contract rather than implementation detail.
+
+**The first test found a real defect on its first run.** With no subcommands registered, Cobra treats an unknown command as a positional argument and exits 0 — so `luma-backlog definitely-not-a-command` silently succeeded. Fixed with `Args: cobra.NoArgs`. Worth recording because it is the kind of thing that would have shipped: the happy path looked perfect, and nothing about it looked wrong by inspection.
+
+**Next.** The injectable clock, then root discovery and containment. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

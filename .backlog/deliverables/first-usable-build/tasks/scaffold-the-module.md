@@ -3,7 +3,7 @@ type: task
 title: Scaffold the module
 deliverable: "[[deliverables/first-usable-build]]"
 rank: "0010.000"
-workflow_status: todo
+workflow_status: closed
 ---
 
 # Scaffold the module

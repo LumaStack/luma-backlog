@@ -8,6 +8,7 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 ## Where things live
 
+- `docs/DEVELOPMENT.md` — setup, tests, conventions. **Start here to work on the code.**
 - `docs/PRINCIPLES.md` — the values decisions are argued against.
 - `docs/SPEC.md` — the design. Normative.
 - `docs/LIFECYCLE.md` — the loop. Non-normative, expected to move to the workflow project.
