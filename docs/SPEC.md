@@ -377,6 +377,8 @@ The same rule produced two other decisions here: `blocked` carries **when and wh
 
 Any record may carry **`references`**: material an actor should read before working on it. A path, a link, an identifier in some other system, a name only a particular loader understands.
 
+**Absence is meaningful, which is why the field is recommended rather than mandatory.** A record with no `workflow_status` reads as the first value in the configured vocabulary — `idea` by default, which is semantically right rather than a convenience: something jotted down with nothing said about it *is* an idea. This follows the format's own handling of `lifecycle_status`, which defaults to `provisional` when absent. A field is only safely optional when omitting it says something; otherwise it should be mandatory.
+
 **The values are opaque.** This tool stores them, shows them, and hands them over. It does not resolve them, rank them, fetch them by default, validate them, or know what they mean.
 
 That is deliberate, because **context loading belongs to a different layer and is expected to be swappable**. One repository might resolve references against a generated wiki, another against a commercial knowledge graph, another against a folder of documents. Those are entirely different engines, and a backlog that understood any one of them would be coupled to it.
@@ -527,7 +529,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `deliverable` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | recommended | wikilink | The attempt this task belongs to. |
 | `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
-| `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. |
+| `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. **Absent means the first configured value** — `idea` by default. |
 | `parallel_group` | optional | list of text | Labels granting permission to overlap. Two tasks may run at the same time if they share at least one (§4.5.1). |
 | `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or deliverable boundary (§4.5.1). |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |

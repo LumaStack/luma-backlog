@@ -5,7 +5,7 @@ fields:
   desired_state:   { obligation: mandatory,   field_type: text, desc: "The condition that must hold. True or false — never a task in disguise." }
   verify_by:       { obligation: recommended, desc: "How it is checked: a command, a list of steps, a pointer to a test, or prose. Deliberately unconstrained." }
   deliverable:     { obligation: mandatory,   field_type: wikilink, desc: "The deliverable this belongs to." }
-  workflow_status: { obligation: recommended, field_type: enum, values: [todo, in_progress, closed] }
+  workflow_status: { obligation: recommended, field_type: enum, values: [todo, in_progress, closed], desc: "Absent means the first configured value — todo." }
 ---
 
 # Outcome
