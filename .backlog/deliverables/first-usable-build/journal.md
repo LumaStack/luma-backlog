@@ -64,7 +64,19 @@ Not fought, and recorded as a test rather than left to be discovered: chasing by
 
 **Also decided:** two-space indentation, fixed. A change to it rewrites every file in the corpus, so it is pinned by the round-trip test rather than left to a default that could shift under a dependency upgrade.
 
-**Next.** `init`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `init`** (`internal/config`, `internal/cli`). First command that writes anything, so it also brought the exit-code plumbing.
+
+**`init` never overwrites.** Running it again is ordinary — usually to pick up a file a later version adds — so anything present is reported and left alone, anything missing is created. A command that clobbered a team's edited configuration for that would be a trap, and the test edits the config and re-runs to prove it does not.
+
+**The default configuration is a document, not a marshalled struct**, because the comments are the point: a team's first encounter with a default should be a line they can read and change (§8.3). A test parses that document and compares it to the built-in fallbacks, so the two cannot drift — nothing else would notice if they disagreed.
+
+**Found: mapping errors to exit codes broke the unknown-command case.** Once commands returned coded errors, Cobra's own parse errors were uncoded and fell through to *unexpected failure* rather than *usage error*.
+
+Resolved by inverting the default: **every error a command returns carries a code, so an uncoded one did not come from a command at all** — it came from argument parsing before one ran, which is a usage error by definition. Defaulting the other way reports a mistyped command as an internal failure, and *never retry unchanged* is exactly the advice a caller needs there.
+
+**Verified outside the tests too**, in a throwaway repository: `init`, then `init` again, then `git status` — only `.backlog/` appears. Cheap, and it exercises the real working directory rather than a fixture.
+
+**Next.** `new`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

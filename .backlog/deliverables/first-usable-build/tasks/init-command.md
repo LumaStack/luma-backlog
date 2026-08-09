@@ -4,7 +4,7 @@ title: init
 deliverable: "[[deliverables/first-usable-build]]"
 advances: ["[[deliverables/first-usable-build/outcomes/the-backlog-is-kept-by-the-tool]]"]
 rank: "0050.000"
-workflow_status: todo
+workflow_status: closed
 ---
 
 # `init`

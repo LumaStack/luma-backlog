@@ -5,9 +5,16 @@ package cli
 import (
 	"fmt"
 	"io"
+	"os"
 
+	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/spf13/cobra"
 )
+
+// workingDir reports where the process was started. This is the one place the
+// package reaches outside itself for a path; everything after takes it as a
+// value.
+func workingDir() (string, error) { return os.Getwd() }
 
 // version is set at build time via -ldflags.
 var version = "dev"
@@ -24,23 +31,46 @@ const (
 	ExitClaimed  = 6
 )
 
+// App is what a command runs against: the ambient facts, gathered once, so no
+// command reaches for them itself.
+type App struct {
+	Env env.Env
+	// WorkingDir is where discovery starts.
+	WorkingDir string
+	// Ceiling bounds the upward walk. Empty means the filesystem root; tests
+	// set it so an escape fails loudly rather than finding the developer's
+	// own checkout and quietly succeeding.
+	Ceiling string
+}
+
 // Main runs the command tree and returns a process exit code. Streams are
 // passed in rather than reached for, so tests drive it without touching the
 // real process.
 func Main(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
-	root := newRootCommand()
+	wd, err := workingDir()
+	if err != nil {
+		fmt.Fprintln(stderr, "luma-backlog:", err)
+		return ExitError
+	}
+	return Run(&App{Env: env.New(), WorkingDir: wd}, args, stdin, stdout, stderr)
+}
+
+// Run is Main with the ambient state supplied, which is how tests drive it.
+func Run(app *App, args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	root := newRootCommand(app)
 	root.SetArgs(args)
 	root.SetIn(stdin)
 	root.SetOut(stdout)
 	root.SetErr(stderr)
 
 	if err := root.Execute(); err != nil {
-		return ExitUsage
+		fmt.Fprintln(stderr, "luma-backlog:", err)
+		return codeFor(err)
 	}
 	return ExitOK
 }
 
-func newRootCommand() *cobra.Command {
+func newRootCommand(app *App) *cobra.Command {
 	root := &cobra.Command{
 		Use:   "luma-backlog",
 		Short: "A git-native backlog, worked by people and agents at the same time",
@@ -61,5 +91,6 @@ func newRootCommand() *cobra.Command {
 			return nil
 		},
 	}
+	root.AddCommand(newInitCommand(app))
 	return root
 }
