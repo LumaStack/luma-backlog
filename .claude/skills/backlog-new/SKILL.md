@@ -57,7 +57,7 @@ title: <short handle>
 description: <one sentence>
 workflow_status: idea | preparing | actionable | todo | in_progress | closed
 lifecycle_status: provisional
-created: { by: <actor>, at: <timestamp> }
+created: {by: <actor>, at: <timestamp>}
 ```
 
 **Outcome** — `desired_state` is the whole point: a condition that is true or false, never a task in disguise.

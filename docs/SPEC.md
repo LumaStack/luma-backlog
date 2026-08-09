@@ -427,10 +427,10 @@ Both take the **same two keys**, `on` and `why`:
 
 ```yaml
 blocked:                                     # a list, or a single entry written bare
-  - { on: 2026-08-07, why: vendor contract }
-  - { on: 2026-08-09, why: "[[decisions/data-residency]]" }
+  - {on: 2026-08-07, why: vendor contract}
+  - {on: 2026-08-09, why: "[[decisions/data-residency]]"}
 
-paused: { on: 2026-08-12, why: deprioritised in favour of payments }
+paused: {on: 2026-08-12, why: deprioritised in favour of payments}
 ```
 
 **They differ in cardinality, because the concepts do.**
@@ -442,7 +442,7 @@ paused: { on: 2026-08-12, why: deprioritised in favour of payments }
 A single entry may be **written bare and treated as a one-element list**, following the format's handling of `verified` — so the common case stays a one-liner:
 
 ```yaml
-blocked: { on: 2026-08-07, why: vendor contract }
+blocked: {on: 2026-08-07, why: vendor contract}
 ```
 
 **`on` is the half that earns its place.** *Blocked* alone says almost nothing; *blocked for three weeks* is an alarm. Recording when it started makes duration derivable, so the signal **sharpens on its own with nobody maintaining it** — the opposite of a flag somebody has to remember to escalate. The key follows the format's convention: `on` for a date, `at` for a full timestamp.

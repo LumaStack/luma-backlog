@@ -6,7 +6,7 @@ verify_by: backlog journal "a thing worth keeping" && grep -q "a thing worth kee
 deliverable: "[[deliverables/first-usable-build]]"
 workflow_status: todo
 lifecycle_status: provisional
-created: { by: "human:benjamin", at: 2026-08-08T06:00:00Z }
+created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
 ---
 
 # Capture costs one command

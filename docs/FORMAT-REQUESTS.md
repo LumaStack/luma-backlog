@@ -81,7 +81,7 @@ The format reserves `log.md` for a directory's append-only history, newest first
 
 **Status:** shipping ahead, undeclared.
 
-The field-type vocabulary has no way to express a small structured value such as `{ on: <date>, why: <text> }`. The roadmap defers user-defined composite types.
+The field-type vocabulary has no way to express a small structured value such as `{on: <date>, why: <text>}`. The roadmap defers user-defined composite types.
 
 This project has two such fields already — `blocked` and `paused` — so they simply go undeclared, which is legal, since a Type Definition publishes intent rather than enforcing it. **The format does this to itself**: `sources` is documented as a bespoke shape for the same reason.
 

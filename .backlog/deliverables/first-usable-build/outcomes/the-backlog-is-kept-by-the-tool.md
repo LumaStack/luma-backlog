@@ -8,7 +8,7 @@ verify_by:
 deliverable: "[[deliverables/first-usable-build]]"
 workflow_status: todo
 lifecycle_status: provisional
-created: { by: "human:benjamin", at: 2026-08-09T00:00:00Z }
+created: {by: "human:benjamin", at: 2026-08-09T00:00:00Z}
 ---
 
 # The backlog is kept by the tool

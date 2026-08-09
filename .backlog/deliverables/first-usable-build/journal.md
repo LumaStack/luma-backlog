@@ -58,7 +58,7 @@ Parsing is deliberately permissive: unknown kinds are somebody else's vocabulary
 
 **`Set` replaces in place when the key exists, appends when it does not.** Same reason: an edit should be a one-line diff, not a reordering.
 
-**Found: the tool normalises YAML formatting on write, and cannot reasonably avoid it.** `{ on: X, why: Y }` comes back as `{on: X, why: Y}` — the encoder's canonical flow style. Content is untouched; only spacing moves.
+**Found: the tool normalises YAML formatting on write, and cannot reasonably avoid it.** `{on: X, why: Y}` comes back as `{on: X, why: Y}` — the encoder's canonical flow style. Content is untouched; only spacing moves.
 
 Not fought, and recorded as a test rather than left to be discovered: chasing byte-preservation of arbitrary formatting is where YAML round-trippers go to die, and the cost here is bounded — one line, once, per hand-written record that used a different spelling. **Our own examples and records should adopt the canonical form** so there is nothing to normalise; the spec's `blocked` examples currently use the spaced form.
 

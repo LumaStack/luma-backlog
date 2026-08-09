@@ -9,7 +9,7 @@ verify_by:
 deliverable: "[[deliverables/first-usable-build]]"
 workflow_status: todo
 lifecycle_status: provisional
-created: { by: "human:benjamin", at: 2026-08-08T06:00:00Z }
+created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
 ---
 
 # Completion is computed, not asserted

@@ -2,9 +2,9 @@
 type: type_definition
 defines: deliverable
 fields:
-  workflow_status: { obligation: recommended, field_type: enum, values: [idea, preparing, actionable, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — idea. Configurable per repository; the tool attaches no meaning to the values." }
-  blocked:         { obligation: optional, desc: "Present means blocked. A list of { on, why }, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
-  paused:          { obligation: optional, desc: "Present means deliberately paused. { on, why }. Undeclared shape, as above." }
+  workflow_status: {obligation: recommended, field_type: enum, values: [idea, preparing, actionable, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — idea. Configurable per repository; the tool attaches no meaning to the values."}
+  blocked:         {obligation: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
+  paused:          {obligation: optional, desc: "Present means deliberately paused. { on, why}. Undeclared shape, as above." }
 ---
 
 # Deliverable

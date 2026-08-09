@@ -4,8 +4,8 @@ title: First usable build
 description: The smallest binary that lets this project keep its own backlog.
 workflow_status: in_progress
 lifecycle_status: provisional
-created:  { by: "human:benjamin", at: 2026-08-08T06:00:00Z }
-modified: { by: "agent:opus-5/luma-backlog", at: 2026-08-08T06:00:00Z }
+created:  {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
+modified: {by: "agent:opus-5/luma-backlog", at: 2026-08-08T06:00:00Z}
 ---
 
 # First usable build
