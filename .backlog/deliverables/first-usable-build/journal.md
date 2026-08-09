@@ -100,6 +100,16 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **The golden-file harness has its warning built into the failure message**, not only into the documentation: *run with -update, then READ the diff before committing it.* A golden updated by reflex records the bug as expected behaviour, and the moment that matters is when someone is staring at a red test.
 
+**Corrected: outcomes must not carry a `workflow_status`.** Caught by the maintainer asking whether they should share the deliverable's vocabulary — the answer was that they should not have one at all.
+
+`SPEC.md` §4.4 has no such field and says why: *there is no separate pass or fail field, because there is nothing to store that the verification record does not already say.* A declared status would sit beside the computed one and be free to contradict it — the unbacked assertion this whole design distrusts.
+
+**This was implementation drifting from the specification**, and worse, my earlier "fix" of the status fallback made it look deliberate. The code invented a field the spec never had, and then reasoned carefully about which vocabulary the invented field should use. Length of reasoning is not evidence that the thing being reasoned about should exist.
+
+The rule that falls out is clean: **`workflow_status` belongs to units that are *worked*.** A deliverable and a task are worked. An outcome is *judged* by evidence, a decision is *ratified* through `lifecycle_status`, an exploration is *archived*. An outcome's state is now derived — `unverified` until `verified` has entries — and a test asserts none of the three judged units gets a declared status.
+
+**Our own outcomes carried the invented field too** and have been cleaned. The corpus should be exemplary, since it is the first thing anyone reads.
+
 **Next.** `set`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---

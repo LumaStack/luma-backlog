@@ -7,7 +7,6 @@ verify_by:
   - Confirm a short `type` resolves to the namespaced type, and that an ambiguous one is an error rather than a guess.
   - Add an unrecognised key by hand, run every command that rewrites the record, confirm the key survives each.
 deliverable: "[[deliverables/first-usable-build]]"
-workflow_status: todo
 lifecycle_status: provisional
 created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
 ---

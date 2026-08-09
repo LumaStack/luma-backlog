@@ -99,7 +99,12 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 	if s.Deliverable != "" && s.Unit != Deliverable {
 		r.Set("deliverable", "[[deliverables/"+s.Deliverable+"]]")
 	}
-	if s.Unit != Decision && s.Unit != Exploration {
+	// Only units that are WORKED carry a workflow status. An outcome is
+	// judged by its evidence, a decision is ratified through lifecycle_status,
+	// an exploration is archived. Giving an outcome a declared status would
+	// put it beside the computed one, free to contradict it — which is the
+	// unbacked assertion this design exists to distrust (docs/SPEC.md §4.4).
+	if IsWorked(s.Unit) {
 		r.Set("workflow_status", cfg.DefaultStatusFor(s.Unit))
 	}
 	r.Set("lifecycle_status", "draft")

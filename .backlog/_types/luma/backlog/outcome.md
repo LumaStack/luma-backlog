@@ -5,7 +5,6 @@ fields:
   desired_state:   {obligation: mandatory,   field_type: text, desc: "The condition that must hold. True or false — never a task in disguise."}
   verify_by:       {obligation: recommended, desc: "How it is checked: a command, a list of steps, a pointer to a test, or prose. Deliberately unconstrained."}
   deliverable:     {obligation: mandatory,   field_type: wikilink, desc: "The deliverable this belongs to."}
-  workflow_status: {obligation: recommended, field_type: enum, values: [todo, in_progress, closed], desc: "Absent means the first configured value — todo."}
 ---
 
 # Outcome
@@ -19,6 +18,8 @@ A statement of what must become true. A deliverable is complete when every live 
 **`desired_state` is the whole point.** *The retry queue drains within thirty seconds* is an outcome. *Add a retry queue* is a task wearing one.
 
 **`verify_by` is deliberately untyped.** It may be a runnable command, ordered steps, a path to a test, or a sentence a person acts on. Constraining it would exclude the cases that matter most, and whether it usually ends up runnable is an open question this project expects to answer by use rather than by decision.
+
+**There is deliberately no `workflow_status`.** An outcome is judged by its evidence, not moved through a sequence. A declared status would sit beside the computed one and could disagree with it, which is the unbacked assertion this design distrusts. State is derived: no `verified` entries means it has not passed.
 
 **Evidence is not here yet.** The format's `verified` records who confirmed and when, with nowhere for *what the evidence was* — and `verified` is a core field with add-only inheritance, so the gap cannot be closed from a Type Definition. A local field will carry it once its shape is known from real verifications (`FORMAT-REQUESTS.md` §3).
 

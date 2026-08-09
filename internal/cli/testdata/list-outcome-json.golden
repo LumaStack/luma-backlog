@@ -4,7 +4,7 @@
     "type": "outcome",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
-    "status": "todo",
+    "status": "unverified",
     "deliverable": "payments-v2"
   }
 ]

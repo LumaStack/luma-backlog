@@ -7,7 +7,6 @@ verify_by:
   - Verify the second, close again; expect success.
   - Close a different deliverable as cancelled with an unmet outcome; expect success, because only delivery is gated.
 deliverable: "[[deliverables/first-usable-build]]"
-workflow_status: todo
 lifecycle_status: provisional
 created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
 ---

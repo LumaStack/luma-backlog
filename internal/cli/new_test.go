@@ -110,6 +110,34 @@ func TestNewOutcomeTakesItsDeliverableFromAFlag(t *testing.T) {
 	}
 }
 
+func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
+	// An outcome is judged by evidence; a decision is ratified through
+	// lifecycle_status; an exploration is archived. A declared status on any
+	// of them would sit beside the real state and could disagree with it
+	// (docs/SPEC.md §4.4).
+	app, project := initialised(t)
+	run(t, app, "new", "deliverable", "Payments v2")
+
+	for _, tc := range []struct{ unit, path string }{
+		{"outcome", "deliverables/payments-v2/outcomes/a-thing.md"},
+		{"decision", "deliverables/payments-v2/decisions/a-thing.md"},
+		{"exploration", "deliverables/payments-v2/explorations/a-thing.md"},
+	} {
+		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-d", "payments-v2"); code != ExitOK {
+			t.Fatalf("new %s failed: %s", tc.unit, e)
+		}
+		if r := readRecord(t, project, tc.path); r.Has("workflow_status") {
+			t.Errorf("a new %s carries a workflow_status", tc.unit)
+		}
+	}
+
+	// A task is worked, so it does carry one.
+	run(t, app, "new", "task", "Do it", "-d", "payments-v2")
+	if r := readRecord(t, project, "deliverables/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
+		t.Error("a new task has no workflow_status")
+	}
+}
+
 func TestNewTakesItsDeliverableFromTheWorkingDirectory(t *testing.T) {
 	app, project := initialised(t)
 	run(t, app, "new", "deliverable", "Payments v2")

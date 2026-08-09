@@ -27,6 +27,17 @@ var childDirs = map[string]string{
 	Exploration: "explorations",
 }
 
+// IsWorked reports whether a unit carries a workflow status.
+//
+// A deliverable and a task are worked, and move through a sequence. An outcome
+// is judged by evidence, a decision is ratified through lifecycle_status, and
+// an exploration is archived — none of them has a position in a workflow, and
+// giving them one would create a declared state that can disagree with the
+// real one.
+func IsWorked(unit string) bool {
+	return unit == Deliverable || unit == Task
+}
+
 // IsUnit reports whether a name is one this tool creates.
 func IsUnit(unit string) bool {
 	if unit == Deliverable {

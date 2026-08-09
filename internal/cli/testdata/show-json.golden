@@ -3,7 +3,7 @@
   "type": "outcome",
   "slug": "the-retry-queue-drains",
   "title": "The retry queue drains",
-  "status": "todo",
+  "status": "unverified",
   "deliverable": "payments-v2",
   "fields": {
     "created": {
@@ -15,8 +15,7 @@
     "lifecycle_status": "draft",
     "title": "The retry queue drains",
     "type": "outcome",
-    "verify_by": "",
-    "workflow_status": "todo"
+    "verify_by": ""
   },
   "body": "# The retry queue drains\n\nWhy this matters, and anything needed to read the check correctly.\n"
 }

@@ -40,11 +40,28 @@ func (i Item) Title() string {
 	return i.Slug()
 }
 
-// Status is the workflow position, or the configured default when absent —
-// absence is meaningful rather than missing (docs/SPEC.md §4.2).
+// Status is what to show for a record's state.
+//
+// For a worked unit it is the workflow position, or the configured default
+// when absent — absence is meaningful rather than missing (docs/SPEC.md §4.2).
+//
+// For an outcome it is DERIVED from evidence, never read from a field. There
+// is nothing to store that the verification record does not already say, and a
+// stored copy could disagree with it.
 func (i Item) Status(defaultStatus string) string {
+	if i.Type() == Outcome {
+		if i.Record.Has("verified") {
+			return "passing"
+		}
+		return "unverified"
+	}
 	if s, ok := i.Record.Get("workflow_status"); ok && s != "" {
 		return s
+	}
+	if !IsWorked(i.Type()) {
+		if s, ok := i.Record.Get("lifecycle_status"); ok && s != "" {
+			return s
+		}
 	}
 	return defaultStatus
 }
