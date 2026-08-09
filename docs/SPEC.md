@@ -399,7 +399,7 @@ So the division is:
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `workflow_status` | recommended | enum | Position in the workflow. Vocabulary is **configurable** (§8) and carries no meaning to the tool. |
+| `workflow_status` | recommended | enum | Position in the workflow. Vocabulary is **configurable** (§8) and carries no meaning to the tool. **Absent means the first configured value** — `idea` by default. |
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
@@ -459,12 +459,16 @@ blocked: { on: 2026-08-07, why: vendor contract }
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
 | `deliverable` | mandatory | wikilink | The deliverable this is an attempt at. |
-| `ordinal` | recommended | number | Which attempt this is. Waves accrue, so this is assigned on creation rather than planned. |
+| `ordinal` | *unresolved* | number | Which attempt this is. **Probably should not be a field at all** — see below. |
 | `closed` | optional | actor_event | Who closed it and when. Absent means open. |
 
 > **Pending `OPEN-QUESTIONS.md` §1a — record or attribute?** Modelled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
 
 **Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
+
+> **`ordinal` fails two tests at once** (`OPEN-QUESTIONS.md` §1a). Its absence says nothing — a wave without one could be the first attempt or the fourth — so *recommended* is the wrong obligation whichever way it resolves. And it **restates the filename**: the layout puts waves at `waves/1.md`, `waves/2.md`, so the ordinal is already in the path, and a field holding it is a second copy that can disagree.
+>
+> That exposes a third inconsistency worth recording rather than patching: §7.4 says filenames are slugs derived from titles and that **numeric identifiers are deliberately not used** — while the wave layout uses exactly those. One of the two is wrong. Waves are out of the first build, so this is flagged rather than resolved.
 
 ### 4.4 `luma/backlog/outcome`
 

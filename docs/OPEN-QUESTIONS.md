@@ -64,6 +64,8 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 - **What happens when a task joins a closed one?** As a pure attribute the boundary silently un-fires. That may argue for recording closure even if the unit itself stays an attribute.
 - **Where does its output live?** A learning pass or an audit produces artifacts. `SPEC.md` §3.1 suggests the answer — a record exists when there is something to say — but this should be confirmed by use.
 - **Does it survive import and export?** External trackers have loosely similar concepts and nothing that maps exactly.
+- **Is `ordinal` a field at all?** Found by sweeping obligations (§4.2). It fails two tests: its absence says nothing, so no obligation level fits; and it restates the filename, since the layout puts waves at `waves/1.md`. A field duplicating a path fact is a second copy that eventually disagrees with the first.
+- **And numeric wave filenames contradict §7.4**, which says filenames are slugs derived from titles and that numeric identifiers are deliberately not used. Either waves are the stated exception, or they should be named like everything else and carry the ordinal as data. Both are defensible; neither has been chosen.
 
 *Settled by:* using it. The job is real; the shape should be discovered by running work through iterations and noticing what is actually needed.
 
