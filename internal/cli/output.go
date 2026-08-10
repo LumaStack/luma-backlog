@@ -28,6 +28,10 @@ type itemJSON struct {
 // quietly hide another system's state from anything reading our output.
 type recordJSON struct {
 	itemJSON
+	// Hash identifies the content that was read. Pass it back to `set
+	// --if-unchanged` and a write that would clobber someone else's change is
+	// refused rather than applied (docs/SPEC.md §6.3).
+	Hash   string         `json:"hash"`
 	Fields map[string]any `json:"fields"`
 	Body   string         `json:"body"`
 }
@@ -56,6 +60,7 @@ func toRecordJSON(i backlog.Item, defaultStatus string) (recordJSON, error) {
 	}
 	return recordJSON{
 		itemJSON: toItemJSON(i, defaultStatus),
+		Hash:     i.Hash(),
 		Fields:   fields,
 		Body:     i.Record.Body(),
 	}, nil

@@ -186,6 +186,21 @@ func (r *Record) Node(key string) *yaml.Node {
 	return v
 }
 
+// Remove deletes a field. Reports whether it was there.
+func (r *Record) Remove(key string) bool {
+	if r.frontmatter == nil {
+		return false
+	}
+	for i := 0; i+1 < len(r.frontmatter.Content); i += 2 {
+		if r.frontmatter.Content[i].Value == key {
+			r.frontmatter.Content = append(
+				r.frontmatter.Content[:i], r.frontmatter.Content[i+2:]...)
+			return true
+		}
+	}
+	return false
+}
+
 // Keys lists the frontmatter keys in the order they appear.
 func (r *Record) Keys() []string {
 	if r.frontmatter == nil {

@@ -110,7 +110,19 @@ The rule that falls out is clean: **`workflow_status` belongs to units that are 
 
 **Our own outcomes carried the invented field too** and have been cleaned. The corpus should be exemplary, since it is the first thing anyone reads.
 
-**Next.** `set`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `set`**, with optimistic concurrency.
+
+**A wikilink looks exactly like a YAML list**, and that decided the argument syntax. `[[deliverables/payments-v1]]` is a valid nested sequence, so any tool that guesses at a value's shape turns it into `[["deliverables/payments-v1"]]` — silently, and in the field that links records together. So the shape is opt-in: `field=value` writes a string, `field:=value` parses YAML. A test asserts the wikilink survives.
+
+**`modified` is written after the caller's own changes**, so an explicit `modified=` wins. The tool should not overrule something it was just told.
+
+**Conflict detection works end to end.** `show --json` emits a content hash; `set --if-unchanged <hash>` refuses with exit 4 when the record moved underneath. Content rather than modification time — timestamps are too coarse and skew, and the format's `modified` only advances on meaningful change, so neither is a reliable witness.
+
+Exercised for real rather than only in tests: read the hash, write once, then write again with the stale hash. The second is refused, names both hashes, and says *re-read and retry* — which is different advice from "something broke", and is the distinction a retrying agent depends on. **The refused write also leaves the other writer's change intact**, which is the part worth testing, since a refusal that still modified the file would be worse than no check.
+
+**The golden harness earned its keep.** Adding `hash` to the show shape failed the test immediately, as a breaking change should. Read the diff, confirmed it was the one line intended, then updated — which is the discipline the harness exists to enforce rather than a formality.
+
+**Next.** `journal`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 

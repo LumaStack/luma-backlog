@@ -15,7 +15,14 @@ type Item struct {
 	Path        string // relative to the backlog, slash-separated
 	Record      *record.Record
 	Deliverable string // the deliverable it sits inside, if any
+
+	// Raw is the file exactly as read. Kept so a caller can be handed a hash
+	// of what it actually saw, which is what makes a later write safe.
+	Raw []byte
 }
+
+// Hash identifies the content this item was read from.
+func (i Item) Hash() string { return record.Hash(i.Raw) }
 
 // Slug is the filename without its extension — for a deliverable, the
 // directory name, since its record is index.md.
@@ -93,7 +100,7 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 		if err != nil {
 			return nil
 		}
-		it := Item{Path: rel, Record: r, Deliverable: DeliverableFromPath(rel)}
+		it := Item{Path: rel, Record: r, Deliverable: DeliverableFromPath(rel), Raw: data}
 		if matches(it, f) {
 			items = append(items, it)
 		}
