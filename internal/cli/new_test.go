@@ -5,7 +5,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
+	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/lumastack/luma-backlog/internal/record"
 )
 
@@ -16,6 +18,24 @@ func initialized(t *testing.T) (*App, string) {
 		t.Fatalf("init failed: %s", e)
 	}
 	return app, project
+}
+
+func readFile(t *testing.T, project, rel string) string {
+	t.Helper()
+	data, err := os.ReadFile(filepath.Join(project, ".backlog", rel))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(data)
+}
+
+func fixedAt(t *testing.T, rfc3339 string) env.Clock {
+	t.Helper()
+	at, err := time.Parse(time.RFC3339, rfc3339)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return env.FixedClock{At: at}
 }
 
 func readRecord(t *testing.T, project, rel string) *record.Record {

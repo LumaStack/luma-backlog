@@ -5,7 +5,7 @@ deliverable: "[[deliverables/first-usable-build]]"
 advances: ["[[deliverables/first-usable-build/outcomes/capture-is-one-command]]"]
 rank: "0090.000"
 parallel_group: [commands]
-workflow_status: todo
+workflow_status: closed
 ---
 
 # `journal`

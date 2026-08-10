@@ -102,5 +102,6 @@ func newRootCommand(app *App) *cobra.Command {
 	root.AddCommand(newShowCommand(app))
 	root.AddCommand(newListCommand(app))
 	root.AddCommand(newSetCommand(app))
+	root.AddCommand(newJournalCommand(app))
 	return root
 }

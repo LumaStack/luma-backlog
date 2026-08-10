@@ -122,7 +122,19 @@ Exercised for real rather than only in tests: read the hash, write once, then wr
 
 **The golden harness earned its keep.** Adding `hash` to the show shape failed the test immediately, as a breaking change should. Read the diff, confirmed it was the one line intended, then updated — which is the discipline the harness exists to enforce rather than a formality.
 
-**Next.** `journal`. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `journal`.** One invocation, no file opened, no heading written — which is the whole feature, since friction at the moment of writing is what loses the learning.
+
+**Resolution matters more here than anywhere else.** In order: the flag, then the working directory, then — only when there is exactly one deliverable — that one. Requiring `-d` on every capture is precisely the friction that stops capture happening, and the last rule errs safe: the moment there are two, it stops guessing and names them.
+
+**Found by writing a realistic test: journal text that begins with `--` is parsed as a flag.** The example that broke it was `--use-hold pins the source snapshot`, which is exactly the kind of thing worth capturing — a flag name and what it does. Ordinary usage, not a corner case.
+
+`--` is the standard escape and it works, but nobody thinks of it while being told their note is an unknown flag. So the error now offers the fix in the message. The general lesson: **a correct error that leaves the user stuck is only half an error.**
+
+**Entries are prepended and nothing below is ever rewritten**, tested by writing on two days and asserting the earlier entry survives byte for byte. Within a day, lines run in the order they were written — a day reads as a narrative even though the days do not.
+
+**Tolerant of a hand-written introduction**, whatever it contains, including text that looks structural. Most journals are hand-written, and ours was.
+
+**Next.** `verify` and `close` — the last one, and the only refusal. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 
