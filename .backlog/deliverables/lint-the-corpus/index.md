@@ -15,7 +15,7 @@ Things drift, and nothing notices. Already observed while building, none of it c
 
 - Section numbers and cross-references break after an insert. Fixed by hand several times.
 - An example in a layout block was read as a settled decision and reasoned from, producing a contradiction that did not exist.
-- Frontmatter spelling varies between hand-written records — the encoder normalises on write, so the first touch of a hand-written record reformats it.
+- Frontmatter spelling varies between hand-written records — the encoder normalizes on write, so the first touch of a hand-written record reformats it.
 - Records may reference outcomes, deliverables, or decisions that do not exist. Nothing resolves links.
 - Field obligations were copied rather than decided, and a sweep found one with no meaning attached to its absence.
 

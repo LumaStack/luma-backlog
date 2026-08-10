@@ -3,7 +3,7 @@
 - **Version:** `v0.0.1-draft`
 - **Status:** Draft. Sections are written in dependency order; several are still placeholders. Nothing here is ratified.
 
-> **Sections vary in how well grounded they are, and say so.** Some describe decisions argued to a conclusion and tested against the principles. Others are **proposals** — a plausible shape written down so it can be criticised, not a design anyone has committed to. Proposals carry a banner saying as much. Absence of a banner means the section has been reasoned through, not that it is beyond revision.
+> **Sections vary in how well grounded they are, and say so.** Some describe decisions argued to a conclusion and tested against the principles. Others are **proposals** — a plausible shape written down so it can be criticized, not a design anyone has committed to. Proposals carry a banner saying as much. Absence of a banner means the section has been reasoned through, not that it is beyond revision.
 
 ## Abstract
 
@@ -53,16 +53,16 @@ Say when it is delivered, attempt it repeatedly, declare the state that must hol
 
 One does. A **decision** (§2.6) sits outside this hierarchy entirely — everything above is either work or a statement about work in progress, whereas a decision constrains work without ever being part of it.
 
-**Unit names may be relabelled for display.** A team that says *story*, *project*, or *item* should be able to see that word throughout the interface. The rule that keeps this safe is a strict split:
+**Unit names may be relabeled for display.** A team that says *story*, *project*, or *item* should be able to see that word throughout the interface. The rule that keeps this safe is a strict split:
 
 - **Canonical everywhere a machine looks.** The `type` on disk, the structured output, and the documented interface always use the names defined here. A record is `deliverable` in every repository, regardless of what anyone calls it locally.
 - **Configurable everywhere a person looks.** Displayed labels, prompts, board headings, and generated help may use the team's own word, and commands may accept it as an alias.
 
-Without that split, structured output would change shape per repository and every integration written against it would break. With it, relabelling is free: files stay portable, agents reading records see one vocabulary, and people see theirs. See §8.
+Without that split, structured output would change shape per repository and every integration written against it would break. With it, relabeling is free: files stay portable, agents reading records see one vocabulary, and people see theirs. See §8.
 
 **Aliases are taught, not encoded.** An agent reads more than structured output — it reads prompts, record bodies, and people saying "the auth story." So the local vocabulary belongs in the **generated agent instructions**: *this repository calls deliverables "stories."* The mapping is learned once; every record and every payload stays canonical. Vocabulary is documentation, never data.
 
-**Expect renaming to concentrate at one level.** In practice the unit teams will want to rename is the **deliverable**, because it is the one they meet first and name most often — followed by dimensions, which are user-defined already. Tasks are occasionally renamed (*to-dos*), and waves, outcomes, and decisions almost never. Anything may be relabelled, but the deliverable is the one that must be comfortable.
+**Expect renaming to concentrate at one level.** In practice the unit teams will want to rename is the **deliverable**, because it is the one they meet first and name most often — followed by dimensions, which are user-defined already. Tasks are occasionally renamed (*to-dos*), and waves, outcomes, and decisions almost never. Anything may be relabeled, but the deliverable is the one that must be comfortable.
 
 #### 2.1.1 Who is expected to author what
 
@@ -132,7 +132,7 @@ Formation lives in **`workflow_status`** rather than a field of its own. The low
 
 **`preparing` covers every activity, and names none.** Getting from an idea to actionable is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
 
-Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modelling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern.
+Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modeling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern.
 
 A team wanting to distinguish a spike from an estimate has dimensions (§2.7) and its own records for it. Exploration produced along the way is an ordinary record (§7.2), and this is the stage where it usually appears.
 
@@ -165,11 +165,11 @@ Where a disagreement is found it is reported as an observation, not a refusal (�
 - **Blockedness.** A well-planned deliverable waiting on something else has not become less formed. It is not a stage at all — it is a separate field (§4.2.1).
 - **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly actionable deliverable that nobody has scheduled is an ordinary thing.
 
-##### `lifecycle_status` remains a separate, human judgement
+##### `lifecycle_status` remains a separate, human judgment
 
 The format's `lifecycle_status` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; lifecycle status says *how much the record can be relied upon*. A deliverable can be `actionable` and `draft` if the plan is complete but nobody trusts it yet.
 
-**`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgement to a person.
+**`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgment to a person.
 
 > **Why this makes capture cheap.** Recording an idea is only free if discarding it is also free — and here **archiving is lossless** (§7.1). Nothing is deleted, nothing moves, and the record stays findable forever. So there is no cost to writing down something that may not survive, and none to letting it go, which is precisely the condition under which people record things instead of losing them.
 >
@@ -366,14 +366,14 @@ That gives a test, and it is the whole rule:
 
 ##### Why this matters more than it looks
 
-Modelling `blocked` as a status is a common flaw, and it costs four things:
+Modeling `blocked` as a status is a common flaw, and it costs four things:
 
 - **It destroys information.** Setting the status overwrites where the work actually was, so when the block clears there is nothing to return to. Tools that do this end up storing a hidden "previous status" — an admission the model was wrong.
 - **It forces a false choice.** You may record the stage *or* the impediment, never both, though both are true.
 - **It corrupts the board.** One column mixes blocked-while-preparing with blocked-while-in-progress, which are entirely different situations that happen to share an adjective.
 - **It hides duration.** A status has no age. *Blocked* says almost nothing; *blocked for three weeks* says everything, and a flag cannot tell you which one you are looking at.
 
-The same rule produced two other decisions here: `blocked` carries **when and why** rather than being a state (§4.2.1), and closing carries **a reason** rather than splitting into separate `done`, `cancelled`, and `superseded` statuses (§5.3.1).
+The same rule produced two other decisions here: `blocked` carries **when and why** rather than being a state (§4.2.1), and closing carries **a reason** rather than splitting into separate `done`, `canceled`, and `superseded` statuses (§5.3.1).
 
 ##### For agents arriving from other tools
 
@@ -397,7 +397,7 @@ So the division is:
 | Keeps them with the record they belong to | Decides what is relevant, and how much to load |
 | Renders them as text | Understands what each one *is* |
 
-**A primitive convenience is allowed, and is not the mechanism.** Showing the contents of a reference that happens to be a file in this repository is a reasonable courtesy. *Choosing* what an actor should read — ranking, budgeting, summarising — is the engine's work, and doing any of it here would be a workflow layer growing inside the wrong project.
+**A primitive convenience is allowed, and is not the mechanism.** Showing the contents of a reference that happens to be a file in this repository is a reasonable courtesy. *Choosing* what an actor should read — ranking, budgeting, summarizing — is the engine's work, and doing any of it here would be a workflow layer growing inside the wrong project.
 
 **Not to be confused with `sources`**, which the format already defines. `sources` records what a record *derives from* — provenance, looking backwards. `references` records what someone should *read before acting* — preparation, looking forwards. A deliverable's sources might be the research that produced it; its references are the code and documents needed to do the work.
 
@@ -430,7 +430,7 @@ blocked:                                     # a list, or a single entry written
   - {on: 2026-08-07, why: vendor contract}
   - {on: 2026-08-09, why: "[[decisions/data-residency]]"}
 
-paused: {on: 2026-08-12, why: deprioritised in favour of payments}
+paused: {on: 2026-08-12, why: deprioritized in favor of payments}
 ```
 
 **They differ in cardinality, because the concepts do.**
@@ -458,7 +458,7 @@ blocked: {on: 2026-08-07, why: vendor contract}
 | `blocked` | You **cannot** proceed. Something external. | Chase it. |
 | `paused` | You **will not** proceed. A choice. | Revisit the choice. |
 
-**How long is too long is not the tool's judgement.** It reports what is stalled and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
+**How long is too long is not the tool's judgment.** It reports what is stalled and since when; whether three weeks is routine or a crisis depends on the work, and belongs to whoever is looking (§5.2).
 
 ### 4.3 `luma/backlog/wave`
 
@@ -468,7 +468,7 @@ blocked: {on: 2026-08-07, why: vendor contract}
 | `ordinal` | *unresolved* | number | Which attempt this is. **Probably should not be a field at all** — see below. |
 | `closed` | optional | actor_event | Who closed it and when. Absent means open. |
 
-> **Pending `OPEN-QUESTIONS.md` §1a — record or attribute?** Modelled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
+> **Pending `OPEN-QUESTIONS.md` §1a — record or attribute?** Modeled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
 
 **Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
 
@@ -492,7 +492,7 @@ An outcome with no `verified` entries has not passed. There is no separate pass 
 
 A retired outcome is archived via `lifecycle_status`, never deleted, and is excluded from completion arithmetic.
 
-> **Two pending decisions**, both `OPEN-QUESTIONS.md` §18. Whether outcomes attach to a deliverable or a wave — modelled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modelled as a record because it owns tasks and evidence, which need identity.
+> **Two pending decisions**, both `OPEN-QUESTIONS.md` §18. Whether outcomes attach to a deliverable or a wave — modeled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
 
 **On these field names.**
 
@@ -508,7 +508,7 @@ Some conditions apply to every deliverable rather than to one: the test suite pa
 
 Elsewhere this is called a definition of done. Here it needs no new concept, because a standing outcome *is* an outcome; only its authorship differs.
 
-**They are materialised, never referenced.** Evidence is per-deliverable by nature — the suite passing for one deliverable is a different fact, checked at a different moment, than for another. A referenced outcome would still need somewhere per-deliverable to record who verified it and when, so referencing saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry.
+**They are materialized, never referenced.** Evidence is per-deliverable by nature — the suite passing for one deliverable is a different fact, checked at a different moment, than for another. A referenced outcome would still need somewhere per-deliverable to record who verified it and when, so referencing saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry.
 
 **Changing the standard is not retroactive.** Deliverables already in flight keep the outcomes they were created with. Silently adding a requirement to work already underway is goalpost-moving in the opposite direction, and the design refuses it in both directions equally.
 
@@ -528,7 +528,7 @@ An entry may be prose, an ordered list of steps, a pointer to a test, a runnable
 | `verify_by` | how to observe it |
 | `verified` | who looked, when, and what they found (§4.7) |
 
-Because `desired_state` already states what you should see, `verify_by` never has to restate it. *"Run with the dry-run flag, then check `git status`"* needs no interpretation guide when the desired state says *a dry run prints the planned changes and writes nothing*. For a runnable entry, the conventional reading applies with no explanation required: **exit code zero means the desired state holds.** A pointer to a test needs nothing either, since the test carries its own judgement.
+Because `desired_state` already states what you should see, `verify_by` never has to restate it. *"Run with the dry-run flag, then check `git status`"* needs no interpretation guide when the desired state says *a dry run prints the planned changes and writes nothing*. For a runnable entry, the conventional reading applies with no explanation required: **exit code zero means the desired state holds.** A pointer to a test needs nothing either, since the test carries its own judgment.
 
 **A consequence to be aware of.** Because the field is uninterpreted, **the tool records verdicts rather than producing them** — whoever verifies runs the check and reports what they found. Whether a command should ever execute checks itself is a genuine mechanism-versus-policy question, since executing needs an environment, timeouts, and isolation; it is left open (`OPEN-QUESTIONS.md` §21). If it is ever wanted, the tool must be able to tell a runnable entry from prose, and the lean is a second optional field rather than typed entries — less structure, and the prose stays useful for a person even where a command exists.
 
@@ -581,7 +581,7 @@ A team that labels everything identically is back to unrestricted parallelism �
 
 Rank already orders the tasks within a wave, so **`depends_on` is for orderings rank cannot express** — waiting on a task in another wave, or in another deliverable. Using it to restate the order of adjacent tasks is redundant, and the redundancy goes stale the moment either is reranked.
 
-> **This gives rank a second job.** It was a display and prioritisation preference (§9.6); it is now also execution order. That is a real widening, recorded here because a reader would otherwise be surprised — and because if rank turns out to be a poor carrier for both, this is the seam where it will show.
+> **This gives rank a second job.** It was a display and prioritization preference (§9.6); it is now also execution order. That is a real widening, recorded here because a reader would otherwise be surprised — and because if rank turns out to be a poor carrier for both, this is the seam where it will show.
 
 ### 4.6 Succession
 
@@ -630,7 +630,7 @@ Promotion therefore does not archive the original. Nothing is retired — the lo
 
 **Distinguish deferred from dead**, for the reason set out in §5.5: an option written up as *rejected* is read as permanently closed, and an actor arriving later will not raise it again even once the reason has expired. An option that could return should say **what would bring it back**. One that genuinely cannot should say so plainly — the distinction is only useful because most options are the first kind.
 
-### 4.9 What modelling outcomes as records costs
+### 4.9 What modeling outcomes as records costs
 
 Outcomes were originally specified as an **inline checklist** on the deliverable, and that decision was reversed when the outcome became a unit (§2.4). The reversal has real costs, recorded here so they are weighed rather than forgotten:
 
@@ -643,7 +643,7 @@ They were accepted because an outcome does more than a checkbox: it owns tasks a
 
 > **⚠ Mostly proposal.** §5.0 is settled and applies to the whole document. §5.1 through §5.3 follow reasonably from the principles. **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §22 for the alternative that was set aside and why it may be better.
 
-A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behaviour attaches.
+A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behavior attaches.
 
 ### 5.0 Where the line falls
 
@@ -673,7 +673,7 @@ What makes the one refusal defensible is the rule that bounds it:
 
 > **The tool may refuse only what the caller's own record contradicts.**
 
-Closing as *delivered* while an outcome is failing is refused because **the team wrote that outcome** — not because the tool holds a view about what finished means. It holds a caller to their own words, never to its opinion. That is also why cancelling is not gated (§5.3.1): nothing in the record claims the work succeeded, so there is nothing to contradict.
+Closing as *delivered* while an outcome is failing is refused because **the team wrote that outcome** — not because the tool holds a view about what finished means. It holds a caller to their own words, never to its opinion. That is also why canceling is not gated (§5.3.1): nothing in the record claims the work succeeded, so there is nothing to contradict.
 
 #### What this permits, and what it does not
 
@@ -685,7 +685,7 @@ Closing as *delivered* while an outcome is failing is refused because **the team
 
 **The tool answers questions about what is true. It does not deliver notifications.**
 
-A **condition** is re-derivable: ask at any time and get the current answer. An **event** must be delivered, which means ordering, retries, acknowledgements, and a subscriber that was running at the moment it fired.
+A **condition** is re-derivable: ask at any time and get the current answer. An **event** must be delivered, which means ordering, retries, acknowledgments, and a subscriber that was running at the moment it fired.
 
 Conditions win for a reason that matters here: **a workflow layer that was not running can still catch up.** It asks what is true now and proceeds. Nothing was missed, because nothing was ever in flight. That property is worth more than immediacy for a tool whose consumers are agents that start, stop, and are replaced.
 
@@ -711,14 +711,14 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `deliverable.not-converging` † | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
 | `deliverable.churning` † | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
 | `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
-| `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgement. |
+| `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgment. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 | `journal.stale` † | Records changed since the newest journal entry — the context needed to resume has fallen behind the work (§5.5). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
 Those last seven detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
-> **† These four carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgement — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgement attached, which is the honest default.
+> **† These four carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgment — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgment attached, which is the honest default.
 
 > **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This deliverable is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
 
@@ -730,7 +730,7 @@ Three of them describe failure modes specific to agents working unattended, and 
 
 ### 5.3 Closing is an explicit act
 
-Completion is computed (§2.4), but **closing is something a caller does** — and the tool validates it rather than inferring it. That gives a real edge for behaviour to attach to, which a derived condition alone cannot: nothing "becomes closed" on its own.
+Completion is computed (§2.4), but **closing is something a caller does** — and the tool validates it rather than inferring it. That gives a real edge for behavior to attach to, which a derived condition alone cannot: nothing "becomes closed" on its own.
 
 The two closings differ, and the difference matters:
 
@@ -741,24 +741,24 @@ Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If
 
 #### 5.3.1 Closed is not the same as delivered
 
-Work ends for more reasons than success, and a terminal state called *done* cannot express that. Nor should the reasons become separate statuses — a record is closed *and* cancelled, not one or the other, which is the test in §4.1.1. **So the terminal state is `closed`, and every closing records why:**
+Work ends for more reasons than success, and a terminal state called *done* cannot express that. Nor should the reasons become separate statuses — a record is closed *and* canceled, not one or the other, which is the test in §4.1.1. **So the terminal state is `closed`, and every closing records why:**
 
 | Reason | Gated on completion? |
 |---|---|
 | **delivered** | **Yes.** Every live outcome passes. |
-| **cancelled** | No. The work is no longer wanted. |
+| **canceled** | No. The work is no longer wanted. |
 | **superseded** | No. Another deliverable replaced it. |
 | **abandoned** | No. It was attempted and given up on. |
 
 This distinction matters more than vocabulary. **Gating cancellation on completion would be absurd** — you would be unable to stop work precisely because it was unfinished, which is the only reason anyone ever cancels anything. So the gate belongs to *delivered* alone, and the other reasons close freely.
 
-What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A cancelled deliverable with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
+What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A canceled deliverable with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
 
-That is also what keeps this distinct from Redefine (`LIFECYCLE.md` §2.8): retiring an outcome changes what done means, while cancelling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
+That is also what keeps this distinct from Redefine (`LIFECYCLE.md` §2.8): retiring an outcome changes what done means, while canceling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
 
 ### 5.4 Hooks — *the least settled part of this document*
 
-> **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`OPEN-QUESTIONS.md` §22). What follows is a shape to criticise.
+> **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`OPEN-QUESTIONS.md` §22). What follows is a shape to criticize.
 
 A **hook** is a command the tool runs when a boundary is crossed. Configuration maps a boundary to a command (§8); the tool runs it and **never interprets what it does**.
 
@@ -835,7 +835,7 @@ That is the criterion. Not importance, not completeness — **relitigation risk.
 | **An outcome is retired** | **Why.** This is the operation that lowers the bar (`LIFECYCLE.md` §2.8), and the one most likely to be questioned later. |
 | **A learning pass runs** | What was found. Propagation then works **from the journal** — promoting what proved durable outward (§2.6). |
 | **A session or a wave wraps up** | Where things stand, what is next, what is unknown. The resume pointer. |
-| **A deliverable closes** | The reason. Delivered, cancelled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
+| **A deliverable closes** | The reason. Delivered, canceled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
 | **An outcome is verified, or regresses** | What the evidence was. Completion rests on this, and a regression is not reconstructible from current state. |
 | **A check is overridden** | If a team permits overriding a refusal (§6, open), the override must be visible — otherwise it is indistinguishable afterwards from the check having passed. |
 
@@ -899,7 +899,7 @@ What an entry is expected to carry, in whatever shape the work calls for:
 >
 > Some things really are ruled out, by a reason that cannot change. Say so plainly when that is true. The distinction matters precisely because most things are not.
 
-**Append, never curate.** Entries are selective on the way in and untouched afterwards. Nothing is reorganised, summarised away, or pruned — which is also why it costs almost nothing: appending is cheap, and reading is bounded by the resume pointer rather than by the length of the file.
+**Append, never curate.** Entries are selective on the way in and untouched afterwards. Nothing is reorganized, summarized away, or pruned — which is also why it costs almost nothing: appending is cheap, and reading is bounded by the resume pointer rather than by the length of the file.
 
 > **The tool does not author narrative entries and does not impose a template.** It creates the file, appends the events above, and never judges what anyone else writes. What an entry should say is the workflow layer's business (§5.0); the shape here is recorded because it was learned expensively, not because it is enforced.
 
@@ -1022,7 +1022,7 @@ A human editing records by hand while agents work is ordinary use, and three pro
 
 ### 6.7 What the tool must never do
 
-**Never commit files it did not write.** A synchronising operation that stages everything will sweep up a person's half-finished manual edits into a commit they did not intend, and possibly push them. Every commit the tool makes is confined to the specific files that operation changed. This is easy to implement, catastrophic to get wrong, and is stated here as a rule rather than left to implementation taste.
+**Never commit files it did not write.** A synchronizing operation that stages everything will sweep up a person's half-finished manual edits into a commit they did not intend, and possibly push them. Every commit the tool makes is confined to the specific files that operation changed. This is easy to implement, catastrophic to get wrong, and is stated here as a rule rather than left to implementation taste.
 
 **Never commit per file write.** One command produces **one commit**, even when it touches several files. Commit history is the system's event log (§5.5), and one entry per logical action is a history while one per field write is noise.
 
@@ -1152,7 +1152,7 @@ Numeric identifiers are deliberately **not** used. They require an allocator, th
 
 **The interface accepts unambiguous prefixes.** `add-retry` resolves to `add-retry-queue` when only one record matches, in the manner of abbreviated git revisions. This keeps full names descriptive without making them tedious to type.
 
-### 7.5 Merge behaviour
+### 7.5 Merge behavior
 
 The layout is chosen so that the common concurrent cases do not conflict:
 
@@ -1238,7 +1238,7 @@ Three notes on the defaults. The first three statuses describe **how far the pla
 
 ### 8.3 Defaults are written, not compiled
 
-`init` **writes the defaults into the file**, rather than leaving them implicit in the binary. A team's first encounter with a default is therefore a line they can read and change, not behaviour they have to discover and then find a way to override.
+`init` **writes the defaults into the file**, rather than leaving them implicit in the binary. A team's first encounter with a default is therefore a line they can read and change, not behavior they have to discover and then find a way to override.
 
 Built-in fallbacks still exist for every key, so that a configuration written today keeps working when new keys are added later. The two are not in tension: the fallbacks provide compatibility, and writing them out provides discoverability.
 
@@ -1254,21 +1254,21 @@ The test: if changing a setting would alter what `--json` returns for the same r
 
 **Preserved untouched, never interpreted, never a reason to reject the file** — the same rule records follow (§4.1). It is how a workflow layer keeps its own settings without this tool needing to know the concept exists.
 
-### 8.6 The limit: vocabulary, not behaviour
+### 8.6 The limit: vocabulary, not behavior
 
 Configuration is the natural place for process rules to accumulate, and a configuration format expressive enough to describe conditional workflow **is a rules engine wearing different clothes**. That is `OPEN-QUESTIONS.md` §6 arriving by a side door.
 
 The test is simple:
 
-> **Configuration declares vocabulary and bindings. It never declares behaviour.**
+> **Configuration declares vocabulary and bindings. It never declares behavior.**
 >
 > If a setting would need an `if`, it belongs in a script the configuration *points at* — not in the configuration.
 
-So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close, if three or more outcomes were retired, require approval from someone other than the closer"* is behaviour, belongs in `wrap-up.sh`, and would make this tool an interpreter of somebody's process if it lived in a settings file.
+So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close, if three or more outcomes were retired, require approval from someone other than the closer"* is behavior, belongs in `wrap-up.sh`, and would make this tool an interpreter of somebody's process if it lived in a settings file.
 
 ### 8.7 Errors
 
-**Configuration is strict where records are permissive**, and deliberately so. A record with an unrecognised field is tolerated because knowledge arrives incomplete; a *misspelt configuration key* is a silent behaviour change, which is far worse than an error.
+**Configuration is strict where records are permissive**, and deliberately so. A record with an unrecognized field is tolerated because knowledge arrives incomplete; a *misspelt configuration key* is a silent behavior change, which is far worse than an error.
 
 - A **malformed or unparseable** file fails loudly, at load, naming the line.
 - A **known key with an invalid value** fails loudly — a status vocabulary that is not a list, a priority default absent from its own values.
@@ -1284,7 +1284,7 @@ The interface **is** the contract (`PRINCIPLES.md`). Everything reachable throug
 
 **Nobody authoring a record should have to know how this tool stores things.** Not the frontmatter keys, not the type names, not wikilink syntax, not which fields are mandatory. They think about the work — what done looks like, or how they intend to get there — and the structure is added for them.
 
-This matters most for the case it would be easiest to neglect. **The common path is that an agent writes the tasks and a person reviews them.** But a person takes the pen whenever they want more control, or where they do not trust an agent's judgement — and that is exactly when they are thinking hardest about *how the work should go*, and least willing to spend attention on a schema. A tool that taxes them at that moment gets edited around.
+This matters most for the case it would be easiest to neglect. **The common path is that an agent writes the tasks and a person reviews them.** But a person takes the pen whenever they want more control, or where they do not trust an agent's judgment — and that is exactly when they are thinking hardest about *how the work should go*, and least willing to spend attention on a schema. A tool that taxes them at that moment gets edited around.
 
 #### 9.0.1 The obligation is on the system, not on any one command
 
@@ -1306,7 +1306,7 @@ What this does rule out:
 
 Flags are unambiguous, so they can be tested exactly, and they are the substrate everything else calls. Natural-language creation, interactive prompting, and inference from context are all **layers over a precise command**, and each is easier to build, replace, and reason about once the thing underneath is settled and has no opinions of its own.
 
-Building the inference first produces a tool whose behaviour depends on how a sentence was phrased, with no exact path underneath to fall back to or to test against. **Anything clever is added on top of something dull, and the dull thing ships first.**
+Building the inference first produces a tool whose behavior depends on how a sentence was phrased, with no exact path underneath to fall back to or to test against. **Anything clever is added on top of something dull, and the dull thing ships first.**
 
 The format is the tool's problem. The work is the author's.
 
@@ -1349,7 +1349,7 @@ Top-level:
 | Command | Does |
 |---|---|
 | `init` | Create `.backlog/` and a default configuration. |
-| `board` | Open the terminal board (§11). Also the behaviour with no arguments. |
+| `board` | Open the terminal board (§11). Also the behavior with no arguments. |
 | `serve` | Start the web interface. |
 | `check` | Evaluate the named conditions (§5.2). |
 | `log` | Read history, including as a portable export. |
@@ -1451,13 +1451,13 @@ Anything that would prompt either takes a flag or fails with a usage error namin
 
 Structured output carries a contract version. Additions — new fields, new commands, new conditions — do not change it. **Removals and shape changes are breaking**, are preceded by deprecation, and consumers are given a release in which both forms work.
 
-Unrecognised fields in output are to be ignored by consumers rather than treated as errors, so that additions never break anyone.
+Unrecognized fields in output are to be ignored by consumers rather than treated as errors, so that additions never break anyone.
 
 ### 9.10 What must never happen
 
 - **Structured output changing shape between repositories.** Local labels are display only; the contract is universal.
 - **Prompting in a non-interactive context.**
-- **A conflict reported as a generic failure.** The distinction between `4` and `5` is what makes correct retry behaviour possible.
+- **A conflict reported as a generic failure.** The distinction between `4` and `5` is what makes correct retry behavior possible.
 - **`archive` deleting or moving anything** (§7.1).
 - **Commands the board can do that the interface cannot.** The board is a client, not a privileged surface.
 
@@ -1532,7 +1532,7 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 
 Table-driven tests throughout, and **a golden file for every output shape.**
 
-That follows from a principle rather than from taste. If output shapes are part of the contract, a diff in a golden file **is** a breaking change — which turns "good coverage" into something with a meaning, rather than a percentage to chase. The behaviours that most need pinning are the ones other systems will be written against: `--json` shapes, exit codes (§9.4), and the `contract` output.
+That follows from a principle rather than from taste. If output shapes are part of the contract, a diff in a golden file **is** a breaking change — which turns "good coverage" into something with a meaning, rather than a percentage to chase. The behaviors that most need pinning are the ones other systems will be written against: `--json` shapes, exit codes (§9.4), and the `contract` output.
 
 **One gap to know about in advance:** the script-test frameworks in this ecosystem assert success or failure, not a *specific* exit status — so §9.4's seven codes, the most machine-facing part of the contract, need ordinary Go tests or a custom command rather than the obvious tool.
 
@@ -1542,11 +1542,11 @@ Practice, and the survey behind it, is in [`TESTING.md`](TESTING.md).
 
 One release tool covering static binaries per platform, checksums, a Homebrew tap, man pages, and shell completions. Continuous integration runs the tests across the supported Go versions.
 
-**Licence: MIT**, matching the organization's other projects. A patent-granting licence was considered and is not needed here: both are on every corporate allowlist, and the patent grant earns its keep when code is incorporated into a shipped product in a patent-exposed domain, which this is not. The one reason to revisit is donating the project to a foundation — some require a specific licence, and relicensing later needs every contributor's agreement.
+**License: MIT**, matching the organization's other projects. A patent-granting license was considered and is not needed here: both are on every corporate allowlist, and the patent grant earns its keep when code is incorporated into a shipped product in a patent-exposed domain, which this is not. The one reason to revisit is donating the project to a foundation — some require a specific license, and relicensing later needs every contributor's agreement.
 
 ## 10. Import and export
 
-> **⚠ Proposal, and deliberately incomplete.** How much this tool participates in synchronisation is **undecided**, and this section does not settle it. What it does settle is what must be true of the data regardless.
+> **⚠ Proposal, and deliberately incomplete.** How much this tool participates in synchronization is **undecided**, and this section does not settle it. What it does settle is what must be true of the data regardless.
 
 At enterprise scale, a tracker will often be the system of record. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`PRINCIPLES.md`).
 
@@ -1554,19 +1554,19 @@ At enterprise scale, a tracker will often be the system of record. This tool the
 
 Three positions are all plausible, and the choice is premature:
 
-- **Nothing.** The tool provides an interface clean enough that something else moves the data. Records go in and come out; synchronisation is somebody else's program.
+- **Nothing.** The tool provides an interface clean enough that something else moves the data. Records go in and come out; synchronization is somebody else's program.
 - **Some.** Helpers for the parts that are awkward to get right from outside — detecting what changed, avoiding needless rewrites.
-- **First class.** Synchronisation is a supported capability with declared mappings and scheduled passes.
+- **First class.** Synchronization is a supported capability with declared mappings and scheduled passes.
 
 **This section commits to none of them.** What it commits to is that whoever does the work — us, an external tool, a script, or a person — finds a data model that makes it **clean, reliable, and free of churn and conflict**. Those properties are ours to provide whether or not we ever move a record ourselves.
 
 ### 10.2 What must be true regardless
 
-Independent of who synchronises:
+Independent of who synchronizes:
 
 - **Records must be addressable individually**, so a pass touches only what changed.
-- **Change must be detectable on both sides**, or a synchroniser cannot tell a one-sided edit from a conflict.
-- **Field ownership must be expressible**, because bidirectional movement without an ownership rule produces silent loss. Ownership tends to split along the same line the units do (§2.2): a tracker owns what an organisation coordinates on — status, assignee, priority, portfolio classification — and this tool owns what it alone models, being outcomes, evidence, waves, and sequencing.
+- **Change must be detectable on both sides**, or a synchronizer cannot tell a one-sided edit from a conflict.
+- **Field ownership must be expressible**, because bidirectional movement without an ownership rule produces silent loss. Ownership tends to split along the same line the units do (§2.2): a tracker owns what an organization coordinates on — status, assignee, priority, portfolio classification — and this tool owns what it alone models, being outcomes, evidence, waves, and sequencing.
 - **Conflicts must surface, never resolve by rule.** Preferring the later write discards the other and tells nobody (`PRINCIPLES.md`).
 - **A pass must be able to write only genuine differences**, which requires that records not be reformatted merely by being read.
 
@@ -1574,12 +1574,12 @@ Independent of who synchronises:
 
 Most of it is in place, arrived at for unrelated reasons — which is reasonable evidence the model is sound:
 
-| Property | Decided in | What it gives a synchroniser |
+| Property | Decided in | What it gives a synchronizer |
 |---|---|---|
 | One record per file | §4 | Per-record work; no whole-file rewrites. |
 | Membership on the member | §3.2 | Matches how trackers reference containers — nothing to invert. |
 | Attributes, not directories | §7.1 | A status change never moves a file, so identity is stable across the churn a sync creates most of. |
-| Unknown fields preserved | §4.1 | A synchroniser stores its own state *on the record* without this tool knowing the concept exists. |
+| Unknown fields preserved | §4.1 | A synchronizer stores its own state *on the record* without this tool knowing the concept exists. |
 | Creation idempotent by name | §9.5 | Re-importing does not duplicate. |
 | Conflict detection on write | §6.3 | A pass is told when it would clobber something it never read. |
 
@@ -1602,7 +1602,7 @@ Mapping must be **explicit, never inferred from names**, because the names colli
 
 ### 10.5 Identity — the one real gap
 
-A synchronised record would need to name its counterpart and what was last seen of it. A shape that would work:
+A synchronized record would need to name its counterpart and what was last seen of it. A shape that would work:
 
 ```yaml
 external:
@@ -1615,7 +1615,7 @@ external:
 
 `seen` is what makes change detection possible: comparing it to the remote's current state says whether *they* changed, and comparing the local record to its own last-synced state says whether *we* did. Both are needed — one alone cannot tell a conflict from a one-sided edit.
 
-**The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`OPEN-QUESTIONS.md` §10), a rename must be followed by a synchronisation, and one that is skipped leaves a dangling reference on the other side.
+**The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`OPEN-QUESTIONS.md` §10), a rename must be followed by a synchronization, and one that is skipped leaves a dangling reference on the other side.
 
 ### 10.6 What does not survive the trip
 
@@ -1626,27 +1626,27 @@ So a round trip degrades them: they **export** as a rendered checklist, which is
 Two ways to soften it, neither free:
 
 - **Keep this side authoritative for outcomes**, exporting them for visibility and never importing them. Simple, and the loss becomes a non-issue because the trip is one-way.
-- **Round-trip a serialised copy through a custom field**, if the external system has one. Lossless, and it makes the external record carry data only this tool understands.
+- **Round-trip a serialized copy through a custom field**, if the external system has one. Lossless, and it makes the external record carry data only this tool understands.
 
 Waves and decisions face the same problem more mildly, having no counterpart at all.
 
 ### 10.7 Churn is the failure mode to design against
 
-A synchronisation pass that rewrites every record — refreshing timestamps, reformatting frontmatter, reordering keys — is a **churn bomb on a schedule**, and it defeats the diff and merge properties the layout was designed for (§7.5).
+A synchronization pass that rewrites every record — refreshing timestamps, reformatting frontmatter, reordering keys — is a **churn bomb on a schedule**, and it defeats the diff and merge properties the layout was designed for (§7.5).
 
-So a pass compares and writes **only records that genuinely differ**, and never reformats a record it is not otherwise changing. Unrecognised fields survive untouched, as everywhere else (§4.1).
+So a pass compares and writes **only records that genuinely differ**, and never reformats a record it is not otherwise changing. Unrecognized fields survive untouched, as everywhere else (§4.1).
 
-### 10.8 The boundaries a synchroniser must respect
+### 10.8 The boundaries a synchronizer must respect
 
-Whether that synchroniser is this tool, an external program, or a script somebody wrote in an afternoon, the same rules hold — and stating them is useful precisely *because* the work may not be ours:
+Whether that synchronizer is this tool, an external program, or a script somebody wrote in an afternoon, the same rules hold — and stating them is useful precisely *because* the work may not be ours:
 
 - **Never silently overwrite a local change**, whichever side owns the field.
 - **Never map by name.** Their *project* is our dimension; their *epic* is not our deliverable.
-- **Never drop evidence.** If outcomes cannot round-trip losslessly, do not round-trip them at all (§10.6) — losing verification history is worse than not synchronising it.
+- **Never drop evidence.** If outcomes cannot round-trip losslessly, do not round-trip them at all (§10.6) — losing verification history is worse than not synchronizing it.
 - **Never touch records that did not change**, and never reformat one being read.
 - **Never invent a vocabulary value.** A status the configuration does not declare (§8) fails loudly rather than being created.
 
-These are the hard boundaries referred to in §10.1. If synchronisation never becomes a first-class capability here, this list is the contract that keeps whatever does it from corrupting the backlog.
+These are the hard boundaries referred to in §10.1. If synchronization never becomes a first-class capability here, this list is the contract that keeps whatever does it from corrupting the backlog.
 
 ## 11. The board
 
@@ -1681,7 +1681,7 @@ Dimensions (§2.7) filter and group every view rather than adding views of their
 
 **Interaction patterns worth adopting**, drawn from boards that already work:
 
-- **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without colour. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
+- **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without color. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
 - **Columns group statuses** (§8), so a board stays legible while the vocabulary underneath stays precise.
 - **Blocked and paused render as markers on the card, never as columns** (§4.2.1) — so a stalled item stays where the work actually is, and *three of eight in progress are blocked* is visible at a glance. Showing **how long** is what makes the marker worth having.
 - **Counts in column headers**, so the shape of the backlog is legible before reading a single card.
@@ -1699,7 +1699,7 @@ Records change constantly underneath a board, because agents are writing while a
 
 **Selection follows the record, not the row.** When a list re-sorts because something changed, the cursor stays on the thing the person was looking at. Anchoring to position instead means the selection jumps whenever an agent writes, which makes the board unusable precisely when it is most interesting.
 
-**Updates are coalesced.** A synchronisation or a bulk creation touches many files in quick succession; the board redraws once when it settles, not once per file.
+**Updates are coalesced.** A synchronization or a bulk creation touches many files in quick succession; the board redraws once when it settles, not once per file.
 
 **Nothing is locked to keep the display still.** The board is a reader (§6.1). A stale view is a minor annoyance; a board that blocks an agent's write is a serious one.
 
@@ -1709,13 +1709,13 @@ The board edits through the same interface as everything else — **every action
 
 **Conflicts surface here as everywhere.** A person editing a description while an agent changes the same record gets told (§6.3), not silently overruled and not silently overruling.
 
-**Task views serve both scanning and authoring** (§2.1.1). A team delegating heavily mostly reads them; a team delegating little mostly writes them; the board cannot be optimised for one at the other's expense.
+**Task views serve both scanning and authoring** (§2.1.1). A team delegating heavily mostly reads them; a team delegating little mostly writes them; the board cannot be optimized for one at the other's expense.
 
 ### 11.5 Degradation
 
 **Everything is reachable by keyboard.** Mouse support is an accelerator, never a requirement — terminals over a connection, inside another multiplexer, or on a machine where mouse reporting is off are all ordinary.
 
-The board must remain usable **without colour** and **in a narrow terminal**. Colour may carry emphasis but never meaning on its own, and a layout that needs a wide window is a layout that fails on a laptop beside a conference call.
+The board must remain usable **without color** and **in a narrow terminal**. Color may carry emphasis but never meaning on its own, and a layout that needs a wide window is a layout that fails on a laptop beside a conference call.
 
 ### 11.6 What the board must never do
 

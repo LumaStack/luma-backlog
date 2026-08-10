@@ -86,7 +86,7 @@ func openBacklog(app *App) (*root.Backlog, config.Config, string, error) {
 		if perr != nil {
 			b.Close()
 			// Strict where records are permissive: a misspelt configuration
-			// key is a silent behaviour change (docs/SPEC.md §8.7).
+			// key is a silent behavior change (docs/SPEC.md §8.7).
 			return nil, config.Config{}, "", failure("%w", perr)
 		}
 		cfg = parsed

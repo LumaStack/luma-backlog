@@ -5,7 +5,7 @@ desired_state: Every record the tool writes is conformant and self-consistent â€
 verify_by:
   - Create one of each type; confirm parseable frontmatter and a non-empty `type` on each.
   - Confirm a short `type` resolves to the namespaced type, and that an ambiguous one is an error rather than a guess.
-  - Add an unrecognised key by hand, run every command that rewrites the record, confirm the key survives each.
+  - Add an unrecognized key by hand, run every command that rewrites the record, confirm the key survives each.
 deliverable: "[[deliverables/first-usable-build]]"
 lifecycle_status: provisional
 created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}

@@ -11,7 +11,7 @@ import (
 //
 // A golden file is a contract test: a diff in one IS a breaking change
 // (docs/SPEC.md §9a.5). Regenerating by reflex records the bug as expected
-// behaviour, which is the whole risk — so this is run after reading a failure,
+// behavior, which is the whole risk — so this is run after reading a failure,
 // never as a routine step.
 var update = flag.Bool("update", false, "rewrite golden files after reading the diff")
 

@@ -11,4 +11,4 @@ workflow_status: closed
 
 Create `.backlog/`, write the default configuration **out in full rather than leaving it implicit** (§8.3), and generate the bundle root with its regenerated keys.
 
-A team's first encounter with a default should be a line they can read and change, not behaviour they have to discover.
+A team's first encounter with a default should be a line they can read and change, not behavior they have to discover.

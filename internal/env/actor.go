@@ -22,7 +22,7 @@ type Actor struct {
 }
 
 // Known kinds. Others are tolerated: the grammar is what matters, and an
-// unrecognised kind is somebody else's vocabulary rather than an error.
+// unrecognized kind is somebody else's vocabulary rather than an error.
 const (
 	KindHuman   = "human"
 	KindAgent   = "agent"

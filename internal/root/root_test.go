@@ -69,7 +69,7 @@ func TestDiscoverTreatsAGitFileAsARoot(t *testing.T) {
 
 	got, err := Discover(dir, base)
 	if err != nil {
-		t.Fatalf("a .git file was not recognised: %v", err)
+		t.Fatalf("a .git file was not recognized: %v", err)
 	}
 	if want, _ := filepath.EvalSymlinks(dir); got != want {
 		t.Errorf("Discover = %q, want %q", got, want)

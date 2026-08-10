@@ -4,7 +4,7 @@ Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes
 
 Nothing here should be resolved by argument where building would answer it faster.
 
-**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §22 (how behaviour attaches at a boundary); §17 (default sections for each unit).
+**Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §22 (how behavior attaches at a boundary); §17 (default sections for each unit).
 
 §12 — the boundary with the workflow layer — is **settled as a test rather than an answer** (`SPEC.md` §5.0), which narrows §6 and removes the in-principle objection in §22.
 
@@ -12,7 +12,7 @@ All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
-Repository scaffolding — module path, layout, binary name, licence, dependencies, testing, and distribution — is settled in `SPEC.md` §9a rather than tracked here, since none of it constrains the record model.
+Repository scaffolding — module path, layout, binary name, license, dependencies, testing, and distribution — is settled in `SPEC.md` §9a rather than tracked here, since none of it constrains the record model.
 
 ---
 
@@ -77,7 +77,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 Three things were wanted from the beginning and had no place in the unit model.
 
-### Context — settled, by not modelling it
+### Context — settled, by not modeling it
 
 **Context loading belongs to a separate, swappable engine.** One repository might resolve against a generated wiki, another against a commercial knowledge graph, another against a folder of documents — entirely different engines, and a backlog that understood any of them would be coupled to it.
 
@@ -101,7 +101,7 @@ A single `exploration.md` that grows into a folder later was considered and reje
 
 **The criterion for inclusion is relitigation risk:** *anything that should not have to be argued a second time.* Not importance and not completeness. What that admits — decisions and the options rejected, a retired outcome and its reason, a learning pass, a wrap-up, a close and its reason, an override — is a first cut expected to be tuned by use. What it excludes is everything high-volume that nobody reopens: field writes, status changes, routine claiming, creation, reordering.
 
-**Selective on the way in, never edited after.** Nothing is reorganised, summarised away, or pruned, which is also why it stays cheap: appending costs almost nothing, and reading is bounded by the resume pointer rather than by the length of the file.
+**Selective on the way in, never edited after.** Nothing is reorganized, summarized away, or pruned, which is also why it stays cheap: appending costs almost nothing, and reading is bounded by the resume pointer rather than by the length of the file.
 
 **The entry shape is settled from journals in daily use** — and notably, from where those journals **diverged from their own template**. Newest first, prepended, never rewritten: the template said newest-at-the-bottom, and every long-running project ended up putting the newest at the top, with the longest inventing an explicit *resume pointer* declaring everything below it historical. Chronological order does not survive forty entries, because assembling the present means reading backwards and getting it wrong. Fixed sections did not survive either — headings ended up named after what they settle.
 
@@ -136,7 +136,7 @@ A deliverable's journal has an obvious owner, an obvious reader, and a natural e
 
 ### Why
 
-**The terminal interface is the primary component**, and Bubbletea is mature, production-proven, pure Go, and purpose-built for exactly this — a framerate-based renderer, a dedicated high-performance renderer for scrollable regions, mouse support, and a component library covering viewports, filterable lists, tables, and inputs. The alternative in TypeScript, OpenTUI, genuinely fixes the limits that disqualified Ink, but it does so with a **pre-1.0, fast-moving, natively-compiled dependency placed at the centre of the primary component** — which is the worst possible location for churn in a project whose stated principle is to be boring on purpose.
+**The terminal interface is the primary component**, and Bubbletea is mature, production-proven, pure Go, and purpose-built for exactly this — a framerate-based renderer, a dedicated high-performance renderer for scrollable regions, mouse support, and a component library covering viewports, filterable lists, tables, and inputs. The alternative in TypeScript, OpenTUI, genuinely fixes the limits that disqualified Ink, but it does so with a **pre-1.0, fast-moving, natively-compiled dependency placed at the center of the primary component** — which is the worst possible location for churn in a project whose stated principle is to be boring on purpose.
 
 Go also wins the things that remain load-bearing after single-binary distribution and startup cost were both demoted to nice-to-haves: **concurrency and file-integrity tooling**, and **decade-scale dependency stability**. That the distribution story is also trivially good is now a bonus rather than a requirement.
 
@@ -152,7 +152,7 @@ Two toolchains, deliberately. The split is clean because it follows a boundary t
 
 Sharpened considerably since this question was first written, and worth restating because it is what the comparison is measured against:
 
-- **A real-time terminal interface is the primary component.** The web interface is a nice-to-have follow-up, not a co-equal surface. Whatever is weakest at the terminal pays its tax at the centre of the product.
+- **A real-time terminal interface is the primary component.** The web interface is a nice-to-have follow-up, not a co-equal surface. Whatever is weakest at the terminal pays its tax at the center of the product.
 - **Agents invoke the binary constantly**, so startup cost is paid hundreds of times a session.
 - **Concurrency and file integrity are load-bearing** — atomic writes, leases, claim races, careful git interaction.
 - **Distribution must be trivial**: `brew`, a single artifact, no runtime for the user to install.
@@ -186,7 +186,7 @@ What remains is one language and one toolchain, which is real but modest.
 
 Meanwhile the dimension where Go is clearly and *maturely* ahead — the terminal interface — was promoted to the primary component.
 
-**The sharpest framing:** OpenTUI genuinely answers the capability objection, and it should be credited for that. But it answers it by putting a **young, fast-moving, natively-compiled dependency at the exact centre of the product**, in a project whose stated principle is to be boring on purpose. Bubbletea is the boring choice precisely where boring is worth most.
+**The sharpest framing:** OpenTUI genuinely answers the capability objection, and it should be credited for that. But it answers it by putting a **young, fast-moving, natively-compiled dependency at the exact center of the product**, in a project whose stated principle is to be boring on purpose. Bubbletea is the boring choice precisely where boring is worth most.
 
 ### Open verification before choosing TypeScript
 
@@ -402,7 +402,7 @@ It would change `SPEC.md` §4.5 (`claimed_by` and `lease_expires` would leave th
 
 ### What it costs to get wrong
 
-This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, and whether "parallel is the normal case" is honoured or merely asserted.
+This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, and whether "parallel is the normal case" is honored or merely asserted.
 
 **Migration between topologies is cheap.** Records are byte-identical in all of them; only their location changes. That makes this decision far more reversible than it first appeared, and argues for starting simple and moving when the pain is demonstrated rather than predicted.
 
@@ -448,9 +448,9 @@ Collapsing these loses the distinction that decides what to do next, and imports
 
 **Status:** Open. Blocks import and export (`SPEC.md` §10).
 
-If an external tracker can be the system of record, records need identity that survives a round trip. The format's identity is **path-based**, so renaming or moving a record changes what it is — and every re-import risks creating duplicates rather than recognising what it already has.
+If an external tracker can be the system of record, records need identity that survives a round trip. The format's identity is **path-based**, so renaming or moving a record changes what it is — and every re-import risks creating duplicates rather than recognizing what it already has.
 
-Two things are needed and neither exists yet: a **stable key** that outlives renames and moves, and **change detection** on both sides, so a synchronisation can tell what has actually changed rather than overwriting with whatever it last read.
+Two things are needed and neither exists yet: a **stable key** that outlives renames and moves, and **change detection** on both sides, so a synchronization can tell what has actually changed rather than overwriting with whatever it last read.
 
 The format defers stable identifiers deliberately, noting that adding them later is additive because links are name-based. This project may be the reason to stop deferring — which would make it the second change asked of the format, after §4.
 
@@ -513,7 +513,7 @@ What remained was what the directories *are*, and it turned on one question — 
 
 **Rejected — by unit type** (`deliverables/`, `tasks/`, `decisions/`). Nothing moves when relationships change, which is genuinely attractive. But it accumulates thousands of files in one directory with **no sanctioned way to reduce it** — archiving is an attribute, so it cannot move anything out. Browsing degrades permanently, and an agent gathering context on one deliverable must filter everything by a frontmatter field rather than reading a directory.
 
-**Rejected — flat with name prefixes.** Best merge behaviour, worst for a person reading files directly, which the principles treat as a first-class use.
+**Rejected — flat with name prefixes.** Best merge behavior, worst for a person reading files directly, which the principles treat as a first-class use.
 
 **Accepted — containment**, with the tension acknowledged rather than hidden: it does encode membership in the path, and reassigning a record between deliverables is therefore a rename. That is uncommon, and the format anticipates renames being performed by tooling that rewrites inbound links, so the case is handled rather than merely tolerated.
 
@@ -571,7 +571,7 @@ Open:
 
 - **Scale.** `project` implies a substantial endeavor, but this is a backlog item. "Twelve projects this quarter" reads like an agency; "twelve deliverables" reads correctly.
 - **Two collisions.** The repository is also a project, and external trackers use the word for something far larger — a product area containing many of ours. Import mapping could never go by name.
-- **It teaches nothing.** Its familiarity lets people bring the habits they already have, including writing the *how* — the exact behaviour this design is trying to replace. `deliverable` obliges every backlog entry to answer *what gets handed over*, which open-ended work avoids.
+- **It teaches nothing.** Its familiarity lets people bring the habits they already have, including writing the *how* — the exact behavior this design is trying to replace. `deliverable` obliges every backlog entry to answer *what gets handed over*, which open-ended work avoids.
 
 `delivery` was rejected earlier for naming the terminal event; `deliverable` is the right grammatical form, accurate from the moment the record exists.
 
@@ -601,7 +601,7 @@ The work is not necessarily software. Every candidate was checked against four:
 - **Consultant tone.** Some will hear status decks. Judged to fade with use.
 - **Weakest on habits** — a habit is not handed to anyone. `project` shared this flaw.
 
-### Relabelling
+### Relabeling
 
 The cost of an unfamiliar word is largely paid back by configuration: a team may display deliverables as *stories*, *projects*, or anything else. The canonical name stays on disk and in structured output so files remain portable and integrations do not break per repository. See `SPEC.md` §2.1.
 
@@ -688,7 +688,7 @@ If that holds, the wave is not "the unit that repeats" but **the unit that repea
 - **Is an outcome a record or an inline entry?** `SPEC.md` §4 currently settles criteria as an inline checklist, rejecting criteria-as-records on token cost and interop grounds. **That decision is now in question.** The token argument weakens if an outcome owns tasks and evidence, because those need identity regardless. The interop argument does not weaken — external systems still have nothing to map an outcome onto.
 - **Does a deliverable hold outcomes directly, or only through waves?** If only through waves, a deliverable with no wave yet has nowhere to state what it is for.
 
-*Settled by:* writing a real deliverable as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganised around them.
+*Settled by:* writing a real deliverable as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganized around them.
 
 ---
 
@@ -742,7 +742,7 @@ Rank orders tasks within a wave, so `depends_on` is only for orderings rank cann
 
 ### The consequence to watch
 
-**Rank now has two jobs** — display and prioritisation order, and execution order. That is a genuine widening, and it is the seam most likely to complain first: reordering the board would silently reorder execution. Recorded rather than resolved, because it needs use before it can be judged.
+**Rank now has two jobs** — display and prioritization order, and execution order. That is a genuine widening, and it is the seam most likely to complain first: reordering the board would silently reorder execution. Recorded rather than resolved, because it needs use before it can be judged.
 
 ### On the naming question that started this
 
@@ -768,7 +768,7 @@ Not taken because the failure is asymmetric. Namespacing costs a longer string o
 
 ### What this obliges us to define
 
-`_types/luma/backlog/task.md` — a Type Definition at the path its name spells. The format is silent on this, so it is a **first-consumer decision that should be fed back upstream** rather than left as local behaviour, along with the observation that its namespacing examples are all two-level.
+`_types/luma/backlog/task.md` — a Type Definition at the path its name spells. The format is silent on this, so it is a **first-consumer decision that should be fed back upstream** rather than left as local behavior, along with the observation that its namespacing examples are all two-level.
 
 ---
 
@@ -794,7 +794,7 @@ The likely resolution is the one already used elsewhere: ship them in the **defa
 
 ### What was resolved along the way
 
-**No field is missing.** The instinct that a companion field is needed — something saying *how to read the output* — turns out to be wrong, because `desired_state` **is** the pass criterion. `verify_by` only has to say how to observe; what you should see is already stated. For a runnable entry the conventional reading needs no explanation (exit code zero means it holds), and a pointer to a test carries its own judgement. The triad of `desired_state`, `verify_by`, and `verified` is complete.
+**No field is missing.** The instinct that a companion field is needed — something saying *how to read the output* — turns out to be wrong, because `desired_state` **is** the pass criterion. `verify_by` only has to say how to observe; what you should see is already stated. For a runnable entry the conventional reading needs no explanation (exit code zero means it holds), and a pointer to a test carries its own judgment. The triad of `desired_state`, `verify_by`, and `verified` is complete.
 
 **The real fork is not the field's shape.** It is whether **the tool ever executes checks, or only records verdicts something else produced.** While the field stays uninterpreted, the answer is the latter, which also keeps execution — with its environment, timeouts, and isolation — outside a layer that has been kept free of such concerns.
 
@@ -814,13 +814,13 @@ Some outcomes will never be executable at all. A health target, a published docu
 
 The field is currently typed as a list of text, which accommodates several checks per outcome and a single one written bare. What is unresolved is whether an entry should later gain **structure** — a description alongside an optional command — so that automatable checks can be run while non-automatable ones stay readable.
 
-Deciding this early risks either over-modelling something that turns out to be prose, or under-modelling something that turns out to be the main path to evidence.
+Deciding this early risks either over-modeling something that turns out to be prose, or under-modeling something that turns out to be the main path to evidence.
 
 *Settled by:* writing real outcomes across several domains and seeing what proportion have a command behind them. If most do, structure earns its place; if few do, prose with an optional convention is enough.
 
 ---
 
-## 22. How behaviour attaches at a boundary
+## 22. How behavior attaches at a boundary
 
 **Status:** Open, and the least settled thing in the specification. `SPEC.md` §5.4 describes hooks as a **proposal**, not a decision.
 
@@ -828,7 +828,7 @@ Something has to happen when a wave closes or a deliverable completes — apply 
 
 ### Two candidates
 
-**Query and mark.** A caller asks a condition — *which deliverables are complete and not yet handled by me?* — does its work, and records its own marker on the record. That marker is an unrecognised field the tool preserves and never interprets (`SPEC.md` §3.1).
+**Query and mark.** A caller asks a condition — *which deliverables are complete and not yet handled by me?* — does its work, and records its own marker on the record. That marker is an unrecognized field the tool preserves and never interprets (`SPEC.md` §3.1).
 
 This needs **no new machinery whatsoever**. It works today, given conditions and field preservation. Consumers own their own cursors, two consumers never interfere, and a consumer that was offline for a week simply catches up. It also degrades gracefully: nothing is missed, because nothing was ever delivered.
 
@@ -861,7 +861,7 @@ This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail
 
 Existing systems in this space hook the *agent's* lifecycle — before and after a tool runs, when a turn stops, when a session ends, when a subagent is created. Not domain boundaries. One mature example registers roughly fifty such hooks, covering gates on completion claims, guards against writes that would discard unseen changes, detection of a specification falling behind reality, and limits on runaway task creation.
 
-That suggests a **division of labour rather than a competition**:
+That suggests a **division of labor rather than a competition**:
 
 - The **harness** provides the firing — it already knows when a turn stopped or a session ended.
 - **This tool** provides the conditions — it already knows what is true.
@@ -881,15 +881,15 @@ Whether **enforcement** is genuinely required, and whether it is required on **h
 
 ## 23. Standing outcomes
 
-**Status:** **Settled — they exist, declared in configuration and materialised onto each deliverable.** Specified in `SPEC.md` §4.4.1.
+**Status:** **Settled — they exist, declared in configuration and materialized onto each deliverable.** Specified in `SPEC.md` §4.4.1.
 
 Some conditions apply to every deliverable rather than one: the test suite passes, types check, documentation is current. Elsewhere this is a *definition of done*; here it needs no new concept, because a standing outcome **is** an outcome — only its authorship differs.
 
-### Why materialised rather than referenced
+### Why materialized rather than referenced
 
 **Evidence is per-deliverable by nature.** The suite passing for one deliverable is a different fact, checked at a different moment, than for another. So a referenced standing outcome would still need somewhere per-deliverable to record who verified it and when — meaning a record per deliverable either way.
 
-Referencing therefore saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry. Materialising wins on every axis that was in question.
+Referencing therefore saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry. Materializing wins on every axis that was in question.
 
 ### Two consequences
 

@@ -22,7 +22,7 @@ Two independent surveys were run. They **disagreed on one point**: the first fou
 
 An in-memory filesystem is worse than useless here for a related reason: **you cannot execute a binary written to one.** `exec` is a kernel call against the real filesystem, so a tool that shells out to `git` gets no testability from it and two disagreeing views of what "the filesystem" is.
 
-**Git itself supplies execution vectors beyond ours**, and they are easy to miss because they are configuration rather than code: **`core.hooksPath`** points at arbitrary executables, system gitattributes can enable **`filter` drivers**, and **`init.templateDir`** installs hooks into every repository created. All three are neutralised by environment, below.
+**Git itself supplies execution vectors beyond ours**, and they are easy to miss because they are configuration rather than code: **`core.hooksPath`** points at arbitrary executables, system gitattributes can enable **`filter` drivers**, and **`init.templateDir`** installs hooks into every repository created. All three are neutralized by environment, below.
 
 **Commands that come from records are always faked** — `verify_by`, hooks, anything a record can cause to run. That is the opposite case: the content is untrusted data, and executing it in a test suite is the risk worth designing out (§9a.4). Only the executor's own tests execute anything, and those are the ones that want real isolation.
 
@@ -49,9 +49,9 @@ The tool finds its root by walking *up* to the nearest `.git`. When that walk le
 Script tests discard the parent environment. What survives is an explicit allowlist, and the surveyed tools converge on a small one:
 
 - **`PATH`** — so real binaries remain reachable.
-- **`TERM`** — so behaviour does not vary by terminal.
+- **`TERM`** — so behavior does not vary by terminal.
 
-Then git is neutralised deliberately. **Order is load-bearing:** clear the variables that *point* git somewhere before setting the ones that fence it in — an inherited `GIT_DIR` is resolved before the ceiling is ever parsed, and voids everything after it.
+Then git is neutralized deliberately. **Order is load-bearing:** clear the variables that *point* git somewhere before setting the ones that fence it in — an inherited `GIT_DIR` is resolved before the ceiling is ever parsed, and voids everything after it.
 
 **First, unset every pointer:** `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, `GIT_COMMON_DIR`, `GIT_OBJECT_DIRECTORY`, `GIT_ALTERNATE_OBJECT_DIRECTORIES`, `GIT_NAMESPACE`, and any `GIT_CONFIG*`.
 
@@ -102,6 +102,6 @@ They are contract tests (§9a.5), so they get the care contracts deserve:
 
 - **An update flag**, and a **clean** step — orphaned golden files from renamed tests otherwise accumulate silently and rot.
 - **Refuse to write when input equals output**, a safety habit from the ecosystem's own formatters.
-- **Regenerate only after a failure**, never as a routine step. A golden file updated by reflex records the bug as expected behaviour.
+- **Regenerate only after a failure**, never as a routine step. A golden file updated by reflex records the bug as expected behavior.
 
-That last one is the whole risk. A golden file is only worth having if updating it is an act of judgement.
+That last one is the whole risk. A golden file is only worth having if updating it is an act of judgment.

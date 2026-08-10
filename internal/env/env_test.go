@@ -6,7 +6,7 @@ import (
 )
 
 func TestFixedClockIsStableAndUTC(t *testing.T) {
-	// A zone that is not UTC, to prove normalisation happens.
+	// A zone that is not UTC, to prove normalization happens.
 	zone := time.FixedZone("test", 5*60*60)
 	at := time.Date(2026, 8, 9, 14, 30, 0, 0, zone)
 	c := FixedClock{At: at}
@@ -16,7 +16,7 @@ func TestFixedClockIsStableAndUTC(t *testing.T) {
 		t.Errorf("fixed clock moved: %v then %v", first, second)
 	}
 	if got, want := Timestamp(first), "2026-08-09T09:30:00Z"; got != want {
-		t.Errorf("Timestamp = %q, want %q (UTC-normalised)", got, want)
+		t.Errorf("Timestamp = %q, want %q (UTC-normalized)", got, want)
 	}
 	if got, want := Date(first), "2026-08-09"; got != want {
 		t.Errorf("Date = %q, want %q", got, want)

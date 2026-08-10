@@ -1,4 +1,4 @@
-// Package policy holds checks that are rules rather than behaviour.
+// Package policy holds checks that are rules rather than behavior.
 //
 // They live as tests so they run on every `go test`, not only in continuous
 // integration. A guardrail you have to push to discover is one people learn

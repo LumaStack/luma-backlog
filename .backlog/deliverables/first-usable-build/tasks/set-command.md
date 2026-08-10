@@ -10,6 +10,6 @@ workflow_status: todo
 
 # `set`
 
-Change fields non-interactively — the verb agents use. Touches the named field and nothing else, including nothing it does not recognise.
+Change fields non-interactively — the verb agents use. Touches the named field and nothing else, including nothing it does not recognize.
 
 Conflict detection lands here too: a write that would clobber an unseen change is refused with exit code 4, meaning *re-read and retry* rather than *something broke*.

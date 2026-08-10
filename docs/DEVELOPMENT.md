@@ -40,7 +40,7 @@ go run ./cmd/luma-backlog
 
 Continuous integration runs exactly these, across both supported Go versions. If they pass locally they pass there.
 
-### Where behaviour comes from
+### Where behavior comes from
 
 Before changing anything, know which of these governs it:
 
@@ -80,7 +80,7 @@ Practice and the survey behind it are in [`TESTING.md`](TESTING.md). Four rules 
 - **Real git, never faked.** Faking the dependency you are trying to be correct about tests your beliefs rather than the thing.
 - **Commands that come from records are always faked** — `verify_by`, hooks. That content is untrusted, and executing it in a test suite is the risk worth designing out.
 - **Time is injected, never read.** Every record carries timestamps, so an uncontrollable clock makes byte-stable output impossible, which removes golden files, which removes the contract tests.
-- **Regenerate a golden file only after a failure**, never as a routine step. One updated by reflex records the bug as expected behaviour.
+- **Regenerate a golden file only after a failure**, never as a routine step. One updated by reflex records the bug as expected behavior.
 
 ### The failure worth designing against
 

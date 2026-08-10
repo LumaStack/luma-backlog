@@ -8,7 +8,7 @@ import (
 // populated builds a small, fixed backlog so output is byte-stable.
 func populated(t *testing.T) *App {
 	t.Helper()
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	for _, args := range [][]string{
 		{"new", "deliverable", "Payments v2"},
 		{"new", "outcome", "The retry queue drains", "-d", "payments-v2"},
@@ -52,7 +52,7 @@ func TestShowJSONShape(t *testing.T) {
 func TestEmptyListIsAnEmptyArrayNotNull(t *testing.T) {
 	// A caller iterating the response should not have to special-case
 	// "nothing yet" — null and [] are different shapes.
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	code, out, _ := run(t, app, "list", "--json")
 	if code != ExitOK {
 		t.Fatalf("exit = %d", code)
@@ -65,7 +65,7 @@ func TestEmptyListIsAnEmptyArrayNotNull(t *testing.T) {
 func TestEmptyListIsNotAnError(t *testing.T) {
 	// An empty backlog and an over-narrow filter are both ordinary. Exiting
 	// non-zero would make a caller treat "none yet" as a failure.
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	if code, _, _ := run(t, app, "list"); code != ExitOK {
 		t.Errorf("empty listing exited %d", code)
 	}
@@ -97,7 +97,7 @@ func TestShowResolvesByPrefix(t *testing.T) {
 }
 
 func TestShowRefusesAnAmbiguousReference(t *testing.T) {
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	run(t, app, "new", "deliverable", "Payments alpha")
 	run(t, app, "new", "deliverable", "Payments beta")
 

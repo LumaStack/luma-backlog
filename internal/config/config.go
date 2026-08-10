@@ -53,8 +53,8 @@ Closed:      [closed]
 // Parse reads a configuration file.
 //
 // Strict where records are permissive, and deliberately so: a record with an
-// unrecognised field is tolerated because knowledge arrives incomplete, while
-// a misspelt configuration key is a silent behaviour change (docs/SPEC.md §8.7).
+// unrecognized field is tolerated because knowledge arrives incomplete, while
+// a misspelt configuration key is a silent behavior change (docs/SPEC.md §8.7).
 func Parse(data []byte) (Config, error) {
 	c := Default()
 	if err := yaml.Unmarshal(data, &c); err != nil {

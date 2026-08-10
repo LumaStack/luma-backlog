@@ -39,7 +39,7 @@ func TestRoundTripIsByteIdentical(t *testing.T) {
 	}
 }
 
-func TestWritingNormalisesFormattingButNotContent(t *testing.T) {
+func TestWritingNormalizesFormattingButNotContent(t *testing.T) {
 	// The tool writes canonical YAML. A hand-written record using a different
 	// but equivalent spelling is reformatted once, on first write.
 	//
@@ -60,7 +60,7 @@ func TestWritingNormalisesFormattingButNotContent(t *testing.T) {
 	// Content is untouched — only the spacing moved.
 	for _, needle := range []string{"2026-08-07", "vendor contract"} {
 		if !strings.Contains(string(out), needle) {
-			t.Errorf("normalisation lost %q:\n%s", needle, out)
+			t.Errorf("normalization lost %q:\n%s", needle, out)
 		}
 	}
 }
@@ -190,7 +190,7 @@ func TestParseAcceptsAnEmptyBody(t *testing.T) {
 	}
 }
 
-func TestCarriageReturnsAreNormalised(t *testing.T) {
+func TestCarriageReturnsAreNormalized(t *testing.T) {
 	r, err := Parse([]byte("---\r\ntype: task\r\n---\r\n\r\nBody\r\n"))
 	if err != nil {
 		t.Fatal(err)

@@ -9,6 +9,6 @@ workflow_status: closed
 
 # Record read and write
 
-Parse frontmatter and body, write atomically, and **preserve every key the tool does not recognise** — that is how other systems store their own state, and losing one is a silent data loss rather than a bug someone reports.
+Parse frontmatter and body, write atomically, and **preserve every key the tool does not recognize** — that is how other systems store their own state, and losing one is a silent data loss rather than a bug someone reports.
 
-The round-trip test belongs here rather than with the commands: add an unrecognised key by hand, rewrite through every code path, confirm it survives.
+The round-trip test belongs here rather than with the commands: add an unrecognized key by hand, rewrite through every code path, confirm it survives.

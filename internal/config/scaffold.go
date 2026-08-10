@@ -4,7 +4,7 @@ package config
 //
 // Written out in full rather than left implicit in the binary, so a team's
 // first encounter with a default is a line they can read and change, not
-// behaviour they have to discover and then find a way to override
+// behavior they have to discover and then find a way to override
 // (docs/SPEC.md §8.3). The comments are the point, which is why this is a
 // document rather than a marshalled struct.
 //

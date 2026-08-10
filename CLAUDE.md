@@ -18,9 +18,10 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 - **Never name a competing project in committed output.** This is about rivals, not references — tools we depend on, borrow technique from, or interoperate with are named normally.
 - **Never abbreviate terminology to initials.** Spell every phrase out.
-- **Discuss before writing.** On anything exploratory — naming, modelling, structure — reach agreement first. Do not draft the answer and present it as the discussion.
+- **American spelling.** *organization*, not *organisation*. Applies to prose, code comments, and field values alike.
+- **Discuss before writing.** On anything exploratory — naming, modeling, structure — reach agreement first. Do not draft the answer and present it as the discussion.
 - **Do not anchor on the maintainer's earlier research.** It contains ideas already abandoned. Reason from the problem instead.
-- **Optimise for readability.** Short, unless clarity genuinely costs more.
+- **Optimize for readability.** Short, unless clarity genuinely costs more.
 - **Propose format changes freely, until this project reaches 1.0.** We are the knowledge format's first consumer and it is pre-1.0. Hitting a limit is evidence about the format, not a reason to contort around it — record the ask in `docs/FORMAT-REQUESTS.md` and, where sensible, ship ahead of it.
 - **Record a path not taken as deferred with a re-open trigger, never as rejected.** *Rejected* reads as permanent and stops the option ever being raised again.
 

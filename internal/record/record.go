@@ -1,4 +1,4 @@
-// Package record parses and serialises a record: YAML frontmatter followed by
+// Package record parses and serializes a record: YAML frontmatter followed by
 // a markdown body.
 //
 // It touches no filesystem — parsing is pure, so it can be tested exhaustively
@@ -83,7 +83,7 @@ func Parse(data []byte) (*Record, error) {
 	return r, nil
 }
 
-// Bytes serialises the record back to a file's contents.
+// Bytes serializes the record back to a file's contents.
 func (r *Record) Bytes() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString(fence + "\n")
@@ -211,7 +211,7 @@ func (r *Record) find(key string) (k, v *yaml.Node) {
 	return nil, nil
 }
 
-// Hash is a content hash of the serialised record, for detecting a write that
+// Hash is a content hash of the serialized record, for detecting a write that
 // would clobber a change nobody saw (docs/SPEC.md §6.3).
 //
 // Content rather than modification time: timestamps are too coarse and are

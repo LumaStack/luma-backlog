@@ -27,7 +27,7 @@ A record then writes `type: task`, meaning `luma/backlog/task`. A fully qualifie
 
 **Conflicts must be loud.** If a short name could resolve to more than one type, that is an error a consumer reports — never a silent pick. Qualification is then required for the ambiguous names only, not for the whole corpus. Precedence rules and search orders were considered and are not wanted: quiet resolution is how the wrong type gets chosen and nobody finds out.
 
-**And the bundle root probably needs a type.** These declarations have to sit on a record, and the format defines *Knowledge Bundle* as a term while giving its root no type name. This project writes `type: bundle`, which is invented — legal, since unknown types are tolerated, but invented. If the format is going to recognise bundle-level declarations at all, it may as well name the record that carries them.
+**And the bundle root probably needs a type.** These declarations have to sit on a record, and the format defines *Knowledge Bundle* as a term while giving its root no type name. This project writes `type: bundle`, which is invented — legal, since unknown types are tolerated, but invented. If the format is going to recognize bundle-level declarations at all, it may as well name the record that carries them.
 
 **It has to be readable where a format consumer looks.** A tool that understands the format but not this one must be able to resolve `type: task` without parsing a private configuration file. In this project the declaration is authored in `config.yml` and **generated onto the bundle root `index.md`**, so there is one place to edit and one place the format can find it.
 

@@ -9,7 +9,7 @@ import (
 	"github.com/lumastack/luma-backlog/internal/record"
 )
 
-func initialised(t *testing.T) (*App, string) {
+func initialized(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := newApp(t)
 	if code, _, e := run(t, app, "init"); code != ExitOK {
@@ -32,7 +32,7 @@ func readRecord(t *testing.T, project, rel string) *record.Record {
 }
 
 func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
-	app, project := initialised(t)
+	app, project := initialized(t)
 
 	code, out, errOut := run(t, app, "new", "deliverable", "Payments v2")
 	if code != ExitOK {
@@ -67,7 +67,7 @@ func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
 }
 
 func TestNewIsIdempotentByName(t *testing.T) {
-	app, project := initialised(t)
+	app, project := initialized(t)
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	path := filepath.Join(project, ".backlog", "deliverables/payments-v2/index.md")
@@ -91,7 +91,7 @@ func TestNewIsIdempotentByName(t *testing.T) {
 }
 
 func TestNewOutcomeTakesItsDeliverableFromAFlag(t *testing.T) {
-	app, project := initialised(t)
+	app, project := initialized(t)
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	code, _, errOut := run(t, app, "new", "outcome", "The queue drains", "-d", "payments-v2")
@@ -115,7 +115,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	// lifecycle_status; an exploration is archived. A declared status on any
 	// of them would sit beside the real state and could disagree with it
 	// (docs/SPEC.md §4.4).
-	app, project := initialised(t)
+	app, project := initialized(t)
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	for _, tc := range []struct{ unit, path string }{
@@ -139,7 +139,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 }
 
 func TestNewTakesItsDeliverableFromTheWorkingDirectory(t *testing.T) {
-	app, project := initialised(t)
+	app, project := initialized(t)
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	// Working inside a deliverable should not require naming it.
@@ -155,7 +155,7 @@ func TestNewTakesItsDeliverableFromTheWorkingDirectory(t *testing.T) {
 }
 
 func TestNewRefusesAFloatingOutcome(t *testing.T) {
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	code, _, errOut := run(t, app, "new", "outcome", "Floating")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
@@ -166,7 +166,7 @@ func TestNewRefusesAFloatingOutcome(t *testing.T) {
 }
 
 func TestNewRejectsAnUnknownUnit(t *testing.T) {
-	app, _ := initialised(t)
+	app, _ := initialized(t)
 	code, _, errOut := run(t, app, "new", "sprint", "Something")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
@@ -188,7 +188,7 @@ func TestNewNeedsABacklog(t *testing.T) {
 }
 
 func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
-	app, project := initialised(t)
+	app, project := initialized(t)
 	before := snapshot(t, project)
 
 	run(t, app, "new", "deliverable", "Payments v2")

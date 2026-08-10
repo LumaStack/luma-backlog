@@ -28,7 +28,7 @@ Two shapes worth keeping. `Main` takes its streams as arguments rather than reac
 
 Three decisions inside it worth not re-deriving:
 
-**Timestamps are always UTC**, normalised on the way out rather than stored as written. Records are merged across machines in different zones, and two timestamps that cannot be compared without knowing where they were written are not much use. It also makes output identical wherever the tests run.
+**Timestamps are always UTC**, normalized on the way out rather than stored as written. Records are merged across machines in different zones, and two timestamps that cannot be compared without knowing where they were written are not much use. It also makes output identical wherever the tests run.
 
 **`at` and `on` are separate formatters**, because the format separates them — a moment versus a day. Conflating them produces fields that look comparable and are not.
 
@@ -58,9 +58,9 @@ Parsing is deliberately permissive: unknown kinds are somebody else's vocabulary
 
 **`Set` replaces in place when the key exists, appends when it does not.** Same reason: an edit should be a one-line diff, not a reordering.
 
-**Found: the tool normalises YAML formatting on write, and cannot reasonably avoid it.** `{on: X, why: Y}` comes back as `{on: X, why: Y}` — the encoder's canonical flow style. Content is untouched; only spacing moves.
+**Found: the tool normalizes YAML formatting on write, and cannot reasonably avoid it.** `{on: X, why: Y}` comes back as `{on: X, why: Y}` — the encoder's canonical flow style. Content is untouched; only spacing moves.
 
-Not fought, and recorded as a test rather than left to be discovered: chasing byte-preservation of arbitrary formatting is where YAML round-trippers go to die, and the cost here is bounded — one line, once, per hand-written record that used a different spelling. **Our own examples and records should adopt the canonical form** so there is nothing to normalise; the spec's `blocked` examples currently use the spaced form.
+Not fought, and recorded as a test rather than left to be discovered: chasing byte-preservation of arbitrary formatting is where YAML round-trippers go to die, and the cost here is bounded — one line, once, per hand-written record that used a different spelling. **Our own examples and records should adopt the canonical form** so there is nothing to normalize; the spec's `blocked` examples currently use the spaced form.
 
 **Also decided:** two-space indentation, fixed. A change to it rewrites every file in the corpus, so it is pinned by the round-trip test rather than left to a default that could shift under a dependency upgrade.
 
@@ -98,7 +98,7 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **Found: `SetArgs(nil)` makes Cobra fall back to `os.Args`.** That made the whole point of passing arguments in — not touching the process — quietly false. It surfaced when `go test -update` leaked its own flag into the tool and the root command failed to parse it. A real defect in the harness, found by an unrelated flag colliding with it.
 
-**The golden-file harness has its warning built into the failure message**, not only into the documentation: *run with -update, then READ the diff before committing it.* A golden updated by reflex records the bug as expected behaviour, and the moment that matters is when someone is staring at a red test.
+**The golden-file harness has its warning built into the failure message**, not only into the documentation: *run with -update, then READ the diff before committing it.* A golden updated by reflex records the bug as expected behavior, and the moment that matters is when someone is staring at a red test.
 
 **Corrected: outcomes must not carry a `workflow_status`.** Caught by the maintainer asking whether they should share the deliverable's vocabulary — the answer was that they should not have one at all.
 
