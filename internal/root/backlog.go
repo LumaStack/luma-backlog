@@ -63,17 +63,11 @@ func (b *Backlog) WriteFile(name string, data []byte, perm os.FileMode) error {
 // MkdirAll creates a directory within the backlog.
 func (b *Backlog) MkdirAll(name string) error { return b.root.MkdirAll(name, 0o755) }
 
-// Stat reports on a path within the backlog.
-func (b *Backlog) Stat(name string) (os.FileInfo, error) { return b.root.Stat(name) }
-
 // Exists reports whether a path is present.
 func (b *Backlog) Exists(name string) bool {
 	_, err := b.root.Stat(name)
 	return err == nil
 }
-
-// Rename moves a path within the backlog.
-func (b *Backlog) Rename(from, to string) error { return b.root.Rename(from, to) }
 
 // WriteFileAtomic writes to a temporary file in the same directory, flushes
 // it, and renames it over the target.

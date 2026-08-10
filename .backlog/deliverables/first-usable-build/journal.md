@@ -157,7 +157,21 @@ exit=5
 
 **Every refusal names what is missing and what to do about it** — which outcomes, how many of how many, and the three ways forward. A refusal that does not say why is a wall.
 
-**Next.** The test harness — the last task, and the one every task above owes tests to. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: the test harness** — and deliberately less of it than the task described.
+
+**Script tests against real git were not written, because the tool does not call git.** Committing is not in this build's scope, so the harness would have been a fence around a gate nobody has built, and every test in it would assert nothing. The lockdown in `docs/TESTING.md` stands ready and `TestMain` points at it, including the ordering rule that an inherited `GIT_DIR` voids the ceiling.
+
+**What was built instead, all of it earning its place now:**
+
+**An environment lockdown that matters today.** Nothing shells out, but the tool reads its actor from the environment — so a developer with `LUMA_BACKLOG_ACTOR` set would disagree with continuous integration, sometimes, in a way that looks like a flaky test. The git pointer variables are cleared too: they cost nothing while unused, and each is a way for one machine to differ from every other exactly once, at the worst moment.
+
+**One consolidated exit-code test.** They were asserted incidentally across five files; they are the most machine-facing part of the contract and deserved one place. Codes 1 and 6 are recorded as unreachable in this build rather than faked — **a test that manufactures a code proves the constant exists, not that anything produces it.**
+
+**Whole-tree snapshot-and-diff across every mutating command**, catching modification and deletion as well as creation. Assertion about intent would pass while the tool wrote elsewhere.
+
+**Coverage is 86.7% across the internal packages**, but the useful part was reading what was *un*covered: `Complete()` was dead code I had written and never called, and `Stat` and `Rename` were unused surface on the one package permitted to reach the filesystem — exactly where dead API should not accumulate. Both removed or wired in.
+
+**The first build is complete.** All eleven tasks closed. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 
