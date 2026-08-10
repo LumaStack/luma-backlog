@@ -103,5 +103,7 @@ func newRootCommand(app *App) *cobra.Command {
 	root.AddCommand(newListCommand(app))
 	root.AddCommand(newSetCommand(app))
 	root.AddCommand(newJournalCommand(app))
+	root.AddCommand(newVerifyCommand(app))
+	root.AddCommand(newCloseCommand(app))
 	return root
 }

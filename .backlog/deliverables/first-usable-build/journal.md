@@ -134,7 +134,30 @@ Exercised for real rather than only in tests: read the hash, write once, then wr
 
 **Tolerant of a hand-written introduction**, whatever it contains, including text that looks structural. Most journals are hand-written, and ours was.
 
-**Next.** `verify` and `close` — the last one, and the only refusal. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
+**Done: `verify` and `close`** — the completion arithmetic, and the tool's only refusal.
+
+```
+$ luma-backlog close payments-v2 -r delivered
+luma-backlog: payments-v2 cannot be delivered: 1 of 2 outcomes have no evidence.
+  retries-are-durable
+exit=5
+```
+
+**Completion is counted, never stored.** There is nothing to keep that the verification records do not already say, and a stored copy could disagree with them.
+
+**Only delivery is gated.** Cancelled, superseded, and abandoned close freely, and each has its own test — gating cancellation would make it impossible to stop work *precisely because it was unfinished*, which is the only reason anyone ever cancels anything. That is the obvious wrong implementation, so it is tested rather than trusted.
+
+**A retired outcome is excluded from the count**, otherwise retiring one could never let a deliverable close, which is the entire point of retiring it.
+
+**Delivering with no outcomes at all is refused.** Vacuous truth is the wrong answer: nothing says it was delivered, so the claim has no basis. Easy to get wrong, because "all zero of them passed" is technically true.
+
+**Evidence sits beside `verified`, not inside it**, and they correlate on `by` and `at` rather than by position — parallel lists matched by index break the first time one is hand-edited. This is the workaround for the format gap in `FORMAT-REQUESTS.md` §3, and it now has a shape rather than a plan.
+
+**Verifying without evidence is permitted but not silent.** Refusing would be an opinion the record does not contradict, so the tool says so instead: *an unbacked confirmation is the claim this design distrusts most.*
+
+**Every refusal names what is missing and what to do about it** — which outcomes, how many of how many, and the three ways forward. A refusal that does not say why is a wall.
+
+**Next.** The test harness — the last task, and the one every task above owes tests to. The tasks are ranked and sequential; four of the command tasks share a `commands` parallel group.
 
 ---
 
