@@ -8,7 +8,14 @@ verify_by:
   - Add an unrecognized key by hand, run every command that rewrites the record, confirm the key survives each.
 deliverable: "[[deliverables/first-usable-build]]"
 lifecycle_status: provisional
-created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
+created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+verified:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+evidence:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+    what: 'internal/record: round-trip is byte-identical, unknown keys survive every write path, key order preserved. 12 tests.'
 ---
 
 # Records conform to the format

@@ -8,7 +8,14 @@ verify_by:
   - Confirm the upward walk stops at the fence rather than finding an outer repository.
 deliverable: "[[deliverables/first-usable-build]]"
 lifecycle_status: provisional
-created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
+created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+verified:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+evidence:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+    what: 'TestNoCommandWritesOutsideTheBacklog: whole-tree snapshot and diff across all 12 mutating commands; also from a nested directory and through a symlink.'
 ---
 
 # The tool writes nothing outside the backlog

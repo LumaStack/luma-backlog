@@ -14,6 +14,18 @@ A git-native backlog worked by people and agents at the same time. Records are m
 - `docs/LIFECYCLE.md` — the loop. Non-normative, expected to move to the workflow project.
 - `docs/OPEN-QUESTIONS.md` — what is unsettled, and **why settled things were settled.** Read before reopening anything.
 
+## Using the tool on this project
+
+`.backlog/` is kept by the binary. Build it with `go build -o ./luma-backlog ./cmd/luma-backlog`.
+
+**Set `LUMA_BACKLOG_ACTOR` before writing anything**, or every record you create is attributed to the machine's human owner:
+
+```
+export LUMA_BACKLOG_ACTOR="agent:<model>/luma-backlog"
+```
+
+Provenance is the point of that field. A record that says a person confirmed something they never saw is worse than one with no attribution at all.
+
 ## Working rules
 
 - **Never name a competing project in committed output.** This is about rivals, not references — tools we depend on, borrow technique from, or interoperate with are named normally.

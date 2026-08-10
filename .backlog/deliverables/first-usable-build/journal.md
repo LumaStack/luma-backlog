@@ -4,6 +4,12 @@
 
 ---
 
+## ▶ 2026-08-10
+
+The tool is now keeping its own backlog: four outcomes verified with backlog verify, this line written with backlog journal.
+Found by dogfooding: verify attributed agent work to human:warden, because LUMA_BACKLOG_ACTOR was unset and detection falls back to the OS user.
+Provenance is the whole point of the actor field, so a default that is wrong in the common case is worse than no default.
+
 ## ▶ 2026-08-09 — outcomes reworked, tasks written
 
 **Where things stand.** Five outcomes and eleven tasks. Still no code. The specification moved a long way after the first outcomes were written, and re-reading them against it found three problems worth recording.

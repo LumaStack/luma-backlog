@@ -8,7 +8,14 @@ verify_by:
   - Close a different deliverable as canceled with an unmet outcome; expect success, because only delivery is gated.
 deliverable: "[[deliverables/first-usable-build]]"
 lifecycle_status: provisional
-created: {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
+created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+verified:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+evidence:
+  - at: "2026-08-10T05:39:04Z"
+    by: agent:opus-5/luma-backlog
+    what: close -r delivered refuses with exit 5 naming unpassing outcomes; canceled/superseded/abandoned ungated; retired excluded; no-outcomes refused. Exercised for real.
 ---
 
 # Completion is computed, not asserted

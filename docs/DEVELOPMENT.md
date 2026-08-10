@@ -99,6 +99,8 @@ The tool finds its root by walking *up* to the nearest `.git`. When that walk le
 
 ## The backlog is in the repository
 
+**Agents must set `LUMA_BACKLOG_ACTOR`** — `agent:<model>/luma-backlog` — before any command that writes. Actor detection falls back to the operating system user, so without it an agent's work is recorded as the machine owner's. Found by dogfooding, after four outcomes were verified under the wrong name.
+
 `.backlog/` holds this project's own work, and the journal there is the reasoning as it happened — what was decided, what was ruled out, what is still unknown.
 
 **Read the newest journal entry before starting.** It is written so someone arriving cold can carry on without re-deriving anything, and it is the fastest way to find out what has changed since the design documents were last touched.
