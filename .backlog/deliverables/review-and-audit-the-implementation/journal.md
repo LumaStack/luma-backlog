@@ -4,7 +4,19 @@
 
 ---
 
-## ▶ 2026-08-09 — parked, with the debt stated plainly
+## ▶ 2026-08-10 — the debt is now the whole build
+
+**All eleven tasks are done and none of the code has been read.** When this was parked, six tasks were complete; the first build is now finished and running against this repository's own backlog.
+
+**What that adds to the scope:** the completion arithmetic and the tool's only refusal, the containment story, the record parser that every other package depends on, and the JSON shapes now pinned as contract by golden files. Golden files are worth naming separately — **they lock in whatever the output happened to be at the moment it was first captured**, and nobody has checked that those shapes are the ones we want.
+
+**One more piece of evidence for the case, from today.** Dogfooding found within minutes that every record an agent wrote was attributed to the machine's human owner. Not caught by any test, because no test asks *who does this say did it*. That is precisely the class of defect a reading finds and a suite does not.
+
+**Still open: when.** Unchanged.
+
+---
+
+## 2026-08-09 — parked, with the debt stated plainly
 
 **Where things stand.** Six of eleven implementation tasks are done and none of the code has been read by anyone but the agent that wrote it. The maintainer said so directly: *approving without reviewing for now, and a review and audit will be necessary at some point.*
 

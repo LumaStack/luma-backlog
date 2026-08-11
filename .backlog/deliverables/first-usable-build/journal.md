@@ -4,6 +4,40 @@
 
 ---
 
+## ▶ 2026-08-10 — the build works; one outcome remains — START HERE
+
+**State: the first build is complete and in use on this repository.** Eleven tasks closed. `init`, `new`, `show`, `list`, `set`, `journal`, `verify`, and `close` all work. Tests green, `vet` and `gofmt` clean, 86.7% coverage across `internal/`.
+
+**Four of five outcomes are verified.** The fifth — *the backlog is kept by the tool* — is deliberately still open: it asks for a full pass of real work, and one sitting is not that.
+
+**Before running anything:**
+
+```
+export PATH="/opt/homebrew/bin:$PATH"          # go is not on the default tool PATH
+export LUMA_BACKLOG_ACTOR="agent:<model>/luma-backlog"
+go build -o ./luma-backlog ./cmd/luma-backlog  # gitignored
+```
+
+The actor variable is not optional. Without it every record an agent writes is attributed to the machine's human owner, which is worse than no attribution.
+
+**Next, in rough order:**
+
+1. **Keep using it.** That is the only thing that verifies the last outcome, and it is how the remaining open questions were always going to be answered.
+2. **Git integration does not exist.** The tool writes files and never commits, so `SPEC.md` §5.5 — commit history as the machine record — is specified and unimplemented. That is the largest gap between the specification and the build.
+3. **Review and audit.** No human has read any of this code. Parked as its own deliverable with the reasons.
+4. **File the six format requests upstream.** They exist only in `docs/FORMAT-REQUESTS.md`.
+
+**Found while dogfooding, not yet fixed:**
+
+- **`journal` appends lines but cannot compose an entry.** The wrap-up mode the skill describes — where things stand, next, open — has no command behind it, which is why this entry was written by hand. Either the command grows a way to write a structured entry, or wrap-up stays a human act and the skill should say so.
+- **Tool-written entries carry no summary after the date**, because a one-line capture does not have one. Possibly correct, possibly a gap.
+- **Tool-written entries omit the `---` separators** the hand-written ones use. The two styles now sit in one file.
+- **`LUMA_BACKLOG_ACTOR` unset falls back to the OS user.** A default that is wrong in the common case may be worse than no default; unset could mean *unattributed* instead. A design question, not a defect.
+
+**Open questions carried forward**, all in `docs/OPEN-QUESTIONS.md`: §8 worktrees and where coordination state lives (still the most structurally dangerous), §22 how behavior attaches at a boundary, §24 how a regenerated section is delimited, §1a the shape and naming of a wave, §6 whether a declared gate can be overridden, §18 how outcomes relate to the other units. §17 default sections is drafted and being judged by use.
+
+**And the standing caution:** three bugs in `new` were found by *running* the tool while its tests passed, because the tests asserted on fields rather than on the file a person reads. Nothing suggests that pattern has stopped.
+
 ## ▶ 2026-08-10
 
 The tool is now keeping its own backlog: four outcomes verified with backlog verify, this line written with backlog journal.
