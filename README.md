@@ -1,6 +1,6 @@
 # luma-backlog
 
-**Teams getting things done, at agent speed.**
+> **Teams getting things done, at agent speed.**
 
 A backlog that lives inside your git repository as plain markdown, built to be worked by people and agents at the same time. Keeping the work beside the code gives agents context they cannot otherwise reach, and completion is measured against recorded evidence rather than declared by whoever closed the item.
 
