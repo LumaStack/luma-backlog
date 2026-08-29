@@ -3,7 +3,7 @@ type: deliverable
 title: Review and audit the implementation
 description: Nothing written so far has been read by the maintainer.
 workflow_status: idea
-lifecycle_status: draft
+lifecycle: draft
 created: {by: "human:benjamin", at: 2026-08-09T07:00:00Z}
 ---
 

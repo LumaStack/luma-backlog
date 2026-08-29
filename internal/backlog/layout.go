@@ -30,7 +30,7 @@ var childDirs = map[string]string{
 // IsWorked reports whether a unit carries a workflow status.
 //
 // A deliverable and a task are worked, and move through a sequence. An outcome
-// is judged by evidence, a decision is ratified through lifecycle_status, and
+// is judged by evidence, a decision is ratified through lifecycle, and
 // an exploration is archived — none of them has a position in a workflow, and
 // giving them one would create a declared state that can disagree with the
 // real one.

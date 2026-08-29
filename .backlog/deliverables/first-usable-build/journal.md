@@ -146,7 +146,7 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **This was implementation drifting from the specification**, and worse, my earlier "fix" of the status fallback made it look deliberate. The code invented a field the spec never had, and then reasoned carefully about which vocabulary the invented field should use. Length of reasoning is not evidence that the thing being reasoned about should exist.
 
-The rule that falls out is clean: **`workflow_status` belongs to units that are *worked*.** A deliverable and a task are worked. An outcome is *judged* by evidence, a decision is *ratified* through `lifecycle_status`, an exploration is *archived*. An outcome's state is now derived — `unverified` until `verified` has entries — and a test asserts none of the three judged units gets a declared status.
+The rule that falls out is clean: **`workflow_status` belongs to units that are *worked*.** A deliverable and a task are worked. An outcome is *judged* by evidence, a decision is *ratified* through `lifecycle`, an exploration is *archived*. An outcome's state is now derived — `unverified` until `verified` has entries — and a test asserts none of the three judged units gets a declared status.
 
 **Our own outcomes carried the invented field too** and have been cleaned. The corpus should be exemplary, since it is the first thing anyone reads.
 
