@@ -100,14 +100,14 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 		r.Set("deliverable", "[[deliverables/"+s.Deliverable+"]]")
 	}
 	// Only units that are WORKED carry a workflow status. An outcome is
-	// judged by its evidence, a decision is ratified through lifecycle_status,
+	// judged by its evidence, a decision is ratified through lifecycle,
 	// an exploration is archived. Giving an outcome a declared status would
 	// put it beside the computed one, free to contradict it — which is the
 	// unbacked assertion this design exists to distrust (docs/SPEC.md §4.4).
 	if IsWorked(s.Unit) {
 		r.Set("workflow_status", cfg.DefaultStatusFor(s.Unit))
 	}
-	r.Set("lifecycle_status", "draft")
+	r.Set("lifecycle", "draft")
 	if err := r.SetRaw("created", "{by: "+e.Actor.String()+", at: "+e.Now()+"}"); err != nil {
 		return nil, err
 	}

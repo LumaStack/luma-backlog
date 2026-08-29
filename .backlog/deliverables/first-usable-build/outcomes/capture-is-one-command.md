@@ -4,7 +4,7 @@ title: Capture costs one command
 desired_state: A single invocation appends a line to the right journal, creating today's entry when there is none, with no file opened and no heading written.
 verify_by: backlog journal "a thing worth keeping" && grep -q "a thing worth keeping" .backlog/deliverables/*/journal.md
 deliverable: "[[deliverables/first-usable-build]]"
-lifecycle_status: provisional
+lifecycle: provisional
 created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"
