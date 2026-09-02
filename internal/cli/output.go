@@ -8,7 +8,7 @@ import (
 	"github.com/lumastack/luma-backlog/internal/backlog"
 )
 
-// The JSON shapes below are published contract (docs/SPEC.md §9.3), which is
+// The JSON shapes below are published contract (docs/spec.md §9.3), which is
 // why they are explicit structs rather than whatever a record happens to hold.
 // Marshalling an internal type would make every refactor a breaking change
 // without anyone noticing.
@@ -30,7 +30,7 @@ type recordJSON struct {
 	itemJSON
 	// Hash identifies the content that was read. Pass it back to `set
 	// --if-unchanged` and a write that would clobber someone else's change is
-	// refused rather than applied (docs/SPEC.md §6.3).
+	// refused rather than applied (docs/spec.md §6.3).
 	Hash   string         `json:"hash"`
 	Fields map[string]any `json:"fields"`
 	Body   string         `json:"body"`

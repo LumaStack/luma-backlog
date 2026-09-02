@@ -54,7 +54,7 @@ Closed:      [closed]
 //
 // Strict where records are permissive, and deliberately so: a record with an
 // unrecognized field is tolerated because knowledge arrives incomplete, while
-// a misspelt configuration key is a silent behavior change (docs/SPEC.md §8.7).
+// a misspelt configuration key is a silent behavior change (docs/spec.md §8.7).
 func Parse(data []byte) (Config, error) {
 	c := Default()
 	if err := yaml.Unmarshal(data, &c); err != nil {
@@ -88,7 +88,7 @@ func (c Config) StatusesFor(unit string) []string {
 
 // DefaultStatusFor is what an absent workflow_status means: the first value in
 // the configured vocabulary. A field is only safely optional when omitting it
-// says something (docs/SPEC.md §4.2).
+// says something (docs/spec.md §4.2).
 func (c Config) DefaultStatusFor(unit string) string {
 	if s := c.StatusesFor(unit); len(s) > 0 {
 		return s[0]

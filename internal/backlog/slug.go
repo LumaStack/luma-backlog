@@ -12,7 +12,7 @@ import (
 // Filenames are slugs derived from titles, in kebab-case, so a path is
 // meaningful without a lookup. Numeric identifiers are deliberately not used:
 // they need an allocator, they collide across branches, and they tell a reader
-// nothing (docs/SPEC.md §7.4).
+// nothing (docs/spec.md §7.4).
 func Slugify(title string) string {
 	var b strings.Builder
 	lastDash := true // leading dashes are suppressed

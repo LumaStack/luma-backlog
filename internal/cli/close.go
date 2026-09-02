@@ -60,7 +60,7 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 	}
 
 	// The tool's only refusal, and it holds a caller to their OWN declarations
-	// rather than to an opinion of its own (docs/SPEC.md §5.0).
+	// rather than to an opinion of its own (docs/spec.md §5.0).
 	if backlog.CloseReason(reason).GatedOnCompletion() {
 		if !c.Complete() && len(c.Live) == 0 {
 			return coded{ExitRefused, fmt.Errorf(

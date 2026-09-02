@@ -21,6 +21,6 @@ A statement of what must become true. A deliverable is complete when every live 
 
 **There is deliberately no `workflow_status`.** An outcome is judged by its evidence, not moved through a sequence. A declared status would sit beside the computed one and could disagree with it, which is the unbacked assertion this design distrusts. State is derived: no `verified` entries means it has not passed.
 
-**Evidence is not here yet.** The format's `verified` records who confirmed and when, with nowhere for *what the evidence was* — and `verified` is a core field with add-only inheritance, so the gap cannot be closed from a Type Definition. A local field will carry it once its shape is known from real verifications (`FORMAT-REQUESTS.md` §3).
+**Evidence is not here yet.** The format's `verified` records who confirmed and when, with nowhere for *what the evidence was* — and `verified` is a core field with add-only inheritance, so the gap cannot be closed from a Type Definition. A local field will carry it once its shape is known from real verifications (`format-requests.md` §3).
 
 > **Written from five records.** These are the outcomes of `first-usable-build`. Every field here is one they actually use; nothing is included on the expectation that it will be wanted.

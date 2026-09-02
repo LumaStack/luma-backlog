@@ -1,6 +1,6 @@
 # Testing
 
-How this project is tested, and the findings behind it. `SPEC.md` §9a.4 and §9a.5 hold the decisions; this holds the concrete practice, so it does not have to be rediscovered.
+How this project is tested, and the findings behind it. `spec.md` §9a.4 and §9a.5 hold the decisions; this holds the concrete practice, so it does not have to be rediscovered.
 
 Drawn from surveying command-line tools that mutate git repositories: **`git-spice`** (the closest analogue — a git-manipulating Go command-line tool with several hundred end-to-end scripts against real git), the **Go toolchain's own `cmd/go`** test suite, **`gh`**, **`lazygit`**, **`git-town`**, **`hugo`**, **`goreleaser`**, and **`gitleaks`**.
 
@@ -90,7 +90,7 @@ Expect to **shard the script tests and put them behind a build tag.** Several hu
 
 **`testscript` provides no git hardening at all.** It sets no `GIT_*` variables. What it gives is **total environment replacement** — the parent environment is discarded except `PATH` — which is real and worth having, but under its defaults `git commit` succeeds and bakes in the developer's actual username and hostname. The git environment below must be injected in `Setup`.
 
-**Script-test frameworks in this ecosystem cannot assert a *specific* exit status** — only success or failure. `SPEC.md` §9.4 defines seven distinct exit codes as part of the contract, including *conflict, re-read and retry*, which callers are expected to branch on.
+**Script-test frameworks in this ecosystem cannot assert a *specific* exit status** — only success or failure. `spec.md` §9.4 defines seven distinct exit codes as part of the contract, including *conflict, re-read and retry*, which callers are expected to branch on.
 
 So the most machine-facing part of the contract needs **ordinary Go tests or a custom script command**. Worth knowing before the suite is built around a tool that cannot express it.
 

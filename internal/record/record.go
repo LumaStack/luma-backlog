@@ -3,7 +3,7 @@
 //
 // It touches no filesystem — parsing is pure, so it can be tested exhaustively
 // without fixtures, and the one package allowed to do input and output stays
-// small (docs/SPEC.md §9a.4).
+// small (docs/spec.md §9a.4).
 //
 // The governing rule is that **anything not understood survives untouched**.
 // That is inherited from the format, and it is load-bearing architecture: it
@@ -227,7 +227,7 @@ func (r *Record) find(key string) (k, v *yaml.Node) {
 }
 
 // Hash is a content hash of the serialized record, for detecting a write that
-// would clobber a change nobody saw (docs/SPEC.md §6.3).
+// would clobber a change nobody saw (docs/spec.md §6.3).
 //
 // Content rather than modification time: timestamps are too coarse and are
 // vulnerable to clock skew, and the format's own `modified` advances only on

@@ -15,7 +15,7 @@ import (
 // checks a path component at a time rather than in a single kernel operation,
 // has had escapes patched more than once, and disclaims bind mounts outright.
 // It raises the cost of the bug considerably; the fenced environment in
-// docs/TESTING.md is the other half rather than a redundancy.
+// docs/testing.md is the other half rather than a redundancy.
 type Backlog struct {
 	root *os.Root
 	path string
@@ -74,7 +74,7 @@ func (b *Backlog) Exists(name string) bool {
 //
 // A reader therefore sees either the previous content or the new content and
 // never a half-written file — which matters as much for a person with the
-// file open in an editor as for a concurrent process (docs/SPEC.md §6.2).
+// file open in an editor as for a concurrent process (docs/spec.md §6.2).
 func (b *Backlog) WriteFileAtomic(name string, data []byte, perm os.FileMode) error {
 	if dir := filepath.Dir(name); dir != "." {
 		if err := b.root.MkdirAll(dir, 0o755); err != nil {

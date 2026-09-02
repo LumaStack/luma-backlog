@@ -8,7 +8,7 @@ import (
 type Completion struct {
 	Live      []Item // outcomes counted toward completion
 	Unpassing []Item // of those, the ones with no evidence
-	Retired   []Item // archived, and excluded (docs/SPEC.md §4.4)
+	Retired   []Item // archived, and excluded (docs/spec.md §4.4)
 }
 
 // Complete reports whether every live outcome has passed.
@@ -18,7 +18,7 @@ func (c Completion) Complete() bool { return len(c.Live) > 0 && len(c.Unpassing)
 //
 // Derived by counting, never read from a field. There is nothing to store that
 // the verification records do not already say, and a stored copy could
-// disagree with them (docs/SPEC.md §2.4).
+// disagree with them (docs/spec.md §2.4).
 func CompletionOf(b *root.Backlog, deliverable string) (Completion, error) {
 	items, err := List(b, Filter{Unit: Outcome, Deliverable: deliverable})
 	if err != nil {
@@ -43,7 +43,7 @@ func CompletionOf(b *root.Backlog, deliverable string) (Completion, error) {
 }
 
 // CloseReason is why work ended. Only one of them is success, which is why
-// the terminal state is "closed" rather than "done" (docs/SPEC.md §5.3.1).
+// the terminal state is "closed" rather than "done" (docs/spec.md §5.3.1).
 type CloseReason string
 
 const (

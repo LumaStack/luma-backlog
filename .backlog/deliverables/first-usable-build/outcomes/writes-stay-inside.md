@@ -22,4 +22,4 @@ evidence:
 
 **The git exception is real and bounded.** The tool commits, so it necessarily writes to git's own storage — but only ever for files it wrote itself (§6.7). A commit that sweeps up someone's unrelated edits fails this outcome as surely as writing to the wrong directory would.
 
-The failure this guards against is not a loud escape — it is the upward walk finding the developer's real repository, where commands **succeed** and the test reports green (`docs/TESTING.md`). Snapshot-and-diff is used because it catches the silent case; an assertion about intent would not.
+The failure this guards against is not a loud escape — it is the upward walk finding the developer's real repository, where commands **succeed** and the test reports green (`docs/testing.md`). Snapshot-and-diff is used because it catches the silent case; an assertion about intent would not.

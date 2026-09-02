@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The two most recent minor releases (docs/SPEC.md §9a.3). The floor in
+        # The two most recent minor releases (docs/spec.md §9a.3). The floor in
         # go.mod is a patch version, not just a minor, because root-scoped
         # filesystem access has had escapes fixed within a minor series.
         go: ['1.25.12', '1.26.5']

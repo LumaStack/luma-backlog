@@ -2,17 +2,17 @@
 
 > **This document is not part of the specification, and this tool does not implement it.**
 >
-> It describes how a **workflow layer** is expected to drive work through the units this tool provides. That layer lives outside this project ([`PRINCIPLES.md`](PRINCIPLES.md)), and this document is expected to **move there** once the seam between the two is clear.
+> It describes how a **workflow layer** is expected to drive work through the units this tool provides. That layer lives outside this project ([`principles.md`](principles.md)), and this document is expected to **move there** once the seam between the two is clear.
 >
 > It is captured here for one reason: **you cannot design the right interface without a real consumer in front of you.** Building hooks, boundaries, and queries blind produces a surface that is plausible and wrong. §4 is the payoff — it is what this loop *requires of the tool*, and therefore what has to exist.
 >
-> This is the documentation equivalent of the rule in [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §12: keep early workflow thinking behind the public interface so that extracting it later is a move rather than a rewrite.
+> This is the documentation equivalent of the rule in [`open-questions.md`](open-questions.md) §12: keep early workflow thinking behind the public interface so that extracting it later is a move rather than a rewrite.
 
 ## 1. Before the loop — optional
 
 Neither stage is required. A deliverable may begin at the loop with no preamble.
 
-**Import.** A deliverable may arrive from an external system — an issue, a story, a ticket — rather than being authored here (`SPEC.md` §10).
+**Import.** A deliverable may arrive from an external system — an issue, a story, a ticket — rather than being authored here (`spec.md` §10).
 
 **Discovery.** Where the work is not yet understood: brainstorm, research, explore, decide, sketch. This is where **exploration** records are produced and early **decisions** get made. Both may live inside the deliverable, and exploration substantial enough to warrant stated outcomes may become a deliverable of its own.
 
@@ -47,7 +47,7 @@ They are not evenly distributed, and that is informative:
 
 - **Observe, Articulate, Measure, Plan** are heavy on the first wave and light afterwards. You re-observe every time; you do not re-articulate from scratch.
 - **Advance** is the body of the wave.
-- **Verify, Redefine, Learn** all happen **at the wave boundary** — which is why `SPEC.md` §2.3 calls that boundary a measurement point. Three phases land there.
+- **Verify, Redefine, Learn** all happen **at the wave boundary** — which is why `spec.md` §2.3 calls that boundary a measurement point. Three phases land there.
 - **Propagate** happens once, at deliverable close. You do not archive on wave two.
 
 So the wave is not an arbitrary container. It is the unit those last three phases attach to.
@@ -102,7 +102,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Earns its keep.** The only phase that converts belief into record. Completion, reporting, and trust all read what it wrote.
 
-**Detail.** Verification is a **list, not a flag**. Independent checks accumulate on one outcome, and a check performed by a person raises the derived trust tier with nothing extra stored (`SPEC.md` §4.7).
+**Detail.** Verification is a **list, not a flag**. Independent checks accumulate on one outcome, and a check performed by a person raises the derived trust tier with nothing extra stored (`spec.md` §4.7).
 
 **Watch for.** Accepting assertion as evidence, and verifying against a check invented after the result was known.
 
@@ -123,7 +123,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **What prevents goalpost-moving:**
 
-- **Killed outcomes are archived, never deleted** (`SPEC.md` §2.4). The original stays visible forever, with who changed it and when. You cannot quietly lower a bar — only lower it in writing, with your name on it.
+- **Killed outcomes are archived, never deleted** (`spec.md` §2.4). The original stays visible forever, with who changed it and when. You cannot quietly lower a bar — only lower it in writing, with your name on it.
 - **It happens at a wave boundary**, which is a reviewed checkpoint rather than something done silently mid-work.
 - **An asymmetry worth enforcing.** Operations that make the bar **higher or clearer** — added, split, tightened — are safe, and an agent should perform them freely. Operations that make it **lower** — killed, loosened — are the dangerous ones, and are where a workflow layer should require human ratification. That single rule turns the risk into a control.
 
@@ -167,7 +167,7 @@ Every name was chosen to be **self-evident**. A phase name needing a glossary de
 
 Most decisions stay with the deliverable that produced them. A minority — under one in ten — outlive it and deserve to become standing rules.
 
-**Promotion copies; it never moves.** A new record is created in the global decision space carrying `promoted_from`, and the original is left exactly as it was. Moving would change the original's identity and break every inbound link (`SPEC.md` §7.1).
+**Promotion copies; it never moves.** A new record is created in the global decision space carrying `promoted_from`, and the original is left exactly as it was. Moving would change the original's identity and break every inbound link (`spec.md` §7.1).
 
 The two are not competing copies. They have different jobs:
 
@@ -184,20 +184,20 @@ The useful part of this document. Each phase implies capability, and anything mi
 
 | Phase | Requires |
 |---|---|
-| **Discovery** | Exploration records, at either level. Decisions at deliverable level. Somewhere for context material — **currently a gap** (`OPEN-QUESTIONS.md` §2). |
+| **Discovery** | Exploration records, at either level. Decisions at deliverable level. Somewhere for context material — **currently a gap** (`open-questions.md` §2). |
 | **Observe** | Read current state cheaply: what exists, what is claimed, what has changed. |
 | **Articulate** | Create a deliverable and its outcomes. |
-| **Measure** | Record `verify_by` on each outcome before work begins (`SPEC.md` §4.4). |
-| **Plan** | Create tasks, order them, and mark what may overlap (`SPEC.md` §4.5.1). |
-| **Advance** | Claim work exclusively, record progress (`SPEC.md` §6.5). |
-| **Verify** | Record evidence against outcomes (`SPEC.md` §4.7). |
-| **Redefine** | **Add, split, tighten, and retire outcomes mid-flight** (`SPEC.md` §2.4) — the specification changing during work is expected, not exceptional. Archive rather than delete, so a lowered bar stays visible. **And record which operation occurred**, so a workflow layer can gate the ones that lower the bar without obstructing the ones that raise it — the tool cannot enforce that asymmetry itself, but it must make it expressible. |
+| **Measure** | Record `verify_by` on each outcome before work begins (`spec.md` §4.4). |
+| **Plan** | Create tasks, order them, and mark what may overlap (`spec.md` §4.5.1). |
+| **Advance** | Claim work exclusively, record progress (`spec.md` §6.5). |
+| **Verify** | Record evidence against outcomes (`spec.md` §4.7). |
+| **Redefine** | **Add, split, tighten, and retire outcomes mid-flight** (`spec.md` §2.4) — the specification changing during work is expected, not exceptional. Archive rather than delete, so a lowered bar stays visible. **And record which operation occurred**, so a workflow layer can gate the ones that lower the bar without obstructing the ones that raise it — the tool cannot enforce that asymmetry itself, but it must make it expressible. |
 | **Learn** | A place to write what was learned, at a wave boundary. Detect that a wave has closed. |
 | **Propagate** | Promote decisions. Mark records stale. Archive. Rewrite links when records are renamed. |
 
 Two cross-cutting requirements fall out of the whole loop rather than any one phase:
 
-- **Boundaries must be detectable.** The loop needs to know when a wave has closed and when a deliverable's outcomes all pass. The tool answers this as a **queryable condition** rather than an emitted event, so a layer that was not watching at the time can still catch up (`SPEC.md` §5).
+- **Boundaries must be detectable.** The loop needs to know when a wave has closed and when a deliverable's outcomes all pass. The tool answers this as a **queryable condition** rather than an emitted event, so a layer that was not watching at the time can still catch up (`spec.md` §5).
 - **Every phase must be reachable through the documented interface.** If any of it requires reaching into internal state, extracting this layer later becomes a rewrite instead of a move.
 
 ## 5. What the tool must not take from this document

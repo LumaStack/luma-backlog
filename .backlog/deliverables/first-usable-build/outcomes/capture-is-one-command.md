@@ -17,4 +17,4 @@ evidence:
 
 # Capture costs one command
 
-Friction at the moment of writing is what loses the learning (`SPEC.md` §5.5). If this outcome is met and the journal still goes unwritten, the problem is not the interface.
+Friction at the moment of writing is what loses the learning (`spec.md` §5.5). If this outcome is met and the journal still goes unwritten, the problem is not the interface.

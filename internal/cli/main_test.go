@@ -7,7 +7,7 @@ import (
 
 // TestMain clears the environment the tests run in.
 //
-// Nothing here shells out yet, so the git lockdown in docs/TESTING.md is not
+// Nothing here shells out yet, so the git lockdown in docs/testing.md is not
 // needed and is deliberately not written — it would be a fence around a gate
 // nobody has built. What IS needed is this: the tool reads its actor from the
 // environment, so a developer with LUMA_BACKLOG_ACTOR set would see different

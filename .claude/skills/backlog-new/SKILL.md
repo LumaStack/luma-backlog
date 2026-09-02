@@ -5,7 +5,7 @@ description: Create records in this repository's .backlog/ — a deliverable, an
 
 # Create a backlog record
 
-Scaffolds records into `.backlog/` so every one is shaped the same way regardless of which agent wrote it. [`docs/SPEC.md`](../../../docs/SPEC.md) is the authority; this is the procedure that applies it.
+Scaffolds records into `.backlog/` so every one is shaped the same way regardless of which agent wrote it. [`docs/spec.md`](../../../docs/spec.md) is the authority; this is the procedure that applies it.
 
 **There is no binary yet.** Records are written by hand, following this document. As commands arrive, the steps here are replaced by calls to them — the skill keeps holding *when and why*, the command takes over *how*.
 
@@ -19,7 +19,7 @@ Scaffolds records into `.backlog/` so every one is shaped the same way regardles
 | **decision** | A choice was made that constrains later work. |
 | **exploration** | Research, a spike, an investigation. Including ones that go nowhere. |
 
-**Do not create tasks by reflex.** A deliverable needs outcomes; whether it needs stored tasks is genuinely open (`OPEN-QUESTIONS.md` §18). Write one when it must be coordinated, ordered, or claimed. Skip it when it is simply the work implied by an outcome.
+**Do not create tasks by reflex.** A deliverable needs outcomes; whether it needs stored tasks is genuinely open (`open-questions.md` §18). Write one when it must be coordinated, ordered, or claimed. Skip it when it is simply the work implied by an outcome.
 
 ## Rules that are easy to get wrong
 

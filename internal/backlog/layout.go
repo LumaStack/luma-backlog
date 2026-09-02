@@ -52,7 +52,7 @@ func IsUnit(unit string) bool {
 // A deliverable is a directory whose index.md is the record; everything else
 // is one file inside it. Deliverable membership is the only relationship
 // encoded in the path, because it is the only one stable enough to be
-// (docs/SPEC.md §7.3).
+// (docs/spec.md §7.3).
 func PathFor(unit, slug, deliverableSlug string) (string, error) {
 	if slug == "" {
 		return "", fmt.Errorf("a title is required: it becomes the filename")

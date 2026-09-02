@@ -16,7 +16,7 @@ import (
 //
 // They live in a Go test rather than a script test because the script
 // frameworks in this ecosystem assert success or failure and not a specific
-// status (docs/TESTING.md).
+// status (docs/testing.md).
 func TestExitCodes(t *testing.T) {
 	t.Run("0 success", func(t *testing.T) {
 		app, _ := initialized(t)

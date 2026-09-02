@@ -9,7 +9,7 @@ The journal is **the deliverable's memory**. A session loses its memory when it 
 
 > **Could someone arriving cold carry on from this?**
 
-[`docs/SPEC.md`](../../../docs/SPEC.md) §5.5 is the authority. This is the procedure.
+[`docs/spec.md`](../../../docs/spec.md) §5.5 is the authority. This is the procedure.
 
 **There is no binary yet.** Entries are written by hand, following this. When `backlog journal` arrives, these steps become calls to it.
 

@@ -5,7 +5,7 @@
 // everything it returns is scoped so a caller cannot climb out. The failure
 // this exists to prevent is not a loud escape — it is the upward walk leaving
 // the intended tree and finding another repository, where operations SUCCEED
-// against the wrong target and nothing reports a problem (docs/SPEC.md §9a.4).
+// against the wrong target and nothing reports a problem (docs/spec.md §9a.4).
 package root
 
 import (

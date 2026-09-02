@@ -53,7 +53,7 @@ func runSet(app *App, cmd *cobra.Command, ref string, assignments, unset []strin
 
 	// Optimistic concurrency: the caller states what it saw, and a write that
 	// would clobber a change it never saw is refused rather than applied
-	// (docs/SPEC.md §6.3). Exit 4 means re-read and retry, which is different
+	// (docs/spec.md §6.3). Exit 4 means re-read and retry, which is different
 	// advice from "something broke" — and it is the distinction a retrying
 	// agent depends on.
 	if ifUnchanged != "" && it.Hash() != ifUnchanged {

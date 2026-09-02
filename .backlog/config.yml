@@ -1,4 +1,4 @@
-# luma-backlog configuration — see docs/SPEC.md §8
+# luma-backlog configuration — see docs/spec.md §8
 # The source of truth. Deliberately minimal; keys are added when something
 # needs them, not in advance.
 
