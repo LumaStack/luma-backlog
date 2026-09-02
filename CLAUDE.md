@@ -1,8 +1,8 @@
 # luma-backlog
 
-A git-native backlog worked by people and agents at the same time. Records are markdown in `.backlog/`, conforming to the Luma Knowledge Format.
+A git-native backlog worked by people and agents at the same time. Records are markdown in `.luma/`, conforming to the Luma Knowledge Format.
 
-**Phase: implementation.** The specification is settled enough to build against. `.backlog/` is live and this project tracks itself in it — read it before starting work.
+**Phase: implementation.** The specification is settled enough to build against. `.luma/` is live and this project tracks itself in it — read it before starting work.
 
 **Bootstrap order:** lead with a skill, backfill the command, then rewrite the skill to call it. The skill is not thrown away — it ends up holding *when and why*, while the command holds *how*. **Every command must work standalone**, with no skill involved: there is no privileged path (`principles.md`). What promotes a step from prose to command is **not friction alone** — the maintainer works alone, so multi-actor failures produce no friction here. Three drivers: friction where it appears, **divergence** where we provoke it (same instruction, two agents, diff the records), and **invariants prose cannot hold** — measured compliance with prose-only rules runs far below what a guarantee requires.
 
@@ -16,7 +16,7 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 ## Using the tool on this project
 
-`.backlog/` is kept by the binary. Build it with `go build -o ./luma-backlog ./cmd/luma-backlog`.
+`.luma/` is kept by the binary. Build it with `go build -o ./luma-backlog ./cmd/luma-backlog`.
 
 **Set `LUMA_BACKLOG_ACTOR` before writing anything**, or every record you create is attributed to the machine's human owner:
 

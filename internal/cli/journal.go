@@ -36,7 +36,7 @@ func newJournalCommand(app *App) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			rel := path.Join("deliverables", slug, "journal.md")
+			rel := path.Join(backlog.BundleDir, "deliverables", slug, "journal.md")
 
 			current := ""
 			if data, err := b.ReadFile(rel); err == nil {

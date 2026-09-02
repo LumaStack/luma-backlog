@@ -120,11 +120,15 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 // and Type Definitions.
 func isRecordPath(rel string) bool {
 	switch {
-	case rel == "index.md":
+	case rel == "backlog/index.md":
 		return false
 	case path.Base(rel) == "journal.md":
 		return false
+	case strings.HasPrefix(rel, "backlog/_types/"):
+		return false
 	case strings.HasPrefix(rel, "_types/"):
+		// .luma/_types/ holds contracts for documents outside the bundle,
+		// which are not this tool's records either.
 		return false
 	}
 	return true

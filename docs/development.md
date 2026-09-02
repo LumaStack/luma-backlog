@@ -22,7 +22,7 @@ Nothing else to install. A development container is available for toolchain pari
 cmd/luma-backlog/     entry point — holds no logic
 internal/             everything else
 docs/                 the design
-.backlog/             this project's own backlog, kept in the tool
+.luma/             this project's own backlog, kept in the tool
 .claude/skills/       procedures that will become commands
 ```
 
@@ -49,7 +49,7 @@ Before changing anything, know which of these governs it:
 | [`principles.md`](principles.md) | what decisions are argued against |
 | [`spec.md`](spec.md) | the design. Normative. |
 | [`open-questions.md`](open-questions.md) | what is unsettled — **and why settled things were settled** |
-| [`.backlog/`](../.backlog/) | what is being built right now, and the reasoning while it happens |
+| [`.luma/`](../.luma/) | what is being built right now, and the reasoning while it happens |
 
 **Read `open-questions.md` before reopening a decision.** Roughly a hundred rejected names and the arguments that killed them are in there. Re-deriving one is the most common way to waste an afternoon here.
 
@@ -101,6 +101,6 @@ The tool finds its root by walking *up* to the nearest `.git`. When that walk le
 
 **Agents must set `LUMA_BACKLOG_ACTOR`** — `agent:<model>/luma-backlog` — before any command that writes. Actor detection falls back to the operating system user, so without it an agent's work is recorded as the machine owner's. Found by dogfooding, after four outcomes were verified under the wrong name.
 
-`.backlog/` holds this project's own work, and the journal there is the reasoning as it happened — what was decided, what was ruled out, what is still unknown.
+`.luma/` holds this project's own work, and the journal there is the reasoning as it happened — what was decided, what was ruled out, what is still unknown.
 
 **Read the newest journal entry before starting.** It is written so someone arriving cold can carry on without re-deriving anything, and it is the fastest way to find out what has changed since the design documents were last touched.

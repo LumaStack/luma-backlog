@@ -15,8 +15,10 @@ import (
 	"path/filepath"
 )
 
-// Dir is the name of the backlog directory within a project.
-const Dir = ".backlog"
+// Dir is the name of the luma directory within a project. The backlog bundle
+// and the records tier both live inside it, per the luma directory layout
+// policy: one root, so an agent arriving cold does a single lookup.
+const Dir = ".luma"
 
 // ErrNotFound means no project root was located before the search stopped.
 var ErrNotFound = errors.New("no project root found: no .git between here and the ceiling")

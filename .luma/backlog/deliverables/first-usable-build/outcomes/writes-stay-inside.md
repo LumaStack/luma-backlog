@@ -1,9 +1,9 @@
 ---
 type: outcome
 title: The tool writes nothing outside the backlog
-desired_state: No command modifies anything outside `.backlog/` and the git objects recording those changes — including when run from a nested directory, through a symlink, or against a hostile record.
+desired_state: No command modifies anything outside `.luma/` and the git objects recording those changes — including when run from a nested directory, through a symlink, or against a hostile record.
 verify_by:
-  - Snapshot the whole working tree, run every command, diff; expect changes confined to `.backlog/` and to git's own storage.
+  - Snapshot the whole working tree, run every command, diff; expect changes confined to `.luma/` and to git's own storage.
   - Run from a nested directory and through a symlinked path; expect the same.
   - Confirm the upward walk stops at the fence rather than finding an outer repository.
 deliverable: "[[deliverables/first-usable-build]]"

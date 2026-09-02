@@ -93,7 +93,7 @@ func newRootCommand(app *App) *cobra.Command {
 			// Until that exists, say so rather than printing help and implying
 			// there is nothing here.
 			fmt.Fprintln(cmd.OutOrStdout(), "luma-backlog "+version+" — no commands are implemented yet.")
-			fmt.Fprintln(cmd.OutOrStdout(), "See docs/spec.md for the design, and .backlog/ for what is being built.")
+			fmt.Fprintln(cmd.OutOrStdout(), "See docs/spec.md for the design, and .luma/backlog/ for what is being built.")
 			return nil
 		},
 	}

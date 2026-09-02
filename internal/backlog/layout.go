@@ -19,6 +19,16 @@ const (
 // Units lists what can be created, in the order a person would meet them.
 var Units = []string{Deliverable, Outcome, Task, Decision, Exploration}
 
+// Where the tiers sit inside .luma/, per the luma directory layout policy.
+// BundleDir holds the knowledge-format bundle — the backlog tier churns, and
+// the bundle's config and type definitions travel with it. Decisions made
+// outside any deliverable are records of what happened and live in the
+// records tier under their kind.
+const (
+	BundleDir           = "backlog"
+	RecordsDecisionsDir = "records/decisions"
+)
+
 // childDirs maps a unit to the directory it occupies inside a deliverable.
 var childDirs = map[string]string{
 	Outcome:     "outcomes",
@@ -58,21 +68,23 @@ func PathFor(unit, slug, deliverableSlug string) (string, error) {
 		return "", fmt.Errorf("a title is required: it becomes the filename")
 	}
 	if unit == Deliverable {
-		return path.Join("deliverables", slug, "index.md"), nil
+		return path.Join(BundleDir, "deliverables", slug, "index.md"), nil
 	}
 	dir, ok := childDirs[unit]
 	if !ok {
 		return "", fmt.Errorf("unknown unit %q: expected one of %s", unit, strings.Join(Units, ", "))
 	}
 	if deliverableSlug == "" {
-		// A decision made outside any deliverable is legal and lives at the
-		// top level; the others belong to work and cannot float.
+		// A decision made outside any deliverable is legal and lives in the
+		// records tier, per the luma directory layout policy — a bundle names
+		// its kind, the policy owns the root. The others belong to work and
+		// cannot float.
 		if unit == Decision {
-			return path.Join("decisions", slug), nil
+			return path.Join(RecordsDecisionsDir, slug), nil
 		}
 		return "", fmt.Errorf("a %s belongs to a deliverable: pass --deliverable, or run inside one", unit)
 	}
-	return path.Join("deliverables", deliverableSlug, dir, slug+".md"), nil
+	return path.Join(BundleDir, "deliverables", deliverableSlug, dir, slug+".md"), nil
 }
 
 // DeliverableFromPath reads the deliverable a path sits inside, if any. This

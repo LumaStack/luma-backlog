@@ -24,13 +24,13 @@ func TestPathFor(t *testing.T) {
 	for _, tc := range []struct {
 		unit, slug, deliverable, want string
 	}{
-		{Deliverable, "payments", "", "deliverables/payments/index.md"},
-		{Outcome, "queue-drains", "payments", "deliverables/payments/outcomes/queue-drains.md"},
-		{Task, "add-queue", "payments", "deliverables/payments/tasks/add-queue.md"},
-		{Exploration, "spike", "payments", "deliverables/payments/explorations/spike.md"},
-		{Decision, "use-postgres", "payments", "deliverables/payments/decisions/use-postgres.md"},
+		{Deliverable, "payments", "", "backlog/deliverables/payments/index.md"},
+		{Outcome, "queue-drains", "payments", "backlog/deliverables/payments/outcomes/queue-drains.md"},
+		{Task, "add-queue", "payments", "backlog/deliverables/payments/tasks/add-queue.md"},
+		{Exploration, "spike", "payments", "backlog/deliverables/payments/explorations/spike.md"},
+		{Decision, "use-postgres", "payments", "backlog/deliverables/payments/decisions/use-postgres.md"},
 		// A decision made outside any deliverable is legal and sits at the top.
-		{Decision, "use-postgres", "", "decisions/use-postgres"},
+		{Decision, "use-postgres", "", "records/decisions/use-postgres"},
 	} {
 		got, err := PathFor(tc.unit, tc.slug, tc.deliverable)
 		if err != nil {
@@ -61,9 +61,9 @@ func TestPathForRejectsUnknownUnits(t *testing.T) {
 
 func TestDeliverableFromPath(t *testing.T) {
 	for _, tc := range []struct{ in, want string }{
-		{".backlog/deliverables/payments/tasks", "payments"},
-		{"deliverables/payments", "payments"},
-		{"deliverables", ""},
+		{".luma/deliverables/payments/tasks", "payments"},
+		{"backlog/deliverables/payments", "payments"},
+		{"backlog/deliverables", ""},
 		{"docs", ""},
 		{"", ""},
 	} {

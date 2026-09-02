@@ -10,8 +10,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// FileName is the configuration file within the backlog directory.
-const FileName = "config.yml"
+// FileName is the bundle configuration file, relative to .luma/. It lives
+// inside the backlog bundle rather than in .luma/config/, because it is the
+// knowledge format's bundle root marker, not a tool behavior override.
+const FileName = "backlog/config.yml"
 
 // Config is the settings a repository declares.
 type Config struct {

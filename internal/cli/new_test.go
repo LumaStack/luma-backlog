@@ -22,7 +22,7 @@ func initialized(t *testing.T) (*App, string) {
 
 func readFile(t *testing.T, project, rel string) string {
 	t.Helper()
-	data, err := os.ReadFile(filepath.Join(project, ".backlog", rel))
+	data, err := os.ReadFile(filepath.Join(project, ".luma", rel))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func fixedAt(t *testing.T, rfc3339 string) env.Clock {
 
 func readRecord(t *testing.T, project, rel string) *record.Record {
 	t.Helper()
-	data, err := os.ReadFile(filepath.Join(project, ".backlog", rel))
+	data, err := os.ReadFile(filepath.Join(project, ".luma", rel))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
-	const want = "deliverables/payments-v2/index.md"
+	const want = "backlog/deliverables/payments-v2/index.md"
 	if !strings.Contains(out, want) {
 		t.Errorf("output did not name the path:\n%s", out)
 	}
@@ -81,7 +81,7 @@ func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
 
 	// A journal exists at once: somewhere to write has to be there before
 	// anyone needs it, or the writing does not happen.
-	if _, err := os.Stat(filepath.Join(project, ".backlog", "deliverables/payments-v2/journal.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/journal.md")); err != nil {
 		t.Errorf("no journal alongside the deliverable: %v", err)
 	}
 }
@@ -90,7 +90,7 @@ func TestNewIsIdempotentByName(t *testing.T) {
 	app, project := initialized(t)
 	run(t, app, "new", "deliverable", "Payments v2")
 
-	path := filepath.Join(project, ".backlog", "deliverables/payments-v2/index.md")
+	path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
 	if err := os.WriteFile(path, []byte("---\ntype: deliverable\ntitle: Edited\n---\n\nmine\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -119,7 +119,7 @@ func TestNewOutcomeTakesItsDeliverableFromAFlag(t *testing.T) {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
 
-	r := readRecord(t, project, "deliverables/payments-v2/outcomes/the-queue-drains.md")
+	r := readRecord(t, project, "backlog/deliverables/payments-v2/outcomes/the-queue-drains.md")
 	if got, _ := r.Get("deliverable"); got != "[[deliverables/payments-v2]]" {
 		t.Errorf("deliverable = %q", got)
 	}
@@ -139,9 +139,9 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	for _, tc := range []struct{ unit, path string }{
-		{"outcome", "deliverables/payments-v2/outcomes/a-thing.md"},
-		{"decision", "deliverables/payments-v2/decisions/a-thing.md"},
-		{"exploration", "deliverables/payments-v2/explorations/a-thing.md"},
+		{"outcome", "backlog/deliverables/payments-v2/outcomes/a-thing.md"},
+		{"decision", "backlog/deliverables/payments-v2/decisions/a-thing.md"},
+		{"exploration", "backlog/deliverables/payments-v2/explorations/a-thing.md"},
 	} {
 		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-d", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
@@ -153,7 +153,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 
 	// A task is worked, so it does carry one.
 	run(t, app, "new", "task", "Do it", "-d", "payments-v2")
-	if r := readRecord(t, project, "deliverables/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
+	if r := readRecord(t, project, "backlog/deliverables/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
 		t.Error("a new task has no workflow_status")
 	}
 }
@@ -163,12 +163,12 @@ func TestNewTakesItsDeliverableFromTheWorkingDirectory(t *testing.T) {
 	run(t, app, "new", "deliverable", "Payments v2")
 
 	// Working inside a deliverable should not require naming it.
-	app.WorkingDir = filepath.Join(project, ".backlog", "deliverables", "payments-v2")
+	app.WorkingDir = filepath.Join(project, ".luma", "backlog/deliverables", "payments-v2")
 
 	if code, _, e := run(t, app, "new", "task", "Add the queue"); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
-	r := readRecord(t, project, "deliverables/payments-v2/tasks/add-the-queue.md")
+	r := readRecord(t, project, "backlog/deliverables/payments-v2/tasks/add-the-queue.md")
 	if got, _ := r.Get("deliverable"); got != "[[deliverables/payments-v2]]" {
 		t.Errorf("deliverable was not derived from the working directory: %q", got)
 	}
@@ -218,7 +218,7 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 		if _, existed := before[path]; existed {
 			continue
 		}
-		if !strings.HasPrefix(path, ".backlog/") {
+		if !strings.HasPrefix(path, ".luma/") {
 			t.Errorf("wrote outside the backlog: %s", path)
 		}
 	}

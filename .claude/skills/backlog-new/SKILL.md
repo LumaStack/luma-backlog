@@ -1,11 +1,11 @@
 ---
 name: backlog-new
-description: Create records in this repository's .backlog/ — a deliverable, an outcome, a task, a decision, or an exploration. Use whenever work is being started, scoped, or captured: "add a deliverable for X", "what does done look like", "write that up as a task", "we decided Y", "park this idea", or when a discussion settles something worth not re-arguing. Trigger even if the words deliverable, outcome, or backlog are never said, as long as a discrete piece of work or a settled decision is being described. Do NOT use for editing existing records or for closing work.
+description: Create records in this repository's .luma/ — a deliverable, an outcome, a task, a decision, or an exploration. Use whenever work is being started, scoped, or captured: "add a deliverable for X", "what does done look like", "write that up as a task", "we decided Y", "park this idea", or when a discussion settles something worth not re-arguing. Trigger even if the words deliverable, outcome, or backlog are never said, as long as a discrete piece of work or a settled decision is being described. Do NOT use for editing existing records or for closing work.
 ---
 
 # Create a backlog record
 
-Scaffolds records into `.backlog/` so every one is shaped the same way regardless of which agent wrote it. [`docs/spec.md`](../../../docs/spec.md) is the authority; this is the procedure that applies it.
+Scaffolds records into `.luma/` so every one is shaped the same way regardless of which agent wrote it. [`docs/spec.md`](../../../docs/spec.md) is the authority; this is the procedure that applies it.
 
 **There is no binary yet.** Records are written by hand, following this document. As commands arrive, the steps here are replaced by calls to them — the skill keeps holding *when and why*, the command takes over *how*.
 
@@ -36,7 +36,7 @@ Get these right and the record is correct even if the wording is not.
 ## Where it goes
 
 ```
-.backlog/deliverables/<slug>/
+.luma/backlog/deliverables/<slug>/
   index.md            the deliverable itself
   journal.md          created with it, never optional
   outcomes/           one file each

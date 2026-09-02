@@ -40,7 +40,7 @@ func TestNoCommandWritesOutsideTheBacklog(t *testing.T) {
 	}
 
 	for path, digest := range snapshotAll(t, project) {
-		if strings.HasPrefix(path, ".backlog/") {
+		if strings.HasPrefix(path, ".luma/") {
 			continue
 		}
 		if was, existed := before[path]; !existed {

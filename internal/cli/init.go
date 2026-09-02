@@ -13,7 +13,8 @@ func newInitCommand(app *App) *cobra.Command {
 	return &cobra.Command{
 		Use:   "init",
 		Short: "Create a backlog in this repository",
-		Long: "Creates .backlog/ with a configuration file written out in full.\n\n" +
+		Long: "Creates .luma/ with the backlog bundle and records tier, and a\n" +
+			"configuration file written out in full.\n\n" +
 			"Safe to run again: nothing existing is overwritten, and anything\n" +
 			"missing is created.",
 		Args:         cobra.NoArgs,
@@ -52,13 +53,13 @@ func runInit(app *App, cmd *cobra.Command) error {
 	}
 	report(out, created, config.FileName)
 
-	created, err = writeIfAbsent(b, "index.md", config.BundleRootFile)
+	created, err = writeIfAbsent(b, "backlog/index.md", config.BundleRootFile)
 	if err != nil {
 		return failure("%w", err)
 	}
-	report(out, created, "index.md")
+	report(out, created, "backlog/index.md")
 
-	for _, dir := range []string{"deliverables", "decisions", "_types"} {
+	for _, dir := range []string{"backlog/deliverables", "backlog/_types", "records/decisions"} {
 		if err := b.MkdirAll(dir); err != nil {
 			return failure("creating %s: %w", dir, err)
 		}
