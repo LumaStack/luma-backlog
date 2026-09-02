@@ -16,7 +16,7 @@ This project assumes a world where a backlog is worked **continuously and concur
 
 **What it is not** is the thing that decides what happens next. Driving agents, running workflows, sequencing effort, and judging quality are expected to live in a separate system. That system is expected to change rapidly. This one is expected to hold still.
 
-How much intelligence belongs on this side of that line is open. "Dumb store" is not the goal, and neither is a workflow engine. But the *method* for deciding is not open: almost no capability sits wholly on one side, so the question is not which side it goes on but **where the line runs through it** — the tool holding a neutral mechanism, and a team supplying the opinion it carries. `SPEC.md` §5.0 states that test and the two rules that bound it.
+How much intelligence belongs on this side of that line is open. "Dumb store" is not the goal, and neither is a workflow engine. But the *method* for deciding is not open: almost no capability sits wholly on one side, so the question is not which side it goes on but **where the line runs through it** — the tool holding a neutral mechanism, and a team supplying the opinion it carries. `spec.md` §5.0 states that test and the two rules that bound it.
 
 ## The interface is the contract
 
@@ -38,7 +38,7 @@ The reason the work lives in git at all is that it gives agents context they can
 
 Many actors touching the backlog at the same time is the expected condition, not an edge case to harden against later.
 
-> **This is about access, not execution.** Whether two *tasks* may be worked at the same time is a separate question with the opposite default — work is sequential unless something says otherwise, because forgetting to declare an ordering should cost speed rather than correctness (`SPEC.md` §4.5). Concurrency here means many actors reaching the same records; parallelism there means many tasks running at once. The words are kept apart deliberately.
+> **This is about access, not execution.** Whether two *tasks* may be worked at the same time is a separate question with the opposite default — work is sequential unless something says otherwise, because forgetting to declare an ordering should cost speed rather than correctness (`spec.md` §4.5). Concurrency here means many actors reaching the same records; parallelism there means many tasks running at once. The words are kept apart deliberately.
 
 - **Independent work should proceed independently.** Actors not touching the same thing should not wait on each other.
 - **Contention should be bounded** to the records actually being changed.
@@ -82,5 +82,5 @@ Current positions, held loosely, and expected to be revisited as the boundary wi
 
 - **Deciding what to work on next.** Prioritization and readiness feel like they belong upstream.
 - **Running or prompting agents.** This tool holds no prompts and no model configuration.
-- **Enforcing process.** The tool may carry a gate a repository declares, and ships none of its own. It refuses only what a caller's own record contradicts — see `SPEC.md` §5.0. What remains open is whether a declared gate can be overridden (`OPEN-QUESTIONS.md` §6).
+- **Enforcing process.** The tool may carry a gate a repository declares, and ships none of its own. It refuses only what a caller's own record contradicts — see `spec.md` §5.0. What remains open is whether a declared gate can be overridden (`open-questions.md` §6).
 - **Being an organization's system of record.** External trackers may own the work; this stays a repository-local representation that gives agents context.

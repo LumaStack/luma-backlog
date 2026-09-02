@@ -12,7 +12,7 @@ Each request states what is wanted, why, and whether this project is **blocked**
 
 ## 1. `type_namespace` — a bundle-level default for type names
 
-**Status:** shipping ahead. Adopted in `SPEC.md` §4.1.
+**Status:** shipping ahead. Adopted in `spec.md` §4.1.
 
 **Wanted:** a bundle MAY declare a default namespace on its root `index.md`. Unqualified `type` values resolve against it.
 
@@ -71,7 +71,7 @@ The two need not compete: an authoritative record can carry a **generated naviga
 
 The format reserves `log.md` for a directory's append-only history, newest first, and its roadmap lists the exact structure as *undecided, needs a decision*.
 
-**This project has one**, arrived at from journals in daily use rather than from first principles — including from where those journals diverged from their own template. `SPEC.md` §5.5 has it: newest first, prepended, never rewritten, the newest entry acting as a resume pointer that marks everything below it historical.
+**This project has one**, arrived at from journals in daily use rather than from first principles — including from where those journals diverged from their own template. `spec.md` §5.5 has it: newest first, prepended, never rewritten, the newest entry acting as a resume pointer that marks everything below it historical.
 
 **And a rename.** *Log* undersells what the file actually accumulates. The artifact is not an event stream — it is the memory of the work: what was decided, what was ruled out, what is still unknown. `journal` names that; `log` names a receipt.
 

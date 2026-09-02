@@ -16,7 +16,7 @@ import (
 //
 // They live in a Go test rather than a script test because the script
 // frameworks in this ecosystem assert success or failure and not a specific
-// status (docs/TESTING.md).
+// status (docs/testing.md).
 func TestExitCodes(t *testing.T) {
 	t.Run("0 success", func(t *testing.T) {
 		app, _ := initialized(t)
@@ -54,7 +54,7 @@ func TestExitCodes(t *testing.T) {
 		}
 		json.Unmarshal([]byte(out), &seen)
 
-		path := filepath.Join(project, ".backlog", "deliverables/payments-v2/index.md")
+		path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
 		data, _ := os.ReadFile(path)
 		os.WriteFile(path, append(data, []byte("\nchanged\n")...), 0o644)
 

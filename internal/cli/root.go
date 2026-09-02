@@ -1,5 +1,5 @@
 // Package cli assembles the command tree and maps failures onto the exit
-// codes in docs/SPEC.md §9.4.
+// codes in docs/spec.md §9.4.
 package cli
 
 import (
@@ -19,7 +19,7 @@ func workingDir() (string, error) { return os.Getwd() }
 // version is set at build time via -ldflags.
 var version = "dev"
 
-// Exit codes are part of the published contract (docs/SPEC.md §9.4), so
+// Exit codes are part of the published contract (docs/spec.md §9.4), so
 // they are named rather than written as bare integers at call sites.
 const (
 	ExitOK       = 0
@@ -89,11 +89,11 @@ func newRootCommand(app *App) *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// With no arguments this will open the board (docs/SPEC.md §11).
+			// With no arguments this will open the board (docs/spec.md §11).
 			// Until that exists, say so rather than printing help and implying
 			// there is nothing here.
 			fmt.Fprintln(cmd.OutOrStdout(), "luma-backlog "+version+" — no commands are implemented yet.")
-			fmt.Fprintln(cmd.OutOrStdout(), "See docs/SPEC.md for the design, and .backlog/ for what is being built.")
+			fmt.Fprintln(cmd.OutOrStdout(), "See docs/spec.md for the design, and .luma/backlog/ for what is being built.")
 			return nil
 		},
 	}

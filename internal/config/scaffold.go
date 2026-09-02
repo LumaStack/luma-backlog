@@ -5,11 +5,11 @@ package config
 // Written out in full rather than left implicit in the binary, so a team's
 // first encounter with a default is a line they can read and change, not
 // behavior they have to discover and then find a way to override
-// (docs/SPEC.md §8.3). The comments are the point, which is why this is a
+// (docs/spec.md §8.3). The comments are the point, which is why this is a
 // document rather than a marshalled struct.
 //
 // TestDefaultFileMatchesDefaults keeps it honest against Default().
-const DefaultFile = `# luma-backlog configuration — see docs/SPEC.md §8
+const DefaultFile = `# luma-backlog configuration — see docs/spec.md §8
 # The source of truth. Deliberately minimal; keys are added when something
 # needs them, not in advance.
 

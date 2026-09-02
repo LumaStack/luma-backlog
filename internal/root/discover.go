@@ -5,7 +5,7 @@
 // everything it returns is scoped so a caller cannot climb out. The failure
 // this exists to prevent is not a loud escape — it is the upward walk leaving
 // the intended tree and finding another repository, where operations SUCCEED
-// against the wrong target and nothing reports a problem (docs/SPEC.md §9a.4).
+// against the wrong target and nothing reports a problem (docs/spec.md §9a.4).
 package root
 
 import (
@@ -15,8 +15,10 @@ import (
 	"path/filepath"
 )
 
-// Dir is the name of the backlog directory within a project.
-const Dir = ".backlog"
+// Dir is the name of the luma directory within a project. The backlog bundle
+// and the records tier both live inside it, per the luma directory layout
+// policy: one root, so an agent arriving cold does a single lookup.
+const Dir = ".luma"
 
 // ErrNotFound means no project root was located before the search stopped.
 var ErrNotFound = errors.New("no project root found: no .git between here and the ceiling")

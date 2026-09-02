@@ -8,7 +8,7 @@ workflow_status: closed
 
 # Scaffold the module
 
-`go.mod` at `github.com/lumastack/luma-backlog`, `cmd/luma-backlog/`, `internal/`, a Cobra root command that does nothing, and continuous integration running the tests across the supported Go versions (`SPEC.md` §9a).
+`go.mod` at `github.com/lumastack/luma-backlog`, `cmd/luma-backlog/`, `internal/`, a Cobra root command that does nothing, and continuous integration running the tests across the supported Go versions (`spec.md` §9a).
 
 Nothing else can be picked up until this exists, which is the only reason it is first.
 

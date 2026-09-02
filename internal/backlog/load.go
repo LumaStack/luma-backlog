@@ -50,7 +50,7 @@ func (i Item) Title() string {
 // Status is what to show for a record's state.
 //
 // For a worked unit it is the workflow position, or the configured default
-// when absent — absence is meaningful rather than missing (docs/SPEC.md §4.2).
+// when absent — absence is meaningful rather than missing (docs/spec.md §4.2).
 //
 // For an outcome it is DERIVED from evidence, never read from a field. There
 // is nothing to store that the verification record does not already say, and a
@@ -84,7 +84,7 @@ type Filter struct {
 //
 // Unreadable files are skipped rather than fatal: one malformed record must
 // not make the whole backlog unlistable, which is the permissive posture the
-// format requires (docs/SPEC.md §4.1).
+// format requires (docs/spec.md §4.1).
 func List(b *root.Backlog, f Filter) ([]Item, error) {
 	var items []Item
 
@@ -120,11 +120,15 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 // and Type Definitions.
 func isRecordPath(rel string) bool {
 	switch {
-	case rel == "index.md":
+	case rel == "backlog/index.md":
 		return false
 	case path.Base(rel) == "journal.md":
 		return false
+	case strings.HasPrefix(rel, "backlog/_types/"):
+		return false
 	case strings.HasPrefix(rel, "_types/"):
+		// .luma/_types/ holds contracts for documents outside the bundle,
+		// which are not this tool's records either.
 		return false
 	}
 	return true

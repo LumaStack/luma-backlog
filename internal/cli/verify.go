@@ -45,7 +45,7 @@ func newVerifyCommand(app *App) *cobra.Command {
 
 			// Evidence sits BESIDE verified rather than inside it, because
 			// verified is a core format field and inheritance is add-only, so
-			// the key cannot be added there (FORMAT-REQUESTS.md §3). The two
+			// the key cannot be added there (format-requests.md §3). The two
 			// correlate on by and at rather than by position, since parallel
 			// lists matched by index break the first time one is hand-edited.
 			if strings.TrimSpace(evidence) != "" {

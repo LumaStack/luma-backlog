@@ -1,18 +1,18 @@
 # Open Questions
 
-Design decisions that are deliberately unsettled. [`SPEC.md`](SPEC.md) describes only what is currently modeled; this file tracks what is still being explored, why it is hard, and what would settle it.
+Design decisions that are deliberately unsettled. [`spec.md`](spec.md) describes only what is currently modeled; this file tracks what is still being explored, why it is hard, and what would settle it.
 
 Nothing here should be resolved by argument where building would answer it faster.
 
 **Most consequential right now:** §8 (worktrees), because it may invalidate the claiming model and blocks most of the unwritten specification; §18 (how outcomes relate to the other units); §22 (how behavior attaches at a boundary); §17 (default sections for each unit).
 
-§12 — the boundary with the workflow layer — is **settled as a test rather than an answer** (`SPEC.md` §5.0), which narrows §6 and removes the in-principle objection in §22.
+§12 — the boundary with the workflow layer — is **settled as a test rather than an answer** (`spec.md` §5.0), which narrows §6 and removes the in-principle objection in §22.
 
 All unit names are now settled: **deliverable**, **wave**, **outcome**, **task**, **decision**, and **dimension**.
 
 Numbering is stable — new questions are appended rather than inserted, so references from other documents keep working.
 
-Repository scaffolding — module path, layout, binary name, license, dependencies, testing, and distribution — is settled in `SPEC.md` §9a rather than tracked here, since none of it constrains the record model.
+Repository scaffolding — module path, layout, binary name, license, dependencies, testing, and distribution — is settled in `spec.md` §9a rather than tracked here, since none of it constrains the record model.
 
 ---
 
@@ -38,7 +38,7 @@ A second test proved unexpectedly discriminating: **how does it read at number f
 
 | Candidate | Why not |
 |---|---|
-| **phase** | Phases are known in advance and differ in kind; this unit is unknown in count and identical in kind. Also a common dimension name, and assigned there instead (`SPEC.md` §2.7). |
+| **phase** | Phases are known in advance and differ in kind; this unit is unknown in count and identical in kind. Also a common dimension name, and assigned there instead (`spec.md` §2.7). |
 | **iteration** | Semantically exact, but in Azure DevOps and Scrum it *is* the sprint field — importing a fixed time-box, and colliding by synonymy with `sprint` as a dimension. |
 | **cycle** | Collides with *cycle time* as a delivery metric, and with fixed-length planning cycles. |
 | **round** | Clean and collision-free, but reads informal and carries no grouping sense. |
@@ -58,13 +58,13 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 **Status:** Open. Independent of the name, which is settled (§1).
 
-- **Record or attribute?** The lean is an attribute on tasks — costing nothing when unused, adding no level to walk up, and keeping the boundary computable ("every task in this one is done"). Under `SPEC.md` §3.1 an attribute may gain a record when it has something to say, so this may not be a hard fork. But this unit has mechanics, and mechanics may want a home.
+- **Record or attribute?** The lean is an attribute on tasks — costing nothing when unused, adding no level to walk up, and keeping the boundary computable ("every task in this one is done"). Under `spec.md` §3.1 an attribute may gain a record when it has something to say, so this may not be a hard fork. But this unit has mechanics, and mechanics may want a home.
 - **Sequential or parallel?** Iterating toward an outcome implies an order. A deliverable with genuinely independent tracks might want concurrent ones, which changes what a boundary means.
 - **Do tasks belong to exactly one?** If work does not finish, does the task move to the next, or is a new task created? Moving keeps history in one place; creating fresh makes each iteration honest about what it actually attempted. See §9, which is the same question approached from the other side.
 - **What happens when a task joins a closed one?** As a pure attribute the boundary silently un-fires. That may argue for recording closure even if the unit itself stays an attribute.
-- **Where does its output live?** A learning pass or an audit produces artifacts. `SPEC.md` §3.1 suggests the answer — a record exists when there is something to say — but this should be confirmed by use.
+- **Where does its output live?** A learning pass or an audit produces artifacts. `spec.md` §3.1 suggests the answer — a record exists when there is something to say — but this should be confirmed by use.
 - **Does it survive import and export?** External trackers have loosely similar concepts and nothing that maps exactly.
-- **How is a wave named?** Never decided. The layout in `SPEC.md` §7.2 briefly showed `waves/1.md`, which was an example nobody chose rather than a choice. Human-friendly slugs, ordinals, and opaque identifiers are all live. §7.4 says filenames are slugs from titles and that numeric identifiers are deliberately not used — so ordinals would be a stated exception, which is defensible for a unit whose whole identity is *which attempt this is*, and worth stating rather than assuming.
+- **How is a wave named?** Never decided. The layout in `spec.md` §7.2 briefly showed `waves/1.md`, which was an example nobody chose rather than a choice. Human-friendly slugs, ordinals, and opaque identifiers are all live. §7.4 says filenames are slugs from titles and that numeric identifiers are deliberately not used — so ordinals would be a stated exception, which is defensible for a unit whose whole identity is *which attempt this is*, and worth stating rather than assuming.
 - **Is `ordinal` a field at all?** Found by sweeping obligations (§4.2), and it depends on the answer above. Its absence says nothing, so no obligation level fits; and if the name carries the ordinal, the field is a second copy of a path fact that eventually disagrees with it. Marked unresolved rather than guessed.
 
 *Settled by:* using it. The job is real; the shape should be discovered by running work through iterations and noticing what is actually needed.
@@ -73,7 +73,7 @@ The agent-orchestration sense is **adjacent, not identical**: there a wave is a 
 
 ## 2. Where exploration and the journal live
 
-**Status:** **Settled.** Both live in the deliverable folder (`SPEC.md` §7.2, §7.2.1), event history turned out to need no file at all, and the journal's entry shape is settled from a working system. Context is resolved separately, below.
+**Status:** **Settled.** Both live in the deliverable folder (`spec.md` §7.2, §7.2.1), event history turned out to need no file at all, and the journal's entry shape is settled from a working system. Context is resolved separately, below.
 
 Three things were wanted from the beginning and had no place in the unit model.
 
@@ -81,7 +81,7 @@ Three things were wanted from the beginning and had no place in the unit model.
 
 **Context loading belongs to a separate, swappable engine.** One repository might resolve against a generated wiki, another against a commercial knowledge graph, another against a folder of documents — entirely different engines, and a backlog that understood any of them would be coupled to it.
 
-So this tool holds **`references`**: opaque pointers stored with the record they belong to, never resolved, ranked, or interpreted here (`SPEC.md` §4.1.2). Deciding what an actor should read, and how much of it, is the engine's work.
+So this tool holds **`references`**: opaque pointers stored with the record they belong to, never resolved, ranked, or interpreted here (`spec.md` §4.1.2). Deciding what an actor should read, and how much of it, is the engine's work.
 
 That is why context was hard to place — it was never a record type or a unit. It is a field, and the interesting part of it lives somewhere else entirely.
 
@@ -95,7 +95,7 @@ A single `exploration.md` that grows into a folder later was considered and reje
 
 ### The journal — settled as memory, and as a log with more in it
 
-**The journal is the deliverable's memory** (`SPEC.md` §5.5). A session loses its memory when it ends and an actor takes theirs away; the deliverable's stays with the deliverable, committed beside the work.
+**The journal is the deliverable's memory** (`spec.md` §5.5). A session loses its memory when it ends and an actor takes theirs away; the deliverable's stays with the deliverable, committed beside the work.
 
 **It is a log and more than a log.** Not narrative kept apart from the record of events, but the readable stream carrying both — significant events *and* the reasoning behind them. Git records **what got done**, completely; the journal records **why**, plus enough of the what to make the why legible.
 
@@ -118,7 +118,7 @@ Not taken because the reasoning that transfers best does not fit a field: *we tr
 
 **This is deferred, not closed.** Re-open trigger: wanting to *query* across reasoning — "show every outcome retired for the same reason," "what did we expect from this and did we get it." Prose cannot answer that, and the two are not exclusive; a typed field could sit alongside the narrative rather than replacing it. Dissatisfaction with prose alone does not qualify.
 
-**Still open — the repository-level journal.** `SPEC.md` §7.2 shows a `journal.md` at the root of `.backlog/` for cross-deliverable learning, and that half is **not settled**.
+**Still open — the repository-level journal.** `spec.md` §7.2 shows a `journal.md` at the root of `.backlog/` for cross-deliverable learning, and that half is **not settled**.
 
 A deliverable's journal has an obvious owner, an obvious reader, and a natural end. A repository-wide one has none of the three, which is the profile of a junk drawer — the thing rejected outright for exploration (§2, above). Cross-deliverable learning is real and has to land somewhere, but *has to land somewhere* is exactly the argument that produces junk drawers.
 
@@ -224,7 +224,7 @@ Whether the format should carry an optional evidence key on `actor_event` is a *
 
 ## 5. Whether decisions are a record type
 
-**Status:** **Settled.** Yes — and more than a record type. A decision is a core unit, defined in `SPEC.md` §2.6.
+**Status:** **Settled.** Yes — and more than a record type. A decision is a core unit, defined in `spec.md` §2.6.
 
 It was resolved by noticing that a decision does a job none of the other units do, on a different axis from all of them: a deliverable, a wave, and a task are *work*, whereas a decision is a *constraint on* work. It does not complete, does not iterate, and outlives the thing that produced it — which is also why it cannot be stored inside any one deliverable.
 
@@ -242,7 +242,7 @@ A checkpoint is a point where something must happen before proceeding — verify
 
 The instinct to say "the tool never enforces process" was always wrong on its own terms, because **the tool already enforces something**: completion derives from evidence and cannot be asserted. So the question was never *whether*, but *what class of rule*.
 
-`SPEC.md` §5.0 answers it with a bound rather than a category:
+`spec.md` §5.0 answers it with a bound rather than a category:
 
 > **The tool may refuse only what the caller's own record contradicts.**
 
@@ -268,19 +268,25 @@ The first of those is the live one; the other two only matter once gates exist.
 
 ## 7. Default workflow status vocabulary
 
-**Status:** Open.
+**Status:** Open. One thing is decided (2026-09-02): **the formation-bar words are deliberately not in use yet.** Designing gate semantics before a gate is needed was judged getting ahead of our needs.
 
 States are expected to be configurable and carry no meaning to the tool. But the shipped default is what most users keep, so it is a real choice made under the appearance of not making one.
 
-*Settled by:* using it.
+**Captured for later, not adopted** — vocabulary worked out during the unit rename (§16 round three), shelved until a formation bar is actually needed (a board with a pull column, a readiness check, an agent asking what it may start):
+
+- **`actionable`** — candidate meaning: work can leave the backlog and start. Named for the scanner's question, *can I pull this?* A second reading was raised and argued against — *the item itself needs action before it can progress* — because it inverts the word's common usage and marks a fact that is derivable from position below the bar.
+- **`deliverable`** — candidate meaning: done is provable; the work can be *completed*, as distinct from started. The two facts arrive in either order, so if both words are ever used, at most one belongs on the declared ladder — the lean is `deliverable` as a **derived condition** (live outcomes exist and every one carries a check), which can neither decay nor over-claim. Together they would form a three-gate escalation: *actionable → deliverable → delivered*.
+- **`ready`** — the alternative if `actionable` ever feels overloaded; the industry's own name for this bar.
+
+*Settled by:* using it — adopting a bar word only when something concrete needs one.
 
 ---
 
 ## 8. Worktrees, and where coordination state lives
 
-**Status:** Open, and currently the most structurally dangerous question here. It may invalidate the claiming model described in `SPEC.md` §2.5 and §6.
+**Status:** Open, and currently the most structurally dangerous question here. It may invalidate the claiming model described in `spec.md` §2.5 and §6.
 
-`SPEC.md` §7 requires that agents and humans working in separate git worktrees have an up-to-date view and do not repeat effort. That requirement is in direct tension with how worktrees work.
+`spec.md` §7 requires that agents and humans working in separate git worktrees have an up-to-date view and do not repeat effort. That requirement is in direct tension with how worktrees work.
 
 ### The problem
 
@@ -380,17 +386,17 @@ And then the claim is stored in the record's frontmatter, which is branch conten
 What that would buy:
 
 - **Claiming works across worktrees with no setup**, because the storage is shared by default.
-- **Claiming works across machines**, because the shared server accepts exactly one of two competing updates. This is the guarantee `SPEC.md` §7 asks for and that no pairing above delivers without a dedicated branch.
+- **Claiming works across machines**, because the shared server accepts exactly one of two competing updates. This is the guarantee `spec.md` §7 asks for and that no pairing above delivers without a dedicated branch.
 - **Records stop churning.** Claims are among the most frequent writes in the system (§7.3); removing them means task files stop changing, and stop conflicting on merge, under the write that happens most.
-- **Topology stops being a correctness question.** A versus B would no longer decide whether claiming works — only whether backlog changes travel with a pull request or stay out of code review. Both are defensible, so by `SPEC.md` §5.0 that is configuration with a default rather than a decision the tool makes.
+- **Topology stops being a correctness question.** A versus B would no longer decide whether claiming works — only whether backlog changes travel with a pull request or stay out of code review. Both are defensible, so by `spec.md` §5.0 that is configuration with a default rather than a decision the tool makes.
 
 What it would cost:
 
 - **A claim is no longer plain text in the file.** You could not see who holds a task by opening it, or take one by hand-editing. The tool would render claims on the board and in `show`, and `claim` / `release` / `steal` would be the only way to change them.
-- **Claim history leaves git history.** It would have to move to the log, which `SPEC.md` §5.5 already names as the home for exactly this — *"a claim stolen from a live holder."*
+- **Claim history leaves git history.** It would have to move to the log, which `spec.md` §5.5 already names as the home for exactly this — *"a claim stolen from a live holder."*
 - **It is unfamiliar.** Nothing else in this design reaches past plain files, and that is a real cost even where the mechanism is sound.
 
-It would change `SPEC.md` §4.5 (`claimed_by` and `lease_expires` would leave the task record), §6.5, §6.8, and §7.
+It would change `spec.md` §4.5 (`claimed_by` and `lease_expires` would leave the task record), §6.5, §6.8, and §7.
 
 *Evaluated by:* someone reading it fresh and deciding whether the loss of plain-text claims is worth atomic ones. Until then it is an idea, not a lean.
 
@@ -402,13 +408,13 @@ It would change `SPEC.md` §4.5 (`claimed_by` and `lease_expires` would leave th
 
 ### What it costs to get wrong
 
-This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, and whether "parallel is the normal case" is honored or merely asserted.
+This decides the on-disk layout (`spec.md` §7), whether claiming works at all, and whether "parallel is the normal case" is honored or merely asserted.
 
 **Migration between topologies is cheap.** Records are byte-identical in all of them; only their location changes. That makes this decision far more reversible than it first appeared, and argues for starting simple and moving when the pain is demonstrated rather than predicted.
 
 *Settled by:* observing how often claims actually collide. The other question — how work is assigned — is answered above and does not fork the design. What remains is whether occasional duplicated work is tolerable while the tool is young, and the lean is that it is, given how cheap migration turns out to be.
 
-> **A known gap against `SPEC.md` §7.** That section requires that actors in separate worktrees have an up-to-date view and do not repeat effort, and it **stays stated at full strength** — the specification describes the finished design, not the first release.
+> **A known gap against `spec.md` §7.** That section requires that actors in separate worktrees have an up-to-date view and do not repeat effort, and it **stays stated at full strength** — the specification describes the finished design, not the first release.
 >
 > The minimum viable lean does not meet it. Cross-branch reads prevent *silent* duplication, since divergence is surfaced rather than hidden, but they do not make claims atomic, so two actors can still occasionally collide. Only topology B satisfies §7 in full, because only push atomicity makes a claim unforgeable across machines.
 >
@@ -422,7 +428,7 @@ This decides the on-disk layout (`SPEC.md` §7), whether claiming works at all, 
 
 When a unit of iteration ends without a task succeeding and another is begun to try again, a **new record is created and linked back to the one it follows.** The failed record is never rewritten.
 
-That much fits the rest of the design well: the new record carries the backward link, so creating it writes exactly one file and touches nothing shared — the same property that makes membership work (`SPEC.md` §3.2). The failed attempt survives intact, with its own evidence and its own history, as a permanent account of what that iteration actually tried. The format also anticipates this directly: supersession is defined there as a relationship rather than a lifecycle status.
+That much fits the rest of the design well: the new record carries the backward link, so creating it writes exactly one file and touches nothing shared — the same property that makes membership work (`spec.md` §3.2). The failed attempt survives intact, with its own evidence and its own history, as a permanent account of what that iteration actually tried. The format also anticipates this directly: supersession is defined there as a relationship rather than a lifecycle status.
 
 ### What is not settled
 
@@ -446,7 +452,7 @@ Collapsing these loses the distinction that decides what to do next, and imports
 
 ## 10. Identity that survives another system
 
-**Status:** Open. Blocks import and export (`SPEC.md` §10).
+**Status:** Open. Blocks import and export (`spec.md` §10).
 
 If an external tracker can be the system of record, records need identity that survives a round trip. The format's identity is **path-based**, so renaming or moving a record changes what it is — and every re-import risks creating duplicates rather than recognizing what it already has.
 
@@ -473,7 +479,7 @@ So the question is what actually makes it happen.
 | **Gate on start** | No tasks may be created until the deliverable declares criteria. | Strongest, and the only one that enforces *first*. Also the most obstructive, and the most likely to be worked around. |
 | **Report drift** | Criteria exist, but tasks are accumulating while they go untouched. | Advisory, but cheap and hard to argue with. Surfaces the failure mode without blocking. |
 
-Note the interaction with `SPEC.md` §2.3, which currently says verification and applied learning **always** happen at an iteration boundary. If that is a requirement rather than a description, some enforcement already exists and this question is partly answered.
+Note the interaction with `spec.md` §2.3, which currently says verification and applied learning **always** happen at an iteration boundary. If that is a requirement rather than a description, some enforcement already exists and this question is partly answered.
 
 *Settled by:* deciding whether the discipline is worth obstruction. If gating on start is too aggressive, the honest fallback is reporting drift rather than pretending a close-time gate enforces a start-time discipline.
 
@@ -481,7 +487,7 @@ Note the interaction with `SPEC.md` §2.3, which currently says verification and
 
 ## 12. Where the boundary with the workflow layer actually falls
 
-**Status:** Settled — as a test rather than an answer. See `SPEC.md` §5.0.
+**Status:** Settled — as a test rather than an answer. See `spec.md` §5.0.
 
 The question was never going to resolve into a list of which features go where, because **almost no feature has a side.** A status vocabulary is not ours or theirs; the tool holds an ordered list and a team fills it. Columns, standing outcomes, and hook configuration all have that same shape. The line runs *through* capabilities rather than between them.
 
@@ -491,7 +497,7 @@ A second question governs how much the tool is allowed to do with what it knows:
 
 ### What it changed
 
-Three conditions embedded thresholds that no methodology-free answer exists for — `deliverable.drifted`, `deliverable.not-converging`, `deliverable.churning`. They now report the series they observed, and the threshold that names it a problem moved to configuration (`SPEC.md` §5.2, §8.2).
+Three conditions embedded thresholds that no methodology-free answer exists for — `deliverable.drifted`, `deliverable.not-converging`, `deliverable.churning`. They now report the series they observed, and the threshold that names it a problem moved to configuration (`spec.md` §5.2, §8.2).
 
 ### What remains
 
@@ -503,7 +509,7 @@ The **structural** half, which is a practice rather than a decision: early workf
 
 ## 13. Directory layout under `.backlog/`
 
-**Status:** **Settled — containment under the deliverable.** Written up in `SPEC.md` §7.2 through §7.5.
+**Status:** **Settled — containment under the deliverable.** Written up in `spec.md` §7.2 through §7.5.
 
 The rule was already settled: volatile properties are attributes, never directories, because a record's identity is its path and filing by status would change identity on every transition.
 
@@ -535,7 +541,7 @@ If `deliverables/` becomes unwieldy at scale, **sharding by creation period is l
 
 **Ranking** is a different thing: a total order that says what comes first *within* a priority, which is what a board's vertical position expresses. The question is whether the minimum viable product has one.
 
-**The storage scheme is settled** (`SPEC.md` §9.6), because it had to be chosen before a board ships and is painful to retrofit afterwards. Positions would rewrite every neighbour on each move — churn on the most visible operation in the product, and contention whenever two actors reorder at once. A **decimal ordering key** means a move writes exactly one record, the same commutative-write property that makes membership work (§3.2).
+**The storage scheme is settled** (`spec.md` §9.6), because it had to be chosen before a board ships and is painful to retrofit afterwards. Positions would rewrite every neighbour on each move — churn on the most visible operation in the product, and contention whenever two actors reorder at once. A **decimal ordering key** means a move writes exactly one record, the same commutative-write property that makes membership work (§3.2).
 
 What remains open is only whether **manual ranking is exposed in the first release**, which costs nothing to defer now that the scheme exists.
 
@@ -559,13 +565,64 @@ Open:
 
 ---
 
-## 16. What the unit of delivery is called
+## 16. What the unit of work is called
 
-**Status:** **Settled — `deliverable`.** `project` held the slot for most of the design and was displaced late.
+**Status:** **Settled — `work item`** (2026-09-02). The third name to hold the slot: `project` carried most of the design, `deliverable` displaced it late, and `work item` displaced `deliverable` when the noun's job was reconsidered. All three rounds are kept, because each displacement discovered a requirement the next name had to meet.
 
-**A deliverable is a backlog item.** That is the anchor: it is what gets listed, ranked, picked up, and delivered. It is normally smaller than an epic — an epic groups several of them and belongs among the dimensions.
+**A work item is the backlog unit.** That anchor is unchanged from the earlier rounds: it is what gets listed, ranked, picked up, and delivered — normally smaller than an epic, which groups several of them and belongs among the dimensions.
 
-### Why it displaced `project`
+### Round three: why `deliverable` was reopened
+
+**The objection:** the name reads as a claim the record cannot honestly make at birth. Work arrives as bugs, ideas, and half-formed stories — captures not yet broken down enough to be executable, let alone delivered. The earlier defense — the noun names the destination, not readiness — is grammatically sound and still beside the point once capture is taken seriously as the input side's primary concern: a backlog's first job is to receive work cheaply, and its name should not flinch at what it receives.
+
+**The resolution demoted the word rather than merely replacing it.** `deliverable` was chosen partly because it is demanding — every entry must answer *what gets handed over*. But a noun can be ignored and a check cannot, and that discipline already lives in mechanics: the formation bar (a record marked `actionable` whose outcomes lack checks is over-claiming, `spec.md` §2.2.1) and evidenced completion. With the teaching held by the mechanics, the noun is free to be honest across the record's whole life — and **`deliverable` becomes an adjective describing a state a record earns, never a type it is born as.** The rung vocabulary is **deliberately deferred** (2026-09-02): neither `actionable` nor `deliverable` is in use yet. Both were worked out far enough to shelve — *actionable* as "work can start," *deliverable* as "done is provable," two different facts arriving in either order — and the candidate semantics are captured under §7, to be adopted only when something concrete needs a formation bar. Designing gate words before a gate exists was judged getting ahead of our needs. What stands regardless of that deferral is the demotion itself: `deliverable` is never again the unit's noun.
+
+### The three tests, discovered in order
+
+1. **Arc survival.** The noun must be true at every point of the record's life — raw capture, preparation, in progress, delivered. This kills `deliverable` (false at birth), `idea` (false at maturity), and every commitment-stage word wearing a noun's clothes (`actionable`, `bet`).
+2. **Kind-agnosticism.** Bugs, stories, ideas, and requests are **kinds of one unit**, never units of their own — promoting a record to a different type mid-life would change its path-based identity and break inbound links. The noun must sit comfortably over the whole heterogeneous intake. This kills `story`: nobody calls a bug a story, which is proof the word never generalized even colloquially.
+3. **Level-legibility.** The noun must tell a reader what altitude the thing sits at. A word is calibrated either by **ubiquity** — everyone knows the size of the words the big trackers use — or by an **explicit anchor**, a qualifier naming the shelf it sits on. Words imported from elsewhere arrive uncalibrated: this killed `change` (happens below a task or above an initiative), `pursuit` and `mission` (drift upward), and `effort` (a war effort and an afternoon's effort are both efforts). A near-theorem fell out: any word already calibrated at exactly this level was calibrated by some tracker or methodology using it, and carries that flavor — `issue`, `ticket`, `story`, `card`. The only calibrated-and-unclaimed shape is the anchored generic.
+
+### Why `work item`
+
+- **It passes all three tests.** True from capture to delivery, claims nothing about kind or readiness, and the anchor pins the level.
+- **It beat `backlog item` on arc survival of the qualifier.** A backlog item is only literally a *backlog* item while it sits on the backlog — the name expires at the moment the work starts mattering most. A work item is one on the backlog, in progress, and after delivery alike.
+- **`work` and `work item` divide labor the way English already does.** *Work* is the mass substance — how much work is on the backlog — and *work item* its countable unit — twelve work items, four delivered. Bare `work` as the type name was considered and fails on countability (a backlog is listed, ranked, and counted; labor-sense work has no plural), on level-legibility, and on an internal collision — the unit table had already assigned *work* to the task.
+- **The industry ran this experiment at scale and landed here.** The two largest external trackers are both, at real migration cost, renaming their unit from a flavored noun to exactly this term, having concluded from usage data that the flavored word cannot stretch over heterogeneous intake. Their canonical noun now maps one-to-one onto ours, which matters for import and export. Scrum's own definitive text never says *story*; its formal term is *product backlog item* — the anchored generic is what the methodology says when it is being precise.
+
+### Set aside in round three
+
+Set aside, not condemned: the test that eliminated each is recorded, so any of them can be reopened by refuting its test.
+
+| Candidate | Eliminated by |
+|---|---|
+| **effort** | The near-winner. Round two recorded it passing every case and owning no domain, killed only by the field-name collision. Renaming the field (`estimate` is the clearer field name regardless, and that rename remains worth making) revived it; it then fell to level-legibility, plus a permanent mass-noun shadow — "the estimated effort of this effort" cannot be renamed out of English. |
+| **backlog item** | The strongest rival. Qualifier fails arc survival — see above. |
+| **item** (bare) | Weightless — calling it an item is calling it a thing. Anchoring is what makes the generic bearable. |
+| **issue** | Ubiquity-calibrated and vocabulary-compatible with the major trackers, which is genuinely valuable for import. Falls to the non-software cases (*issue: establish a daily writing habit* reads as something being wrong with you) and to its own inventors migrating off it. Expected to be the most popular relabel. |
+| **request**, **ask** | Accurate at capture by construction, and recipient-side, matching the delivery-not-release argument (`spec.md` §2.2). Strain on self-originated work — maintenance, habits — where the tool would make an author role-play a requester. |
+| **change** | Level-illegible, and mass/verb ambiguity sits badly next to version-control vocabulary. |
+| **job**, **chunk** | Serviceable. `job` collides externally with scheduled execution; `chunk` is too informal for a specification. |
+| **pursuit**, **mission** | Alive, and calibrated too high — a two-line fix as a pursuit is grand, and missions are what companies have. |
+| **ticket**, **card** | Calibrated by ubiquity; `ticket` carries queue-drudgery culture, `card` names the representation rather than the work. |
+| **a coined word** | Perfect collision-freedom, zero teaching until taught. Declined for agent legibility and readability. |
+
+### Decided alongside, recorded here because the rename forced them
+
+- **Kinds, not types.** `bug`, `story`, `idea` classify a work item; they are never record types.
+- **Fan-out by provenance.** Breaking one capture into several actionable work items creates new records carrying `sources` links back; the capture record is never converted or moved — the same copy-never-move mechanics as decision promotion (`spec.md` §4.8.1) and succession (§4.6).
+- **No forced split between requests and work items.** The pipeline's input and output ends are views keyed on the formation bar, not two record types — a type wall would move the judgment to birth, where the author knows least, instead of to the crossing, where it is checkable. **Deferred, with a trigger:** reopen if real use shows the many-to-many request-to-work-item join is common rather than rare, or an intake population emerges that is distinct from the people working the backlog and needs its own lifecycle (answered, declined, duplicate).
+- **The unit table rewording.** *Task* was "the unit of work"; it becomes the unit of coordination — which `spec.md` §2.5 already argues — freeing *work* for this unit.
+
+### Known costs, accepted in round three
+
+- **Two words.** Longer commands, and the type value needs a slug form (`work-item`). Round two's complaint about `deliverable`'s eleven characters applies nearly unchanged.
+- **It teaches less than a flavored noun.** Accepted, because what flavored nouns teach is someone else's methodology, and the discipline this project wants taught — what gets handed over, and whether done is provable — lives in the bar and the completion arithmetic, where it cannot be ignored.
+- **The rename itself.** `spec.md`, the type definitions, the tool, and the live corpus all still say `deliverable`; the migration is deliberately being paid now, while the corpus is three records.
+
+---
+
+### Round two, kept for the record: why `deliverable` displaced `project`
 
 `project` was chosen first on immediate recognition, which is a real advantage and the reason it survived so long. Three things eventually outweighed it:
 
@@ -595,15 +652,17 @@ The work is not necessarily software. Every candidate was checked against four:
 | **endeavor**, **undertaking**, **initiative**, **charter**, **venture** | Too formal, too long, or implying scale and risk the unit does not always carry. |
 | **issue**, **ticket** | Both imply something is wrong. Too negative for work that is usually ordinary. |
 
-### Known costs, accepted
+Several of these were re-examined in round three under its new tests; the verdicts above are round two's, kept as written.
+
+### Known costs, accepted in round two
 
 - **Eleven characters**, appearing in every command, with the obvious short form poisoned — `del` reads as delete. Needs a deliberate alias or prefix matching.
 - **Consultant tone.** Some will hear status decks. Judged to fade with use.
-- **Weakest on habits** — a habit is not handed to anyone. `project` shared this flaw.
+- **Weakest on habits** — a habit is not handed to anyone. `project` shared this flaw. *Round three notes this was the tell: the flaw both names shared was the readiness-and-handover claim that eventually reopened the question.*
 
 ### Relabeling
 
-The cost of an unfamiliar word is largely paid back by configuration: a team may display deliverables as *stories*, *projects*, or anything else. The canonical name stays on disk and in structured output so files remain portable and integrations do not break per repository. See `SPEC.md` §2.1.
+The cost of an unfamiliar word is largely paid back by configuration: a team may display work items as *issues*, *stories*, *projects*, or anything else — `issue` and `story` are expected to be the popular relabels. The canonical name stays on disk and in structured output so files remain portable and integrations do not break per repository. See `spec.md` §2.1.
 
 ---
 
@@ -641,7 +700,7 @@ With one instruction that matters more than the list: **leave a section out rath
 
 ## 18. How the outcome unit relates to the others
 
-**Status:** Partly settled. **The unit exists and is called an outcome** — defined in `SPEC.md` §2.4. What remains open is how it relates to the units around it.
+**Status:** Partly settled. **The unit exists and is called an outcome** — defined in `spec.md` §2.4. What remains open is how it relates to the units around it.
 
 Two things were settled alongside it. The unit of delivery became just that, since *outcome* now names something specific and it could no longer be described as the unit of outcome. And the wave's claim to be "the only unit that repeats" was narrowed, because an outcome loops too — see the two-loop distinction below.
 
@@ -667,7 +726,7 @@ The sharper version: what a delivery is *for* is not directly testable — "paym
 
 ### The conflict it creates with the wave
 
-Both now iterate, which cannot stand as stated. `SPEC.md` §2.3 currently claims the wave is "the only unit that repeats."
+Both now iterate, which cannot stand as stated. `spec.md` §2.3 currently claims the wave is "the only unit that repeats."
 
 The resolution is probably that there are **two different loops**:
 
@@ -679,13 +738,13 @@ The resolution is probably that there are **two different loops**:
 | **Recorded?** | probably not — transient convergence | yes, each pass is a durable record |
 | **Speed** | fast, many, largely invisible | slow, deliberate, checkpointed |
 
-If that holds, the wave is not "the unit that repeats" but **the unit that repeats *with re-planning and learning*** — and the outcome hosts a convergence loop that deliberately has no learning checkpoint, which is exactly why it must be smaller than a wave. `SPEC.md` §2.3 needs rewording either way.
+If that holds, the wave is not "the unit that repeats" but **the unit that repeats *with re-planning and learning*** — and the outcome hosts a convergence loop that deliberately has no learning checkpoint, which is exactly why it must be smaller than a wave. `spec.md` §2.3 needs rewording either way.
 
 ### What is unresolved
 
 - **Where does it attach?** To a **deliverable**, if outcomes are the testable decomposition of what is being delivered and therefore stable across attempts — a wave then selects which ones it is targeting. To a **wave**, if they are scoped to a single attempt and unmet ones are re-created next time, in the manner of §9. The first seems more natural: what is wanted does not change because an attempt failed.
 - **Do tasks attach to outcomes rather than to waves?** If tasks are generated to satisfy an outcome, they belong to it. But then a task sits two levels away from its wave, and a wave's boundary condition becomes harder to compute.
-- **Is an outcome a record or an inline entry?** `SPEC.md` §4 currently settles criteria as an inline checklist, rejecting criteria-as-records on token cost and interop grounds. **That decision is now in question.** The token argument weakens if an outcome owns tasks and evidence, because those need identity regardless. The interop argument does not weaken — external systems still have nothing to map an outcome onto.
+- **Is an outcome a record or an inline entry?** `spec.md` §4 currently settles criteria as an inline checklist, rejecting criteria-as-records on token cost and interop grounds. **That decision is now in question.** The token argument weakens if an outcome owns tasks and evidence, because those need identity regardless. The interop argument does not weaken — external systems still have nothing to map an outcome onto.
 - **Does a deliverable hold outcomes directly, or only through waves?** If only through waves, a deliverable with no wave yet has nowhere to state what it is for.
 
 *Settled by:* writing a real deliverable as a set of outcomes and seeing whether the tasks it generates are worth storing. If tasks turn out to be disposable, outcomes are clearly primary and the model should be reorganized around them.
@@ -694,7 +753,7 @@ If that holds, the wave is not "the unit that repeats" but **the unit that repea
 
 ## 19. How tasks say what may run at the same time
 
-**Status:** **Settled — work is sequential by default; overlap is declared** (`SPEC.md` §4.5.1).
+**Status:** **Settled — work is sequential by default; overlap is declared** (`spec.md` §4.5.1).
 
 This began as a naming question — what to call "ordering and parallelism" — and the naming turned out to be the small half.
 
@@ -776,7 +835,7 @@ Not taken because the failure is asymmetric. Namespacing costs a longer string o
 
 **Status:** Open — under consideration.
 
-Dimensions are user-defined and carry no mechanics (`SPEC.md` §2.7). The question is whether the tool nonetheless *defines* a few out of the box — `project` most likely, possibly `epic` and `milestone`.
+Dimensions are user-defined and carry no mechanics (`spec.md` §2.7). The question is whether the tool nonetheless *defines* a few out of the box — `project` most likely, possibly `epic` and `milestone`.
 
 **For:** most teams will want them, and an entirely blank slate is unhelpful on first use. Shipping the common ones also makes import from external trackers land somewhere sensible without configuration.
 
@@ -805,7 +864,7 @@ Two shapes, with a lean:
 - **A second optional field** — prose always, plus an optional runnable command. Less machinery, degrades gracefully, and the prose stays useful to a person even where a command exists. **Preferred.**
 - **Typed entries** — each entry declares its kind. More flexible, more machinery, and it forces every author to classify what they wrote.
 
-An outcome's `verify_by` (`SPEC.md` §4.4) says how its desired state is checked. Two kinds of thing want to live there:
+An outcome's `verify_by` (`spec.md` §4.4) says how its desired state is checked. Two kinds of thing want to live there:
 
 - **A description** a human or agent interprets — *"run with the dry-run flag and diff the working tree."* Always sufficient, never automatable on its own.
 - **Something executable** — a command whose exit code settles it. Precise, repeatable, and the natural home for evidence.
@@ -822,13 +881,13 @@ Deciding this early risks either over-modeling something that turns out to be pr
 
 ## 22. How behavior attaches at a boundary
 
-**Status:** Open, and the least settled thing in the specification. `SPEC.md` §5.4 describes hooks as a **proposal**, not a decision.
+**Status:** Open, and the least settled thing in the specification. `spec.md` §5.4 describes hooks as a **proposal**, not a decision.
 
 Something has to happen when a wave closes or a deliverable completes — apply learning, run an audit, promote decisions, archive. The question is what mechanism carries it.
 
 ### Two candidates
 
-**Query and mark.** A caller asks a condition — *which deliverables are complete and not yet handled by me?* — does its work, and records its own marker on the record. That marker is an unrecognized field the tool preserves and never interprets (`SPEC.md` §3.1).
+**Query and mark.** A caller asks a condition — *which deliverables are complete and not yet handled by me?* — does its work, and records its own marker on the record. That marker is an unrecognized field the tool preserves and never interprets (`spec.md` §3.1).
 
 This needs **no new machinery whatsoever**. It works today, given conditions and field preservation. Consumers own their own cursors, two consumers never interfere, and a consumer that was offline for a week simply catches up. It also degrades gracefully: nothing is missed, because nothing was ever delivered.
 
@@ -846,7 +905,7 @@ This buys **immediacy** and, if hooks may block, **enforcement** — a guardrail
 
 ### The concrete case that argues for hooks
 
-**Keeping the journal current** (`SPEC.md` §5.5) is the strongest use encountered so far, and it has the shape a guardrail is actually for:
+**Keeping the journal current** (`spec.md` §5.5) is the strongest use encountered so far, and it has the shape a guardrail is actually for:
 
 - **The failure is silent.** An actor that skipped writing does not know it skipped anything.
 - **The cost lands elsewhere.** It is paid by the next actor, who rediscovers what was already known — so the one who skipped has no feedback and never corrects.
@@ -873,7 +932,7 @@ Under that split, query-and-mark is not the weaker option. It is **half of a mec
 
 ### What would settle it
 
-Whether **enforcement** is genuinely required, and whether it is required on **human-driven** boundaries specifically. If boundaries only need *something to happen eventually*, query-and-mark plus harness hooks is sufficient and free. If a boundary must **stop** work — the governance case for retiring an outcome (`LIFECYCLE.md` §2.8) is the strongest example — and must stop it when a person is driving, then only a mechanism inside this tool will do.
+Whether **enforcement** is genuinely required, and whether it is required on **human-driven** boundaries specifically. If boundaries only need *something to happen eventually*, query-and-mark plus harness hooks is sufficient and free. If a boundary must **stop** work — the governance case for retiring an outcome (`lifecycle.md` §2.8) is the strongest example — and must stop it when a person is driving, then only a mechanism inside this tool will do.
 
 *Settled by:* running the loop with query-and-mark and seeing whether anything important gets skipped. If it does, that is the case for hooks, made by evidence rather than anticipation.
 
@@ -881,7 +940,7 @@ Whether **enforcement** is genuinely required, and whether it is required on **h
 
 ## 23. Standing outcomes
 
-**Status:** **Settled — they exist, declared in configuration and materialized onto each deliverable.** Specified in `SPEC.md` §4.4.1.
+**Status:** **Settled — they exist, declared in configuration and materialized onto each deliverable.** Specified in `spec.md` §4.4.1.
 
 Some conditions apply to every deliverable rather than one: the test suite passes, types check, documentation is current. Elsewhere this is a *definition of done*; here it needs no new concept, because a standing outcome **is** an outcome — only its authorship differs.
 
@@ -909,7 +968,7 @@ A record's **references** — the files, links, and material an actor should rea
 
 The **vocabulary** — regenerated file, section, key — is the part worth keeping, because it stops partial regeneration being described as whole-file regeneration, which is how authored content gets destroyed. The **mechanics** below are a working guess, and the policy on missing sections along with them.
 
-A regenerated section is a bounded region inside an authored file (`SPEC.md` §4.1). The obligations are settled — nothing outside it is touched, a missing boundary is appended rather than inferred, and a reader must be able to tell that edits inside will not survive. **How the boundary is expressed is not.**
+A regenerated section is a bounded region inside an authored file (`spec.md` §4.1). The obligations are settled — nothing outside it is touched, a missing boundary is appended rather than inferred, and a reader must be able to tell that edits inside will not survive. **How the boundary is expressed is not.**
 
 ### Explicit markers
 

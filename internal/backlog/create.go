@@ -13,7 +13,7 @@ import (
 
 // Spec is what a caller asked for. Everything absent is derived or omitted —
 // no field here is something the author should have to know about the format
-// (docs/SPEC.md §9.0).
+// (docs/spec.md §9.0).
 type Spec struct {
 	Unit        string
 	Title       string
@@ -29,7 +29,7 @@ type Result struct {
 
 // Create writes a new record.
 //
-// Idempotent by name (docs/SPEC.md §9.5): asking twice for the same record
+// Idempotent by name (docs/spec.md §9.5): asking twice for the same record
 // leaves the first one alone and reports it. An agent that retries after a
 // dropped connection must not destroy the work of its first attempt.
 func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, error) {
@@ -103,7 +103,7 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 	// judged by its evidence, a decision is ratified through lifecycle,
 	// an exploration is archived. Giving an outcome a declared status would
 	// put it beside the computed one, free to contradict it — which is the
-	// unbacked assertion this design exists to distrust (docs/SPEC.md §4.4).
+	// unbacked assertion this design exists to distrust (docs/spec.md §4.4).
 	if IsWorked(s.Unit) {
 		r.Set("workflow_status", cfg.DefaultStatusFor(s.Unit))
 	}
@@ -118,7 +118,7 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 
 // bodyFor is the starting shape for a unit's body. Sections are a starting
 // point, not a form: leave one out rather than writing nothing under it
-// (OPEN-QUESTIONS.md §17).
+// (open-questions.md §17).
 func bodyFor(unit, title string) string {
 	h := "# " + title + "\n\n"
 	switch unit {
@@ -139,5 +139,5 @@ func bodyFor(unit, title string) string {
 func journalFor(title string) string {
 	return "# Journal — " + title + "\n\n" +
 		"> The deliverable's memory. Newest entry first; everything below the top block is\n" +
-		"> historical. Append, never curate. Shape: `SPEC.md` §5.5.\n\n---\n"
+		"> historical. Append, never curate. Shape: `spec.md` §5.5.\n\n---\n"
 }

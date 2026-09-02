@@ -30,7 +30,7 @@ Each omission has a cost worth stating. No board leaves the terminal surface unt
 
 - Records are authored **by hand or by skill first**, and replaced by commands as they earn it (`CLAUDE.md`). This deliverable's own records are the first test of that.
 - Everything conforms to the Luma Knowledge Format. Type Definitions are written **last**, describing what records actually contain rather than predicting it.
-- Containment is structural, not a test-environment concern (`SPEC.md` §9a.4).
+- Containment is structural, not a test-environment concern (`spec.md` §9a.4).
 - **Code is being merged unreviewed, deliberately, to keep momentum.** Tracked as its own deliverable rather than assumed away — see `deliverables/review-and-audit-the-implementation/`.
 - **Every machine-readable output shape and reachable exit code is pinned by a test as it is written**, not afterwards. Output shapes are the contract, so a diff in a golden file is a breaking change — and a shape pinned later is pinned to whatever it happened to become. This was briefly an outcome and is not one: it describes how we work, not a state of the world, and it can be satisfied by a golden file holding nonsense.
 - **Flags first.** Natural-language input, prompting, and inference are layers over a precise command and come after it (§9.0.2).

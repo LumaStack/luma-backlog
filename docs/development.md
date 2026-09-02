@@ -1,10 +1,10 @@
 # Development
 
-How to set the project up, work on it, and know whether what you did is right. [`SPEC.md`](SPEC.md) says what the tool *is*; this says how to work on it.
+How to set the project up, work on it, and know whether what you did is right. [`spec.md`](spec.md) says what the tool *is*; this says how to work on it.
 
 ## Setup
 
-**Go**, at one of the two supported minor releases. The floor in `go.mod` is a **patch** version rather than a minor, because root-scoped filesystem access has had escapes fixed within a minor series and we depend on it (`SPEC.md` §9a.4).
+**Go**, at one of the two supported minor releases. The floor in `go.mod` is a **patch** version rather than a minor, because root-scoped filesystem access has had escapes fixed within a minor series and we depend on it (`spec.md` §9a.4).
 
 ```
 brew install go
@@ -22,7 +22,7 @@ Nothing else to install. A development container is available for toolchain pari
 cmd/luma-backlog/     entry point — holds no logic
 internal/             everything else
 docs/                 the design
-.backlog/             this project's own backlog, kept in the tool
+.luma/             this project's own backlog, kept in the tool
 .claude/skills/       procedures that will become commands
 ```
 
@@ -46,12 +46,12 @@ Before changing anything, know which of these governs it:
 
 | | |
 |---|---|
-| [`PRINCIPLES.md`](PRINCIPLES.md) | what decisions are argued against |
-| [`SPEC.md`](SPEC.md) | the design. Normative. |
-| [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) | what is unsettled — **and why settled things were settled** |
-| [`.backlog/`](../.backlog/) | what is being built right now, and the reasoning while it happens |
+| [`principles.md`](principles.md) | what decisions are argued against |
+| [`spec.md`](spec.md) | the design. Normative. |
+| [`open-questions.md`](open-questions.md) | what is unsettled — **and why settled things were settled** |
+| [`.luma/`](../.luma/) | what is being built right now, and the reasoning while it happens |
 
-**Read `OPEN-QUESTIONS.md` before reopening a decision.** Roughly a hundred rejected names and the arguments that killed them are in there. Re-deriving one is the most common way to waste an afternoon here.
+**Read `open-questions.md` before reopening a decision.** Roughly a hundred rejected names and the arguments that killed them are in there. Re-deriving one is the most common way to waste an afternoon here.
 
 ### The bootstrap order
 
@@ -75,7 +75,7 @@ Three layers, each with a different job:
 | **Script tests** | whole commands against **real git** in a temporary directory |
 | **Golden files** | every machine-readable output shape |
 
-Practice and the survey behind it are in [`TESTING.md`](TESTING.md). Four rules matter enough to repeat:
+Practice and the survey behind it are in [`testing.md`](testing.md). Four rules matter enough to repeat:
 
 - **Real git, never faked.** Faking the dependency you are trying to be correct about tests your beliefs rather than the thing.
 - **Commands that come from records are always faked** — `verify_by`, hooks. That content is untrusted, and executing it in a test suite is the risk worth designing out.
@@ -86,12 +86,12 @@ Practice and the survey behind it are in [`TESTING.md`](TESTING.md). Four rules 
 
 Not a test escaping into your filesystem. **A test succeeding against the wrong repository and reporting green.**
 
-The tool finds its root by walking *up* to the nearest `.git`. When that walk leaves the fixture, git commands do not fail — they operate on your real checkout and pass. A container does not save you: inside one there is no other repository to hit, so the bug finds nothing and nobody learns. The countermeasure is a fenced git environment, set in a specific order, in [`TESTING.md`](TESTING.md).
+The tool finds its root by walking *up* to the nearest `.git`. When that walk leaves the fixture, git commands do not fail — they operate on your real checkout and pass. A container does not save you: inside one there is no other repository to hit, so the bug finds nothing and nobody learns. The countermeasure is a fenced git environment, set in a specific order, in [`testing.md`](testing.md).
 
 ## Conventions
 
 - **Filesystem access goes through one package.** Continuous integration rejects direct calls elsewhere. This is enforced rather than conventional because agents write code here, and a convention nobody carries across sessions is not a guardrail.
-- **One commit per logical action**, with a message a person can read. Commit history is the machine record (`SPEC.md` §5.5), and one entry per action is a history while one per field write is noise.
+- **One commit per logical action**, with a message a person can read. Commit history is the machine record (`spec.md` §5.5), and one entry per action is a history while one per field write is noise.
 - **Commit messages say why**, not what. The diff already says what.
 - **Never name a competing project** in committed output. Tools we depend on or borrow technique from are named normally.
 - **Never abbreviate terminology to initials.** Spell every phrase out.
@@ -101,6 +101,6 @@ The tool finds its root by walking *up* to the nearest `.git`. When that walk le
 
 **Agents must set `LUMA_BACKLOG_ACTOR`** — `agent:<model>/luma-backlog` — before any command that writes. Actor detection falls back to the operating system user, so without it an agent's work is recorded as the machine owner's. Found by dogfooding, after four outcomes were verified under the wrong name.
 
-`.backlog/` holds this project's own work, and the journal there is the reasoning as it happened — what was decided, what was ruled out, what is still unknown.
+`.luma/` holds this project's own work, and the journal there is the reasoning as it happened — what was decided, what was ruled out, what is still unknown.
 
 **Read the newest journal entry before starting.** It is written so someone arriving cold can carry on without re-deriving anything, and it is the fastest way to find out what has changed since the design documents were last touched.

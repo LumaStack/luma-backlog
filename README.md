@@ -8,12 +8,12 @@ A backlog that lives inside your git repository as plain markdown, built to be w
 
 ## Documentation
 
-- [Development](docs/DEVELOPMENT.md) — setup, tests, and how to work on this.
-- [Principles](docs/PRINCIPLES.md) — the values every design decision is argued against.
-- [Specification](docs/SPEC.md) — the units, the rules records follow, and how the tool behaves.
-- [Lifecycle](docs/LIFECYCLE.md) — how a deliverable is expected to move, and what that requires of the tool.
-- [Open Questions](docs/OPEN-QUESTIONS.md) — what is deliberately unsettled, and what would settle it.
-- [Format Requests](docs/FORMAT-REQUESTS.md) — changes this project asks of the knowledge format, and why.
-- [Testing](docs/TESTING.md) — how the project is tested, and the findings behind it.
+- [Development](docs/development.md) — setup, tests, and how to work on this.
+- [Principles](docs/principles.md) — the values every design decision is argued against.
+- [Specification](docs/spec.md) — the units, the rules records follow, and how the tool behaves.
+- [Lifecycle](docs/lifecycle.md) — how a deliverable is expected to move, and what that requires of the tool.
+- [Open Questions](docs/open-questions.md) — what is deliberately unsettled, and what would settle it.
+- [Format Requests](docs/format-requests.md) — changes this project asks of the knowledge format, and why.
+- [Testing](docs/testing.md) — how the project is tested, and the findings behind it.
 
 Records conform to the [Luma Knowledge Format](https://github.com/LumaStack/luma-knowledge-format).

@@ -11,7 +11,7 @@ luma-backlog manages a backlog inside a git repository. Work is stored as markdo
 
 **The work need not be software.** Nothing in the model assumes code. What is delivered may be a released version, a completed migration, a published document, a health target reached, or a practice established. Where this document uses software examples, they are illustrations rather than constraints — a design that only works for engineering work has failed one of its requirements.
 
-[`PRINCIPLES.md`](PRINCIPLES.md) governs every decision in this document. [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) tracks what is deliberately unsettled.
+[`principles.md`](principles.md) governs every decision in this document. [`open-questions.md`](open-questions.md) tracks what is deliberately unsettled.
 
 ## 1. Conventions
 
@@ -82,7 +82,7 @@ That axis does three jobs: it is why completion is measured on outcomes and neve
 
 ### 2.2 Deliverable
 
-> **On the name.** A deliverable is **the thing to be delivered** — which is the right grammatical form. *Delivery* names the event, and this unit spends nearly all of its life before that event happens. *Project* was the long-standing working term and lost on scale: it implies a substantial endeavor, whereas this is what actually sits on a backlog and gets prioritized. It also collides twice, with the repository and with external trackers, where a project is a far larger container. *Feature* covers only a fraction of the work. *Objective* and *goal* fit but sit too close to `outcome`. *Slice* is precise and reads as software-only. *Item* collides with nothing and teaches nothing. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §16.
+> **On the name.** A deliverable is **the thing to be delivered** — which is the right grammatical form. *Delivery* names the event, and this unit spends nearly all of its life before that event happens. *Project* was the long-standing working term and lost on scale: it implies a substantial endeavor, whereas this is what actually sits on a backlog and gets prioritized. It also collides twice, with the repository and with external trackers, where a project is a far larger container. *Feature* covers only a fraction of the work. *Objective* and *goal* fit but sit too close to `outcome`. *Slice* is precise and reads as software-only. *Item* collides with nothing and teaches nothing. See [`open-questions.md`](open-questions.md) §16.
 
 **What it is.** The unit of delivery. **A deliverable *is* a backlog item** — when someone asks what is on the backlog, deliverables are the answer. It is the thing that gets listed, ranked, picked up, and delivered: a bounded body of work that, once complete, hands something over.
 
@@ -158,7 +158,7 @@ That is the claim worth catching, because it is the one another actor relies on.
 
 Where a disagreement is found it is reported as an observation, not a refusal (§5.2). Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
 
-**What none of this can know** is whether the outcomes present are *all* the outcomes needed — nothing detects what nobody wrote. So the claim stays narrow: **ready to start, not fully specified forever.** Finding the missing ones is what Redefine is for ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8).
+**What none of this can know** is whether the outcomes present are *all* the outcomes needed — nothing detects what nobody wrote. So the claim stays narrow: **ready to start, not fully specified forever.** Finding the missing ones is what Redefine is for ([`lifecycle.md`](lifecycle.md) §2.8).
 
 ##### What is deliberately not on this ladder
 
@@ -185,7 +185,7 @@ The format's `lifecycle` — `draft`, `provisional`, `stable`, `archived` — is
 >
 > That last sense is *adjacent, not identical*: there a wave is a parallelism batch, whereas here it is an iteration that ends in measurement and learning. Tasks do carry sequencing (§2.5), so the two overlap, but a reader arriving from agent tooling should not assume a wave means only "work that runs concurrently."
 >
-> Alternatives considered and rejected are recorded in [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §1.
+> Alternatives considered and rejected are recorded in [`open-questions.md`](open-questions.md) §1.
 
 **What it is.** One attempt at a set of outcomes: work is undertaken, and then what remains is measured.
 
@@ -213,7 +213,7 @@ It is also the **stopping condition**. Without one, an agent has no principled r
 
 **Its loop is convergence, not re-planning.** An agent may attempt an outcome many times — attempt, probe, adjust — and those passes are transient. What persists is the statement and the evidence that finally satisfied it. There is deliberately no learning checkpoint between passes; that is what a wave is for (§2.3), and it is why an outcome is necessarily smaller.
 
-> **Open.** Whether outcomes attach to deliverables or to waves, whether tasks attach to outcomes, and whether an outcome is a record or an inline entry are all unresolved. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18.
+> **Open.** Whether outcomes attach to deliverables or to waves, whether tasks attach to outcomes, and whether an outcome is a record or an inline entry are all unresolved. See [`open-questions.md`](open-questions.md) §18.
 
 ### 2.5 Task
 
@@ -225,7 +225,7 @@ It is also the **stopping condition**. Without one, an agent has no principled r
 
 This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the ordering graph is what keeps concurrent actors out of each other's way.
 
-> **Tasks are coordination, not specification.** What *should be true* is stated by an outcome (§2.4). A task is how the work of getting there is divided, ordered, and owned — it exists because actors work concurrently, not because anybody needs a plan. Where an agent generates its own tasks from an outcome, tasks become derived and possibly disposable while the outcome remains durable. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §18.
+> **Tasks are coordination, not specification.** What *should be true* is stated by an outcome (§2.4). A task is how the work of getting there is divided, ordered, and owned — it exists because actors work concurrently, not because anybody needs a plan. Where an agent generates its own tasks from an outcome, tasks become derived and possibly disposable while the outcome remains durable. See [`open-questions.md`](open-questions.md) §18.
 
 ### 2.6 Decision
 
@@ -303,7 +303,7 @@ so a record writes `type: task` and means `luma/backlog/task`. Every record in a
 
 **An ambiguous short name is an error, never a guess.** If a name could resolve to more than one type, the tool reports it and requires qualification — for those names only, not for the corpus. Precedence rules and search orders were considered and rejected: quiet resolution is how the wrong type gets picked and nobody finds out.
 
-**It is also copied onto the bundle root `index.md` as regenerated keys**, sourced from configuration. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`FORMAT-REQUESTS.md`](FORMAT-REQUESTS.md) §1).
+**It is also copied onto the bundle root `index.md` as regenerated keys**, sourced from configuration. That copy exists for a reader that understands the format but not this tool: it would otherwise meet `type: task` with no way to resolve it, and would have to parse a private configuration file belonging to a tool it has never heard of ([`format-requests.md`](format-requests.md) §1).
 
 **Both stay, permanently.** They serve different readers rather than being stages of the same thing: `config` and `contract` (§9.2, §9.7) answer an agent that has the tool, and the generated file answers one that does not — an importer, a search index, a person reading on the web. Asking the tool is the better path where it exists, and it does not exist for everyone.
 
@@ -325,10 +325,10 @@ Most regeneration replaces **part** of a file, and calling that "a generated fil
 | **Regenerated section** | A bounded region inside an authored file. | **Never touch a byte outside the markers.** |
 | **Regenerated key** | Named frontmatter keys the tool owns. | Every other key is preserved untouched (§4.1). |
 
-**How a regenerated section is delimited is unresolved** (`OPEN-QUESTIONS.md` §24) — explicit markers, a named heading, or a heading declared in frontmatter. The obligations below hold whichever wins:
+**How a regenerated section is delimited is unresolved** (`open-questions.md` §24) — explicit markers, a named heading, or a heading declared in frontmatter. The obligations below hold whichever wins:
 
-- **Everything outside the boundary is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`FORMAT-REQUESTS.md` §4), not an exception.
-- **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears. But **a section that was removed is not the same as one that never existed** — re-adding the first is overriding a decision someone made. Where the two are distinguishable, absence is reported rather than silently repaired (`OPEN-QUESTIONS.md` §24).
+- **Everything outside the boundary is authored and is never rewritten.** A record that is both authored and partly derived is the normal case (`format-requests.md` §4), not an exception.
+- **A missing boundary is appended, never inferred.** Guessing where a generated region *used to be* is how the paragraph above it disappears. But **a section that was removed is not the same as one that never existed** — re-adding the first is overriding a decision someone made. Where the two are distinguishable, absence is reported rather than silently repaired (`open-questions.md` §24).
 - **Content inside is lost on the next write**, so a reader must be able to tell that from the file itself. Whatever delimiter is chosen has to carry that warning — an unmarked region that silently eats edits is the worst outcome of the three.
 
 **Whole-file regeneration is the exception and needs a reason.** It permanently forbids anyone adding anything, and the cost of getting that wrong is discovered late — as a file people work around instead of using, or as writing that quietly disappeared. Three reasons qualify:
@@ -347,7 +347,7 @@ The cost is real and paid on every record: a longer `type` value, against a stat
 
 **Every record carries the format's core fields** — `type`, `title`, `description`, `created`, `modified`, `lifecycle`, `tags` — and those are not repeated in the tables below. Only domain fields are listed.
 
-**Identity is the file path**, as the format defines it. Whether records also carry an identifier independent of path is unresolved and blocks import and export (`OPEN-QUESTIONS.md` §10).
+**Identity is the file path**, as the format defines it. Whether records also carry an identifier independent of path is unresolved and blocks import and export (`open-questions.md` §10).
 
 **Dimension values are ordinary frontmatter keys**, one per configured dimension — `milestone: q3-launch`, `epic: payments`. They are not enumerated in the tables because they are defined per repository (§2.7), and they appear on whichever records a team classifies.
 
@@ -411,11 +411,11 @@ So the division is:
 | `impact` | optional | number | Scoring input. **Reserved name.** |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
 | `paused` | optional | map | Present means deliberately paused (§4.2.1). |
-| `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`OPEN-QUESTIONS.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
+| `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`open-questions.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
 
 A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
 
-**Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`OPEN-QUESTIONS.md` §17).
+**Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`open-questions.md` §17).
 
 #### 4.2.1 `blocked` and `paused`
 
@@ -468,11 +468,11 @@ blocked: {on: 2026-08-07, why: vendor contract}
 | `ordinal` | *unresolved* | number | Which attempt this is. **Probably should not be a field at all** — see below. |
 | `closed` | optional | actor_event | Who closed it and when. Absent means open. |
 
-> **Pending `OPEN-QUESTIONS.md` §1a — record or attribute?** Modeled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
+> **Pending `open-questions.md` §1a — record or attribute?** Modeled here as a record, because a wave has something to say: what was verified at its close, what was learned, and what carries forward. Under §3.1 that is precisely what justifies a record existing. If use shows waves carry nothing, this collapses to an attribute on tasks and the type disappears.
 
 **Body:** what this attempt targets, what was verified at its close, what was learned, and what carries forward.
 
-> **`ordinal` is unresolved because its absence says nothing** (`OPEN-QUESTIONS.md` §1a) — a wave without one could be the first attempt or the fourth, so no obligation level fits. Mandatory is wrong if it can be derived; recommended is wrong because omitting it tells a reader nothing.
+> **`ordinal` is unresolved because its absence says nothing** (`open-questions.md` §1a) — a wave without one could be the first attempt or the fourth, so no obligation level fits. Mandatory is wrong if it can be derived; recommended is wrong because omitting it tells a reader nothing.
 >
 > Whether it can be derived depends on **how waves are named, which was never decided.** An earlier version of the layout showed `waves/1.md`, which was an unconsidered example rather than a choice — slugs, ordinals, and opaque identifiers are all still open, and they answer this field differently. Waves are out of the first build, so both stay unresolved.
 
@@ -492,7 +492,7 @@ An outcome with no `verified` entries has not passed. There is no separate pass 
 
 A retired outcome is archived via `lifecycle`, never deleted, and is excluded from completion arithmetic.
 
-> **Two pending decisions**, both `OPEN-QUESTIONS.md` §18. Whether outcomes attach to a deliverable or a wave — modeled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
+> **Two pending decisions**, both `open-questions.md` §18. Whether outcomes attach to a deliverable or a wave — modeled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
 
 **On these field names.**
 
@@ -530,7 +530,7 @@ An entry may be prose, an ordered list of steps, a pointer to a test, a runnable
 
 Because `desired_state` already states what you should see, `verify_by` never has to restate it. *"Run with the dry-run flag, then check `git status`"* needs no interpretation guide when the desired state says *a dry run prints the planned changes and writes nothing*. For a runnable entry, the conventional reading applies with no explanation required: **exit code zero means the desired state holds.** A pointer to a test needs nothing either, since the test carries its own judgment.
 
-**A consequence to be aware of.** Because the field is uninterpreted, **the tool records verdicts rather than producing them** — whoever verifies runs the check and reports what they found. Whether a command should ever execute checks itself is a genuine mechanism-versus-policy question, since executing needs an environment, timeouts, and isolation; it is left open (`OPEN-QUESTIONS.md` §21). If it is ever wanted, the tool must be able to tell a runnable entry from prose, and the lean is a second optional field rather than typed entries — less structure, and the prose stays useful for a person even where a command exists.
+**A consequence to be aware of.** Because the field is uninterpreted, **the tool records verdicts rather than producing them** — whoever verifies runs the check and reports what they found. Whether a command should ever execute checks itself is a genuine mechanism-versus-policy question, since executing needs an environment, timeouts, and isolation; it is left open (`open-questions.md` §21). If it is ever wanted, the tool must be able to tell a runnable entry from prose, and the lean is a second optional field rather than typed entries — less structure, and the prose stays useful for a person even where a command exists.
 
 ### 4.5 `luma/backlog/task`
 
@@ -559,7 +559,7 @@ The default is on the safe side because **the two mistakes are not equal.** Forg
 
 That is the reverse of the usual arrangement, and deliberately so: in a system where the normal case is several agents on one deliverable, the annotation people forget must be the one whose absence is merely slow.
 
-> **This is not the same claim as "concurrent access is the normal case"** (`PRINCIPLES.md`). That is about many actors *reaching* the backlog at once, which is expected and always allowed. This is about many tasks being *worked* at once, which is permitted only where declared. The words are kept apart on purpose.
+> **This is not the same claim as "concurrent access is the normal case"** (`principles.md`). That is about many actors *reaching* the backlog at once, which is expected and always allowed. This is about many tasks being *worked* at once, which is permitted only where declared. The words are kept apart on purpose.
 
 ##### `parallel_group`
 
@@ -589,7 +589,7 @@ When an attempt does not succeed and another is begun, **a new record is created
 
 Creating a successor therefore writes exactly one file and touches nothing shared, which is the same property that makes membership work (§3.2). The format supports this directly, defining supersession as a relationship rather than a lifecycle status.
 
-The reason is recorded as an **attribute rather than in the link**, because at least three situations look alike from outside: work that was done but did not satisfy the criteria (a retry), work that was done and introduced a defect (a bug), and work that never finished (unfinished). Collapsing them loses the distinction that decides what to do next. Whether identity is shared or fresh remains open (`OPEN-QUESTIONS.md` §9).
+The reason is recorded as an **attribute rather than in the link**, because at least three situations look alike from outside: work that was done but did not satisfy the criteria (a retry), work that was done and introduced a defect (a bug), and work that never finished (unfinished). Collapsing them loses the distinction that decides what to do next. Whether identity is shared or fresh remains open (`open-questions.md` §9).
 
 ### 4.7 Evidence
 
@@ -597,7 +597,7 @@ An outcome closes on evidence produced by a tool — command output, a response,
 
 The format's `verified` field is the mechanism: a list of independent confirmation events, from which trust tiers derive without being stored. Several agents checking the same outcome, or an agent followed by a human, is naturally a list — and a human entry raises the derived tier with no bespoke logic.
 
-**The gap:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. This is the first change this project asks of the format, and it is tracked there rather than worked around locally (`OPEN-QUESTIONS.md` §4).
+**The gap:** a verification event records *who* confirmed and *when*, with nowhere to record *what the evidence was*. This is the first change this project asks of the format, and it is tracked there rather than worked around locally (`open-questions.md` §4).
 
 ### 4.8 `luma/backlog/decision`
 
@@ -637,11 +637,11 @@ Outcomes were originally specified as an **inline checklist** on the deliverable
 - **The most common read becomes the most expensive one.** "What does done look like here?" is the question asked most often, and answering it now means reading many files instead of one. A derived index makes this cheap, but an index is machinery that inline criteria would not have needed.
 - **Import and export lose fidelity.** External trackers keep acceptance criteria as unstructured text inside an item. There is nothing on the other side to map an outcome record onto, so a round trip degrades it to a rendered checklist and cannot reconstruct provenance.
 
-They were accepted because an outcome does more than a checkbox: it owns tasks and accumulates evidence, and both need identity. If use shows the token and interop costs outweigh that, the inline shape is the fallback — and `OPEN-QUESTIONS.md` §18 keeps the question live.
+They were accepted because an outcome does more than a checkbox: it owns tasks and accumulates evidence, and both need identity. If use shows the token and interop costs outweigh that, the inline shape is the fallback — and `open-questions.md` §18 keeps the question live.
 
 ## 5. Boundaries and hooks
 
-> **⚠ Mostly proposal.** §5.0 is settled and applies to the whole document. §5.1 through §5.3 follow reasonably from the principles. **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §22 for the alternative that was set aside and why it may be better.
+> **⚠ Mostly proposal.** §5.0 is settled and applies to the whole document. §5.1 through §5.3 follow reasonably from the principles. **§5.4 on hooks is the most speculative part of this document** — the mechanism has not been exercised, and it may not survive contact with real use. See [`open-questions.md`](open-questions.md) §22 for the alternative that was set aside and why it may be better.
 
 A **boundary** is a point where something becomes true that a caller may want to act on — a wave closing, every outcome passing, a claim going stale. This section covers how the tool exposes them and how behavior attaches.
 
@@ -693,7 +693,7 @@ The exception is **transitions that current state cannot reconstruct** — somet
 
 ### 5.2 The conditions the tool answers
 
-A **fixed, named set** — not a general query language. A query language rich enough to express arbitrary conditions is a rules engine, and would move policy back into a layer built to hold still (`OPEN-QUESTIONS.md` §6).
+A **fixed, named set** — not a general query language. A query language rich enough to express arbitrary conditions is a rules engine, and would move policy back into a layer built to hold still (`open-questions.md` §6).
 
 The set is principled rather than arbitrary: **each condition either drives the loop or detects a known failure.**
 
@@ -716,7 +716,7 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | `journal.stale` † | Records changed since the newest journal entry — the context needed to resume has fallen behind the work (§5.5). |
 | `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
 
-Those last seven detect the pitfalls named in [`LIFECYCLE.md`](LIFECYCLE.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
+Those last seven detect the pitfalls named in [`lifecycle.md`](lifecycle.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
 > **† These four carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgment — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgment attached, which is the honest default.
 
@@ -737,7 +737,7 @@ The two closings differ, and the difference matters:
 - **Closing a wave is not gated on outcomes passing.** A wave ends when someone stops to measure, and stopping with four of six outcomes met is the normal case — that is what makes another wave necessary. Gating here would prevent the loop from iterating at all.
 - **Closing a deliverable is gated on `deliverable.complete`.** Every live outcome must pass. This is where computed completion stops being informational and becomes a refusal.
 
-Whether a caller may override that refusal is open (`OPEN-QUESTIONS.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
+Whether a caller may override that refusal is open (`open-questions.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 
 #### 5.3.1 Closed is not the same as delivered
 
@@ -754,11 +754,11 @@ This distinction matters more than vocabulary. **Gating cancellation on completi
 
 What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A canceled deliverable with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
 
-That is also what keeps this distinct from Redefine (`LIFECYCLE.md` §2.8): retiring an outcome changes what done means, while canceling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
+That is also what keeps this distinct from Redefine (`lifecycle.md` §2.8): retiring an outcome changes what done means, while canceling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
 
 ### 5.4 Hooks — *the least settled part of this document*
 
-> **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`OPEN-QUESTIONS.md` §22). What follows is a shape to criticize.
+> **This is one candidate mechanism, not a decision.** A cheaper alternative exists — callers query a condition and record their own marker when they have handled it — which needs no new machinery at all. Whether hooks earn their place over that is genuinely open (`open-questions.md` §22). What follows is a shape to criticize.
 
 A **hook** is a command the tool runs when a boundary is crossed. Configuration maps a boundary to a command (§8); the tool runs it and **never interprets what it does**.
 
@@ -771,11 +771,11 @@ That mapping is deliberately dumb. Boundary to command, nothing more — no cond
 | `wave.closed` | Apply learning, run an audit, update written context. |
 | `deliverable.closed` | Promote decisions, mark things stale, archive, update references. |
 | `outcome.verified` | Record or publish evidence elsewhere. |
-| `outcome.retired` | **Governance.** This is the operation that lowers the bar ([`LIFECYCLE.md`](LIFECYCLE.md) §2.8), and the one a team most likely wants to require review for. |
+| `outcome.retired` | **Governance.** This is the operation that lowers the bar ([`lifecycle.md`](lifecycle.md) §2.8), and the one a team most likely wants to require review for. |
 
 A hook receives structured context describing what happened, on standard input. It does not receive the tool's internal state, and its output is **not** interpreted as instructions — a hook that wants to change the backlog does so by calling the interface like any other caller.
 
-**Open — may a hook block?** Guardrails imply yes: a hook that cannot refuse is advice, and advice gets routed around. But a blocking hook makes the tool an enforcer of policy it did not author, which is the unresolved question in `OPEN-QUESTIONS.md` §6.
+**Open — may a hook block?** Guardrails imply yes: a hook that cannot refuse is advice, and advice gets routed around. But a blocking hook makes the tool an enforcer of policy it did not author, which is the unresolved question in `open-questions.md` §6.
 
 **If blocking lands, block exactly once.** A gate that refuses the same action repeatedly teaches people to reach for a force flag, and a guardrail everyone bypasses is worse than none — it produces the belief in protection without the protection. A gate that blocks once, says precisely what is wrong, and then permits the action keeps its teeth while staying survivable. The refusal is what carries the message; repeating it only carries frustration.
 
@@ -832,7 +832,7 @@ That is the criterion. Not importance, not completeness — **relitigation risk.
 | Moment | What to write |
 |---|---|
 | **A discussion settles something** | What was decided, **what was decided against, and why.** The decision record holds the rule (§4.8); the journal holds the argument. Rejected options especially — a rule with no visible alternatives looks arbitrary and invites a rerun. |
-| **An outcome is retired** | **Why.** This is the operation that lowers the bar (`LIFECYCLE.md` §2.8), and the one most likely to be questioned later. |
+| **An outcome is retired** | **Why.** This is the operation that lowers the bar (`lifecycle.md` §2.8), and the one most likely to be questioned later. |
 | **A learning pass runs** | What was found. Propagation then works **from the journal** — promoting what proved durable outward (§2.6). |
 | **A session or a wave wraps up** | Where things stand, what is next, what is unknown. The resume pointer. |
 | **A deliverable closes** | The reason. Delivered, canceled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
@@ -954,7 +954,7 @@ Two failure modes it exists to prevent: **holding it in your head**, which ends 
 
 ## 6. Concurrency
 
-Concurrent access is the normal condition, not an edge case (`PRINCIPLES.md`). Many actors — people in editors, agents, and automation — read and write the same backlog at the same time, and the design is answerable for that from the start.
+Concurrent access is the normal condition, not an edge case (`principles.md`). Many actors — people in editors, agents, and automation — read and write the same backlog at the same time, and the design is answerable for that from the start.
 
 ### 6.1 What is guaranteed
 
@@ -964,7 +964,7 @@ Concurrent access is the normal condition, not an edge case (`PRINCIPLES.md`). M
 
 **A write that would clobber an unseen change is refused, not silently applied** (§6.3).
 
-**A claim is exclusive within its storage scope** (§6.5), and the scope depends on the topology chosen in `OPEN-QUESTIONS.md` §8 — see §6.7 for what that means in practice.
+**A claim is exclusive within its storage scope** (§6.5), and the scope depends on the topology chosen in `open-questions.md` §8 — see §6.7 for what that means in practice.
 
 ### 6.2 Atomic writes
 
@@ -998,7 +998,7 @@ Identity is the file path (§4.1), so allocating an identifier means claiming a 
 
 **Within one filesystem this is solved without coordination:** create the file with exclusive-create semantics, which fails if the path already exists. On failure, choose the next candidate and retry. This is atomic, needs no lock, and no allocator has to be consulted.
 
-**Across branches or machines it is not solved**, and cannot be by local means — two actors on separate branches can each create the same path with different content, producing a genuine conflict at merge time. This is a direct consequence of the storage topology and is tracked in `OPEN-QUESTIONS.md` §8. Mitigations worth weighing when that is settled: deriving names from titles rather than counters, so collisions require two actors to name the same thing identically, and including an actor-specific component in the candidate name.
+**Across branches or machines it is not solved**, and cannot be by local means — two actors on separate branches can each create the same path with different content, producing a genuine conflict at merge time. This is a direct consequence of the storage topology and is tracked in `open-questions.md` §8. Mitigations worth weighing when that is settled: deriving names from titles rather than counters, so collisions require two actors to name the same thing identically, and including an actor-specific component in the candidate name.
 
 ### 6.5 Claiming and leases
 
@@ -1036,11 +1036,11 @@ A human editing records by hand while agents work is ordinary use, and three pro
 
 ### 6.8 What is not guaranteed, and why
 
-**Claim exclusivity across machines depends on the storage topology**, which is open (`OPEN-QUESTIONS.md` §8). Under the simplest topology, claims are *visible* across branches but not atomic across them — two actors can still occasionally collide, and the collision surfaces rather than being prevented. Under the dedicated-branch topology, push atomicity makes claims genuinely exclusive across machines, because git accepts exactly one of two competing updates.
+**Claim exclusivity across machines depends on the storage topology**, which is open (`open-questions.md` §8). Under the simplest topology, claims are *visible* across branches but not atomic across them — two actors can still occasionally collide, and the collision surfaces rather than being prevented. Under the dedicated-branch topology, push atomicity makes claims genuinely exclusive across machines, because git accepts exactly one of two competing updates.
 
 **Offline claiming is optimistic.** Without the network, an actor claims on the basis of what it last saw, and reconciles later. No local-first tool solves this, and it is stated rather than concealed.
 
-`SPEC.md` §7 states the requirement at full strength; the distance between it and what ships first is tracked as a known gap in §8 of the open questions.
+`spec.md` §7 states the requirement at full strength; the distance between it and what ships first is tracked as a known gap in §8 of the open questions.
 
 ## 7. On-disk layout
 
@@ -1076,7 +1076,7 @@ A directory structure may only reflect properties that are effectively permanent
       outcomes/
         dry-run-safety.md
         retry-durability.md
-      waves/                      naming unresolved (`OPEN-QUESTIONS.md` §1a)
+      waves/                      naming unresolved (`open-questions.md` §1a)
       tasks/
         add-retry-queue.md
         wire-dead-letter-path.md
@@ -1094,7 +1094,7 @@ A directory structure may only reflect properties that are effectively permanent
 
 **Inside a deliverable, `index.md` *is* the deliverable record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
 
-> **The root-level `journal.md` is not settled** (`OPEN-QUESTIONS.md` §2). A deliverable's memory has an obvious owner and an obvious reader; a repository-wide one has neither, and the risk is that it becomes the junk drawer this design has otherwise avoided. It is shown here because cross-deliverable learning has to land somewhere, not because the case for it is made. The per-deliverable file below is the settled part.
+> **The root-level `journal.md` is not settled** (`open-questions.md` §2). A deliverable's memory has an obvious owner and an obvious reader; a repository-wide one has neither, and the risk is that it becomes the junk drawer this design has otherwise avoided. It is shown here because cross-deliverable learning has to land somewhere, not because the case for it is made. The per-deliverable file below is the settled part.
 
 **`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
 
@@ -1123,7 +1123,7 @@ Exploration is ideas, research, spikes, and investigations — including the one
 
 **One file per exploration, from the first one.** A single `exploration.md` that grows into a folder later would be cheaper on day one and wrong by the second entry: archiving is per record, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end — `queue-vs-outbox.md` — is also most of what makes it findable, which is the entire reason it was kept.
 
-> **Not yet placed.** Context material and the exact structure of `journal.md` have no defined home (`OPEN-QUESTIONS.md` §2). The layout above leaves room for them without guessing at their shape.
+> **Not yet placed.** Context material and the exact structure of `journal.md` have no defined home (`open-questions.md` §2). The layout above leaves room for them without guessing at their shape.
 
 ### 7.3 Why deliverable membership is the only path fact
 
@@ -1167,7 +1167,7 @@ The layout is chosen so that the common concurrent cases do not conflict:
 
 Actors working in separate git worktrees **must have an up-to-date view and must not repeat effort.** This is a requirement of the finished design rather than an aspiration: a claim taken in one worktree is visible in every other, and two actors cannot both believe they hold the same work.
 
-> **The specification describes the destination.** An early implementation may fall short of this — the simplest storage topology gives visibility across worktrees without making claims atomic, which prevents *silent* duplication but not all of it. That shortfall is recorded as a known gap in [`OPEN-QUESTIONS.md`](OPEN-QUESTIONS.md) §8, together with the topologies that satisfy the requirement in full and the staged path toward one. The requirement is not weakened to match what ships first.
+> **The specification describes the destination.** An early implementation may fall short of this — the simplest storage topology gives visibility across worktrees without making claims atomic, which prevents *silent* duplication but not all of it. That shortfall is recorded as a known gap in [`open-questions.md`](open-questions.md) §8, together with the topologies that satisfy the requirement in full and the staged path toward one. The requirement is not weakened to match what ships first.
 
 ## 8. Configuration
 
@@ -1228,7 +1228,7 @@ hooks:                            # proposal — see §5.4
   deliverable.closed: ./scripts/wrap-up.sh
 ```
 
-Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), condition thresholds (§5.2), default sections (`OPEN-QUESTIONS.md` §17), and hooks (§5.4, still a proposal).
+Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), condition thresholds (§5.2), default sections (`open-questions.md` §17), and hooks (§5.4, still a proposal).
 
 **Thresholds are opinions, so they live here** rather than in the binary (§5.0). They are also the one part of this file that may be **left unset on purpose**: omit them and the affected conditions report what they observed without naming it a problem.
 
@@ -1256,7 +1256,7 @@ The test: if changing a setting would alter what `--json` returns for the same r
 
 ### 8.6 The limit: vocabulary, not behavior
 
-Configuration is the natural place for process rules to accumulate, and a configuration format expressive enough to describe conditional workflow **is a rules engine wearing different clothes**. That is `OPEN-QUESTIONS.md` §6 arriving by a side door.
+Configuration is the natural place for process rules to accumulate, and a configuration format expressive enough to describe conditional workflow **is a rules engine wearing different clothes**. That is `open-questions.md` §6 arriving by a side door.
 
 The test is simple:
 
@@ -1276,7 +1276,7 @@ So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close
 
 ## 9. Command interface
 
-The interface **is** the contract (`PRINCIPLES.md`). Everything reachable through a board or a view is reachable here, there is no privileged internal path, and output shapes are as much a part of the contract as command names.
+The interface **is** the contract (`principles.md`). Everything reachable through a board or a view is reachable here, there is no privileged internal path, and output shapes are as much a part of the contract as command names.
 
 > **The rules below are reasoned; the specific names are provisional.** Which verbs exist and what they are called will move with use. That structured output is canonical, that exit codes are distinguishable, and that mutations are idempotent will not.
 
@@ -1489,11 +1489,11 @@ Whether the stack eventually presents as `luma <command>` is deliberately **not*
 
 **Go floor: the two most recent minor releases**, matching Go's own support window, declared in `go.mod`.
 
-Dependencies follow the distinction in `PRINCIPLES.md`: **nothing the user has to install**, which the single static binary guarantees, and **a recorded reason for every library** compiled into it.
+Dependencies follow the distinction in `principles.md`: **nothing the user has to install**, which the single static binary guarantees, and **a recorded reason for every library** compiled into it.
 
 | Dependency | Reason |
 |---|---|
-| Bubbletea, Lipgloss | The terminal board (§11). Settled with the language choice (`OPEN-QUESTIONS.md` §3). |
+| Bubbletea, Lipgloss | The terminal board (§11). Settled with the language choice (`open-questions.md` §3). |
 | Cobra | Command routing, **shell completions, and man pages** — the last two were requirements, and hand-writing completions across bash, zsh, and fish is the expensive part it removes. Its command tree is also data, so `contract` (§9.7) is a walk over a structure that already exists rather than a document maintained by hand. |
 | A YAML parser | Frontmatter. |
 | A markdown parser | Bodies and section-aware edits. |
@@ -1514,17 +1514,17 @@ A sandbox means a path-escape bug never reaches *our* machine. It does nothing f
 
 - **All filesystem access goes through a root-scoped handle** that resists traversal out, including via `..` and symlinks. The tool holds a bounded root and never reaches the filesystem directly.
 
-> **This is depth, not a guarantee.** The standard library's implementation is a per-component check rather than a single kernel operation, it has had escapes patched more than once, and it disclaims bind mounts and device files outright. It raises the cost of the bug considerably and does not remove it — so the minimum Go version is pinned to one carrying the current fixes, and the environment lockdown ([`TESTING.md`](TESTING.md)) is the other half rather than a redundancy.
+> **This is depth, not a guarantee.** The standard library's implementation is a per-component check rather than a single kernel operation, it has had escapes patched more than once, and it disclaims bind mounts and device files outright. It raises the cost of the bug considerably and does not remove it — so the minimum Go version is pinned to one carrying the current fixes, and the environment lockdown ([`testing.md`](testing.md)) is the other half rather than a redundancy.
 - **Root discovery is separated from root use.** Finding the root must walk upward — that is what discovery is. It happens once, in one function, and everything downstream receives an already-bounded root. One small surface to test exhaustively, instead of a property the whole codebase must maintain.
 - **Execution of commands that came from records sits behind an injected interface** — `verify_by`, hooks, anything a record can cause to run. Almost every test substitutes a fake and executes nothing, which shrinks "tests that run arbitrary commands" from a category to a handful.
 
-> **This does not extend to git, which is never faked.** The two cases are opposites: record-supplied commands are untrusted content, so faking them removes the risk; git is the dependency we are trying to be *correct about*, so faking it tests our beliefs rather than the thing. Comparable projects have migrated away from stubbing git for exactly this reason ([`TESTING.md`](TESTING.md)).
+> **This does not extend to git, which is never faked.** The two cases are opposites: record-supplied commands are untrusted content, so faking them removes the risk; git is the dependency we are trying to be *correct about*, so faking it tests our beliefs rather than the thing. Comparable projects have migrated away from stubbing git for exactly this reason ([`testing.md`](testing.md)).
 
 - **Time comes from an injected source**, never read directly. Every record carries `created`, `modified`, and `verified`, so an uncontrollable clock makes byte-stable output impossible — which makes golden files impossible, which removes the contract tests below. A constraint on the tool, not only on its tests.
 
 **The rule is machine-enforced, not conventional.** Continuous integration rejects direct filesystem calls outside the one package allowed to make them. This project expects agents to write its tests, and an agent does not carry a convention reliably across sessions — so a guardrail that depends on remembering is not a guardrail. The same reasoning the design applies to the backlog applies to its own source.
 
-**The failure actually worth designing against is not an escape.** It is the upward walk leaving the fixture and finding the developer's own repository, where git commands **succeed** and the test reports green. A container makes that class invisible rather than safe, since inside one there is no other repository to hit. So the countermeasure is a fenced git environment, set in a specific order, detailed in [`TESTING.md`](TESTING.md).
+**The failure actually worth designing against is not an escape.** It is the upward walk leaving the fixture and finding the developer's own repository, where git commands **succeed** and the test reports green. A container makes that class invisible rather than safe, since inside one there is no other repository to hit. So the countermeasure is a fenced git environment, set in a specific order, detailed in [`testing.md`](testing.md).
 
 **A development container is optional**, for a reproducible toolchain across the supported Go versions. It is deliberately **not** the safety story: the two layers above are, and treating a container as the answer would hide exactly the defects worth finding. Compilation stays on the host; only execution needs isolating, and only for the small set of tests that execute anything.
 
@@ -1536,7 +1536,7 @@ That follows from a principle rather than from taste. If output shapes are part 
 
 **One gap to know about in advance:** the script-test frameworks in this ecosystem assert success or failure, not a *specific* exit status — so §9.4's seven codes, the most machine-facing part of the contract, need ordinary Go tests or a custom command rather than the obvious tool.
 
-Practice, and the survey behind it, is in [`TESTING.md`](TESTING.md).
+Practice, and the survey behind it, is in [`testing.md`](testing.md).
 
 ### 9a.6 Distribution
 
@@ -1548,7 +1548,7 @@ One release tool covering static binaries per platform, checksums, a Homebrew ta
 
 > **⚠ Proposal, and deliberately incomplete.** How much this tool participates in synchronization is **undecided**, and this section does not settle it. What it does settle is what must be true of the data regardless.
 
-At enterprise scale, a tracker will often be the system of record. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`PRINCIPLES.md`).
+At enterprise scale, a tracker will often be the system of record. This tool then holds a copy that agents can read, reason over, and extend — the reason the work lives in git at all (`principles.md`).
 
 ### 10.1 How much this tool does is undecided
 
@@ -1567,7 +1567,7 @@ Independent of who synchronizes:
 - **Records must be addressable individually**, so a pass touches only what changed.
 - **Change must be detectable on both sides**, or a synchronizer cannot tell a one-sided edit from a conflict.
 - **Field ownership must be expressible**, because bidirectional movement without an ownership rule produces silent loss. Ownership tends to split along the same line the units do (§2.2): a tracker owns what an organization coordinates on — status, assignee, priority, portfolio classification — and this tool owns what it alone models, being outcomes, evidence, waves, and sequencing.
-- **Conflicts must surface, never resolve by rule.** Preferring the later write discards the other and tells nobody (`PRINCIPLES.md`).
+- **Conflicts must surface, never resolve by rule.** Preferring the later write discards the other and tells nobody (`principles.md`).
 - **A pass must be able to write only genuine differences**, which requires that records not be reformatted merely by being read.
 
 ### 10.3 What already makes this possible
@@ -1583,7 +1583,7 @@ Most of it is in place, arrived at for unrelated reasons — which is reasonable
 | Creation idempotent by name | §9.5 | Re-importing does not duplicate. |
 | Conflict detection on write | §6.3 | A pass is told when it would clobber something it never read. |
 
-The one genuine gap is **identity that survives a round trip** (`OPEN-QUESTIONS.md` §10, and §10.5 below).
+The one genuine gap is **identity that survives a round trip** (`open-questions.md` §10, and §10.5 below).
 
 ### 10.4 Where the names collide
 
@@ -1615,7 +1615,7 @@ external:
 
 `seen` is what makes change detection possible: comparing it to the remote's current state says whether *they* changed, and comparing the local record to its own last-synced state says whether *we* did. Both are needed — one alone cannot tell a conflict from a one-sided edit.
 
-**The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`OPEN-QUESTIONS.md` §10), a rename must be followed by a synchronization, and one that is skipped leaves a dangling reference on the other side.
+**The two directions are not equally hard.** Referring *outward* is a field, and needs nothing from the format. Referring *inward* is the problem: our identity is a path (§4.1), so anything the external system stores to point back at us breaks when a record is renamed. Until that is resolved (`open-questions.md` §10), a rename must be followed by a synchronization, and one that is skipped leaves a dangling reference on the other side.
 
 ### 10.6 What does not survive the trip
 

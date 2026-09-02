@@ -17,7 +17,7 @@ func TestJournalCapturesInOneInvocation(t *testing.T) {
 	}
 
 	// The outcome this command exists for: one command, and the line is there.
-	body := readFile(t, project, "deliverables/payments-v2/journal.md")
+	body := readFile(t, project, "backlog/deliverables/payments-v2/journal.md")
 	if !strings.Contains(body, "--use-hold pins the source snapshot") {
 		t.Errorf("the line was not written:\n%s", body)
 	}
@@ -31,7 +31,7 @@ func TestJournalKeepsAddingToTheSameDay(t *testing.T) {
 	run(t, app, "journal", "First.")
 	run(t, app, "journal", "Second.")
 
-	body := readFile(t, project, "deliverables/payments-v2/journal.md")
+	body := readFile(t, project, "backlog/deliverables/payments-v2/journal.md")
 	if strings.Count(body, "2026-08-09") != 1 {
 		t.Errorf("a second entry was opened for the same day:\n%s", body)
 	}
@@ -82,11 +82,11 @@ func TestJournalPrefersTheWorkingDirectory(t *testing.T) {
 	run(t, app, "new", "deliverable", "Search relevance")
 
 	// Two deliverables, so it would be ambiguous — except we are inside one.
-	app.WorkingDir = project + "/.backlog/deliverables/search-relevance"
+	app.WorkingDir = project + "/.luma/deliverables/search-relevance"
 	if code, _, e := run(t, app, "journal", "Context wins."); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
-	body := readFile(t, project, "deliverables/search-relevance/journal.md")
+	body := readFile(t, project, "backlog/deliverables/search-relevance/journal.md")
 	if !strings.Contains(body, "Context wins.") {
 		t.Errorf("written to the wrong journal:\n%s", body)
 	}
@@ -96,11 +96,11 @@ func TestJournalNeverRewritesWhatIsBelow(t *testing.T) {
 	app, project := withDeliverable(t)
 	run(t, app, "journal", "Day one.")
 
-	before := readFile(t, project, "deliverables/payments-v2/journal.md")
+	before := readFile(t, project, "backlog/deliverables/payments-v2/journal.md")
 	app.Env.Clock = fixedAt(t, "2026-08-10T09:00:00Z")
 	run(t, app, "journal", "Day two.")
 
-	after := readFile(t, project, "deliverables/payments-v2/journal.md")
+	after := readFile(t, project, "backlog/deliverables/payments-v2/journal.md")
 	// Newest first, and the earlier day survives byte for byte.
 	if strings.Index(after, "2026-08-10") > strings.Index(after, "2026-08-09") {
 		t.Errorf("the newer entry is not first:\n%s", after)

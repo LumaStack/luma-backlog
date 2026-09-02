@@ -51,7 +51,7 @@ func TestInitCreatesAUsableBacklog(t *testing.T) {
 	}
 
 	// The configuration must parse with the tool's own reader, not merely exist.
-	data, err := os.ReadFile(filepath.Join(project, ".backlog", config.FileName))
+	data, err := os.ReadFile(filepath.Join(project, ".luma", config.FileName))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,7 +64,7 @@ func TestInitCreatesAUsableBacklog(t *testing.T) {
 	}
 
 	// The bundle root must be a valid record, since foreign readers depend on it.
-	rootData, err := os.ReadFile(filepath.Join(project, ".backlog", "index.md"))
+	rootData, err := os.ReadFile(filepath.Join(project, ".luma", "backlog", "index.md"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,7 +85,7 @@ func TestInitIsSafeToRunAgain(t *testing.T) {
 
 	// A team's edits must survive. Running init again is ordinary — often to
 	// pick up a file a later version adds — and clobbering would be a trap.
-	path := filepath.Join(project, ".backlog", config.FileName)
+	path := filepath.Join(project, ".luma", config.FileName)
 	edited := "type_namespace: acme/work\n"
 	if err := os.WriteFile(path, []byte(edited), 0o644); err != nil {
 		t.Fatal(err)
@@ -133,7 +133,7 @@ func TestInitWritesNothingOutsideTheBacklog(t *testing.T) {
 		if _, existed := before[path]; existed {
 			continue
 		}
-		if !strings.HasPrefix(path, ".backlog/") {
+		if !strings.HasPrefix(path, ".luma/") {
 			t.Errorf("init wrote outside the backlog: %s", path)
 		}
 	}

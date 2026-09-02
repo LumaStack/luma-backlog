@@ -19,7 +19,7 @@ import (
 )
 
 // allowedPackage is the one place permitted to reach the filesystem directly.
-// Everything else takes a bounded handle from it (docs/SPEC.md §9a.4).
+// Everything else takes a bounded handle from it (docs/spec.md §9a.4).
 const allowedPackage = "internal/root"
 
 // deniedFuncs are the os functions that touch the filesystem by path. Calls

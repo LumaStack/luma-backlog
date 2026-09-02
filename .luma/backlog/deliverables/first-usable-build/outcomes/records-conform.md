@@ -20,6 +20,6 @@ evidence:
 
 # Records conform to the format
 
-Preserving what it does not understand is how other systems store their own state (`PRINCIPLES.md`), so the round-trip half matters more than the write half.
+Preserving what it does not understand is how other systems store their own state (`principles.md`), so the round-trip half matters more than the write half.
 
 **Resolution is part of conformance now, not a separate concern.** Records write `type: task` and mean `luma/backlog/task`; a reader that cannot make that trip has a record it cannot identify. The ambiguity case is included deliberately — a wrong quiet answer is worse than an error, and it is the failure that would go unnoticed longest.

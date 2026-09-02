@@ -20,4 +20,4 @@ evidence:
 
 # Completion is computed, not asserted
 
-The claim the whole design rests on, and the tool's only refusal (`SPEC.md` §5.0). The canceled case is part of the outcome rather than a separate one, because gating cancellation would be the obvious wrong implementation.
+The claim the whole design rests on, and the tool's only refusal (`spec.md` §5.0). The canceled case is part of the outcome rather than a separate one, because gating cancellation would be the obvious wrong implementation.

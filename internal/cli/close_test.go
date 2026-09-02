@@ -47,7 +47,7 @@ func TestDeliveredSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
 		t.Errorf("output did not record the reason:\n%s", out)
 	}
 
-	r := readRecord(t, project, "deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
 	if got, _ := r.Get("workflow_status"); got != "closed" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -66,7 +66,7 @@ func TestCancellingIsNeverGated(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("cancelling unfinished work was refused: exit %d, %s", code, errOut)
 	}
-	r := readRecord(t, project, "deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
 	if got, _ := r.Get("workflow_status"); got != "closed" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -134,7 +134,7 @@ func TestVerifyAccumulates(t *testing.T) {
 	run(t, app, "verify", "the-queue-drains", "-e", "first check")
 	run(t, app, "verify", "the-queue-drains", "-e", "second check")
 
-	r := readRecord(t, project, "deliverables/payments-v2/outcomes/the-queue-drains.md")
+	r := readRecord(t, project, "backlog/deliverables/payments-v2/outcomes/the-queue-drains.md")
 	var entries []map[string]any
 	if err := r.Node("verified").Decode(&entries); err != nil {
 		t.Fatalf("verified is not a list: %v", err)

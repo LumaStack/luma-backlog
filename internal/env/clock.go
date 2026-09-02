@@ -3,7 +3,7 @@
 //
 // Every record carries created, modified, and verified timestamps, so a clock
 // read directly from the system makes output differ on every run. That removes
-// byte-stable golden files, which removes the contract tests (docs/SPEC.md
+// byte-stable golden files, which removes the contract tests (docs/spec.md
 // §9a.5). Injection is therefore a constraint on the tool, not a testing
 // convenience.
 package env

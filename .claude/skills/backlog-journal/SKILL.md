@@ -1,6 +1,6 @@
 ---
 name: backlog-journal
-description: Write to a deliverable's journal in .backlog/ — capture a learning as one line, or wrap up a session with where things stand. Use whenever something is learned, a direction is ruled out, a discussion settles something, an approach is abandoned, a surprise turns up, work is being paused or handed off, or a session is ending. Trigger without being asked: if something was just understood that a future session would need, it belongs here. Also use when asked what the journal says or where things stand. Do NOT use for creating records (backlog-new), for editing a record's fields, or for recording an event git already captures.
+description: Write to a deliverable's journal in .luma/ — capture a learning as one line, or wrap up a session with where things stand. Use whenever something is learned, a direction is ruled out, a discussion settles something, an approach is abandoned, a surprise turns up, work is being paused or handed off, or a session is ending. Trigger without being asked: if something was just understood that a future session would need, it belongs here. Also use when asked what the journal says or where things stand. Do NOT use for creating records (backlog-new), for editing a record's fields, or for recording an event git already captures.
 ---
 
 # Write to the journal
@@ -9,13 +9,13 @@ The journal is **the deliverable's memory**. A session loses its memory when it 
 
 > **Could someone arriving cold carry on from this?**
 
-[`docs/SPEC.md`](../../../docs/SPEC.md) §5.5 is the authority. This is the procedure.
+[`docs/spec.md`](../../../docs/spec.md) §5.5 is the authority. This is the procedure.
 
 **There is no binary yet.** Entries are written by hand, following this. When `backlog journal` arrives, these steps become calls to it.
 
 ## Which journal
 
-`.backlog/deliverables/<slug>/journal.md`, for the deliverable the work belongs to. If the work does not belong to one, that is usually a sign a deliverable is missing — not that the note belongs somewhere else.
+`.luma/backlog/deliverables/<slug>/journal.md`, for the deliverable the work belongs to. If the work does not belong to one, that is usually a sign a deliverable is missing — not that the note belongs somewhere else.
 
 ## Two modes
 

@@ -1,6 +1,6 @@
 # Journal — first usable build
 
-> The deliverable's memory. Newest entry first; everything below the top block is historical. Append, never curate. Shape: `SPEC.md` §5.5.
+> The deliverable's memory. Newest entry first; everything below the top block is historical. Append, never curate. Shape: `spec.md` §5.5.
 
 ---
 
@@ -23,9 +23,9 @@ The actor variable is not optional. Without it every record an agent writes is a
 **Next, in rough order:**
 
 1. **Keep using it.** That is the only thing that verifies the last outcome, and it is how the remaining open questions were always going to be answered.
-2. **Git integration does not exist.** The tool writes files and never commits, so `SPEC.md` §5.5 — commit history as the machine record — is specified and unimplemented. That is the largest gap between the specification and the build.
+2. **Git integration does not exist.** The tool writes files and never commits, so `spec.md` §5.5 — commit history as the machine record — is specified and unimplemented. That is the largest gap between the specification and the build.
 3. **Review and audit.** No human has read any of this code. Parked as its own deliverable with the reasons.
-4. **File the six format requests upstream.** They exist only in `docs/FORMAT-REQUESTS.md`.
+4. **File the six format requests upstream.** They exist only in `docs/format-requests.md`.
 
 **Found while dogfooding, not yet fixed:**
 
@@ -34,7 +34,7 @@ The actor variable is not optional. Without it every record an agent writes is a
 - **Tool-written entries omit the `---` separators** the hand-written ones use. The two styles now sit in one file.
 - **`LUMA_BACKLOG_ACTOR` unset falls back to the OS user.** A default that is wrong in the common case may be worse than no default; unset could mean *unattributed* instead. A design question, not a defect.
 
-**Open questions carried forward**, all in `docs/OPEN-QUESTIONS.md`: §8 worktrees and where coordination state lives (still the most structurally dangerous), §22 how behavior attaches at a boundary, §24 how a regenerated section is delimited, §1a the shape and naming of a wave, §6 whether a declared gate can be overridden, §18 how outcomes relate to the other units. §17 default sections is drafted and being judged by use.
+**Open questions carried forward**, all in `docs/open-questions.md`: §8 worktrees and where coordination state lives (still the most structurally dangerous), §22 how behavior attaches at a boundary, §24 how a regenerated section is delimited, §1a the shape and naming of a wave, §6 whether a declared gate can be overridden, §18 how outcomes relate to the other units. §17 default sections is drafted and being judged by use.
 
 **And the standing caution:** three bugs in `new` were found by *running* the tool while its tests passed, because the tests asserted on fields rather than on the file a person reads. Nothing suggests that pattern has stopped.
 
@@ -142,7 +142,7 @@ Resolved by inverting the default: **every error a command returns carries a cod
 
 **Corrected: outcomes must not carry a `workflow_status`.** Caught by the maintainer asking whether they should share the deliverable's vocabulary — the answer was that they should not have one at all.
 
-`SPEC.md` §4.4 has no such field and says why: *there is no separate pass or fail field, because there is nothing to store that the verification record does not already say.* A declared status would sit beside the computed one and be free to contradict it — the unbacked assertion this whole design distrusts.
+`spec.md` §4.4 has no such field and says why: *there is no separate pass or fail field, because there is nothing to store that the verification record does not already say.* A declared status would sit beside the computed one and be free to contradict it — the unbacked assertion this whole design distrusts.
 
 **This was implementation drifting from the specification**, and worse, my earlier "fix" of the status fallback made it look deliberate. The code invented a field the spec never had, and then reasoned carefully about which vocabulary the invented field should use. Length of reasoning is not evidence that the thing being reasoned about should exist.
 
@@ -191,7 +191,7 @@ exit=5
 
 **Delivering with no outcomes at all is refused.** Vacuous truth is the wrong answer: nothing says it was delivered, so the claim has no basis. Easy to get wrong, because "all zero of them passed" is technically true.
 
-**Evidence sits beside `verified`, not inside it**, and they correlate on `by` and `at` rather than by position — parallel lists matched by index break the first time one is hand-edited. This is the workaround for the format gap in `FORMAT-REQUESTS.md` §3, and it now has a shape rather than a plan.
+**Evidence sits beside `verified`, not inside it**, and they correlate on `by` and `at` rather than by position — parallel lists matched by index break the first time one is hand-edited. This is the workaround for the format gap in `format-requests.md` §3, and it now has a shape rather than a plan.
 
 **Verifying without evidence is permitted but not silent.** Refusing would be an opinion the record does not contradict, so the tool says so instead: *an unbacked confirmation is the claim this design distrusts most.*
 
@@ -199,7 +199,7 @@ exit=5
 
 **Done: the test harness** — and deliberately less of it than the task described.
 
-**Script tests against real git were not written, because the tool does not call git.** Committing is not in this build's scope, so the harness would have been a fence around a gate nobody has built, and every test in it would assert nothing. The lockdown in `docs/TESTING.md` stands ready and `TestMain` points at it, including the ordering rule that an inherited `GIT_DIR` voids the ceiling.
+**Script tests against real git were not written, because the tool does not call git.** Committing is not in this build's scope, so the harness would have been a fence around a gate nobody has built, and every test in it would assert nothing. The lockdown in `docs/testing.md` stands ready and `TestMain` points at it, including the ordering rule that an inherited `GIT_DIR` voids the ceiling.
 
 **What was built instead, all of it earning its place now:**
 
@@ -241,7 +241,7 @@ So three drivers, not one:
 
 Lead with a skill, backfill the command, then rewrite the skill to call it. The skill is never discarded — it settles into holding *when and why*, while the command holds *how*.
 
-That is the same split the design already applies to itself (`SPEC.md` §5.0): the command is mechanism, the skill is the opinion about using it. It also inherits the same rule — **every command must work standalone**, because there is no privileged path (`PRINCIPLES.md`). A command that only works when driven by a skill would be an internal API wearing a public name.
+That is the same split the design already applies to itself (`spec.md` §5.0): the command is mechanism, the skill is the opinion about using it. It also inherits the same rule — **every command must work standalone**, because there is no privileged path (`principles.md`). A command that only works when driven by a skill would be an internal API wearing a public name.
 
 **Decided: records write short type names; the bundle declares the namespace.**
 
@@ -265,8 +265,8 @@ Resolved by making it derived in fact as well as in name. **`config.yml` is edit
 
 **Decided: proposing format changes is normal until 1.0.**
 
-This project is the format's first consumer and the format is pre-1.0 and explicitly unstable. **Hitting a limit is evidence about the format, not a reason to contort around it.** Six requests had accumulated across the design phase without anyone counting them; they now live in `docs/FORMAT-REQUESTS.md`, each marked blocked, shipping ahead, or waiting.
+This project is the format's first consumer and the format is pre-1.0 and explicitly unstable. **Hitting a limit is evidence about the format, not a reason to contort around it.** Six requests had accumulated across the design phase without anyone counting them; they now live in `docs/format-requests.md`, each marked blocked, shipping ahead, or waiting.
 
 That posture expires. A mature consumer works around a stable format; an early one shapes it. The window is open until this project reaches 1.0 and should be used while it is.
 
-**Open questions carried in.** Whether a repository-level journal accumulates anything (`OPEN-QUESTIONS.md` §2); whether tasks are worth storing at all (§18); default body sections (§17). All three are expected to answer themselves through this deliverable rather than through discussion.
+**Open questions carried in.** Whether a repository-level journal accumulates anything (`open-questions.md` §2); whether tasks are worth storing at all (§18); default body sections (§17). All three are expected to answer themselves through this deliverable rather than through discussion.

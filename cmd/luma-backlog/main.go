@@ -1,6 +1,6 @@
 // Command luma-backlog is the entry point. It holds no logic: everything
 // lives under internal/, because the contract is the command line rather
-// than a Go package (docs/SPEC.md §9a.1).
+// than a Go package (docs/spec.md §9a.1).
 package main
 
 import (

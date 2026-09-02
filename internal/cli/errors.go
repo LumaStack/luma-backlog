@@ -7,7 +7,7 @@ import (
 
 // coded pairs an error with the exit code a caller should see.
 //
-// Exit codes are published contract (docs/SPEC.md §9.4), and callers branch on
+// Exit codes are published contract (docs/spec.md §9.4), and callers branch on
 // them — 4 means re-read and retry, 5 means satisfy the condition first. A
 // command that returned a bare error would collapse those into "something went
 // wrong", which is the distinction that matters most to an agent.
@@ -38,7 +38,7 @@ func as(err error, target *coded) bool { return errors.As(err, target) }
 //
 // Defaulting the other way would report a mistyped command as an unexpected
 // failure, and "never retry unchanged" is exactly the advice a caller needs
-// there (docs/SPEC.md §9.4).
+// there (docs/spec.md §9.4).
 func codeFor(err error) int {
 	if err == nil {
 		return ExitOK

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// TestTheProjectsOwnRecordsParse runs the parser over .backlog/, so the corpus
+// TestTheProjectsOwnRecordsParse runs the parser over .luma/, so the corpus
 // this project keeps is checked by the code that will maintain it.
 func TestTheProjectsOwnRecordsParse(t *testing.T) {
 	repo := ".."
@@ -20,9 +20,9 @@ func TestTheProjectsOwnRecordsParse(t *testing.T) {
 			t.Skip("go.mod not found")
 		}
 	}
-	backlog := filepath.Join(repo, ".backlog")
+	backlog := filepath.Join(repo, ".luma")
 	if _, err := os.Stat(backlog); err != nil {
-		t.Skip(".backlog absent")
+		t.Skip(".luma absent")
 	}
 
 	err := filepath.Walk(backlog, func(path string, info os.FileInfo, err error) error {

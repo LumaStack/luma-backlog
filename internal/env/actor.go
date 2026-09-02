@@ -64,7 +64,7 @@ func ParseActor(s string) Actor {
 //
 // It never fails. An unattributed record is worse than a roughly attributed
 // one, and refusing to act because provenance is unclear would be a refusal
-// nothing in the caller's record justifies (docs/SPEC.md §5.0).
+// nothing in the caller's record justifies (docs/spec.md §5.0).
 func DetectActor(getenv func(string) string) Actor {
 	if v := strings.TrimSpace(getenv(ActorEnvVar)); v != "" {
 		return ParseActor(v)
