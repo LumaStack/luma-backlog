@@ -86,7 +86,7 @@ func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
 	// which is the point of retiring it.
 	app, _ := withOutcomes(t)
 	run(t, app, "verify", "the-queue-drains", "-e", "ran it")
-	run(t, app, "set", "retries-are-durable", "lifecycle=archived")
+	run(t, app, "set", "retries-are-durable", "stage=archived")
 
 	code, out, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
 	if code != ExitOK {

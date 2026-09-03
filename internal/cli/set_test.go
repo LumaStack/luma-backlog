@@ -23,7 +23,7 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 
 	// A key from another system, which this tool knows nothing about.
 	data, _ := os.ReadFile(path)
-	edited := strings.Replace(string(data), "lifecycle:", "some_other_tool: {cursor: abc123}\nlifecycle:", 1)
+	edited := strings.Replace(string(data), "stage:", "some_other_tool: {cursor: abc123}\nstage:", 1)
 	if err := os.WriteFile(path, []byte(edited), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -104,10 +104,10 @@ func TestSetKeepsWikilinksIntact(t *testing.T) {
 
 func TestSetUnsetRemovesAField(t *testing.T) {
 	app, project := withWorkItem(t)
-	if code, _, e := run(t, app, "set", "payments-v2", "--unset", "lifecycle"); code != ExitOK {
+	if code, _, e := run(t, app, "set", "payments-v2", "--unset", "stage"); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
-	if readRecord(t, project, "backlog/work-items/payments-v2/index.md").Has("lifecycle") {
+	if readRecord(t, project, "backlog/work-items/payments-v2/index.md").Has("stage") {
 		t.Error("--unset left the field in place")
 	}
 }

@@ -6,7 +6,7 @@ verify_by:
   - Run a real work item end to end using only commands; no record is hand-edited except to test that hand-editing survives.
   - The journal for that work item is written as the work happens, not reconstructed afterwards.
 work_item: "[[work-items/first-usable-build]]"
-lifecycle: provisional
+stage: provisional
 created: {by: "human:benjamin", at: 2026-08-09T00:00:00Z}
 ---
 

@@ -165,9 +165,9 @@ Where a disagreement is found it is reported as an observation, not a refusal (�
 - **Blockedness.** A well-planned work item waiting on something else has not become less formed. It is not a stage at all — it is a separate field (§4.2.1).
 - **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly ready work item that nobody has scheduled is an ordinary thing.
 
-##### `lifecycle` remains a separate, human judgment
+##### `stage` remains a separate, human judgment
 
-The format's `lifecycle` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; lifecycle status says *how much the record can be relied upon*. A work item can be `ready` and `draft` if the plan is complete but nobody trusts it yet.
+The format's `stage` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; `stage` says *how much the record can be relied upon*. A work item can be `ready` and `draft` if the plan is complete but nobody trusts it yet.
 
 **`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgment to a person.
 
@@ -345,7 +345,7 @@ The format recommends namespacing and contemplates a further dimension beyond do
 
 The cost is real and paid on every record: a longer `type` value, against a stated preference for saying less. It is accepted because the alternative is discovering the collision later, when the fix is rewriting every record and breaking every external consumer that filtered on the old value.
 
-**Every record carries the format's core fields** — `type`, `title`, `description`, `created`, `modified`, `lifecycle`, `tags` — and those are not repeated in the tables below. Only domain fields are listed.
+**Every record carries the format's core fields** — `type`, `title`, `description`, `created`, `modified`, `stage`, `tags` — and those are not repeated in the tables below. Only domain fields are listed.
 
 **Identity is the file path**, as the format defines it. Whether records also carry an identifier independent of path is unresolved and blocks import and export (`open-questions.md` §10).
 
@@ -383,7 +383,7 @@ The same rule produced two other decisions here: `blocked` carries **when and wh
 
 Any record may carry **`references`**: material an actor should read before working on it. A path, a link, an identifier in some other system, a name only a particular loader understands.
 
-**Absence is meaningful, which is why the field is recommended rather than mandatory.** A record with no `workflow_status` reads as the first value in the configured vocabulary — `idea` by default, which is semantically right rather than a convenience: something jotted down with nothing said about it *is* an idea. This follows the format's own handling of `lifecycle`, which defaults to `provisional` when absent. A field is only safely optional when omitting it says something; otherwise it should be mandatory.
+**Absence is meaningful, which is why the field is recommended rather than mandatory.** A record with no `workflow_status` reads as the first value in the configured vocabulary — `idea` by default, which is semantically right rather than a convenience: something jotted down with nothing said about it *is* an idea. This follows the format's own handling of `stage`, which defaults to `provisional` when absent. A field is only safely optional when omitting it says something; otherwise it should be mandatory.
 
 **The values are opaque.** This tool stores them, shows them, and hands them over. It does not resolve them, rank them, fetch them by default, validate them, or know what they mean.
 
@@ -490,7 +490,7 @@ The defining record type of this specification.
 
 An outcome with no `verified` entries has not passed. There is no separate pass or fail field, because there is nothing to store that the verification record does not already say (§2.4).
 
-A retired outcome is archived via `lifecycle`, never deleted, and is excluded from completion arithmetic.
+A retired outcome is archived via `stage`, never deleted, and is excluded from completion arithmetic.
 
 > **Two pending decisions**, both `open-questions.md` §18. Whether outcomes attach to a work item or a wave — modeled here as attaching to the work item, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
 
@@ -607,7 +607,7 @@ The format's `verified` field is the mechanism: a list of independent confirmati
 | `promoted_from` | optional | wikilink | The work item-level decision this was promoted from (§4.8.1). |
 | `affects` | optional | list of wikilink | Records this decision constrains. Optional, because a decision frequently outlives everything it touched. |
 
-A decision never completes (§2.6). Its `lifecycle` uses the format's own values — `draft`, `provisional`, `stable`, `archived` — which read in this context as proposed, in force but still open to change, ratified, and retired. **While it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision reaches `stable`.
+A decision never completes (§2.6). Its `stage` uses the format's own values — `draft`, `provisional`, `stable`, `archived` — which read in this context as proposed, in force but still open to change, ratified, and retired. **While it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision reaches `stable`.
 
 **Decisions live where they were made.** Most sit inside the work item that produced them; those made outside any work item sit at the top level (§7.2). *Where a decision was made never changes*, so this is a legal path fact under §7.1, and a derived index makes decisions globally browsable regardless of where they sit.
 
@@ -1119,7 +1119,7 @@ Exploration is ideas, research, spikes, and investigations — including the one
 | Ending | What happens |
 |---|---|
 | **Derived into action** | An outcome or task is created from it. The exploration stays, referenced by what it produced. |
-| **Kept as learning** | Nothing is built. The record is archived (`lifecycle`), and remains findable so the ground is not re-covered. |
+| **Kept as learning** | Nothing is built. The record is archived (`stage`), and remains findable so the ground is not re-covered. |
 
 **One file per exploration, from the first one.** A single `exploration.md` that grows into a folder later would be cheaper on day one and wrong by the second entry: archiving is per record, so one file cannot hold one live investigation and one abandoned one. A filename that names the dead end — `queue-vs-outbox.md` — is also most of what makes it findable, which is the entire reason it was kept.
 

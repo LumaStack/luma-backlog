@@ -15,7 +15,7 @@ The unit of delivery, and the thing that sits on a backlog. Judged on its outcom
 
 ## What this deliberately does not declare
 
-**Core fields** — `title`, `description`, `created`, `modified`, `lifecycle` — are inherited and must not be restated here.
+**Core fields** — `title`, `description`, `created`, `modified`, `stage` — are inherited and must not be restated here.
 
 **Outcomes, waves, and tasks are not listed.** Membership lives on the member: a task names its work item, never the reverse. A field here would be a second copy of the same fact, and the two would disagree.
 

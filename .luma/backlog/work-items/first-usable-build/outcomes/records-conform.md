@@ -7,7 +7,7 @@ verify_by:
   - Confirm a short `type` resolves to the namespaced type, and that an ambiguous one is an error rather than a guess.
   - Add an unrecognized key by hand, run every command that rewrites the record, confirm the key survives each.
 work_item: "[[work-items/first-usable-build]]"
-lifecycle: provisional
+stage: provisional
 created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"

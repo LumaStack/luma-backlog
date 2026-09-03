@@ -27,11 +27,11 @@ Get these right and the record is correct even if the wording is not.
 
 - **Type names are namespaced:** `luma/backlog/work-item`, `.../outcome`, `.../task`, `.../decision`, `.../exploration`.
 - **`blocked` and `paused` are fields, never statuses.** A record can be blocked *while* preparing. Anything that can be true at the same time as a status value is a separate field (§4.1.1).
-- **Two different status fields.** `workflow_status` is where the work is — `idea`, `preparing`, `ready`, `todo`, `in_progress`, `closed`. `lifecycle` is how much to trust the record — `draft`, `provisional`, `stable`, `archived`. They are unrelated.
+- **Two different status fields.** `workflow_status` is where the work is — `idea`, `preparing`, `ready`, `todo`, `in_progress`, `closed`. `stage` is how much to trust the record — `draft`, `provisional`, `stable`, `archived`. They are unrelated.
 - **One record per file.** Never several tasks in one file.
 - **Filenames are kebab-case slugs from the title.** `add-retry-queue.md`. No numeric identifiers.
 - **Membership lives on the member.** A task names its work item; a work item never lists its tasks.
-- **Never delete.** Archive by setting `lifecycle: archived`.
+- **Never delete.** Archive by setting `stage: archived`.
 
 ## Where it goes
 
@@ -56,7 +56,7 @@ type: luma/backlog/work-item
 title: <short handle>
 description: <one sentence>
 workflow_status: idea | preparing | ready | todo | in_progress | closed
-lifecycle: provisional
+stage: provisional
 created: {by: <actor>, at: <timestamp>}
 ```
 

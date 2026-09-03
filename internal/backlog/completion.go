@@ -30,7 +30,7 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 		// A retired outcome is archived rather than deleted, and excluded
 		// from the arithmetic — otherwise retiring one could never let a
 		// work item close, which is the point of retiring it.
-		if s, _ := it.Record.Get("lifecycle"); s == "archived" {
+		if s, _ := it.Record.Get("stage"); s == "archived" {
 			c.Retired = append(c.Retired, it)
 			continue
 		}

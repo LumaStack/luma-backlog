@@ -132,7 +132,7 @@ func TestNewOutcomeTakesItsWorkItemFromAFlag(t *testing.T) {
 
 func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	// An outcome is judged by evidence; a decision is ratified through
-	// lifecycle; an exploration is archived. A declared status on any
+	// stage; an exploration is archived. A declared status on any
 	// of them would sit beside the real state and could disagree with it
 	// (docs/spec.md §4.4).
 	app, project := initialized(t)
