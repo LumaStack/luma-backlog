@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-03
+
+redone after the wipe, in an isolated worktree: corpus, types bundle, config tier, code, tests, docs, skills all speak work-item; ready replaces actionable; open-questions §7 and §16 keep the old words as mentions
+
 ## ▶ 2026-09-02
 
 the rename is decided and recorded (decision + open-questions.md §16 round three); spec.md, types, code, corpus, and skills all still say deliverable — start with spec.md §2.1 and §2.2 once benjamin has reviewed §16
