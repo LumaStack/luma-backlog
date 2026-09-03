@@ -9,6 +9,10 @@
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
   - sha256: cae44f731eecd7929da175df6ba41330fb370bc62be6a737de7cf1feb7bafa0b
+- `lumastack/luma-catalog/bundle-manager` 0.15.1
+  - catalog: lumastack/luma-catalog
+  - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
+  - sha256: 45e46e295c216ef546da441c4b9ce8724d40451516c682ed78654e83fd0ffac9
 - `lumastack/luma-catalog/decision-records` 0.12.1
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
@@ -25,6 +29,10 @@
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
   - sha256: c3a5a31bc8c87eb2b5660a19bb550039ca22433ce1a484f2cf74a80fa7a12dc6
+- `lumastack/luma-catalog/github-release` 0.8.1
+  - catalog: lumastack/luma-catalog
+  - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
+  - sha256: 13f29e951ce8b60896a23541afaad8b363563bb47d27bf860b524876e9566c7d
 - `lumastack/luma-catalog/luma-layout` 0.16.0
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
