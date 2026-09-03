@@ -21,7 +21,7 @@ A **caller** invokes the interface — a person at a terminal, an agent, or a sc
 
 Some callers drive work according to a methodology they own. **In the ideal, all such logic lives outside this project**, in a separate intelligence layer, so that the way work is driven can change without this tool changing. That is an ideal direction, not a boundary that has been found: during early development some of it will live in this repository, and is expected to be extracted as the seam becomes clear. Where this document assumes the separation, it is describing the destination.
 
-**Examples are illustrative unless they say otherwise.** Sample names, sample values, and the contents of layout and configuration blocks show *shape*, not settled choices — `payments-v2` is not a real deliverable and never was a decision about naming. Where an example does carry a decision, the surrounding text says so.
+**Examples are illustrative unless they say otherwise.** Sample names, sample values, and the contents of layout and configuration blocks show *shape*, not settled choices — `payments-v2` is not a real work item and never was a decision about naming. Where an example does carry a decision, the surrounding text says so.
 
 This is stated because the opposite reading has already caused rework twice: an unconsidered filename in a layout block was later cited as a settled convention, and reasoned from as though it conflicted with a rule elsewhere. **An illustration read as normative is worse than no illustration**, because it is a decision nobody made and nobody can remember making.
 
@@ -44,33 +44,33 @@ Four units currently qualify, and they are not four sizes of the same thing — 
 
 | Unit | Is the unit of |
 |---|---|
-| **Deliverable** | delivery |
+| **Work item** | work |
 | **Wave** | iteration |
 | **Outcome** | desired state |
-| **Task** | work |
+| **Task** | coordination |
 
-Say when it is delivered, attempt it repeatedly, declare the state that must hold, do the work. This is also a completeness check: any further unit has to name a job that is none of these four.
+Say what the work is, attempt it repeatedly, declare the state that must hold, coordinate who does what. This is also a completeness check: any further unit has to name a job that is none of these four.
 
 One does. A **decision** (§2.6) sits outside this hierarchy entirely — everything above is either work or a statement about work in progress, whereas a decision constrains work without ever being part of it.
 
 **Unit names may be relabeled for display.** A team that says *story*, *project*, or *item* should be able to see that word throughout the interface. The rule that keeps this safe is a strict split:
 
-- **Canonical everywhere a machine looks.** The `type` on disk, the structured output, and the documented interface always use the names defined here. A record is `deliverable` in every repository, regardless of what anyone calls it locally.
+- **Canonical everywhere a machine looks.** The `type` on disk, the structured output, and the documented interface always use the names defined here. A record is `work-item` in every repository, regardless of what anyone calls it locally.
 - **Configurable everywhere a person looks.** Displayed labels, prompts, board headings, and generated help may use the team's own word, and commands may accept it as an alias.
 
 Without that split, structured output would change shape per repository and every integration written against it would break. With it, relabeling is free: files stay portable, agents reading records see one vocabulary, and people see theirs. See §8.
 
-**Aliases are taught, not encoded.** An agent reads more than structured output — it reads prompts, record bodies, and people saying "the auth story." So the local vocabulary belongs in the **generated agent instructions**: *this repository calls deliverables "stories."* The mapping is learned once; every record and every payload stays canonical. Vocabulary is documentation, never data.
+**Aliases are taught, not encoded.** An agent reads more than structured output — it reads prompts, record bodies, and people saying "the auth story." So the local vocabulary belongs in the **generated agent instructions**: *this repository calls work items "stories."* The mapping is learned once; every record and every payload stays canonical. Vocabulary is documentation, never data.
 
-**Expect renaming to concentrate at one level.** In practice the unit teams will want to rename is the **deliverable**, because it is the one they meet first and name most often — followed by dimensions, which are user-defined already. Tasks are occasionally renamed (*to-dos*), and waves, outcomes, and decisions almost never. Anything may be relabeled, but the deliverable is the one that must be comfortable.
+**Expect renaming to concentrate at one level.** In practice the unit teams will want to rename is the **work item**, because it is the one they meet first and name most often — followed by dimensions, which are user-defined already. Tasks are occasionally renamed (*to-dos*), and waves, outcomes, and decisions almost never. Anything may be relabeled, but the work item is the one that must be comfortable.
 
 #### 2.1.1 Who is expected to author what
 
 Authorship varies by team, and the whole range is legitimate. Some will want little or no agent involvement and will write every unit themselves; others will hand over nearly everything. **The tool serves the entire range and privileges no point on it** — it does not distinguish between callers (§1), and nothing here is enforced.
 
-One pattern is likely to be common enough to design against: **a person defines deliverables and outcomes, and agents propose the waves and tasks that get there.** A person says what is to be delivered and what must be true when it is; an agent works out how that gets grouped, sequenced, and attempted.
+One pattern is likely to be common enough to design against: **a person defines work items and outcomes, and agents propose the waves and tasks that get there.** A person says what is to be delivered and what must be true when it is; an agent works out how that gets grouped, sequenced, and attempted.
 
-Where a division like that does occur, it tends to fall along the same line that separates the units (§2.2): **deliverables and outcomes describe the world, and waves and tasks describe how we organize ourselves to change it.** Declaring what should be true for whoever needs it is a statement of intent, which a person is usually best placed to give. How the work is then divided and attempted is the part an agent can most usefully decide, and re-decide as it learns.
+Where a division like that does occur, it tends to fall along the same line that separates the units (§2.2): **work items and outcomes describe the world, and waves and tasks describe how we organize ourselves to change it.** Declaring what should be true for whoever needs it is a statement of intent, which a person is usually best placed to give. How the work is then divided and attempted is the part an agent can most usefully decide, and re-decide as it learns.
 
 That axis does three jobs: it is why completion is measured on outcomes and never on tasks, why this unit is named for delivery rather than release, and why authorship tends to divide where it does when it divides at all.
 
@@ -80,17 +80,17 @@ That axis does three jobs: it is why completion is measured on outcomes and neve
 >
 > The practical implication is that task views should serve **both scanning and authoring well**, rather than optimizing for one. A team delegating heavily will mostly read them; a team delegating little will mostly write them.
 
-### 2.2 Deliverable
+### 2.2 Work item
 
-> **On the name.** A deliverable is **the thing to be delivered** — which is the right grammatical form. *Delivery* names the event, and this unit spends nearly all of its life before that event happens. *Project* was the long-standing working term and lost on scale: it implies a substantial endeavor, whereas this is what actually sits on a backlog and gets prioritized. It also collides twice, with the repository and with external trackers, where a project is a far larger container. *Feature* covers only a fraction of the work. *Objective* and *goal* fit but sit too close to `outcome`. *Slice* is precise and reads as software-only. *Item* collides with nothing and teaches nothing. See [`open-questions.md`](open-questions.md) §16.
+> **On the name.** The third name to hold this slot, and chosen by three tests: the noun must be **true at every point of the record's life** (a freshly captured bug is already a work item; *deliverable*, the previous name, was false at birth), it must sit over every **kind** of intake (bug, story, idea — nobody calls a bug a story), and it must tell a reader **what level the thing sits at** (*work* pins the substance, *item* makes it countable). The delivery discipline the old name carried did not disappear — it moved to where it is checkable, the formation bar and evidenced completion. The full argument, the candidate table, and the two earlier rounds are in [`open-questions.md`](open-questions.md) §16.
 
-**What it is.** The unit of delivery. **A deliverable *is* a backlog item** — when someone asks what is on the backlog, deliverables are the answer. It is the thing that gets listed, ranked, picked up, and delivered: a bounded body of work that, once complete, hands something over.
+**What it is.** The unit of work. **A work item *is* a backlog item** — when someone asks what is on the backlog, work items are the answer. It is the thing that gets listed, ranked, picked up, and delivered: a bounded body of work that, once complete, hands something over.
 
-A deliverable is bounded by *what it delivers* rather than by how much work it takes — but in practice that means **an hour to a month, rarely longer.** It is normally smaller than what teams call an epic: an epic groups several deliverables, and belongs among the dimensions (§2.7).
+A work item is bounded by *what it delivers* rather than by how much work it takes — but in practice that means **an hour to a month, rarely longer.** It is normally smaller than what teams call an epic: an epic groups several work items, and belongs among the dimensions (§2.7).
 
-> **Why length matters even though size does not define it.** A deliverable's duration *is* the feedback loop, because nothing is confirmed until something is handed over. A deliverable that runs a year is a year in which being wrong goes undetected — and the answer is never to run it longer, but to break it into deliverables that each hand something over sooner. A backlog full of year-long deliverables is a backlog that has stopped decomposing work, and the model should make that visible rather than comfortable.
+> **Why length matters even though size does not define it.** A work item's duration *is* the feedback loop, because nothing is confirmed until something is handed over. A work item that runs a year is a year in which being wrong goes undetected — and the answer is never to run it longer, but to break it into work items that each hand something over sooner. A backlog full of year-long work items is a backlog that has stopped decomposing work, and the model should make that visible rather than comfortable.
 
-The name is deliberately demanding. Calling this a deliverable obliges every entry on the backlog to answer **what gets handed over** — which is exactly the question open-ended work avoids.
+The name is deliberately undemanding, and the demand lives elsewhere. A raw capture is honestly a work item from the moment it exists; what obliges every entry to answer **what gets handed over** — the question open-ended work avoids — is the formation bar and completion arithmetic, where the claim is checkable rather than tonal (§2.2.1, §4.7).
 
 **Why it exists.** Something has to define *ready* — the point at which work stops being internal and is handed over. Shipping a version, completing a migration, publishing a document, reaching a health target, establishing a practice: all of them need somewhere to happen.
 
@@ -102,20 +102,20 @@ The name is deliberately demanding. Calling this a deliverable obliges every ent
 >
 > | Unit | Describes |
 > |---|---|
-> | **Deliverable** | the world — someone now has the thing |
+> | **Work item** | the world — someone now has the thing |
 > | **Outcome** | the world — a condition is now true |
 > | **Wave** | us — our attempt, our learning cycle |
 > | **Task** | us — our coordination |
 >
 > Two units describe **the world**; two describe **how we organize ourselves to change it**. *Release* grates in this position because it is a producer-facing word in a recipient-facing slot: it names something we did, where the model wants something they got.
 >
-> This is not only about a word. It explains three rules that were arrived at separately. A deliverable is judged on its outcomes and **never on its tasks** — because only world-facing units say anything about whether the world changed.
+> This is not only about a word. It explains three rules that were arrived at separately. A work item is judged on its outcomes and **never on its tasks** — because only world-facing units say anything about whether the world changed.
 
-That is not because tasks specify nothing. **They specify a different thing:** outcomes say *what done is, and why the work is worth doing*; tasks say *how we intend to get there.* Both are specification. Only one of them is the bar, which is why work can be replanned freely without moving the goal — and why replacing every task changes nothing about whether the deliverable succeeded. And completion is evidenced rather than declared, because a producer can always assert a release, whereas whether a condition holds is settled by the world and not by the claimant.
+That is not because tasks specify nothing. **They specify a different thing:** outcomes say *what done is, and why the work is worth doing*; tasks say *how we intend to get there.* Both are specification. Only one of them is the bar, which is why work can be replanned freely without moving the goal — and why replacing every task changes nothing about whether the work item succeeded. And completion is evidenced rather than declared, because a producer can always assert a release, whereas whether a condition holds is settled by the world and not by the claimant.
 >
 > It also gives a test for any unit proposed later: **does this describe the world, or describe us?** If the second, it cannot carry completion — it is scaffolding.
 
-> **A design property worth keeping.** Wrap-up at deliverable level should be close to a formality — if a deliverable-level audit routinely catches problems, the discipline below it is too weak. The catch rate is a diagnostic for everything underneath.
+> **A design property worth keeping.** Wrap-up at work item level should be close to a formality — if a work item-level audit routinely catches problems, the discipline below it is too weak. The catch rate is a diagnostic for everything underneath.
 
 #### 2.2.1 Formation — how far along the planning is
 
@@ -126,23 +126,23 @@ Formation lives in **`workflow_status`** rather than a field of its own. The low
 | Value | Means |
 |---|---|
 | `idea` | Just an idea. Captured so it is not lost. |
-| `preparing` | Work is being done to make it actionable. |
-| `actionable` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
+| `preparing` | Work is being done to make it ready. |
+| `ready` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
 | `todo`, `in_progress`, `closed` | Where the work is (§8, §5.3.1). |
 
-**`preparing` covers every activity, and names none.** Getting from an idea to actionable is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
+**`preparing` covers every activity, and names none.** Getting from an idea to ready is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
 
-Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modeling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a deliverable is being made ready; what that requires, and in what order, is not its concern.
+Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modeling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a work item is being made ready; what that requires, and in what order, is not its concern.
 
 A team wanting to distinguish a spike from an estimate has dimensions (§2.7) and its own records for it. Exploration produced along the way is an ordinary record (§7.2), and this is the stage where it usually appears.
 
-**`actionable` is named for the decision it enables, not the state it describes.** Someone scanning a backlog is not asking *is this planned* — they are asking *can I pull this*. The word answers the question actually being asked.
+**`ready` is named for the decision it enables, not the state it describes.** Someone scanning a backlog is not asking *is this planned* — they are asking *can I pull this*. The word answers the question actually being asked.
 
-##### Confirmation tightens `actionable` rather than adding a rung
+##### Confirmation tightens `ready` rather than adding a rung
 
 Planning is not agreement. Work is often specified thoroughly and never shown to the person who asked for it, and a backlog that cannot distinguish those makes the same mistake every time.
 
-But that is not another stage — it is a **stricter bar for the same one**. A team without review calls something actionable when the plan is complete; a team with review calls it actionable only once somebody else has signed off. So confirmation is **opt-in configuration** (§8), not a value, and it is checkable rather than asserted: a deliverable's `verified` entries are independent confirmations and `created.by` names the author, so *confirmed by someone other than the author* is a count. The format's trust tiers distinguish a person's sign-off from an agent's at no extra cost.
+But that is not another stage — it is a **stricter bar for the same one**. A team without review calls something ready when the plan is complete; a team with review calls it ready only once somebody else has signed off. So confirmation is **opt-in configuration** (§8), not a value, and it is checkable rather than asserted: a work item's `verified` entries are independent confirmations and `created.by` names the author, so *confirmed by someone other than the author* is a count. The format's trust tiers distinguish a person's sign-off from an agent's at no extra cost.
 
 ##### Declared, and checked against the record
 
@@ -150,11 +150,11 @@ But that is not another stage — it is a **stricter bar for the same one**. A t
 
 It also means it can decay, which is the failure this was meant to prevent. So the tool checks the one claim structure can actually contradict:
 
-> **A deliverable marked `actionable` whose outcomes lack checks is over-claiming.** If done is not yet provable, it is not yet pullable.
+> **A work item marked `ready` whose outcomes lack checks is over-claiming.** If done is not yet provable, it is not yet pullable.
 
-That is the claim worth catching, because it is the one another actor relies on. Someone pulls an `actionable` deliverable expecting to know when they are finished, and discovers nobody wrote it down.
+That is the claim worth catching, because it is the one another actor relies on. Someone pulls a `ready` work item expecting to know when they are finished, and discovers nobody wrote it down.
 
-**The `idea`/`preparing` boundary is not checkable, and the tool does not pretend otherwise.** The difference is whether somebody has picked it up, which only they know — a well-formed record nobody has touched and a rough one being actively worked look identical from the outside. Structure can say *this could not honestly be actionable*; it cannot say *nobody is working on this*.
+**The `idea`/`preparing` boundary is not checkable, and the tool does not pretend otherwise.** The difference is whether somebody has picked it up, which only they know — a well-formed record nobody has touched and a rough one being actively worked look identical from the outside. Structure can say *this could not honestly be ready*; it cannot say *nobody is working on this*.
 
 Where a disagreement is found it is reported as an observation, not a refusal (§5.2). Someone whose plan genuinely lives in a document elsewhere is not wrong, and the tool has no standing to overrule them.
 
@@ -162,12 +162,12 @@ Where a disagreement is found it is reported as an observation, not a refusal (�
 
 ##### What is deliberately not on this ladder
 
-- **Blockedness.** A well-planned deliverable waiting on something else has not become less formed. It is not a stage at all — it is a separate field (§4.2.1).
-- **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly actionable deliverable that nobody has scheduled is an ordinary thing.
+- **Blockedness.** A well-planned work item waiting on something else has not become less formed. It is not a stage at all — it is a separate field (§4.2.1).
+- **Scheduling.** Whether something is queued for next quarter is priority and rank. A perfectly ready work item that nobody has scheduled is an ordinary thing.
 
 ##### `lifecycle` remains a separate, human judgment
 
-The format's `lifecycle` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; lifecycle status says *how much the record can be relied upon*. A deliverable can be `actionable` and `draft` if the plan is complete but nobody trusts it yet.
+The format's `lifecycle` — `draft`, `provisional`, `stable`, `archived` — is unchanged and stays orthogonal by the format's own design. Formation says *how ready the work is*; lifecycle status says *how much the record can be relied upon*. A work item can be `ready` and `draft` if the plan is complete but nobody trusts it yet.
 
 **`stale_after` covers neglect.** A record may declare when it should be re-examined, and one that passes that date untouched is surfaced as a condition (§5.2) rather than acted on. The tool never deletes and never nags; it makes neglect visible and leaves the judgment to a person.
 
@@ -193,9 +193,9 @@ The format's `lifecycle` — `draft`, `provisional`, `stable`, `archived` — is
 
 **How it earns its place.** It is the only unit that **repeats deliberately** — the only one whose repetition involves stopping, measuring, learning, and re-planning before going again. An outcome (§2.4) also loops, but its loop is *convergence*: attempt, probe, adjust, with no checkpoint between passes. That difference is the entire reason both units exist, and it is why a wave is necessarily larger than an outcome — nobody wants to run a retrospective after every assertion turns green. It also gates where mandatory verification and applied learning — updating written context, for example — **always** happen.
 
-**What workflows it triggers or verifies.** Its boundary *is* a measurement point, which is what makes it the natural home for verification sweeps, audits, logging, reviews, additional research, and applying what has been learned. Those are not attached to it arbitrarily — assessing the gap is the thing that ends one and begins the next. It is also how the system improves while work is still underway: learning that lands only at the close of a deliverable arrives too late to help the deliverable that produced it.
+**What workflows it triggers or verifies.** Its boundary *is* a measurement point, which is what makes it the natural home for verification sweeps, audits, logging, reviews, additional research, and applying what has been learned. Those are not attached to it arbitrarily — assessing the gap is the thing that ends one and begins the next. It is also how the system improves while work is still underway: learning that lands only at the close of a work item arrives too late to help the work item that produced it.
 
-**They accrue rather than being planned.** Deliverables and tasks are authored ahead of the work. Waves are created reactively, when the previous one did not get there. Or when the current set of tasks has grown too large to complete within one checkpoint. This argues for keeping them extremely lightweight. It is acceptable to break planned work off into a separate wave as soon as unforeseen circumstances are hit.
+**They accrue rather than being planned.** Work items and tasks are authored ahead of the work. Waves are created reactively, when the previous one did not get there. Or when the current set of tasks has grown too large to complete within one checkpoint. This argues for keeping them extremely lightweight. It is acceptable to break planned work off into a separate wave as soon as unforeseen circumstances are hit.
 
 ### 2.4 Outcome
 
@@ -209,15 +209,15 @@ It is also the **stopping condition**. Without one, an agent has no principled r
 
 **How it earns its place.** It is the only unit that is a **description of a condition** rather than work or a container of work. That is what lets a single statement serve four roles at once: the target work is generated from, the test that is run, the record of verification, and the definition of done. Nothing else in the model can be all four, because nothing else is phrased as something that is simply true or false.
 
-**What workflows it triggers or verifies.** Task generation, verification, and completion arithmetic. An outcome with recorded evidence passes; a wave or a deliverable is judged on the outcomes attached to it, never on the tasks.
+**What workflows it triggers or verifies.** Task generation, verification, and completion arithmetic. An outcome with recorded evidence passes; a wave or a work item is judged on the outcomes attached to it, never on the tasks.
 
 **Its loop is convergence, not re-planning.** An agent may attempt an outcome many times — attempt, probe, adjust — and those passes are transient. What persists is the statement and the evidence that finally satisfied it. There is deliberately no learning checkpoint between passes; that is what a wave is for (§2.3), and it is why an outcome is necessarily smaller.
 
-> **Open.** Whether outcomes attach to deliverables or to waves, whether tasks attach to outcomes, and whether an outcome is a record or an inline entry are all unresolved. See [`open-questions.md`](open-questions.md) §18.
+> **Open.** Whether outcomes attach to work items or to waves, whether tasks attach to outcomes, and whether an outcome is a record or an inline entry are all unresolved. See [`open-questions.md`](open-questions.md) §18.
 
 ### 2.5 Task
 
-**What it is.** A unit of work. A thing someone or something picks up and finishes.
+**What it is.** The unit of coordination — a piece of the work that someone or something picks up and finishes.
 
 **Why it exists.** Work has to be divisible into pieces an actor can hold and complete.
 
@@ -233,7 +233,7 @@ This also makes the task the natural unit of ownership: it is the smallest thing
 
 **Why it exists.** Settled questions get re-opened. Agents in particular will cheerfully re-litigate a choice, because nothing in front of them says it was ever made. A decision that is written down, dated, attributed, and findable is what stops the same ground being covered repeatedly — and the reasoning matters as much as the choice, because it is what tells a later reader whether the decision still applies.
 
-**How it earns its place.** It is the only unit that **never completes and belongs to nothing.** Deliverables, waves, outcomes, and tasks all sit inside the hierarchy and all reach a terminal state. A decision does neither: it constrains work without being part of it, and it routinely outlives whatever produced it — which is precisely why it cannot be stored inside one deliverable.
+**How it earns its place.** It is the only unit that **never completes and belongs to nothing.** Work items, waves, outcomes, and tasks all sit inside the hierarchy and all reach a terminal state. A decision does neither: it constrains work without being part of it, and it routinely outlives whatever produced it — which is precisely why it cannot be stored inside one work item.
 
 **What workflows it triggers or verifies.** Supersession, where a later decision replaces an earlier one and the earlier is retained rather than deleted; and ratification, where a choice needs human sign-off before it binds.
 
@@ -241,11 +241,11 @@ This also makes the task the natural unit of ownership: it is the smallest thing
 
 Dimensions — projects, epics, milestones, initiatives, phases, releases, sprints, or whatever a team already uses — are **user-defined and not core to this project**. They carry no mechanics of their own.
 
-> **`project` belongs here.** Once the unit of delivery became a deliverable, *project* was free — and it lands naturally as a dimension, because that is the scale it already has everywhere else: a container holding many deliverables. This also removes the interop mismatch that made `project` awkward as a unit name. An external tracker's project maps to a dimension of the same name and the same scale, rather than to a unit several sizes smaller.
+> **`project` belongs here.** Once the backlog unit stopped being called a project, the word was free — and it lands naturally as a dimension, because that is the scale it already has everywhere else: a container holding many work items. This also removes the interop mismatch that made `project` awkward as a unit name. An external tracker's project maps to a dimension of the same name and the same scale, rather than to a unit several sizes smaller.
 >
 > **Under consideration:** shipping `project`, and possibly `epic` and `milestone`, as dimensions defined by default rather than left entirely to configuration. The argument for is that most teams will want them and a blank slate is unhelpful; the argument against is that any default is an opinion, and this document has consistently pushed opinions into configuration. Not yet decided.
 
-A dimension is an axis a record is classified along, and **a record may sit on several at once**: a deliverable can belong to a milestone *and* an initiative without the two competing. A dimension may also have **levels that nest** — an initiative holding epics holding milestones is one axis with a hierarchy, in the way a geography dimension holds country, region, and city. Both properties come from the word: independent axes that combine freely, with roll-up levels inside any one of them.
+A dimension is an axis a record is classified along, and **a record may sit on several at once**: a work item can belong to a milestone *and* an initiative without the two competing. A dimension may also have **levels that nest** — an initiative holding epics holding milestones is one axis with a hierarchy, in the way a geography dimension holds country, region, and city. Both properties come from the word: independent axes that combine freely, with roll-up levels inside any one of them.
 
 They are supported because humans organize this way, external trackers are built this way, and an agent benefits from knowing what neighborhood it is working in. They may become useful places to attach hooks (§5). But no agent needs one to work, and a repository that defines none is fully functional.
 
@@ -269,7 +269,7 @@ This is what allows a concept to be adopted gradually and abandoned cheaply. It 
 
 ### 3.2 Membership lives on the member
 
-**Membership is recorded on the member, never in the dimension.** A task names the deliverable it belongs to; a deliverable never enumerates its tasks. A deliverable names the milestone it belongs to; a milestone never lists deliverables.
+**Membership is recorded on the member, never in the dimension.** A task names the work item it belongs to; a work item never enumerates its tasks. A work item names the milestone it belongs to; a milestone never lists work items.
 
 This is not a stylistic preference. It follows from the principles and buys several things at once:
 
@@ -289,7 +289,7 @@ Every unit is a markdown file with Luma Knowledge Format frontmatter. Each type 
 
 ### 4.1 Conventions
 
-**Type names are namespaced organization, domain, type** — `luma/backlog/deliverable`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration` — **and records write the short form.**
+**Type names are namespaced organization, domain, type** — `luma/backlog/work-item`, `luma/backlog/wave`, `luma/backlog/outcome`, `luma/backlog/task`, `luma/backlog/decision`, `luma/backlog/exploration` — **and records write the short form.**
 
 Configuration declares the namespace once:
 
@@ -399,9 +399,9 @@ So the division is:
 
 **A primitive convenience is allowed, and is not the mechanism.** Showing the contents of a reference that happens to be a file in this repository is a reasonable courtesy. *Choosing* what an actor should read — ranking, budgeting, summarizing — is the engine's work, and doing any of it here would be a workflow layer growing inside the wrong project.
 
-**Not to be confused with `sources`**, which the format already defines. `sources` records what a record *derives from* — provenance, looking backwards. `references` records what someone should *read before acting* — preparation, looking forwards. A deliverable's sources might be the research that produced it; its references are the code and documents needed to do the work.
+**Not to be confused with `sources`**, which the format already defines. `sources` records what a record *derives from* — provenance, looking backwards. `references` records what someone should *read before acting* — preparation, looking forwards. A work item's sources might be the research that produced it; its references are the code and documents needed to do the work.
 
-### 4.2 `luma/backlog/deliverable`
+### 4.2 `luma/backlog/work-item`
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
@@ -413,7 +413,7 @@ So the division is:
 | `paused` | optional | map | Present means deliberately paused (§4.2.1). |
 | `rank` | optional | text | Decimal ordering key, held as a string and compared numerically (§9.6). Whether manual ranking is exposed in the first release is open (`open-questions.md` §14); the scheme is settled either way, since it must be chosen before a board ships. |
 
-A deliverable does not list its waves, outcomes, or tasks. They name it (§3.2).
+A work item does not list its waves, outcomes, or tasks. They name it (§3.2).
 
 **Body:** the problem being solved, what is being delivered, what is explicitly out of scope, and any constraints that bind the work. Default sections are pending (`open-questions.md` §17).
 
@@ -464,7 +464,7 @@ blocked: {on: 2026-08-07, why: vendor contract}
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `deliverable` | mandatory | wikilink | The deliverable this is an attempt at. |
+| `work_item` | mandatory | wikilink | The work item this is an attempt at. |
 | `ordinal` | *unresolved* | number | Which attempt this is. **Probably should not be a field at all** — see below. |
 | `closed` | optional | actor_event | Who closed it and when. Absent means open. |
 
@@ -484,7 +484,7 @@ The defining record type of this specification.
 |---|---|---|---|
 | `desired_state` | mandatory | text | The condition itself. A **state, not an action** — phrased so one check returns true or false. Short, roughly eight to twelve words. |
 | `verify_by` | recommended | list of text | How the desired state is checked — what would prove it false. Named before the work starts. **Deliberately unconstrained** (§4.4.2). A single entry may be written bare and is treated as a one-element list, following the format's own handling of `verified`. |
-| `deliverable` | mandatory | wikilink | What this is part of delivering. |
+| `work_item` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | optional | wikilink | The attempt currently targeting it, if any. |
 | `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
 
@@ -492,7 +492,7 @@ An outcome with no `verified` entries has not passed. There is no separate pass 
 
 A retired outcome is archived via `lifecycle`, never deleted, and is excluded from completion arithmetic.
 
-> **Two pending decisions**, both `open-questions.md` §18. Whether outcomes attach to a deliverable or a wave — modeled here as attaching to the deliverable, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
+> **Two pending decisions**, both `open-questions.md` §18. Whether outcomes attach to a work item or a wave — modeled here as attaching to the work item, with `wave` naming the current attempt, on the grounds that *what is wanted does not change because an attempt failed*. And whether an outcome is a record at all rather than an inline checklist; modeled as a record because it owns tasks and evidence, which need identity.
 
 **On these field names.**
 
@@ -504,15 +504,15 @@ A retired outcome is archived via `lifecycle`, never deleted, and is excluded fr
 
 #### 4.4.1 Standing outcomes
 
-Some conditions apply to every deliverable rather than to one: the test suite passes, types check, documentation is current. A team **declares these once in configuration** (§8), and each new deliverable is created carrying them as **ordinary outcomes** — with their own `verify_by`, their own evidence, and their own history.
+Some conditions apply to every work item rather than to one: the test suite passes, types check, documentation is current. A team **declares these once in configuration** (§8), and each new work item is created carrying them as **ordinary outcomes** — with their own `verify_by`, their own evidence, and their own history.
 
 Elsewhere this is called a definition of done. Here it needs no new concept, because a standing outcome *is* an outcome; only its authorship differs.
 
-**They are materialized, never referenced.** Evidence is per-deliverable by nature — the suite passing for one deliverable is a different fact, checked at a different moment, than for another. A referenced outcome would still need somewhere per-deliverable to record who verified it and when, so referencing saves no storage and costs indirection: completion arithmetic would consult two places, a deliverable's record would stop being self-contained, and export would have nothing to carry.
+**They are materialized, never referenced.** Evidence is per-work item by nature — the suite passing for one work item is a different fact, checked at a different moment, than for another. A referenced outcome would still need somewhere per-work item to record who verified it and when, so referencing saves no storage and costs indirection: completion arithmetic would consult two places, a work item's record would stop being self-contained, and export would have nothing to carry.
 
-**Changing the standard is not retroactive.** Deliverables already in flight keep the outcomes they were created with. Silently adding a requirement to work already underway is goalpost-moving in the opposite direction, and the design refuses it in both directions equally.
+**Changing the standard is not retroactive.** Work items already in flight keep the outcomes they were created with. Silently adding a requirement to work already underway is goalpost-moving in the opposite direction, and the design refuses it in both directions equally.
 
-Instead the divergence is **surfaced** — `deliverable.missing-standing-outcome` (§5.2) reports work created before the standard changed. Adopting it is then an explicit act by someone who decided it was warranted, which is the same treatment every other detected drift receives.
+Instead the divergence is **surfaced** — `work-item.missing-standing-outcome` (§5.2) reports work created before the standard changed. Adopting it is then an explicit act by someone who decided it was warranted, which is the same treatment every other detected drift receives.
 
 **Where this sits relative to the policy line.** Standing outcomes are the closest thing in the model to a mandated process, so it is worth being precise: **the team authors the rule, and the tool only counts.** That is the same arrangement as status vocabularies and priority values — configuration holds the opinion, the binary holds none. A team that declares nothing gets nothing.
 
@@ -536,12 +536,12 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `deliverable` | mandatory | wikilink | What this is part of delivering. |
+| `work_item` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | recommended | wikilink | The attempt this task belongs to. |
 | `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
 | `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. **Absent means the first configured value** — `idea` by default. |
 | `parallel_group` | optional | list of text | Labels granting permission to overlap. Two tasks may run at the same time if they share at least one (§4.5.1). |
-| `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or deliverable boundary (§4.5.1). |
+| `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or work item boundary (§4.5.1). |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
 | `paused` | optional | map | Present means deliberately paused (§4.2.1). |
 | `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
@@ -557,7 +557,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 
 The default is on the safe side because **the two mistakes are not equal.** Forgetting to declare that work must be ordered puts two actors on the same files at once, and the damage is a bad merge nobody notices. Forgetting to declare that work may overlap costs time. One of those is recoverable by waiting.
 
-That is the reverse of the usual arrangement, and deliberately so: in a system where the normal case is several agents on one deliverable, the annotation people forget must be the one whose absence is merely slow.
+That is the reverse of the usual arrangement, and deliberately so: in a system where the normal case is several agents on one work item, the annotation people forget must be the one whose absence is merely slow.
 
 > **This is not the same claim as "concurrent access is the normal case"** (`principles.md`). That is about many actors *reaching* the backlog at once, which is expected and always allowed. This is about many tasks being *worked* at once, which is permitted only where declared. The words are kept apart on purpose.
 
@@ -579,7 +579,7 @@ A team that labels everything identically is back to unrestricted parallelism �
 
 ##### `depends_on`
 
-Rank already orders the tasks within a wave, so **`depends_on` is for orderings rank cannot express** — waiting on a task in another wave, or in another deliverable. Using it to restate the order of adjacent tasks is redundant, and the redundancy goes stale the moment either is reranked.
+Rank already orders the tasks within a wave, so **`depends_on` is for orderings rank cannot express** — waiting on a task in another wave, or in another work item. Using it to restate the order of adjacent tasks is redundant, and the redundancy goes stale the moment either is reranked.
 
 > **This gives rank a second job.** It was a display and prioritization preference (§9.6); it is now also execution order. That is a real widening, recorded here because a reader would otherwise be surprised — and because if rank turns out to be a poor carrier for both, this is the seam where it will show.
 
@@ -604,12 +604,12 @@ The format's `verified` field is the mechanism: a list of independent confirmati
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
 | `supersedes` | optional | wikilink | An earlier decision this replaces. The earlier one is retained, never deleted. |
-| `promoted_from` | optional | wikilink | The deliverable-level decision this was promoted from (§4.8.1). |
+| `promoted_from` | optional | wikilink | The work item-level decision this was promoted from (§4.8.1). |
 | `affects` | optional | list of wikilink | Records this decision constrains. Optional, because a decision frequently outlives everything it touched. |
 
 A decision never completes (§2.6). Its `lifecycle` uses the format's own values — `draft`, `provisional`, `stable`, `archived` — which read in this context as proposed, in force but still open to change, ratified, and retired. **While it is draft or provisional, editing it is expected.** The freeze described below applies only once a decision reaches `stable`.
 
-**Decisions live where they were made.** Most sit inside the deliverable that produced them; those made outside any deliverable sit at the top level (§7.2). *Where a decision was made never changes*, so this is a legal path fact under §7.1, and a derived index makes decisions globally browsable regardless of where they sit.
+**Decisions live where they were made.** Most sit inside the work item that produced them; those made outside any work item sit at the top level (§7.2). *Where a decision was made never changes*, so this is a legal path fact under §7.1, and a derived index makes decisions globally browsable regardless of where they sit.
 
 #### 4.8.1 Promotion
 
@@ -619,10 +619,10 @@ A minority of decisions outlive the work that produced them and deserve to becom
 
 **The two records are not competing copies.** They have different jobs, and that is what removes any divergence problem:
 
-- The **deliverable-level decision is a point-in-time record** of what was decided during that work. Once ratified it is *supposed* to freeze. It going stale is the point, not a defect.
+- The **work item-level decision is a point-in-time record** of what was decided during that work. Once ratified it is *supposed* to freeze. It going stale is the point, not a defect.
 - The **global decision is a living, ratified rule**, amended as things change.
 
-Promotion therefore does not archive the original. Nothing is retired — the local decision remains exactly as true about that deliverable as it ever was.
+Promotion therefore does not archive the original. Nothing is retired — the local decision remains exactly as true about that work item as it ever was.
 
 **Deciding that something deserves promotion is policy.** The tool provides the operation and never judges.
 
@@ -632,7 +632,7 @@ Promotion therefore does not archive the original. Nothing is retired — the lo
 
 ### 4.9 What modeling outcomes as records costs
 
-Outcomes were originally specified as an **inline checklist** on the deliverable, and that decision was reversed when the outcome became a unit (§2.4). The reversal has real costs, recorded here so they are weighed rather than forgotten:
+Outcomes were originally specified as an **inline checklist** on the work item, and that decision was reversed when the outcome became a unit (§2.4). The reversal has real costs, recorded here so they are weighed rather than forgotten:
 
 - **The most common read becomes the most expensive one.** "What does done look like here?" is the question asked most often, and answering it now means reading many files instead of one. A derived index makes this cheap, but an index is machinery that inline criteria would not have needed.
 - **Import and export lose fidelity.** External trackers keep acceptance criteria as unstructured text inside an item. There is nothing on the other side to map an outcome record onto, so a round trip degrades it to a rendered checklist and cannot reconstruct provenance.
@@ -700,27 +700,27 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | Condition | Purpose |
 |---|---|
 | `outcome.passing` / `outcome.unverified` | Drives completion arithmetic. |
-| `deliverable.complete` | Every live outcome passes. Gates closing (§5.3). |
+| `work-item.complete` | Every live outcome passes. Gates closing (§5.3). |
 | `wave.open` / `wave.closed` | Locates the current attempt. |
 | `task.claimable` | No live claim. |
 | `task.claim-stale` | A lease has expired. Reported, never auto-released (§6.5). |
 | `outcome.unmeasured` | An outcome with no `verify_by` — the *Measure* phase was skipped. |
 | `task.advances-nothing` | A task attached to no outcome. |
-| `deliverable.unarticulated` | A deliverable with no outcomes at all. |
-| `deliverable.drifted` † | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
-| `deliverable.not-converging` † | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
-| `deliverable.churning` † | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
-| `deliverable.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
+| `work-item.unarticulated` | A work item with no outcomes at all. |
+| `work-item.drifted` † | Work happened, but no outcome was verified or revised — **the specification has fallen behind reality** and *Redefine* was skipped. |
+| `work-item.not-converging` † | Waves are accumulating with no change in how many outcomes pass. The loop is running without closing the gap. |
+| `work-item.churning` † | Records are being created far faster than outcomes are passing — the signature of runaway generation. |
+| `work-item.missing-standing-outcome` | Created before the standing set changed, and lacking one of it (§4.4.1). |
 | `record.stalled` | Blocked or paused, and for how long (§4.2.1). The tool reports duration; what counts as too long is not its judgment. |
 | `record.stale` | Past its `stale_after` date without being touched — a cleanup candidate, never a deletion (§2.2.1). |
 | `journal.stale` † | Records changed since the newest journal entry — the context needed to resume has fallen behind the work (§5.5). |
-| `deliverable.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line deliverable marked `actionable` (§2.2.1). |
+| `work-item.formation-disputed` | A declared `workflow_status` its own structure contradicts — a one-line work item marked `ready` (§2.2.1). |
 
 Those last seven detect the pitfalls named in [`lifecycle.md`](lifecycle.md) §2. **A workflow layer cannot enforce a discipline it cannot observe**, so the conditions that make failures visible are as load-bearing as the ones driving completion.
 
 > **† These four carry a threshold, and the threshold is configuration (§8.2).** *How many flat waves is not converging?* has no answer independent of how a team works, so by §5.0 the tool does not hold one. Each reports **the series it observed** alongside any judgment — `waves: 3, outcomes passing: 2, 2, 2` — so a caller who disagrees with the threshold can read the evidence and decide for itself. Configure no thresholds and you get the series with no judgment attached, which is the honest default.
 
-> **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This deliverable is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
+> **How conditions are reported.** The tool states **what it observed and what that suggests** — never what someone should have done. *"No outcomes yet — this looks more like an idea than a draft"* is an observation a person can disagree with. *"This work item is incomplete"* is a verdict, and a tool that issues verdicts is one people stop reading. Conditions are suggestive; whether anything must follow is a workflow layer's rule to author (§8), never one shipped here.
 
 Three of them describe failure modes specific to agents working unattended, and are worth naming for that reason:
 
@@ -735,7 +735,7 @@ Completion is computed (§2.4), but **closing is something a caller does** — a
 The two closings differ, and the difference matters:
 
 - **Closing a wave is not gated on outcomes passing.** A wave ends when someone stops to measure, and stopping with four of six outcomes met is the normal case — that is what makes another wave necessary. Gating here would prevent the loop from iterating at all.
-- **Closing a deliverable is gated on `deliverable.complete`.** Every live outcome must pass. This is where computed completion stops being informational and becomes a refusal.
+- **Closing a work item is gated on `work-item.complete`.** Every live outcome must pass. This is where computed completion stops being informational and becomes a refusal.
 
 Whether a caller may override that refusal is open (`open-questions.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 
@@ -747,12 +747,12 @@ Work ends for more reasons than success, and a terminal state called *done* cann
 |---|---|
 | **delivered** | **Yes.** Every live outcome passes. |
 | **canceled** | No. The work is no longer wanted. |
-| **superseded** | No. Another deliverable replaced it. |
+| **superseded** | No. Another work item replaced it. |
 | **abandoned** | No. It was attempted and given up on. |
 
 This distinction matters more than vocabulary. **Gating cancellation on completion would be absurd** — you would be unable to stop work precisely because it was unfinished, which is the only reason anyone ever cancels anything. So the gate belongs to *delivered* alone, and the other reasons close freely.
 
-What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A canceled deliverable with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
+What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A canceled work item with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
 
 That is also what keeps this distinct from Redefine (`lifecycle.md` §2.8): retiring an outcome changes what done means, while canceling accepts that done was never reached. Conflating them would let anyone convert abandonment into success by deleting the evidence of what was missed.
 
@@ -769,7 +769,7 @@ That mapping is deliberately dumb. Boundary to command, nothing more — no cond
 | Boundary | Typical use |
 |---|---|
 | `wave.closed` | Apply learning, run an audit, update written context. |
-| `deliverable.closed` | Promote decisions, mark things stale, archive, update references. |
+| `work-item.closed` | Promote decisions, mark things stale, archive, update references. |
 | `outcome.verified` | Record or publish evidence elsewhere. |
 | `outcome.retired` | **Governance.** This is the operation that lowers the bar ([`lifecycle.md`](lifecycle.md) §2.8), and the one a team most likely wants to require review for. |
 
@@ -798,7 +798,7 @@ Conditions describe the present. Two other things describe what **happened**, an
 
 Git already stores what an events file would: **attributed, timestamped, immutable, and ordered.** It costs nothing extra, because these writes were being committed anyway. And keeping the complete record out of a file avoids making one path the hottest in the system — every operation appending to the same place is exactly the contention one-record-per-file was chosen to eliminate (§6.1).
 
-> **This is why the journal can carry events without inheriting that problem:** it takes only the significant ones (§5.5), which are rare. A per-deliverable file that every operation touches would be contended; one that a handful of decisions and closings touch is not. Where concurrent appends do meet, a union merge attribute concatenates them rather than conflicting.
+> **This is why the journal can carry events without inheriting that problem:** it takes only the significant ones (§5.5), which are rare. A per-work item file that every operation touches would be contended; one that a handful of decisions and closings touch is not. Where concurrent appends do meet, a union merge attribute concatenates them rather than conflicting.
 
 Two rules make git history a record rather than noise, and both are stated as requirements in §6.7:
 
@@ -813,11 +813,11 @@ Two rules make git history a record rather than noise, and both are stated as re
 
 > **The honest cost.** Copy `.backlog/` out of its repository and the event history does not come with it. That is a real loss for a stated goal, and the mitigation is exporting the history alongside the records rather than keeping a duplicate file permanently hot.
 
-#### The journal is the deliverable's memory
+#### The journal is the work item's memory
 
 That is the whole idea, and most of the design falls out of it.
 
-A session has memory and loses it when it ends. An actor has memory and takes it away when it leaves. **A deliverable has memory too, and this is where it is kept** — so that ending a session, replacing an agent, or coming back in three weeks costs nothing but reading.
+A session has memory and loses it when it ends. An actor has memory and takes it away when it leaves. **A work item has memory too, and this is where it is kept** — so that ending a session, replacing an agent, or coming back in three weeks costs nothing but reading.
 
 **It is a log and more than a log.** Not a narrative kept apart from the record of what happened, but the readable stream that carries both: significant events *and* the reasoning behind them. Git holds **what got done**, completely and unforgeably. The journal holds **why**, alongside enough of the what to make the why make sense.
 
@@ -835,7 +835,7 @@ That is the criterion. Not importance, not completeness — **relitigation risk.
 | **An outcome is retired** | **Why.** This is the operation that lowers the bar (`lifecycle.md` §2.8), and the one most likely to be questioned later. |
 | **A learning pass runs** | What was found. Propagation then works **from the journal** — promoting what proved durable outward (§2.6). |
 | **A session or a wave wraps up** | Where things stand, what is next, what is unknown. The resume pointer. |
-| **A deliverable closes** | The reason. Delivered, canceled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
+| **A work item closes** | The reason. Delivered, canceled, superseded, and abandoned are very different facts about the same terminal state (§5.3.1). |
 | **An outcome is verified, or regresses** | What the evidence was. Completion rests on this, and a regression is not reconstructible from current state. |
 | **A check is overridden** | If a team permits overriding a refusal (§6, open), the override must be visible — otherwise it is indistinguishable afterwards from the check having passed. |
 
@@ -847,7 +847,7 @@ This list is a starting point and **expected to be tuned by use.** The criterion
 
 Agent harnesses offer their own memory stores, and they are the wrong place for this. They are **local to a machine, scoped to one user, and outside version control** — so they vanish on a rebuild, are invisible to a colleague, and are not there at all for the next agent on different hardware.
 
-A deliverable's memory has to travel with the deliverable. Committed beside the work, it is portable, shared, reviewable, and survives everything except deleting the repository.
+A work item's memory has to travel with the work item. Committed beside the work, it is portable, shared, reviewable, and survives everything except deleting the repository.
 
 ##### How it differs from the machine record
 
@@ -877,7 +877,7 @@ Harder than *was the work recorded*, and the bar that matters — because the al
 
 **The newest entry is the resume pointer.** It says where things stand, what to do next in order, and what is still unknown, and it **explicitly marks everything below as historical** so a reader knows where to stop. This is what makes an append-only file survivable at length: nothing is edited, the present costs one block, and volume never buries it.
 
-> Chronological order was tried first and does not survive a long-running deliverable. A reader arriving at a file with forty entries has to work backwards to assemble the current picture, and does it wrong. The newest-first pointer emerged from that pressure rather than from preference.
+> Chronological order was tried first and does not survive a long-running work item. A reader arriving at a file with forty entries has to work backwards to assemble the current picture, and does it wrong. The newest-first pointer emerged from that pressure rather than from preference.
 
 **Headings are named after what they settle**, not drawn from a fixed template. *Proxmox versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will.
 
@@ -925,11 +925,11 @@ Appends to the newest entry, opening one for today if none exists (§9.2). No fi
 
 **3. Staleness is a condition.** `journal.stale` reports records changed since the newest entry (§5.2) — observable, and thresholded in configuration rather than in the binary.
 
-**4. Enforcement at a boundary is declared, never shipped.** A team may bind a wave or deliverable closing to a gate that refuses while `journal.stale` holds. The tool carries the gate, the team authors it, and a repository declaring nothing behaves as though none of this existed (§5.0). Hooks are the candidate mechanism (§5.4, still a proposal).
+**4. Enforcement at a boundary is declared, never shipped.** A team may bind a wave or work item closing to a gate that refuses while `journal.stale` holds. The tool carries the gate, the team authors it, and a repository declaring nothing behaves as though none of this existed (§5.0). Hooks are the candidate mechanism (§5.4, still a proposal).
 
 This is last rather than first for a reason: **a gate produces an entry, not the entry that was lost.**
 
-**5. Reading is served rather than instructed.** `claim` returns the newest journal entry with the task, and so does opening a deliverable on the board. An actor cannot begin without having been handed the resume pointer.
+**5. Reading is served rather than instructed.** `claim` returns the newest journal entry with the task, and so does opening a work item on the board. An actor cannot begin without having been handed the resume pointer.
 
 > **The honest limit.** The tool cannot detect an unwritten learning. Only the actor knows something was discovered, so every mechanism above is a proxy. None can tell that the one thing that mattered was left out.
 
@@ -943,7 +943,7 @@ This is last rather than first for a reason: **a gate produces an entry, not the
 
 Two failure modes it exists to prevent: **holding it in your head**, which ends when the session does, and **inventing a new file for it**, which puts the knowledge where nobody will look.
 
-**Capture is cheap and unsorted; promotion is deliberate.** A learning that proves durable becomes a decision record (§4.8); one that changes what the work *is* belongs in the deliverable record; one that outlives the backlog gets promoted outward. That sorting happens at a boundary, once it is clear what earned it — never at the moment of writing, which is when the pressure to skip is highest.
+**Capture is cheap and unsorted; promotion is deliberate.** A learning that proves durable becomes a decision record (§4.8); one that changes what the work *is* belongs in the work item record; one that outlives the backlog gets promoted outward. That sorting happens at a boundary, once it is clear what earned it — never at the moment of writing, which is when the pressure to skip is highest.
 
 ### 5.6 What this must never become
 
@@ -1059,19 +1059,19 @@ A directory structure may only reflect properties that are effectively permanent
 ```
 .backlog/
   config.yml                      configuration (§8)
-  journal.md                      cross-deliverable learning — see the caution below
+  journal.md                      cross-work item learning — see the caution below
   index.md                        derived navigation — a cache, never a source
   _types/                         Type Definitions, one per type (§4.0)
     luma/backlog/
-      deliverable.md
+      work item.md
       wave.md
       outcome.md
       task.md
       decision.md
       exploration.md
-  deliverables/
+  work-items/
     payments-v2/
-      index.md                    the deliverable record itself
+      index.md                    the work item record itself
       journal.md                  what was learned — not an event log (§5.5)
       outcomes/
         dry-run-safety.md
@@ -1082,9 +1082,9 @@ A directory structure may only reflect properties that are effectively permanent
         wire-dead-letter-path.md
       explorations/               absent until there is one
         queue-vs-outbox.md
-      decisions/                  decisions made inside this deliverable
+      decisions/                  decisions made inside this work item
         retry-on-write.md
-  decisions/                      made outside any deliverable, or promoted here
+  decisions/                      made outside any work item, or promoted here
     postgres-over-sqlite.md
 ```
 
@@ -1092,23 +1092,23 @@ A directory structure may only reflect properties that are effectively permanent
 
 `_types/` is reserved by the format. At the repository root, `index.md` is derived navigation — a cache, rebuildable, and deleting it loses nothing.
 
-**Inside a deliverable, `index.md` *is* the deliverable record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
+**Inside a work item, `index.md` *is* the work item record.** That reuses a name the format currently reserves for derived content, and is a **pending change request against the format** rather than an accident. It is worth making because the two need not compete: an authoritative record can carry a **generated navigation section** within it, regenerated in place, which is strictly better than a separate cache file nobody edits.
 
-> **The root-level `journal.md` is not settled** (`open-questions.md` §2). A deliverable's memory has an obvious owner and an obvious reader; a repository-wide one has neither, and the risk is that it becomes the junk drawer this design has otherwise avoided. It is shown here because cross-deliverable learning has to land somewhere, not because the case for it is made. The per-deliverable file below is the settled part.
+> **The root-level `journal.md` is not settled** (`open-questions.md` §2). A work item's memory has an obvious owner and an obvious reader; a repository-wide one has neither, and the risk is that it becomes the junk drawer this design has otherwise avoided. It is shown here because cross-work item learning has to land somewhere, not because the case for it is made. The per-work item file below is the settled part.
 
-**`journal.md` is created with the deliverable and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
+**`journal.md` is created with the work item and is not optional.** Somewhere to write must exist before anyone needs it, or the writing does not happen. It is append-only: writers add and never rewrite.
 
 **It is not an event log.** Status changes, claims, and verifications are commits, not entries (§5.5). What goes here is **why** — the reasoning, the dead ends, what is still unknown — written so that whoever picks the work up next can continue without re-deriving it.
 
 > **Nothing is called `log.md`.** The format reserves that name for an event history, and there is no such file here, so the name simply goes unused — no change request needed. `journal` is not a rename of it; it is a different file with a different job.
 
-**Decisions sit where they were made** (§4.8) — inside the deliverable that produced them, or at the top level when no deliverable did. That is a legal path fact under §7.1 because *where* a decision was made never changes, even though what it governs may outgrow the work entirely. Promotion **copies to the top level** rather than moving (§4.8.1), so the original stays beside the reasoning that produced it.
+**Decisions sit where they were made** (§4.8) — inside the work item that produced them, or at the top level when no work item did. That is a legal path fact under §7.1 because *where* a decision was made never changes, even though what it governs may outgrow the work entirely. Promotion **copies to the top level** rather than moving (§4.8.1), so the original stays beside the reasoning that produced it.
 
 ### 7.2.1 Exploration is kept separate on purpose
 
-Exploration is ideas, research, spikes, and investigations — including the ones that went nowhere. It lives in `explorations/` inside the deliverable it belongs to, or as a deliverable in its own right when the investigation *is* the work (§2.1).
+Exploration is ideas, research, spikes, and investigations — including the ones that went nowhere. It lives in `explorations/` inside the work item it belongs to, or as a work item in its own right when the investigation *is* the work (§2.1).
 
-**Its own directory, and its own type, because the whole risk is leakage.** An idea recorded while thinking must never be mistaken for something the team committed to. That is already true structurally — **a deliverable is judged on its outcomes and on nothing else** (§2.4) — and keeping exploration visibly apart makes it true on inspection as well, for a reader skimming rather than querying.
+**Its own directory, and its own type, because the whole risk is leakage.** An idea recorded while thinking must never be mistaken for something the team committed to. That is already true structurally — **a work item is judged on its outcomes and on nothing else** (§2.4) — and keeping exploration visibly apart makes it true on inspection as well, for a reader skimming rather than querying.
 
 **Nothing moves out of exploration except by an explicit act.** Turning an investigation into work means someone creating an outcome or a task from it, deliberately. There is no promotion the tool performs and no inference it draws.
 
@@ -1125,24 +1125,24 @@ Exploration is ideas, research, spikes, and investigations — including the one
 
 > **Not yet placed.** Context material and the exact structure of `journal.md` have no defined home (`open-questions.md` §2). The layout above leaves room for them without guessing at their shape.
 
-### 7.3 Why deliverable membership is the only path fact
+### 7.3 Why work item membership is the only path fact
 
-Nesting outcomes, waves, and tasks under their deliverable **encodes that membership in the path** — which sits in tension with membership living on the member (§3.2), and means reassigning a record between deliverables is a move, and a move changes identity.
+Nesting outcomes, waves, and tasks under their work item **encodes that membership in the path** — which sits in tension with membership living on the member (§3.2), and means reassigning a record between work items is a move, and a move changes identity.
 
 That tension is accepted for exactly one relationship, because it is the only one that passes the §7.1 test:
 
 | Relationship | Stable enough to be a path? |
 |---|---|
-| A record's **deliverable** | **Yes.** Records are created for a deliverable and rarely move between them. |
+| A record's **work item** | **Yes.** Records are created for a work item and rarely move between them. |
 | A task's **wave** | No. Tasks move between attempts, or gain successors, routinely (§4.6). |
 | A record's **dimensions** | No. Classification changes freely by design (§3.1). |
 | **Workflow status**, priority, claims | No. Among the most frequent writes in the system. |
 
-So the path carries deliverable membership and nothing else; everything else is a field.
+So the path carries work item membership and nothing else; everything else is a field.
 
-**When a record does move deliverables** — uncommon but real — it is a rename, and the tool rewrites inbound links as part of it. This is the mechanism the format anticipates for renames, rather than a workaround.
+**When a record does move work items** — uncommon but real — it is a rename, and the tool rewrites inbound links as part of it. This is the mechanism the format anticipates for renames, rather than a workaround.
 
-**What the nesting buys** is worth the single exception. A deliverable's entire working set is one directory: a person browsing it in an editor sees everything at once, and an agent gathering context reads one place rather than filtering thousands of files by a frontmatter field. It also keeps directories small — a deliverable holds tens of records, where a flat layout would accumulate thousands in one place with no sanctioned way to reduce it, since archiving is an attribute and therefore cannot move anything.
+**What the nesting buys** is worth the single exception. A work item's entire working set is one directory: a person browsing it in an editor sees everything at once, and an agent gathering context reads one place rather than filtering thousands of files by a frontmatter field. It also keeps directories small — a work item holds tens of records, where a flat layout would accumulate thousands in one place with no sanctioned way to reduce it, since archiving is an attribute and therefore cannot move anything.
 
 ### 7.4 Names and references
 
@@ -1156,12 +1156,12 @@ Numeric identifiers are deliberately **not** used. They require an allocator, th
 
 The layout is chosen so that the common concurrent cases do not conflict:
 
-- **Two actors adding different records to the same deliverable** touch different files. No conflict.
+- **Two actors adding different records to the same work item** touch different files. No conflict.
 - **Two actors changing different records** touch different files. No conflict.
 - **Two actors changing the same record** conflict — correctly, and that is what §6.3 detects.
 - **Two branches creating a wave with the same ordinal**, or two records that slugify identically, conflict at the path. This is the identifier problem of §6.4 and is a consequence of the open storage topology, not of this layout.
 
-**A note on growth.** If `deliverables/` becomes unwieldy at scale, sharding by creation period is legal under §7.1, because creation date never changes. That is a later option, recorded so nobody reaches for a status directory instead.
+**A note on growth.** If `work-items/` becomes unwieldy at scale, sharding by creation period is legal under §7.1, because creation date never changes. That is a later option, recorded so nobody reaches for a status directory instead.
 
 ### 7.6 Worktrees
 
@@ -1186,19 +1186,19 @@ lkf_version:    0.0.2             # format grammar this bundle is written agains
 type_namespace: luma/backlog      # resolves short type names (§4.1)
 
 labels:
-  deliverable: story              # what people see; records still say deliverable
+  work item: story              # what people see; records still say work item
 
 workflow_status:
-  deliverable: [idea, preparing, actionable, todo, in_progress, closed]
+  work item: [idea, preparing, ready, todo, in_progress, closed]
   task:        [todo, in_progress, closed]
 
 columns:                          # statuses grouped into board columns (§11)
-  Backlog:     [idea, preparing, actionable]
+  Backlog:     [idea, preparing, ready]
   To Do:       [todo]
   In Progress: [in_progress]
   Closed:      [closed]
 
-actionable_requires_confirmation: false   # §2.2.1
+ready_requires_confirmation: false   # §2.2.1
 
 priority:
   values:  [low, medium, high, urgent]
@@ -1215,17 +1215,17 @@ thresholds:                       # when a pattern is worth naming (§5.2)
   churn_records_per_pass:   20    # records created per outcome newly passing
   journal_stale_after:      10    # records changed since the newest journal entry
 
-standing_outcomes:                # applied to every new deliverable (§4.4.1)
+standing_outcomes:                # applied to every new work item (§4.4.1)
   - desired_state: the test suite passes
     verify_by:     make test
   - desired_state: documentation reflects the change
 
 
 templates:
-  deliverable: templates/deliverable.md
+  work item: templates/work item.md
 
 hooks:                            # proposal — see §5.4
-  deliverable.closed: ./scripts/wrap-up.sh
+  work item.closed: ./scripts/wrap-up.sh
 ```
 
 Each of those is a decision made elsewhere in this document: display labels (§2.1), workflow status (§4.2), priority and derived scoring (§4.2), dimensions (§2.7), condition thresholds (§5.2), default sections (`open-questions.md` §17), and hooks (§5.4, still a proposal).
@@ -1264,7 +1264,7 @@ The test is simple:
 >
 > If a setting would need an `if`, it belongs in a script the configuration *points at* — not in the configuration.
 
-So `deliverable.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close, if three or more outcomes were retired, require approval from someone other than the closer"* is behavior, belongs in `wrap-up.sh`, and would make this tool an interpreter of somebody's process if it lived in a settings file.
+So `work-item.closed: ./wrap-up.sh` is a binding, and belongs here. *"On close, if three or more outcomes were retired, require approval from someone other than the closer"* is behavior, belongs in `wrap-up.sh`, and would make this tool an interpreter of somebody's process if it lived in a settings file.
 
 ### 8.7 Errors
 
@@ -1297,7 +1297,7 @@ Those are served by different layers rather than by one compromise. A skill, the
 What this does rule out:
 
 - **A command whose only path requires knowing field names.** A title given positionally must be enough to produce a valid record, with everything else derived or simply absent.
-- **Prompting for anything inferable** — type from what was asked for, deliverable from context, timestamps and actor from the environment, filename from the title.
+- **Prompting for anything inferable** — type from what was asked for, work item from context, timestamps and actor from the environment, filename from the title.
 - **Punishing a hand-edit.** A record is prose plus frontmatter; correcting one is editing a file (§4.1).
 
 #### 9.0.2 Start with flags
@@ -1316,7 +1316,7 @@ The format is the tool's problem. The work is the author's.
 
 **The same verbs mean the same thing on every noun.** An actor learns one verb set rather than one per type, which is what keeps the surface small enough to hold in a cold context.
 
-**Aliases are accepted, canonical names are emitted.** If a repository calls deliverables *stories*, `backlog story list` works (§2.1). The structured output still says `deliverable`, every time, everywhere.
+**Aliases are accepted, canonical names are emitted.** If a repository calls work items *stories*, `backlog story list` works (§2.1). The structured output still says `work-item`, every time, everywhere.
 
 **Unambiguous prefixes resolve**, as abbreviated revisions do in version control (§7.4): `backlog task show add-retry` finds `add-retry-queue` when nothing else matches. Ambiguity is an error, never a guess.
 
@@ -1337,11 +1337,11 @@ Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
-| `move` | deliverable | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
+| `move` | work item | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
 | `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
 | `journal` | any | With an argument, append one line to the journal, opening today's entry if needed. With none, show it (§5.5). |
-| `close` | wave, deliverable | The explicit act, validated against the arithmetic (§5.3). |
+| `close` | wave, work item | The explicit act, validated against the arithmetic (§5.3). |
 | `promote` | decision | Copy to the global space, linked back (§4.8.1). |
 
 Top-level:
@@ -1390,7 +1390,7 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Most operations write exactly one file, and that is not an accident.** Membership lives on the member (§3.2), promotion copies rather than moves (§4.8.1), succession creates rather than edits (§4.6). Each of those rules exists partly so that the common case never needs a transaction.
 
-**Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one deliverable writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
+**Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one work item writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
 **Keys are fixed-width: four digits, a point, three decimals** — `0010.000`, `0020.000`, `0010.500`.
 
@@ -1407,7 +1407,7 @@ Allocation is by **bisection**: take the midpoint of the neighbouring keys.
 
 **The width is a normal form, not a hard limit.** Roughly ten bisections at the *same* position exhaust three decimals — `0010.500`, `0010.250`, `0010.125`, down to `0010.001`. Precision then **extends** rather than the scheme failing. Most backlogs will never contain a fourth decimal; it exists so that **a rebalance is never mandatory**, the alternative being a multi-record write arriving mid-drag.
 
-The four-digit integer range is likewise soft. Appending past `9990.000` bisects toward the ceiling rather than failing, and reaching it at all would take thousands of deliverables at one level.
+The four-digit integer range is likewise soft. Appending past `9990.000` bisects toward the ceiling rather than failing, and reaching it at all would take thousands of work items at one level.
 
 Two details that matter:
 
@@ -1587,11 +1587,11 @@ The one genuine gap is **identity that survives a round trip** (`open-questions.
 
 ### 10.4 Where the names collide
 
-Mapping must be **explicit, never inferred from names**, because the names collide in the worst possible way: an external *project* is a container of many deliverables, which is a **dimension** here (§2.7) rather than the unit sharing its name.
+Mapping must be **explicit, never inferred from names**, because the names collide in the worst possible way: an external *project* is a container of many work items, which is a **dimension** here (§2.7) rather than the unit sharing its name.
 
 | Ours | Theirs | Fidelity |
 |---|---|---|
-| **deliverable** | story, backlog item, work item, issue | Good — same granularity. |
+| **work item** | story, backlog item, work item, issue | Good — same granularity. |
 | **task** | sub-task, task | Good. |
 | **dimension** | project, epic, initiative, component, fix version, label | Good — these are member-side references on both sides (§3.2). |
 | workflow status, priority | status, priority | Good, once vocabularies are mapped value by value. |
@@ -1641,7 +1641,7 @@ So a pass compares and writes **only records that genuinely differ**, and never 
 Whether that synchronizer is this tool, an external program, or a script somebody wrote in an afternoon, the same rules hold — and stating them is useful precisely *because* the work may not be ours:
 
 - **Never silently overwrite a local change**, whichever side owns the field.
-- **Never map by name.** Their *project* is our dimension; their *epic* is not our deliverable.
+- **Never map by name.** Their *project* is our dimension; their *epic* is not our work item.
 - **Never drop evidence.** If outcomes cannot round-trip losslessly, do not round-trip them at all (§10.6) — losing verification history is worse than not synchronizing it.
 - **Never touch records that did not change**, and never reformat one being read.
 - **Never invent a vocabulary value.** A status the configuration does not declare (§8) fails loudly rather than being created.
@@ -1672,8 +1672,8 @@ Enough to work the model, and no more:
 
 | View | Shows |
 |---|---|
-| **Backlog** | Deliverables in rank order, in columns by workflow status. The kanban surface. **Drafts are hidden by default** (§2.2.1) — capture is generous, the working surface is not. |
-| **Deliverable** | One deliverable: its outcomes and their evidence, its waves, its tasks. |
+| **Backlog** | Work items in rank order, in columns by workflow status. The kanban surface. **Drafts are hidden by default** (§2.2.1) — capture is generous, the working surface is not. |
+| **Work item** | One work item: its outcomes and their evidence, its waves, its tasks. |
 | **Wave** | The current attempt — what is claimed, by whom, what is blocked. |
 | **Health** | Whatever conditions are currently firing across the repository. |
 
@@ -1681,7 +1681,7 @@ Dimensions (§2.7) filter and group every view rather than adding views of their
 
 **Interaction patterns worth adopting**, drawn from boards that already work:
 
-- **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without color. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `actionable`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
+- **Formation visible at a glance**, across the whole backlog, without opening anything (§2.2.1). Requirements: cost **no horizontal space** in a contested column, need **no legend**, and survive without color. One approach satisfying all three — render formation as *visual sharpness*, so an `idea` appears faint and indistinct and sharpens as it becomes `ready`, paired with a single-character fill ramp so meaning never rests on contrast alone (§11.5). The metaphor is the mechanism: unformed things look unformed. Other encodings would serve; this is an example, not a mandate.
 - **Columns group statuses** (§8), so a board stays legible while the vocabulary underneath stays precise.
 - **Blocked and paused render as markers on the card, never as columns** (§4.2.1) — so a stalled item stays where the work actually is, and *three of eight in progress are blocked* is visible at a glance. Showing **how long** is what makes the marker worth having.
 - **Counts in column headers**, so the shape of the backlog is legible before reading a single card.

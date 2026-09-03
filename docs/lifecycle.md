@@ -1,4 +1,4 @@
-# Lifecycle — how a deliverable is expected to move
+# Lifecycle — how a work item is expected to move
 
 > **This document is not part of the specification, and this tool does not implement it.**
 >
@@ -10,11 +10,11 @@
 
 ## 1. Before the loop — optional
 
-Neither stage is required. A deliverable may begin at the loop with no preamble.
+Neither stage is required. A work item may begin at the loop with no preamble.
 
-**Import.** A deliverable may arrive from an external system — an issue, a story, a ticket — rather than being authored here (`spec.md` §10).
+**Import.** A work item may arrive from an external system — an issue, a story, a ticket — rather than being authored here (`spec.md` §10).
 
-**Discovery.** Where the work is not yet understood: brainstorm, research, explore, decide, sketch. This is where **exploration** records are produced and early **decisions** get made. Both may live inside the deliverable, and exploration substantial enough to warrant stated outcomes may become a deliverable of its own.
+**Discovery.** Where the work is not yet understood: brainstorm, research, explore, decide, sketch. This is where **exploration** records are produced and early **decisions** get made. Both may live inside the work item, and exploration substantial enough to warrant stated outcomes may become a work item of its own.
 
 ## 2. The process
 
@@ -35,11 +35,11 @@ Each phase answers its own unique questions. If two phases answer the same one, 
 | **Redefine** | *Was that the right definition of done?* | Change the outcomes where reality proved them wrong. **Requires governance** — this is where goalposts get moved (§2.8). |
 | **Learn** | *How should we work differently next time?* | Capture improvements to the method. |
 
-**When the deliverable closes:**
+**When the work item closes:**
 
 | Phase | Answers | In short |
 |---|---|---|
-| **Propagate** | *What should outlive this deliverable?* | Promote decisions, update references, mark stale, archive. |
+| **Propagate** | *What should outlive this work item?* | Promote decisions, update references, mark stale, archive. |
 
 ### 2.1 How the phases sit against waves
 
@@ -48,7 +48,7 @@ They are not evenly distributed, and that is informative:
 - **Observe, Articulate, Measure, Plan** are heavy on the first wave and light afterwards. You re-observe every time; you do not re-articulate from scratch.
 - **Advance** is the body of the wave.
 - **Verify, Redefine, Learn** all happen **at the wave boundary** — which is why `spec.md` §2.3 calls that boundary a measurement point. Three phases land there.
-- **Propagate** happens once, at deliverable close. You do not archive on wave two.
+- **Propagate** happens once, at work item close. You do not archive on wave two.
 
 So the wave is not an arbitrary container. It is the unit those last three phases attach to.
 
@@ -117,7 +117,7 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 | **Added** | Outcome: *a dry run prints planned changes and writes nothing.* Building it, you notice the code calls a licensing server first, and a dry run still makes that call. Nobody considered it. **Add:** *a dry run makes no network calls.* |
 | **Split** | Outcome: *the import handles malformed files gracefully.* "Gracefully" turns out to mean two things — it does not crash, and it reports the failing line. You can pass one and fail the other, so it cannot be checked as written. **Split** into two. |
 | **Tightened** | Outcome: *the page loads fast.* Unverifiable — it can never fail, so it can never pass. **Tighten:** *the homepage renders in under one second on a cold cache.* |
-| **Killed** | Outcome: *the migration completes with no downtime.* The database engine takes an exclusive lock for this operation; no downtime is impossible with this engine. **Kill** it and record a decision accepting downtime — or change the deliverable. |
+| **Killed** | Outcome: *the migration completes with no downtime.* The database engine takes an exclusive lock for this operation; no downtime is impossible with this engine. **Kill** it and record a decision accepting downtime — or change the work item. |
 
 **Three of the four raise the bar.** Vagueness is what building reveals, and vagueness is always easier than precision. This phase mostly makes specifications stricter.
 
@@ -127,9 +127,9 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 - **It happens at a wave boundary**, which is a reviewed checkpoint rather than something done silently mid-work.
 - **An asymmetry worth enforcing.** Operations that make the bar **higher or clearer** — added, split, tightened — are safe, and an agent should perform them freely. Operations that make it **lower** — killed, loosened — are the dangerous ones, and are where a workflow layer should require human ratification. That single rule turns the risk into a control.
 
-**Why it cannot simply be omitted.** Freeze the outcomes and: missing requirements never get added, so you ship something incomplete; vague outcomes stay unverifiable, so you can never prove done; impossible outcomes block forever, so the deliverable never closes. **A frozen specification is not a disciplined project — it is a wrong specification you are not allowed to fix.**
+**Why it cannot simply be omitted.** Freeze the outcomes and: missing requirements never get added, so you ship something incomplete; vague outcomes stay unverifiable, so you can never prove done; impossible outcomes block forever, so the work item never closes. **A frozen specification is not a disciplined project — it is a wrong specification you are not allowed to fix.**
 
-**Redefine is not Learn.** They act on different objects. *Redefine* changes **the outcomes of this deliverable** — what done means, here, now. *Learn* changes **how future deliverables are worked** — and touches nothing about this one. If it helps: one fixes the target, the other fixes the method.
+**Redefine is not Learn.** They act on different objects. *Redefine* changes **the outcomes of this work item** — what done means, here, now. *Learn* changes **how future work items are worked** — and touches nothing about this one. If it helps: one fixes the target, the other fixes the method.
 
 ### 2.9 Learn — *how should we work differently next time?*
 
@@ -141,13 +141,13 @@ So the wave is not an arbitrary container. It is the unit those last three phase
 
 **Watch for.** Recording facts instead of improvements — *we used Postgres* is not a lesson. And confusing it with Redefine: this fixes the method, that fixes the target.
 
-### 2.10 Propagate — *what should outlive this deliverable?*
+### 2.10 Propagate — *what should outlive this work item?*
 
 **What.** Promote decisions, update documentation and references, mark things stale, archive what is finished.
 
-**Earns its keep.** The only phase that acts **outside** the deliverable. Knowledge left inside a closed one is lost.
+**Earns its keep.** The only phase that acts **outside** the work item. Knowledge left inside a closed one is lost.
 
-**Watch for.** Promoting everything, which dilutes the global space until nobody reads it, and promoting nothing, which loses it. And deferring it — once a deliverable closes, nobody comes back.
+**Watch for.** Promoting everything, which dilutes the global space until nobody reads it, and promoting nothing, which loses it. And deferring it — once a work item closes, nobody comes back.
 
 ### 2.11 On the phase names
 
@@ -156,7 +156,7 @@ Every name was chosen to be **self-evident**. A phase name needing a glossary de
 | Name | Why, and what it beat |
 |---|---|
 | **Measure** | Names the property that matters — a system able to check itself. *Probe* is jargon; *Instrument* needs explaining; *Prove* would collide with **Verify** as design-time versus run-time. |
-| **Advance** | Domain-neutral, and carries motion toward something. *Build* is wrong when the deliverable is a health target or a document; *Climb* imports a metaphor. It also has an exact technical sense: in tunnelling, the *advance* is the distance gained per round of work — progress per wave. |
+| **Advance** | Domain-neutral, and carries motion toward something. *Build* is wrong when the work item is a health target or a document; *Climb* imports a metaphor. It also has an exact technical sense: in tunnelling, the *advance* is the distance gained per round of work — progress per wave. |
 | **Verify** | Matches the data model exactly: the phase reads `verify_by` and writes `verified`. That second field belongs to the knowledge format and cannot be renamed, so any other name would create a permanent mismatch. |
 | **Redefine** | Names its object — you redefine *done*, and nothing else it could mean. **Mirrors Articulate**, making visible that this phase is Articulate happening again with better information. Beat *reshape* and *adapt*, which leave the object unstated, and *evolve*, which is passive — wrong for the phase most needing accountability, and too close to **Learn**. |
 | **Propagate** | The outward motion, against Redefine's inward one. Beat *consolidate* (weak outward), *graduate* (silent on tidying), *curate* (understates promotion), *ratify* (decisions only). |
@@ -165,13 +165,13 @@ Every name was chosen to be **self-evident**. A phase name needing a glossary de
 
 ## 3. Promotion
 
-Most decisions stay with the deliverable that produced them. A minority — under one in ten — outlive it and deserve to become standing rules.
+Most decisions stay with the work item that produced them. A minority — under one in ten — outlive it and deserve to become standing rules.
 
 **Promotion copies; it never moves.** A new record is created in the global decision space carrying `promoted_from`, and the original is left exactly as it was. Moving would change the original's identity and break every inbound link (`spec.md` §7.1).
 
 The two are not competing copies. They have different jobs:
 
-- **The deliverable-level decision is a point-in-time record** of what was decided during that work. Once ratified it is *supposed* to freeze — going stale is the point, not a defect.
+- **The work item-level decision is a point-in-time record** of what was decided during that work. Once ratified it is *supposed* to freeze — going stale is the point, not a defect.
 - **The global decision is a living, ratified rule**, amended as things change.
 
 While a decision is `draft` or `provisional`, editing it is expected. The freeze applies once ratified.
@@ -184,9 +184,9 @@ The useful part of this document. Each phase implies capability, and anything mi
 
 | Phase | Requires |
 |---|---|
-| **Discovery** | Exploration records, at either level. Decisions at deliverable level. Somewhere for context material — **currently a gap** (`open-questions.md` §2). |
+| **Discovery** | Exploration records, at either level. Decisions at work item level. Somewhere for context material — **currently a gap** (`open-questions.md` §2). |
 | **Observe** | Read current state cheaply: what exists, what is claimed, what has changed. |
-| **Articulate** | Create a deliverable and its outcomes. |
+| **Articulate** | Create a work item and its outcomes. |
 | **Measure** | Record `verify_by` on each outcome before work begins (`spec.md` §4.4). |
 | **Plan** | Create tasks, order them, and mark what may overlap (`spec.md` §4.5.1). |
 | **Advance** | Claim work exclusively, record progress (`spec.md` §6.5). |
@@ -197,7 +197,7 @@ The useful part of this document. Each phase implies capability, and anything mi
 
 Two cross-cutting requirements fall out of the whole loop rather than any one phase:
 
-- **Boundaries must be detectable.** The loop needs to know when a wave has closed and when a deliverable's outcomes all pass. The tool answers this as a **queryable condition** rather than an emitted event, so a layer that was not watching at the time can still catch up (`spec.md` §5).
+- **Boundaries must be detectable.** The loop needs to know when a wave has closed and when a work item's outcomes all pass. The tool answers this as a **queryable condition** rather than an emitted event, so a layer that was not watching at the time can still catch up (`spec.md` §5).
 - **Every phase must be reachable through the documented interface.** If any of it requires reaching into internal state, extracting this layer later becomes a rewrite instead of a move.
 
 ## 5. What the tool must not take from this document
