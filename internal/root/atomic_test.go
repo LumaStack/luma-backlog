@@ -23,7 +23,7 @@ func newBacklog(t *testing.T) *Backlog {
 
 func TestWriteFileAtomicRoundTrips(t *testing.T) {
 	b := newBacklog(t)
-	const name = "backlog/deliverables/thing/index.md"
+	const name = "backlog/work-items/thing/index.md"
 
 	if err := b.WriteFileAtomic(name, []byte("first"), 0o644); err != nil {
 		t.Fatal(err)

@@ -11,15 +11,15 @@ import (
 
 func newListCommand(app *App) *cobra.Command {
 	var (
-		asJSON      bool
-		deliverable string
-		status      string
+		asJSON   bool
+		workItem string
+		status   string
 	)
 
 	cmd := &cobra.Command{
 		Use:   "list [" + strings.Join(backlog.Units, "|") + "]",
 		Short: "Read many records",
-		Long:  "Lists records, optionally narrowed by unit, deliverable, or status.",
+		Long:  "Lists records, optionally narrowed by unit, work item, or status.",
 		Args:  cobra.MaximumNArgs(1),
 		// Deliberately not an error when nothing matches: an empty backlog and
 		// an over-narrow filter are both ordinary, and exiting non-zero would
@@ -32,7 +32,7 @@ func newListCommand(app *App) *cobra.Command {
 			}
 			defer b.Close()
 
-			f := backlog.Filter{Deliverable: deliverable, Status: status}
+			f := backlog.Filter{WorkItem: workItem, Status: status}
 			if len(args) == 1 {
 				if !backlog.IsUnit(args[0]) {
 					return usageErr("unknown unit %q: expected one of %s",
@@ -71,7 +71,7 @@ func newListCommand(app *App) *cobra.Command {
 		},
 	}
 	cmd.Flags().BoolVar(&asJSON, "json", false, "emit the listing as JSON")
-	cmd.Flags().StringVarP(&deliverable, "deliverable", "d", "", "only records in this deliverable")
+	cmd.Flags().StringVarP(&workItem, "work-item", "w", "", "only records in this work item")
 	cmd.Flags().StringVarP(&status, "status", "s", "", "only records with this workflow status")
 	return cmd
 }

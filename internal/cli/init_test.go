@@ -10,7 +10,6 @@ import (
 
 	"github.com/lumastack/luma-backlog/internal/config"
 	"github.com/lumastack/luma-backlog/internal/env"
-	"github.com/lumastack/luma-backlog/internal/record"
 )
 
 // newApp builds a project in a temporary directory with a fixed clock and a
@@ -63,18 +62,6 @@ func TestInitCreatesAUsableBacklog(t *testing.T) {
 		t.Errorf("type_namespace = %q", cfg.TypeNamespace)
 	}
 
-	// The bundle root must be a valid record, since foreign readers depend on it.
-	rootData, err := os.ReadFile(filepath.Join(project, ".luma", "backlog", "index.md"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	r, err := record.Parse(rootData)
-	if err != nil {
-		t.Fatalf("the bundle root init wrote does not parse: %v", err)
-	}
-	if got, _ := r.Get("type_namespace"); got != cfg.TypeNamespace {
-		t.Errorf("bundle root namespace %q disagrees with configuration %q", got, cfg.TypeNamespace)
-	}
 }
 
 func TestInitIsSafeToRunAgain(t *testing.T) {

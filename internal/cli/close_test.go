@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
-// withOutcomes builds a deliverable with two outcomes, neither verified.
+// withOutcomes builds a work item with two outcomes, neither verified.
 func withOutcomes(t *testing.T) (*App, string) {
 	t.Helper()
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 	for _, title := range []string{"The queue drains", "Retries are durable"} {
-		if code, _, e := run(t, app, "new", "outcome", title, "-d", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, "new", "outcome", title, "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new outcome failed: %s", e)
 		}
 	}
@@ -47,7 +47,7 @@ func TestDeliveredSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
 		t.Errorf("output did not record the reason:\n%s", out)
 	}
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	if got, _ := r.Get("workflow_status"); got != "closed" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -66,7 +66,7 @@ func TestCancellingIsNeverGated(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("cancelling unfinished work was refused: exit %d, %s", code, errOut)
 	}
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	if got, _ := r.Get("workflow_status"); got != "closed" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -82,7 +82,7 @@ func TestSupersededAndAbandonedAreAlsoUngated(t *testing.T) {
 }
 
 func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
-	// Otherwise retiring an outcome could never let a deliverable close,
+	// Otherwise retiring an outcome could never let a work item close,
 	// which is the point of retiring it.
 	app, _ := withOutcomes(t)
 	run(t, app, "verify", "the-queue-drains", "-e", "ran it")
@@ -100,7 +100,7 @@ func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
 func TestDeliveredIsRefusedWithNoOutcomesAtAll(t *testing.T) {
 	// Nothing says it was delivered, so the claim has no basis. Vacuous
 	// truth is the wrong answer here.
-	app, _ := withDeliverable(t)
+	app, _ := withWorkItem(t)
 	code, _, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
 	if code != ExitRefused {
 		t.Fatalf("exit = %d, want %d", code, ExitRefused)
@@ -134,7 +134,7 @@ func TestVerifyAccumulates(t *testing.T) {
 	run(t, app, "verify", "the-queue-drains", "-e", "first check")
 	run(t, app, "verify", "the-queue-drains", "-e", "second check")
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/outcomes/the-queue-drains.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/outcomes/the-queue-drains.md")
 	var entries []map[string]any
 	if err := r.Node("verified").Decode(&entries); err != nil {
 		t.Fatalf("verified is not a list: %v", err)
@@ -168,6 +168,6 @@ func TestVerifyWithoutEvidenceSaysSo(t *testing.T) {
 func TestVerifyRefusesANonOutcome(t *testing.T) {
 	app, _ := withOutcomes(t)
 	if code, _, _ := run(t, app, "verify", "payments-v2"); code != ExitUsage {
-		t.Error("a deliverable was accepted for verification")
+		t.Error("a work item was accepted for verification")
 	}
 }

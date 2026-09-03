@@ -148,7 +148,7 @@ func TestBacklogRoundTrip(t *testing.T) {
 	}
 	defer b.Close()
 
-	const name = "backlog/deliverables/thing/index.md"
+	const name = "backlog/work-items/thing/index.md"
 	if err := b.WriteFile(name, []byte("hello"), 0o644); err != nil {
 		t.Fatal(err)
 	}

@@ -4,7 +4,7 @@ import (
 	"github.com/lumastack/luma-backlog/internal/root"
 )
 
-// Completion is the arithmetic behind closing a deliverable.
+// Completion is the arithmetic behind closing a work item.
 type Completion struct {
 	Live      []Item // outcomes counted toward completion
 	Unpassing []Item // of those, the ones with no evidence
@@ -14,13 +14,13 @@ type Completion struct {
 // Complete reports whether every live outcome has passed.
 func (c Completion) Complete() bool { return len(c.Live) > 0 && len(c.Unpassing) == 0 }
 
-// CompletionOf counts the outcomes of a deliverable.
+// CompletionOf counts the outcomes of a work item.
 //
 // Derived by counting, never read from a field. There is nothing to store that
 // the verification records do not already say, and a stored copy could
 // disagree with them (docs/spec.md §2.4).
-func CompletionOf(b *root.Backlog, deliverable string) (Completion, error) {
-	items, err := List(b, Filter{Unit: Outcome, Deliverable: deliverable})
+func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
+	items, err := List(b, Filter{Unit: Outcome, WorkItem: workItem})
 	if err != nil {
 		return Completion{}, err
 	}
@@ -29,7 +29,7 @@ func CompletionOf(b *root.Backlog, deliverable string) (Completion, error) {
 	for _, it := range items {
 		// A retired outcome is archived rather than deleted, and excluded
 		// from the arithmetic — otherwise retiring one could never let a
-		// deliverable close, which is the point of retiring it.
+		// work item close, which is the point of retiring it.
 		if s, _ := it.Record.Get("stage"); s == "archived" {
 			c.Retired = append(c.Retired, it)
 			continue

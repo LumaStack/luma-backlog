@@ -12,11 +12,11 @@ import (
 )
 
 func newJournalCommand(app *App) *cobra.Command {
-	var deliverable string
+	var workItem string
 
 	cmd := &cobra.Command{
 		Use:   "journal [text]",
-		Short: "Write to a deliverable's memory, or read it",
+		Short: "Write to a work item's memory, or read it",
 		Long: "With text, appends one line to today's entry, opening today's entry if\n" +
 			"there is not one. With nothing, shows the journal.\n\n" +
 			"No file to open, no heading to write, no decision about where it goes:\n" +
@@ -32,11 +32,11 @@ func newJournalCommand(app *App) *cobra.Command {
 			}
 			defer b.Close()
 
-			slug, err := resolveJournalDeliverable(b, deliverable, projectRoot, app.WorkingDir)
+			slug, err := resolveJournalWorkItem(b, workItem, projectRoot, app.WorkingDir)
 			if err != nil {
 				return err
 			}
-			rel := path.Join(backlog.BundleDir, "deliverables", slug, "journal.md")
+			rel := path.Join(backlog.BundleDir, "work-items", slug, "journal.md")
 
 			current := ""
 			if data, err := b.ReadFile(rel); err == nil {
@@ -64,7 +64,7 @@ func newJournalCommand(app *App) *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().StringVarP(&deliverable, "deliverable", "d", "", "whose journal (default: derived)")
+	cmd.Flags().StringVarP(&workItem, "work-item", "w", "", "whose journal (default: derived)")
 
 	// Journal text very often begins with a flag name — "--use-hold pins the
 	// source snapshot" is exactly the sort of thing worth capturing — and the
@@ -80,30 +80,30 @@ func newJournalCommand(app *App) *cobra.Command {
 	return cmd
 }
 
-// resolveJournalDeliverable decides whose journal to write to.
+// resolveJournalWorkItem decides whose journal to write to.
 //
 // In order: the flag, then the working directory, then — only when there is
-// exactly one deliverable — that one. The last is a real convenience early on
+// exactly one work item — that one. The last is a real convenience early on
 // and errs safe: the moment there are two, it stops guessing and names them.
 //
 // The precedence matters more here than for other commands. Capture has to
 // cost one invocation, and requiring a flag every time is the friction that
 // stops it happening at all.
-func resolveJournalDeliverable(b *root.Backlog, flag, projectRoot, workingDir string) (string, error) {
+func resolveJournalWorkItem(b *root.Backlog, flag, projectRoot, workingDir string) (string, error) {
 	if flag != "" {
 		return flag, nil
 	}
-	if fromDir := deliverableFromWorkingDir(projectRoot, workingDir); fromDir != "" {
+	if fromDir := workItemFromWorkingDir(projectRoot, workingDir); fromDir != "" {
 		return fromDir, nil
 	}
 
-	items, err := backlog.List(b, backlog.Filter{Unit: backlog.Deliverable})
+	items, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
 	if err != nil {
 		return "", failure("%w", err)
 	}
 	switch len(items) {
 	case 0:
-		return "", usageErr("no deliverables yet — create one first")
+		return "", usageErr("no work items yet — create one first")
 	case 1:
 		return items[0].Slug(), nil
 	}
@@ -113,6 +113,6 @@ func resolveJournalDeliverable(b *root.Backlog, flag, projectRoot, workingDir st
 		slugs = append(slugs, it.Slug())
 	}
 	sort.Strings(slugs)
-	return "", usageErr("more than one deliverable — say which with -d:\n  %s",
+	return "", usageErr("more than one work item — say which with --work-item:\n  %s",
 		strings.Join(slugs, "\n  "))
 }

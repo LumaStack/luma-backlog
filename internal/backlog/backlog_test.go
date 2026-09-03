@@ -22,33 +22,33 @@ func TestSlugify(t *testing.T) {
 
 func TestPathFor(t *testing.T) {
 	for _, tc := range []struct {
-		unit, slug, deliverable, want string
+		unit, slug, workItem, want string
 	}{
-		{Deliverable, "payments", "", "backlog/deliverables/payments/index.md"},
-		{Outcome, "queue-drains", "payments", "backlog/deliverables/payments/outcomes/queue-drains.md"},
-		{Task, "add-queue", "payments", "backlog/deliverables/payments/tasks/add-queue.md"},
-		{Exploration, "spike", "payments", "backlog/deliverables/payments/explorations/spike.md"},
-		{Decision, "use-postgres", "payments", "backlog/deliverables/payments/decisions/use-postgres.md"},
-		// A decision made outside any deliverable is legal and sits at the top.
+		{WorkItem, "payments", "", "backlog/work-items/payments/index.md"},
+		{Outcome, "queue-drains", "payments", "backlog/work-items/payments/outcomes/queue-drains.md"},
+		{Task, "add-queue", "payments", "backlog/work-items/payments/tasks/add-queue.md"},
+		{Exploration, "spike", "payments", "backlog/work-items/payments/explorations/spike.md"},
+		{Decision, "use-postgres", "payments", "backlog/work-items/payments/decisions/use-postgres.md"},
+		// A decision made outside any work item's legal and sits at the top.
 		{Decision, "use-postgres", "", "records/decisions/use-postgres"},
 	} {
-		got, err := PathFor(tc.unit, tc.slug, tc.deliverable)
+		got, err := PathFor(tc.unit, tc.slug, tc.workItem)
 		if err != nil {
 			t.Errorf("PathFor(%s) errored: %v", tc.unit, err)
 			continue
 		}
 		if got != tc.want {
-			t.Errorf("PathFor(%s, %s, %s) = %q, want %q", tc.unit, tc.slug, tc.deliverable, got, tc.want)
+			t.Errorf("PathFor(%s, %s, %s) = %q, want %q", tc.unit, tc.slug, tc.workItem, got, tc.want)
 		}
 	}
 }
 
-func TestPathForRequiresADeliverableWhereItMatters(t *testing.T) {
-	// An outcome or task without a deliverable would float, and nothing
+func TestPathForRequiresAWorkItemWhereItMatters(t *testing.T) {
+	// An outcome or task without a work item would float, and nothing
 	// would ever count it toward completion.
 	for _, unit := range []string{Outcome, Task, Exploration} {
 		if _, err := PathFor(unit, "thing", ""); err == nil {
-			t.Errorf("PathFor(%s) with no deliverable succeeded", unit)
+			t.Errorf("PathFor(%s) with no work item succeeded", unit)
 		}
 	}
 }
@@ -59,16 +59,16 @@ func TestPathForRejectsUnknownUnits(t *testing.T) {
 	}
 }
 
-func TestDeliverableFromPath(t *testing.T) {
+func TestWorkItemFromPath(t *testing.T) {
 	for _, tc := range []struct{ in, want string }{
-		{".luma/deliverables/payments/tasks", "payments"},
-		{"backlog/deliverables/payments", "payments"},
-		{"backlog/deliverables", ""},
+		{".luma/work-items/payments/tasks", "payments"},
+		{"backlog/work-items/payments", "payments"},
+		{"backlog/work-items", ""},
 		{"docs", ""},
 		{"", ""},
 	} {
-		if got := DeliverableFromPath(tc.in); got != tc.want {
-			t.Errorf("DeliverableFromPath(%q) = %q, want %q", tc.in, got, tc.want)
+		if got := WorkItemFromPath(tc.in); got != tc.want {
+			t.Errorf("WorkItemFromPath(%q) = %q, want %q", tc.in, got, tc.want)
 		}
 	}
 }

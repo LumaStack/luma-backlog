@@ -10,10 +10,10 @@ func populated(t *testing.T) *App {
 	t.Helper()
 	app, _ := initialized(t)
 	for _, args := range [][]string{
-		{"new", "deliverable", "Payments v2"},
-		{"new", "outcome", "The retry queue drains", "-d", "payments-v2"},
-		{"new", "task", "Add the retry queue", "-d", "payments-v2"},
-		{"new", "deliverable", "Search relevance"},
+		{"new", "work-item", "Payments v2"},
+		{"new", "outcome", "The retry queue drains", "-w", "payments-v2"},
+		{"new", "task", "Add the retry queue", "-w", "payments-v2"},
+		{"new", "work-item", "Search relevance"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -74,9 +74,9 @@ func TestEmptyListIsNotAnError(t *testing.T) {
 func TestListFilters(t *testing.T) {
 	app := populated(t)
 
-	_, out, _ := run(t, app, "list", "-d", "payments-v2")
+	_, out, _ := run(t, app, "list", "-w", "payments-v2")
 	if strings.Contains(out, "search-relevance") {
-		t.Errorf("deliverable filter leaked another deliverable:\n%s", out)
+		t.Errorf("work item filter leaked another work item:\n%s", out)
 	}
 
 	_, out, _ = run(t, app, "list", "-s", "idea")
@@ -98,8 +98,8 @@ func TestShowResolvesByPrefix(t *testing.T) {
 
 func TestShowRefusesAnAmbiguousReference(t *testing.T) {
 	app, _ := initialized(t)
-	run(t, app, "new", "deliverable", "Payments alpha")
-	run(t, app, "new", "deliverable", "Payments beta")
+	run(t, app, "new", "work-item", "Payments alpha")
+	run(t, app, "new", "work-item", "Payments beta")
 
 	code, _, errOut := run(t, app, "show", "payments")
 	if code == ExitOK {

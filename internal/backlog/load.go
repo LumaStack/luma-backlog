@@ -12,9 +12,9 @@ import (
 
 // Item is a record plus where it lives.
 type Item struct {
-	Path        string // relative to the backlog, slash-separated
-	Record      *record.Record
-	Deliverable string // the deliverable it sits inside, if any
+	Path     string // relative to the backlog, slash-separated
+	Record   *record.Record
+	WorkItem string // the work item it sits inside, if any
 
 	// Raw is the file exactly as read. Kept so a caller can be handed a hash
 	// of what it actually saw, which is what makes a later write safe.
@@ -24,10 +24,10 @@ type Item struct {
 // Hash identifies the content this item was read from.
 func (i Item) Hash() string { return record.Hash(i.Raw) }
 
-// Slug is the filename without its extension — for a deliverable, the
+// Slug is the filename without its extension — for a work item, the
 // directory name, since its record is index.md.
 func (i Item) Slug() string {
-	if i.Type() == Deliverable {
+	if i.Type() == WorkItem {
 		return path.Base(path.Dir(i.Path))
 	}
 	return strings.TrimSuffix(path.Base(i.Path), ".md")
@@ -75,9 +75,9 @@ func (i Item) Status(defaultStatus string) string {
 
 // Filter narrows a listing. A zero Filter matches everything.
 type Filter struct {
-	Unit        string
-	Deliverable string
-	Status      string
+	Unit     string
+	WorkItem string
+	Status   string
 }
 
 // List reads every record in the backlog, filtered.
@@ -100,7 +100,7 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 		if err != nil {
 			return nil
 		}
-		it := Item{Path: rel, Record: r, Deliverable: DeliverableFromPath(rel), Raw: data}
+		it := Item{Path: rel, Record: r, WorkItem: WorkItemFromPath(rel), Raw: data}
 		if matches(it, f) {
 			items = append(items, it)
 		}
@@ -120,14 +120,14 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 // and Type Definitions.
 func isRecordPath(rel string) bool {
 	switch {
-	case rel == "backlog/index.md":
-		return false
 	case path.Base(rel) == "journal.md":
 		return false
-	case strings.HasPrefix(rel, "backlog/_types/"):
+	case strings.HasPrefix(rel, "bundles/"):
+		// Bundles hold contracts and policy — what is in force, not what is
+		// intended — so nothing under them is a backlog record.
 		return false
 	case strings.HasPrefix(rel, "_types/"):
-		// .luma/_types/ holds contracts for documents outside the bundle,
+		// .luma/_types/ holds contracts for documents outside any bundle,
 		// which are not this tool's records either.
 		return false
 	}
@@ -138,7 +138,7 @@ func matches(i Item, f Filter) bool {
 	if f.Unit != "" && i.Type() != f.Unit {
 		return false
 	}
-	if f.Deliverable != "" && i.Deliverable != f.Deliverable {
+	if f.WorkItem != "" && i.WorkItem != f.WorkItem {
 		return false
 	}
 	if f.Status != "" {
