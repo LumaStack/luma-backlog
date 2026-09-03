@@ -15,12 +15,12 @@ import (
 
 // itemJSON is one record in a listing.
 type itemJSON struct {
-	Path        string `json:"path"`
-	Type        string `json:"type"`
-	Slug        string `json:"slug"`
-	Title       string `json:"title"`
-	Status      string `json:"status"`
-	Deliverable string `json:"deliverable,omitempty"`
+	Path     string `json:"path"`
+	Type     string `json:"type"`
+	Slug     string `json:"slug"`
+	Title    string `json:"title"`
+	Status   string `json:"status"`
+	WorkItem string `json:"work_item,omitempty"`
 }
 
 // recordJSON is one record in full. Fields carries the frontmatter as written,
@@ -38,12 +38,12 @@ type recordJSON struct {
 
 func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
 	return itemJSON{
-		Path:        i.Path,
-		Type:        i.Type(),
-		Slug:        i.Slug(),
-		Title:       i.Title(),
-		Status:      i.Status(defaultStatus),
-		Deliverable: i.Deliverable,
+		Path:     i.Path,
+		Type:     i.Type(),
+		Slug:     i.Slug(),
+		Title:    i.Title(),
+		Status:   i.Status(defaultStatus),
+		WorkItem: i.WorkItem,
 	}
 }
 

@@ -1,22 +1,22 @@
 {
-  "path": "backlog/deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+  "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
   "type": "outcome",
   "slug": "the-retry-queue-drains",
   "title": "The retry queue drains",
   "status": "unverified",
-  "deliverable": "payments-v2",
-  "hash": "b04bd20320a3c7a1dedeb3afba2d037ea5b99ff227e87fd9011ce43a4b4f7775",
+  "work_item": "payments-v2",
+  "hash": "5d3fee54099a71bbd5f84c603fa0a5ca071a79c024e01ad56d7bca7686b691d3",
   "fields": {
     "created": {
       "at": "2026-08-09T12:00:00Z",
       "by": "agent:test"
     },
-    "deliverable": "[[deliverables/payments-v2]]",
     "desired_state": "",
     "lifecycle": "draft",
     "title": "The retry queue drains",
     "type": "outcome",
-    "verify_by": ""
+    "verify_by": "",
+    "work_item": "[[work-items/payments-v2]]"
   },
   "body": "# The retry queue drains\n\nWhy this matters, and anything needed to read the check correctly.\n"
 }

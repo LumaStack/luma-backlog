@@ -1,34 +1,34 @@
 [
   {
-    "path": "backlog/deliverables/payments-v2/index.md",
-    "type": "deliverable",
+    "path": "backlog/work-items/payments-v2/index.md",
+    "type": "work-item",
     "slug": "payments-v2",
     "title": "Payments v2",
     "status": "idea",
-    "deliverable": "payments-v2"
+    "work_item": "payments-v2"
   },
   {
-    "path": "backlog/deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+    "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
     "type": "outcome",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
     "status": "unverified",
-    "deliverable": "payments-v2"
+    "work_item": "payments-v2"
   },
   {
-    "path": "backlog/deliverables/payments-v2/tasks/add-the-retry-queue.md",
+    "path": "backlog/work-items/payments-v2/tasks/add-the-retry-queue.md",
     "type": "task",
     "slug": "add-the-retry-queue",
     "title": "Add the retry queue",
     "status": "todo",
-    "deliverable": "payments-v2"
+    "work_item": "payments-v2"
   },
   {
-    "path": "backlog/deliverables/search-relevance/index.md",
-    "type": "deliverable",
+    "path": "backlog/work-items/search-relevance/index.md",
+    "type": "work-item",
     "slug": "search-relevance",
     "title": "Search relevance",
     "status": "idea",
-    "deliverable": "search-relevance"
+    "work_item": "search-relevance"
   }
 ]

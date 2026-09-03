@@ -47,14 +47,14 @@ func TestExitCodes(t *testing.T) {
 	})
 
 	t.Run("4 conflict — re-read and retry", func(t *testing.T) {
-		app, project := withDeliverable(t)
+		app, project := withWorkItem(t)
 		_, out, _ := run(t, app, "show", "payments-v2", "--json")
 		var seen struct {
 			Hash string `json:"hash"`
 		}
 		json.Unmarshal([]byte(out), &seen)
 
-		path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
+		path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
 		data, _ := os.ReadFile(path)
 		os.WriteFile(path, append(data, []byte("\nchanged\n")...), 0o644)
 

@@ -8,18 +8,18 @@ import (
 	"testing"
 )
 
-func withDeliverable(t *testing.T) (*App, string) {
+func withWorkItem(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "deliverable", "Payments v2"); code != ExitOK {
+	if code, _, e := run(t, app, "new", "work-item", "Payments v2"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	return app, project
 }
 
 func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
-	app, project := withDeliverable(t)
-	path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
+	app, project := withWorkItem(t)
+	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
 
 	// A key from another system, which this tool knows nothing about.
 	data, _ := os.ReadFile(path)
@@ -32,7 +32,7 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 		t.Fatalf("set failed: %s", e)
 	}
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	if got, _ := r.Get("workflow_status"); got != "in_progress" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -46,10 +46,10 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 }
 
 func TestSetStampsModified(t *testing.T) {
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 	run(t, app, "set", "payments-v2", "workflow_status=todo")
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	if !r.Has("modified") {
 		t.Error("no modified stamp after an edit")
 	}
@@ -57,21 +57,21 @@ func TestSetStampsModified(t *testing.T) {
 
 func TestSetDoesNotOverruleAnExplicitModified(t *testing.T) {
 	// The tool should not overrule something it was just told.
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 	run(t, app, "set", "payments-v2", "modified=yesterday")
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	if got, _ := r.Get("modified"); got != "yesterday" {
 		t.Errorf("modified = %q, want the value that was passed", got)
 	}
 }
 
 func TestSetRawWritesStructure(t *testing.T) {
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 	if code, _, e := run(t, app, "set", "payments-v2", `blocked:=[{on: 2026-08-09, why: vendor}]`); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	node := r.Node("blocked")
 	if node == nil {
 		t.Fatal("blocked absent")
@@ -87,33 +87,33 @@ func TestSetRawWritesStructure(t *testing.T) {
 
 func TestSetKeepsWikilinksIntact(t *testing.T) {
 	// A wikilink looks exactly like a YAML nested sequence. Guessing at the
-	// value's shape would turn [[deliverables/x]] into [["backlog/deliverables/x"]],
+	// value's shape would turn [[work-items/x]] into [["backlog/work-items/x"]],
 	// which is why the raw form is opt-in rather than detected.
-	app, project := withDeliverable(t)
-	run(t, app, "set", "payments-v2", "supersedes=[[deliverables/payments-v1]]")
+	app, project := withWorkItem(t)
+	run(t, app, "set", "payments-v2", "supersedes=[[work-items/payments-v1]]")
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/index.md")
+	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
 	got, ok := r.Get("supersedes")
 	if !ok {
 		t.Fatal("supersedes absent, or not a scalar — it was parsed as a list")
 	}
-	if got != "[[deliverables/payments-v1]]" {
+	if got != "[[work-items/payments-v1]]" {
 		t.Errorf("supersedes = %q, want the wikilink unchanged", got)
 	}
 }
 
 func TestSetUnsetRemovesAField(t *testing.T) {
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 	if code, _, e := run(t, app, "set", "payments-v2", "--unset", "lifecycle"); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
-	if readRecord(t, project, "backlog/deliverables/payments-v2/index.md").Has("lifecycle") {
+	if readRecord(t, project, "backlog/work-items/payments-v2/index.md").Has("lifecycle") {
 		t.Error("--unset left the field in place")
 	}
 }
 
 func TestSetRefusesAStaleWrite(t *testing.T) {
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 
 	// Read, as a caller would.
 	_, out, _ := run(t, app, "show", "payments-v2", "--json")
@@ -128,7 +128,7 @@ func TestSetRefusesAStaleWrite(t *testing.T) {
 	}
 
 	// Somebody else writes in between.
-	path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
+	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
 	data, _ := os.ReadFile(path)
 	os.WriteFile(path, append(data, []byte("\nsomeone else was here\n")...), 0o644)
 
@@ -148,7 +148,7 @@ func TestSetRefusesAStaleWrite(t *testing.T) {
 }
 
 func TestSetAcceptsAMatchingHash(t *testing.T) {
-	app, _ := withDeliverable(t)
+	app, _ := withWorkItem(t)
 	_, out, _ := run(t, app, "show", "payments-v2", "--json")
 	var seen struct {
 		Hash string `json:"hash"`
@@ -161,7 +161,7 @@ func TestSetAcceptsAMatchingHash(t *testing.T) {
 }
 
 func TestSetRejectsMalformedArguments(t *testing.T) {
-	app, _ := withDeliverable(t)
+	app, _ := withWorkItem(t)
 	for _, args := range [][]string{
 		{"set", "payments-v2"},
 		{"set", "payments-v2", "novalue"},
@@ -174,7 +174,7 @@ func TestSetRejectsMalformedArguments(t *testing.T) {
 }
 
 func TestSetReportsNotFound(t *testing.T) {
-	app, _ := withDeliverable(t)
+	app, _ := withWorkItem(t)
 	if code, _, _ := run(t, app, "set", "nothing-like-this", "a=b"); code != ExitNotFound {
 		t.Errorf("exit code was not %d", ExitNotFound)
 	}

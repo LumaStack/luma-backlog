@@ -53,13 +53,7 @@ func runInit(app *App, cmd *cobra.Command) error {
 	}
 	report(out, created, config.FileName)
 
-	created, err = writeIfAbsent(b, "backlog/index.md", config.BundleRootFile)
-	if err != nil {
-		return failure("%w", err)
-	}
-	report(out, created, "backlog/index.md")
-
-	for _, dir := range []string{"backlog/deliverables", "backlog/_types", "records/decisions"} {
+	for _, dir := range []string{"backlog/work-items", "bundles/luma-backlog/_types", "records/decisions"} {
 		if err := b.MkdirAll(dir); err != nil {
 			return failure("creating %s: %w", dir, err)
 		}

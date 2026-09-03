@@ -12,8 +12,8 @@ func newCloseCommand(app *App) *cobra.Command {
 	var reason string
 
 	cmd := &cobra.Command{
-		Use:   "close <deliverable>",
-		Short: "End a deliverable, recording why",
+		Use:   "close <work-item>",
+		Short: "End a work item, recording why",
 		Long: "Work ends for more reasons than success, so the terminal state is\n" +
 			"\"closed\" and every closing records why.\n\n" +
 			"Only --reason delivered is checked against the outcomes. The others\n" +
@@ -50,8 +50,8 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 	if err != nil {
 		return coded{ExitNotFound, err}
 	}
-	if it.Type() != backlog.Deliverable {
-		return usageErr("%s is a %s — close applies to a deliverable", it.Slug(), it.Type())
+	if it.Type() != backlog.WorkItem {
+		return usageErr("%s is a %s — close applies to a work item", it.Slug(), it.Type())
 	}
 
 	c, err := backlog.CompletionOf(b, it.Slug())
