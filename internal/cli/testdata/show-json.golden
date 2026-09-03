@@ -5,7 +5,7 @@
   "title": "The retry queue drains",
   "status": "unverified",
   "deliverable": "payments-v2",
-  "hash": "b04bd20320a3c7a1dedeb3afba2d037ea5b99ff227e87fd9011ce43a4b4f7775",
+  "hash": "d3166e956e4391f5ab77da500253db3d2f2d234e1221bf68fba3a59226e960bb",
   "fields": {
     "created": {
       "at": "2026-08-09T12:00:00Z",
@@ -13,7 +13,7 @@
     },
     "deliverable": "[[deliverables/payments-v2]]",
     "desired_state": "",
-    "lifecycle": "draft",
+    "stage": "draft",
     "title": "The retry queue drains",
     "type": "outcome",
     "verify_by": ""

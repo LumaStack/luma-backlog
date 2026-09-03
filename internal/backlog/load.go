@@ -66,7 +66,7 @@ func (i Item) Status(defaultStatus string) string {
 		return s
 	}
 	if !IsWorked(i.Type()) {
-		if s, ok := i.Record.Get("lifecycle"); ok && s != "" {
+		if s, ok := i.Record.Get("stage"); ok && s != "" {
 			return s
 		}
 	}
