@@ -10,7 +10,7 @@ created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
 
 ## The problem
 
-`[[records/decisions/the-backlog-unit-is-a-work-item]]` renamed the unit, and everything said `deliverable`: `spec.md`, the type definitions, the Go implementation, the live corpus in `.luma/`, and the Claude skills. Until the rename lands everywhere, the vocabulary is split.
+`[[records/decisions/ADR-0001-the-backlog-unit-is-a-work-item]]` renamed the unit, and everything said `deliverable`: `spec.md`, the type definitions, the Go implementation, the live corpus in `.luma/`, and the Claude skills. Until the rename lands everywhere, the vocabulary is split.
 
 ## What is being delivered
 
