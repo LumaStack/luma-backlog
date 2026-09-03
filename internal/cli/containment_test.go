@@ -22,11 +22,11 @@ func TestNoCommandWritesOutsideTheBacklog(t *testing.T) {
 
 	for _, args := range [][]string{
 		{"init"},
-		{"new", "deliverable", "Payments v2"},
-		{"new", "outcome", "The queue drains", "-d", "payments-v2"},
-		{"new", "task", "Add the queue", "-d", "payments-v2"},
-		{"new", "decision", "Use a queue", "-d", "payments-v2"},
-		{"new", "exploration", "Queue options", "-d", "payments-v2"},
+		{"new", "work-item", "Payments v2"},
+		{"new", "outcome", "The queue drains", "-w", "payments-v2"},
+		{"new", "task", "Add the queue", "-w", "payments-v2"},
+		{"new", "decision", "Use a queue", "-w", "payments-v2"},
+		{"new", "exploration", "Queue options", "-w", "payments-v2"},
 		{"set", "payments-v2", "workflow_status=in_progress"},
 		{"journal", "a line worth keeping"},
 		{"verify", "the-queue-drains", "-e", "ran it"},
@@ -59,7 +59,7 @@ func TestNoCommandWritesOutsideTheBacklog(t *testing.T) {
 // TestCommandsRefuseToEscapeUpward runs from a nested directory and through a
 // symlink, which is where root discovery goes wrong if it goes wrong at all.
 func TestCommandsRefuseToEscapeUpward(t *testing.T) {
-	app, project := withDeliverable(t)
+	app, project := withWorkItem(t)
 
 	nested := filepath.Join(project, "src", "deep", "nested")
 	if err := os.MkdirAll(nested, 0o755); err != nil {

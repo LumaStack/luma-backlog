@@ -51,20 +51,20 @@ func readRecord(t *testing.T, project, rel string) *record.Record {
 	return r
 }
 
-func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
+func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 	app, project := initialized(t)
 
-	code, out, errOut := run(t, app, "new", "deliverable", "Payments v2")
+	code, out, errOut := run(t, app, "new", "work-item", "Payments v2")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
-	const want = "backlog/deliverables/payments-v2/index.md"
+	const want = "backlog/work-items/payments-v2/index.md"
 	if !strings.Contains(out, want) {
 		t.Errorf("output did not name the path:\n%s", out)
 	}
 
 	r := readRecord(t, project, want)
-	if got, _ := r.Get("type"); got != "deliverable" {
+	if got, _ := r.Get("type"); got != "work-item" {
 		t.Errorf("type = %q, want the short form", got)
 	}
 	if got, _ := r.Get("title"); got != "Payments v2" {
@@ -81,21 +81,21 @@ func TestNewDeliverableDerivesEverythingFromTheTitle(t *testing.T) {
 
 	// A journal exists at once: somewhere to write has to be there before
 	// anyone needs it, or the writing does not happen.
-	if _, err := os.Stat(filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/journal.md")); err != nil {
-		t.Errorf("no journal alongside the deliverable: %v", err)
+	if _, err := os.Stat(filepath.Join(project, ".luma", "backlog/work-items/payments-v2/journal.md")); err != nil {
+		t.Errorf("no journal alongside the work item: %v", err)
 	}
 }
 
 func TestNewIsIdempotentByName(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "deliverable", "Payments v2")
+	run(t, app, "new", "work-item", "Payments v2")
 
-	path := filepath.Join(project, ".luma", "backlog/deliverables/payments-v2/index.md")
-	if err := os.WriteFile(path, []byte("---\ntype: deliverable\ntitle: Edited\n---\n\nmine\n"), 0o644); err != nil {
+	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
+	if err := os.WriteFile(path, []byte("---\ntype: work item\ntitle: Edited\n---\n\nmine\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
-	code, out, _ := run(t, app, "new", "deliverable", "Payments v2")
+	code, out, _ := run(t, app, "new", "work-item", "Payments v2")
 	if code != ExitOK {
 		t.Fatalf("second create failed with %d", code)
 	}
@@ -110,18 +110,18 @@ func TestNewIsIdempotentByName(t *testing.T) {
 	}
 }
 
-func TestNewOutcomeTakesItsDeliverableFromAFlag(t *testing.T) {
+func TestNewOutcomeTakesItsWorkItemFromAFlag(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "deliverable", "Payments v2")
+	run(t, app, "new", "work-item", "Payments v2")
 
-	code, _, errOut := run(t, app, "new", "outcome", "The queue drains", "-d", "payments-v2")
+	code, _, errOut := run(t, app, "new", "outcome", "The queue drains", "-w", "payments-v2")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
 
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/outcomes/the-queue-drains.md")
-	if got, _ := r.Get("deliverable"); got != "[[deliverables/payments-v2]]" {
-		t.Errorf("deliverable = %q", got)
+	r := readRecord(t, project, "backlog/work-items/payments-v2/outcomes/the-queue-drains.md")
+	if got, _ := r.Get("work_item"); got != "[[work-items/payments-v2]]" {
+		t.Errorf("work item = %q", got)
 	}
 	// desired_state is present and empty rather than absent: an empty field
 	// asks to be filled in, a missing one is not noticed.
@@ -136,14 +136,14 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	// of them would sit beside the real state and could disagree with it
 	// (docs/spec.md §4.4).
 	app, project := initialized(t)
-	run(t, app, "new", "deliverable", "Payments v2")
+	run(t, app, "new", "work-item", "Payments v2")
 
 	for _, tc := range []struct{ unit, path string }{
-		{"outcome", "backlog/deliverables/payments-v2/outcomes/a-thing.md"},
-		{"decision", "backlog/deliverables/payments-v2/decisions/a-thing.md"},
-		{"exploration", "backlog/deliverables/payments-v2/explorations/a-thing.md"},
+		{"outcome", "backlog/work-items/payments-v2/outcomes/a-thing.md"},
+		{"decision", "backlog/work-items/payments-v2/decisions/a-thing.md"},
+		{"exploration", "backlog/work-items/payments-v2/explorations/a-thing.md"},
 	} {
-		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-d", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
 		}
 		if r := readRecord(t, project, tc.path); r.Has("workflow_status") {
@@ -152,25 +152,25 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	}
 
 	// A task is worked, so it does carry one.
-	run(t, app, "new", "task", "Do it", "-d", "payments-v2")
-	if r := readRecord(t, project, "backlog/deliverables/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
+	run(t, app, "new", "task", "Do it", "-w", "payments-v2")
+	if r := readRecord(t, project, "backlog/work-items/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
 		t.Error("a new task has no workflow_status")
 	}
 }
 
-func TestNewTakesItsDeliverableFromTheWorkingDirectory(t *testing.T) {
+func TestNewTakesItsWorkItemFromTheWorkingDirectory(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "deliverable", "Payments v2")
+	run(t, app, "new", "work-item", "Payments v2")
 
-	// Working inside a deliverable should not require naming it.
-	app.WorkingDir = filepath.Join(project, ".luma", "backlog/deliverables", "payments-v2")
+	// Working inside a work item should not require naming it.
+	app.WorkingDir = filepath.Join(project, ".luma", "backlog/work-items", "payments-v2")
 
 	if code, _, e := run(t, app, "new", "task", "Add the queue"); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
-	r := readRecord(t, project, "backlog/deliverables/payments-v2/tasks/add-the-queue.md")
-	if got, _ := r.Get("deliverable"); got != "[[deliverables/payments-v2]]" {
-		t.Errorf("deliverable was not derived from the working directory: %q", got)
+	r := readRecord(t, project, "backlog/work-items/payments-v2/tasks/add-the-queue.md")
+	if got, _ := r.Get("work_item"); got != "[[work-items/payments-v2]]" {
+		t.Errorf("work item was not derived from the working directory: %q", got)
 	}
 }
 
@@ -180,7 +180,7 @@ func TestNewRefusesAFloatingOutcome(t *testing.T) {
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
-	if !strings.Contains(errOut, "deliverable") {
+	if !strings.Contains(errOut, "work-item") {
 		t.Errorf("error did not say what was missing:\n%s", errOut)
 	}
 }
@@ -198,7 +198,7 @@ func TestNewRejectsAnUnknownUnit(t *testing.T) {
 
 func TestNewNeedsABacklog(t *testing.T) {
 	app, _ := newApp(t) // no init
-	code, _, errOut := run(t, app, "new", "deliverable", "Thing")
+	code, _, errOut := run(t, app, "new", "work-item", "Thing")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -211,8 +211,8 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 	app, project := initialized(t)
 	before := snapshot(t, project)
 
-	run(t, app, "new", "deliverable", "Payments v2")
-	run(t, app, "new", "outcome", "The queue drains", "-d", "payments-v2")
+	run(t, app, "new", "work-item", "Payments v2")
+	run(t, app, "new", "outcome", "The queue drains", "-w", "payments-v2")
 
 	for path := range snapshot(t, project) {
 		if _, existed := before[path]; existed {

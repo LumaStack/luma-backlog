@@ -1,10 +1,10 @@
 [
   {
-    "path": "backlog/deliverables/payments-v2/outcomes/the-retry-queue-drains.md",
+    "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
     "type": "outcome",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
     "status": "unverified",
-    "deliverable": "payments-v2"
+    "work_item": "payments-v2"
   }
 ]

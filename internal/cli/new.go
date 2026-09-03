@@ -13,41 +13,41 @@ import (
 )
 
 func newNewCommand(app *App) *cobra.Command {
-	var deliverable string
+	var workItem string
 
 	cmd := &cobra.Command{
 		Use:   "new <" + strings.Join(backlog.Units, "|") + "> <title>",
 		Short: "Create a record",
 		Long: "Creates a record from a title. Everything else is derived: the file name\n" +
-			"from the title, the deliverable from where you are, the timestamp and\n" +
+			"from the title, the work item from where you are, the timestamp and\n" +
 			"actor from the environment.\n\n" +
 			"Running it twice with the same title leaves the first one alone.",
 		Args:         cobra.ExactArgs(2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runNew(app, cmd, args[0], args[1], deliverable)
+			return runNew(app, cmd, args[0], args[1], workItem)
 		},
 	}
-	cmd.Flags().StringVarP(&deliverable, "deliverable", "d", "",
-		"the deliverable this belongs to (default: derived from the working directory)")
+	cmd.Flags().StringVarP(&workItem, "work-item", "w", "",
+		"the work item this belongs to (default: derived from the working directory)")
 	return cmd
 }
 
-func runNew(app *App, cmd *cobra.Command, unit, title, deliverable string) error {
+func runNew(app *App, cmd *cobra.Command, unit, title, workItem string) error {
 	b, cfg, projectRoot, err := openBacklog(app)
 	if err != nil {
 		return err
 	}
 	defer b.Close()
 
-	if deliverable == "" {
-		deliverable = deliverableFromWorkingDir(projectRoot, app.WorkingDir)
+	if workItem == "" {
+		workItem = workItemFromWorkingDir(projectRoot, app.WorkingDir)
 	}
 
 	res, err := backlog.Create(b, cfg, app.Env, backlog.Spec{
-		Unit:        unit,
-		Title:       title,
-		Deliverable: deliverable,
+		Unit:     unit,
+		Title:    title,
+		WorkItem: workItem,
 	})
 	if err != nil {
 		return usageErr("%w", err)
@@ -94,12 +94,12 @@ func openBacklog(app *App) (*root.Backlog, config.Config, string, error) {
 	return b, cfg, projectRoot, nil
 }
 
-// deliverableFromWorkingDir reads the deliverable from where the command was
+// workItemFromWorkingDir reads the work item from where the command was
 // run, so someone working inside one does not have to name it.
-func deliverableFromWorkingDir(projectRoot, workingDir string) string {
+func workItemFromWorkingDir(projectRoot, workingDir string) string {
 	rel, err := filepath.Rel(projectRoot, workingDir)
 	if err != nil {
 		return ""
 	}
-	return backlog.DeliverableFromPath(filepath.ToSlash(rel))
+	return backlog.WorkItemFromPath(filepath.ToSlash(rel))
 }

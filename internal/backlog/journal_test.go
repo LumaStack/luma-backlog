@@ -7,7 +7,7 @@ import (
 
 const existing = `# Journal — payments
 
-> The deliverable's memory. Newest entry first.
+> The work item's memory. Newest entry first.
 
 ---
 

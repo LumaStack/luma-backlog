@@ -15,9 +15,9 @@ import (
 // no field here is something the author should have to know about the format
 // (docs/spec.md §9.0).
 type Spec struct {
-	Unit        string
-	Title       string
-	Deliverable string // slug; empty means derive from context or omit
+	Unit     string
+	Title    string
+	WorkItem string // slug; empty means derive from context or omit
 }
 
 // Result reports what happened, so a caller can tell a creation from a
@@ -45,11 +45,11 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{}, fmt.Errorf("title %q has no characters that can form a filename", s.Title)
 	}
 
-	rel, err := PathFor(s.Unit, slug, s.Deliverable)
+	rel, err := PathFor(s.Unit, slug, s.WorkItem)
 	if err != nil {
 		return Result{}, err
 	}
-	if s.Unit == Decision && s.Deliverable == "" {
+	if s.Unit == Decision && s.WorkItem == "" {
 		rel += ".md"
 	}
 
@@ -65,9 +65,9 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{}, err
 	}
 
-	// A deliverable gets its journal at once. Somewhere to write has to exist
+	// A work item gets its journal at once. Somewhere to write has to exist
 	// before anyone needs it, or the writing does not happen (§5.5).
-	if s.Unit == Deliverable {
+	if s.Unit == WorkItem {
 		j := path.Join(path.Dir(rel), "journal.md")
 		if !b.Exists(j) {
 			if err := b.WriteFileAtomic(j, []byte(journalFor(s.Title)), 0o644); err != nil {
@@ -94,10 +94,10 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 		// a missing one is not noticed.
 		r.Set("desired_state", "")
 		r.Set("verify_by", "")
-	case Task, Deliverable:
+	case Task, WorkItem:
 	}
-	if s.Deliverable != "" && s.Unit != Deliverable {
-		r.Set("deliverable", "[[deliverables/"+s.Deliverable+"]]")
+	if s.WorkItem != "" && s.Unit != WorkItem {
+		r.Set("work_item", "[[work-items/"+s.WorkItem+"]]")
 	}
 	// Only units that are WORKED carry a workflow status. An outcome is
 	// judged by its evidence, a decision is ratified through lifecycle,
@@ -122,7 +122,7 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 func bodyFor(unit, title string) string {
 	h := "# " + title + "\n\n"
 	switch unit {
-	case Deliverable:
+	case WorkItem:
 		return h + "## The problem\n\n## What is being delivered\n\n## Out of scope\n\n## Constraints\n"
 	case Outcome:
 		return h + "Why this matters, and anything needed to read the check correctly.\n"
@@ -138,6 +138,6 @@ func bodyFor(unit, title string) string {
 
 func journalFor(title string) string {
 	return "# Journal — " + title + "\n\n" +
-		"> The deliverable's memory. Newest entry first; everything below the top block is\n" +
+		"> The work item's memory. Newest entry first; everything below the top block is\n" +
 		"> historical. Append, never curate. Shape: `spec.md` §5.5.\n\n---\n"
 }

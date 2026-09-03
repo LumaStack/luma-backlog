@@ -10,10 +10,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// FileName is the bundle configuration file, relative to .luma/. It lives
-// inside the backlog bundle rather than in .luma/config/, because it is the
-// knowledge format's bundle root marker, not a tool behavior override.
-const FileName = "backlog/config.yml"
+// FileName is the tool's configuration file, relative to .luma/. It lives in
+// the config tier per the luma directory layout policy: one file per tool,
+// named for the tool so nobody has to guess which binary a file belongs to.
+const FileName = "config/luma-backlog.yaml"
 
 // Config is the settings a repository declares.
 type Config struct {
@@ -38,15 +38,15 @@ func Default() Config {
 		LKFVersion:    "0.0.2",
 		TypeNamespace: "luma/backlog",
 		WorkflowStatus: map[string][]string{
-			"deliverable": {"idea", "preparing", "actionable", "todo", "in_progress", "closed"},
-			"task":        {"todo", "in_progress", "closed"},
+			"work-item": {"idea", "preparing", "ready", "todo", "in_progress", "closed"},
+			"task":      {"todo", "in_progress", "closed"},
 		},
 		Columns: columns,
 	}
 }
 
 const defaultColumns = `
-Backlog:     [idea, preparing, actionable]
+Backlog:     [idea, preparing, ready]
 To Do:       [todo]
 In Progress: [in_progress]
 Closed:      [closed]
@@ -71,12 +71,12 @@ func Parse(data []byte) (Config, error) {
 // StatusesFor returns the workflow vocabulary for a unit.
 //
 // A unit with none of its own falls back to the TASK vocabulary, not the
-// deliverable's. The extra rungs — idea, preparing, actionable — describe how
-// far the planning has gone on a backlog item, and a deliverable is the
+// work item's. The extra rungs — idea, preparing, ready — describe how
+// far the planning has gone on a backlog item, and a work item's the
 // backlog item. An outcome or an exploration is never "an idea we might drop";
 // it is todo, in progress, or closed.
 //
-// Falling back to the deliverable's list instead would stamp a new outcome
+// Falling back to the work item's list instead would stamp a new outcome
 // "idea", which is not merely odd — it would place it in the Backlog column.
 func (c Config) StatusesFor(unit string) []string {
 	if s, ok := c.WorkflowStatus[unit]; ok && len(s) > 0 {
@@ -85,7 +85,7 @@ func (c Config) StatusesFor(unit string) []string {
 	if s, ok := c.WorkflowStatus["task"]; ok && len(s) > 0 {
 		return s
 	}
-	return c.WorkflowStatus["deliverable"]
+	return c.WorkflowStatus["work-item"]
 }
 
 // DefaultStatusFor is what an absent workflow_status means: the first value in

@@ -22,7 +22,7 @@ func newSetCommand(app *App) *cobra.Command {
 			"  field=value    a string\n" +
 			"  field:=value   parsed as YAML, for a list or a map\n\n" +
 			"The two are separate because a wikilink looks like a YAML list:\n" +
-			"guessing would turn [[deliverables/x]] into a nested sequence.",
+			"guessing would turn [[work-items/x]] into a nested sequence.",
 		Args:         cobra.MinimumNArgs(1),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
