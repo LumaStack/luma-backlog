@@ -1,0 +1,19 @@
+# How luma-foreman behaves in this project. Committed, and shared by everyone.
+#
+# Kept minimal by design. What you leave out follows the tool and improves with
+# it; what you set here is frozen, and every frozen value is one more thing to
+# reconcile at upgrade.
+
+[catalog]
+# Where `luma-foreman get` takes bundles from when no --from is given.
+# No default — nothing can guess which catalog is yours.
+# source = "https://github.com/LumaStack/luma-catalog"
+#
+# Registered catalogs live beside it, one entry per catalog, written by
+# `luma-foreman catalog add <url>` after verifying what the URL serves:
+#
+#   [catalog."lumastack/luma-catalog"]
+#   source = "https://github.com/LumaStack/luma-catalog"
+
+[catalog."lumastack/luma-catalog"]
+source = "https://github.com/LumaStack/luma-catalog"
