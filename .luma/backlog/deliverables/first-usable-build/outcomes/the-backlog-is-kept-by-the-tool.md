@@ -6,7 +6,7 @@ verify_by:
   - Run a real deliverable end to end using only commands; no record is hand-edited except to test that hand-editing survives.
   - The journal for that deliverable is written as the work happens, not reconstructed afterwards.
 deliverable: "[[deliverables/first-usable-build]]"
-lifecycle: provisional
+stage: provisional
 created: {by: "human:benjamin", at: 2026-08-09T00:00:00Z}
 ---
 

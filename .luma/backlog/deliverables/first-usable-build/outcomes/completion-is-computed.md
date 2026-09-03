@@ -7,7 +7,7 @@ verify_by:
   - Verify the second, close again; expect success.
   - Close a different deliverable as canceled with an unmet outcome; expect success, because only delivery is gated.
 deliverable: "[[deliverables/first-usable-build]]"
-lifecycle: provisional
+stage: provisional
 created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"

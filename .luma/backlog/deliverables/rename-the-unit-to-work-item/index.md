@@ -2,7 +2,7 @@
 type: deliverable
 title: Rename the unit to work item
 workflow_status: idea
-lifecycle: draft
+stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
 ---
 

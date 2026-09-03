@@ -7,7 +7,7 @@ verify_by:
   - Run from a nested directory and through a symlinked path; expect the same.
   - Confirm the upward walk stops at the fence rather than finding an outer repository.
 deliverable: "[[deliverables/first-usable-build]]"
-lifecycle: provisional
+stage: provisional
 created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"

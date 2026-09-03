@@ -428,7 +428,7 @@ This decides the on-disk layout (`spec.md` §7), whether claiming works at all, 
 
 When a unit of iteration ends without a task succeeding and another is begun to try again, a **new record is created and linked back to the one it follows.** The failed record is never rewritten.
 
-That much fits the rest of the design well: the new record carries the backward link, so creating it writes exactly one file and touches nothing shared — the same property that makes membership work (`spec.md` §3.2). The failed attempt survives intact, with its own evidence and its own history, as a permanent account of what that iteration actually tried. The format also anticipates this directly: supersession is defined there as a relationship rather than a lifecycle status.
+That much fits the rest of the design well: the new record carries the backward link, so creating it writes exactly one file and touches nothing shared — the same property that makes membership work (`spec.md` §3.2). The failed attempt survives intact, with its own evidence and its own history, as a permanent account of what that iteration actually tried. The format also anticipates this directly: supersession is defined there as a relationship rather than a `stage` value.
 
 ### What is not settled
 
