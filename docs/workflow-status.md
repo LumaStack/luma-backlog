@@ -189,6 +189,55 @@ delete from is worse than one they extend, because deleting means deciding which
 of somebody else's steps they do not do, and the tool has no opinion to offer
 them. Ship the fewest rungs that make the two gates visible.
 
+### What cannot be absent
+
+**Three phases, whatever they are called.** Work that might happen, work being
+made ready, and work being done. Any of them may be renamed, subdivided or run
+by a different group — none can be missing. Drop *maybe* and there is nowhere to
+put something nobody has judged yet; drop *preparing* and shaping happens
+somewhere the backlog cannot see; drop *doing* and there is no work.
+
+### Preparing may hold many gates, sequential or parallel
+
+**Different groups prepare different things**, and each wants its own steps and
+its own gate — inside the preparing phase rather than beside it, so the three
+phases stay three:
+
+```
+                    ↓  selection
+┌─ preparing work ───────────────────────────────────────────┐
+│  strategy and alignment    product                         │
+│     problem → evidence → reach → impact → strategic fit    │
+│     → solution options → cost → priority                   │
+│  compliance review         legal, security                 │
+│  preparation               engineering                     │
+└────────────────────────────────────────────────────────────┘
+                    ↓  selection
+```
+
+**Whether they run in sequence or at once is the organization's choice.** Legal
+may have to clear something before engineering shapes it, or the two may run
+together and both have to finish. Both are ordinary, and they are not the same
+shape.
+
+**Sequential fits the ladder as it stands** — more rungs in order, grouped under
+one column heading. Configuration, no code.
+
+**Parallel does not, and that is the constraint worth recording.** A record holds
+one `workflow_status`. Something waiting on legal *and* being shaped by
+engineering is in two states at once, and a single ordered value cannot say so.
+Concurrent gates would have to travel *alongside* the position rather than be
+positions in it — which is the argument `spec.md` §4.1.1 already makes about
+`blocked`: it can be true while preparing and true while in progress, so it is
+not a place in the sequence.
+
+**And either way, what is missing is the gate itself.** Gates are implicit today,
+nothing more than the transition between two rungs. Who owns one, and what it
+requires before work may cross, are not modeled — which is why this is a
+direction rather than a feature.
+
+**Not for a first release**, and recorded so the shape is not designed shut.
+
 ## What is not settled
 
 **The name of the second rung.** `unprepared` names what has not happened yet
