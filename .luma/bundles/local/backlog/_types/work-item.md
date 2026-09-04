@@ -17,20 +17,22 @@ The unit of delivery, and the thing that sits on a backlog. Judged on its outcom
 ## Five kinds, and what separates them
 
 **What separates a kind is what it produces.** That is the test, and it is what
-makes the set complete rather than merely short.
+makes the set complete rather than merely short. The second column is what the
+kind is *for*: scanning the backlog, it tells you at a glance how much vetting
+is owed and of what sort.
 
-| | produces |
-| --- | --- |
-| `defect` | a fix |
-| `request` | an answer you already have the standing to give |
-| `idea` | a classification — it becomes one of the others |
-| `inquiry` | **more work items, and nothing else** |
-| `change` | the work itself |
+| | produces | what it needs vetted |
+| --- | --- | --- |
+| `defect` | a fix | is it real, and does it reproduce |
+| `request` | a change, and answers owed to whoever asked | is it legitimate, aligned, worthy |
+| `idea` | a classification — it becomes one of the others | is it even work yet |
+| `inquiry` | **more work items, and nothing else** | is it worth looking into |
+| `change` | the work itself | do we still need it |
 
 | | |
 | --- | --- |
 | **`defect`** | Something does not work, and nobody planned for it. A desired state was already supposed to hold and does not, which is a different shape from declaring a new one. **Judgeable now:** is it worth fixing? |
-| **`request`** | Somebody asked for something nobody had thought of. **Judgeable now:** is it a real problem, is there a solution, does it align, is it worth doing — and it may be answered *no*, which ordinary work never is. You simply do not do ordinary work; you decline a request. |
+| **`request`** | **A change somebody outside asked for**, and you are accountable to them. That is the kind's whole point: a request may be declined, which ordinary work never is — you simply do not do ordinary work — and somebody is waiting until it is settled. It carries the heaviest vetting, and three separate questions: is it legitimate, is it aligned, is it worthy. |
 | **`idea`** | Neither of the above, and **not judgeable yet**. A thought worth not losing, whose capture is not finished: somebody has to develop it before there is anything to evaluate, and what it becomes is one of the rows above or ordinary work. |
 | **`inquiry`** | **Going to look.** A review, an audit, an investigation, a spike. Its only product is more work items — it changes nothing itself, and finding nothing still counts as done, because the looking was the work. |
 | **`change`** | **None of the above.** Nothing broke, nobody asked, and it is formed enough to judge. Most of what a team builds. |
@@ -165,13 +167,22 @@ a statement about where the work came from or what has to happen next. A team
 that says *story* is relabeling the unit (`spec.md` §2.1), and ADR-0001 declined
 the word as the unit's own name precisely because it carries that template.
 
-**Internal against external is not the line; *is anybody owed an answer* is.** A
-request from another department and one from a customer are both requests, and
+**Internal against external is not the line; *are you answerable to somebody* is.**
+A request from another department and one from a customer are both requests, and
 `request` is the right word for both — it is external to the team even when it is
 internal to the organization. Work somebody on the team decided to do is **not**
 a request, and recording it as one would make an author role-play a requester.
 That is the strain that set aside `request` and `ask` as names for the unit
 itself (`open-questions.md` §16).
+
+**A change is further along than a request the moment it is written**, because
+your own team wrote it. Both still get vetted; the questions differ. A change is
+asked *do we still need this*. A request is asked three: whether it is
+legitimate, aligned and worthy — and somebody is waiting on the answer, which no
+change carries.
+
+**Reading `change` as *needs no vetting* is the misreading worth heading off.**
+The lighter question is not an absent one.
 
 **Absence now means what it says.** Before `change` existed, a blank field meant
 either ordinary work or an unclassified record and nothing told them apart. It
