@@ -5,8 +5,9 @@ workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:40:47Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 kind: defect
+key: WORK-00007
 ---
 
 # Do not invent a workflow status

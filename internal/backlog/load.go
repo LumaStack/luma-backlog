@@ -199,9 +199,16 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		return Item{}, err
 	}
 
+	// A key is matched case-insensitively, so `work-00002` finds `WORK-00002`.
+	// Somebody typing a handle from memory should not have to hold the shift
+	// key to be understood.
+	normalized := NormalizeKey(ref)
+
 	var exact, prefix []Item
 	for _, it := range items {
 		switch {
+		case it.Key() != "" && it.Key() == normalized:
+			exact = append(exact, it)
 		case it.Path == ref || it.Slug() == ref:
 			exact = append(exact, it)
 		case strings.HasPrefix(it.Slug(), ref):

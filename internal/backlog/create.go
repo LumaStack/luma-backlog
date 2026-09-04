@@ -73,7 +73,20 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{Path: rel, Created: false}, nil
 	}
 
-	body, err := render(s, cfg, e, adr)
+	// After the existence check, deliberately. A work item's path is still its
+	// slug, so asking twice for the same title returns above and never reaches
+	// here — the number cannot be burned by a retry, which is the trap the
+	// decision numbering had to be rescued from.
+	key := ""
+	if s.Unit == WorkItem {
+		highest, keyErr := highestKey(b)
+		if keyErr != nil {
+			return Result{}, keyErr
+		}
+		key = FormatKey(highest + 1)
+	}
+
+	body, err := render(s, cfg, e, adr, key)
 	if err != nil {
 		return Result{}, err
 	}
@@ -94,13 +107,18 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 	return Result{Path: rel, Created: true}, nil
 }
 
-func render(s Spec, cfg config.Config, e env.Env, adr int) ([]byte, error) {
+func render(s Spec, cfg config.Config, e env.Env, adr int, key string) ([]byte, error) {
 	r, err := record.Parse([]byte("---\n---\n"))
 	if err != nil {
 		return nil, err
 	}
 
 	r.Set("type", s.Unit)
+	if key != "" {
+		// Second in the frontmatter, because it is the handle somebody reads
+		// first and quotes in a commit or a conversation.
+		r.Set("key", key)
+	}
 	r.Set("title", s.Title)
 
 	switch s.Unit {

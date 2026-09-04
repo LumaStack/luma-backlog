@@ -5,8 +5,9 @@ workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
 kind: change
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:02:01Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
+key: WORK-00004
 ---
 
 # Rename the unit to work item

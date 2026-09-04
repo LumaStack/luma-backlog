@@ -2,6 +2,7 @@
 type: type_definition
 defines: work-item
 fields:
+  key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-00002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
   kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
   blocked:         {field_presence: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
@@ -213,6 +214,32 @@ ADR-0001's recorded trigger** for splitting requests from work items — an inta
 population distinct from the people working the backlog, needing its own
 lifecycle of answered, declined and duplicate. Until that population exists, one
 kind and a provenance field is the smaller answer.
+
+## The key is for finding, the path is for linking
+
+**Both are true at once, and they answer different questions.** A wikilink
+resolves against a path and breaks when a file moves. A person or an agent
+searches by key and does not — the key travels with the record because it is
+written into it.
+
+That is the same split the decision records already run on, and the reason a
+superseded decision stays findable after it moves into `archived/`. Work items
+had only the path, so every reference was a slug derived from a title, and
+changing a title meant either breaking inbound links or leaving a slug that no
+longer matched the record.
+
+**`WORK` is the only prefix, and it is written rather than derived.** A
+repository that later wants its own three letters changes what gets written from
+then on; nothing already on disk is renamed. A derived key would silently
+rewrite the whole corpus the moment the setting changed, which is the failure
+that made this worth being careful about.
+
+**Allocated in one pass at creation**, from one sequence for the whole backlog,
+with the accepted cost the ADR numbers carry: two branches can both claim the
+next number and somebody renumbers on merge.
+
+**A record written before keys existed has none**, and that is not an error. The
+field is `recommended` rather than required for exactly that reason.
 
 ## What this deliberately does not declare
 

@@ -2,6 +2,7 @@
   {
     "path": "backlog/work-items/payments-v2/index.md",
     "type": "work-item",
+    "key": "WORK-00001",
     "slug": "payments-v2",
     "title": "Payments v2",
     "status": "captured",
@@ -26,6 +27,7 @@
   {
     "path": "backlog/work-items/search-relevance/index.md",
     "type": "work-item",
+    "key": "WORK-00002",
     "slug": "search-relevance",
     "title": "Search relevance",
     "status": "captured",
