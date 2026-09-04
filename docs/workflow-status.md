@@ -146,11 +146,24 @@ recording it as doubt makes the field say something nobody chose.
 
 ## Expect the rungs to multiply
 
-**A larger organization may want steps inside `preparing` and `in_progress`.**
-Analysis, design, estimation and approval are all *preparing*; development,
-review, quality assurance and staging are all *in progress*. Teams that work
-that way are not doing something exotic, and the default being coarse is not a
-claim that their shape is wrong.
+**A larger organization may want steps inside any of the three zones.** Analysis,
+design, estimation and approval are all *preparing*; development, review, quality
+assurance and staging are all *in progress*. Teams that work that way are not
+doing something exotic, and the default being coarse is not a claim that their
+shape is wrong.
+
+**The pile is a pipeline too, in some organizations.** Understanding a request,
+validating it, quantifying the pain, measuring the value, checking strategic
+alignment, exploring solutions, estimating cost and risk, weighing one against
+the other — all of that happens before anybody commits to anything, and a single
+rung flattens it into a heap.
+
+**Which zone a step belongs to is itself the choice.** The same evaluation can
+sit above the first gate, where it decides whether the work is worth doing at
+all, or below it, where it decides how the work will be done. Moving a step
+across a gate changes what that gate means — so an organization placing its
+steps is placing its gates, which is the more consequential half of the
+decision.
 
 **This does not contradict `spec.md` §2.2.1**, which refuses to model *which*
 preparation activity is underway. That is a rule about what the tool ships an
@@ -164,10 +177,12 @@ code. That is the second opinion `spec.md` §5.0 demands a configurable surface
 be able to serve — a real shape a real team wants, that the same machinery
 serves without special handling.
 
-**What survives subdivision is the gates, not the rungs.** However many steps sit
-inside the preparation pipeline, they are all between the two selections. The
-three zones are the model; the rungs inside them are vocabulary. A team that
-splits `preparing` into four has changed its vocabulary and not the shape.
+**What survives subdivision is that there are two gates, not where they fall.**
+However many steps an organization runs, they resolve into three zones: before
+anybody has committed, after committing and before starting, and under way. The
+zones are the model; the rungs inside them, and which side of a gate each sits
+on, are vocabulary. A team that splits `preparing` into four has changed its
+vocabulary and not the shape.
 
 **Which is the argument for keeping the default coarse.** A default a team must
 delete from is worse than one they extend, because deleting means deciding which
