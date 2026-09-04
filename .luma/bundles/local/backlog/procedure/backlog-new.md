@@ -68,6 +68,25 @@ nothing.
 clean-ups are changes. The test is what has to happen before the record can be
 judged — verify it, answer them, develop it, or nothing.
 
+## A decision is numbered for you
+
+`new decision` allocates the next `ADR-NNNN`, writes the heading, and scaffolds
+Summary, Problem, Decision and Why. **Do not name the file yourself** — the
+number comes from one sequence across the whole project, so a decision in a work
+item and one in the records tier never collide.
+
+Two fields arrive empty and are yours to fill:
+
+- **`decided`** — when the position became *binding*, which is usually not the
+  day the file appeared. A decision can be drafted for a week and settled in a
+  meeting, and only one of those is the fact people cite.
+- **`reopen_trigger`** — what would make this worth revisiting. Without one a
+  decision becomes permanent by inertia, not because anybody reaffirmed it but
+  because nobody knew what would justify going back.
+
+**Asking twice is safe.** The second ask finds the first record rather than
+allocating another number for the same title.
+
 ## Where it goes
 
 ```

@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.4.3
+version: 0.5.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,20 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.5.0` — **`new decision` conforms to the `decision-records` contract.** It
+allocates the next `ADR-NNNN` from one project-wide sequence, writes the
+`ADR-NNNN:` heading, and scaffolds Summary, Problem, Decision and Why in place
+of the pre-bundle `Context / What was chosen` shape. `decided` and
+`reopen_trigger` arrive present and empty.
+
+The bundle is where that thinking ended up and the command was its first
+iteration, so the command conforms rather than the reverse.
+
+**Breaking for anything that guessed a decision's filename**, which is now
+numbered rather than derived from the title alone. Asking twice still finds the
+first record: the existence check matches on the slug rather than the path,
+which the number would otherwise have defeated.
 
 `0.4.3` — **the recorded inversion names its fourth value `needs_triage`.** The
 other three say what has to happen before a record can be judged, and *triage

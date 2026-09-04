@@ -1,11 +1,12 @@
 ---
 type: work-item
 title: Make new decision conform to decision-records
-workflow_status: unprepared
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:40:10Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:08:44Z'}
 kind: defect
+closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 ---
 
 # Make new decision conform to decision-records
