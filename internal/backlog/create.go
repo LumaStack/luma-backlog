@@ -46,6 +46,21 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{}, fmt.Errorf("title %q has no characters that can form a filename", s.Title)
 	}
 
+	// A decision is numbered, so its filename is not derived from the title
+	// alone and the existence check cannot be a path lookup.
+	adr := 0
+	if s.Unit == Decision {
+		highest, existing, scanErr := scanDecisions(b, slug)
+		if scanErr != nil {
+			return Result{}, scanErr
+		}
+		if existing != "" {
+			return Result{Path: existing, Created: false}, nil
+		}
+		adr = highest + 1
+		slug = strings.TrimSuffix(decisionFilename(adr, slug), ".md")
+	}
+
 	rel, err := PathFor(s.Unit, slug, s.WorkItem)
 	if err != nil {
 		return Result{}, err
@@ -58,7 +73,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{Path: rel, Created: false}, nil
 	}
 
-	body, err := render(s, cfg, e)
+	body, err := render(s, cfg, e, adr)
 	if err != nil {
 		return Result{}, err
 	}
@@ -79,7 +94,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 	return Result{Path: rel, Created: true}, nil
 }
 
-func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
+func render(s Spec, cfg config.Config, e env.Env, adr int) ([]byte, error) {
 	r, err := record.Parse([]byte("---\n---\n"))
 	if err != nil {
 		return nil, err
@@ -89,6 +104,17 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 	r.Set("title", s.Title)
 
 	switch s.Unit {
+	case Decision:
+		// Present and empty rather than absent, for the reason an outcome's
+		// desired_state is: an empty field asks to be filled in and a missing
+		// one is not noticed.
+		//
+		// `decided` is deliberately not today's date. It records when the
+		// position became BINDING, which is not when the file appeared — a
+		// decision can be drafted for a week and settled in a meeting, and
+		// only one of those is the fact people cite. Stamping creation here
+		// would assert something nobody has decided yet.
+		r.Set("decided", "")
 	case Outcome:
 		// desired_state is the whole point of an outcome, so it is present
 		// and empty rather than absent: an empty field asks to be filled in,
@@ -115,19 +141,28 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 		r.Set("kind", CanonicalKind(s.Kind))
 	}
 	r.Set("stage", "draft")
+	if s.Unit == Decision {
+		// A decision with no re-open condition becomes permanent by inertia —
+		// not because anybody reaffirmed it, but because nobody knew what would
+		// justify revisiting.
+		r.Set("reopen_trigger", "")
+	}
 	if err := r.SetRaw("created", "{by: "+e.Actor.String()+", at: "+e.Now()+"}"); err != nil {
 		return nil, err
 	}
 
-	r.SetBody(bodyFor(s.Unit, s.Title))
+	r.SetBody(bodyFor(s.Unit, s.Title, adr))
 	return r.Bytes()
 }
 
 // bodyFor is the starting shape for a unit's body. Sections are a starting
 // point, not a form: leave one out rather than writing nothing under it
 // (open-questions.md §17).
-func bodyFor(unit, title string) string {
+func bodyFor(unit, title string, adr int) string {
 	h := "# " + title + "\n\n"
+	if unit == Decision {
+		h = fmt.Sprintf("# ADR-%04d: %s\n\n", adr, title)
+	}
 	switch unit {
 	case WorkItem:
 		return h + "## The problem\n\n## What is being delivered\n\n## Out of scope\n\n## Constraints\n"
@@ -136,7 +171,20 @@ func bodyFor(unit, title string) string {
 	case Task:
 		return h + "What is to be done, and how it will be verified.\n"
 	case Decision:
-		return h + "## Context\n\n## What was chosen\n\n## What was not taken, and why\n\nRecord what would reopen an option, rather than calling it rejected.\n"
+		// Summary, Problem, Decision and Why are required of every record;
+		// everything else is written only when it carries real content, since
+		// a heading with nothing under it teaches the next author that the
+		// headings matter more than the reasoning.
+		return h +
+			"## Summary\n\nOne sentence: what was decided.\n\n" +
+			"## Problem\n\nWhy is anything being decided? The trigger, the forces, the constraints.\n\n" +
+			"## Decision\n\nWhat was decided — \"We will …\".\n\n" +
+			"## Why\n\nObservable reasoning, not assertion. Something a reader can check,\n" +
+			"argue with, and one day find no longer true.\n\n" +
+			"<!-- Optional, and only when they carry real content: Alternatives ·\n" +
+			"     Tradeoffs · Assumptions · Revisit When · Follow-up · References.\n" +
+			"     Record a path not taken as deferred with what would reopen it,\n" +
+			"     never as rejected. -->\n"
 	case Exploration:
 		return h + "## The question\n\n## What was found\n\n## What it means\n"
 	}

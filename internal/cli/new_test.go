@@ -140,7 +140,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 
 	for _, tc := range []struct{ unit, path string }{
 		{"outcome", "backlog/work-items/payments-v2/outcomes/a-thing.md"},
-		{"decision", "backlog/work-items/payments-v2/decisions/a-thing.md"},
+		{"decision", "backlog/work-items/payments-v2/decisions/ADR-0001-a-thing.md"},
 		{"exploration", "backlog/work-items/payments-v2/explorations/a-thing.md"},
 	} {
 		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
