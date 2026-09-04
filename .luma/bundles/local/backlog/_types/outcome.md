@@ -2,9 +2,9 @@
 type: type_definition
 defines: outcome
 fields:
-  desired_state:   {obligation: mandatory,   field_type: text, desc: "The condition that must hold. True or false — never a task in disguise."}
-  verify_by:       {obligation: recommended, desc: "How it is checked: a command, a list of steps, a pointer to a test, or prose. Deliberately unconstrained."}
-  work_item:     {obligation: mandatory,   field_type: wikilink, desc: "The work item this belongs to."}
+  desired_state:   {field_presence: required,   field_type: text, desc: "The condition that must hold. True or false — never a task in disguise."}
+  verify_by:       {field_presence: recommended, desc: "How it is checked: a command, a list of steps, a pointer to a test, or prose. Deliberately unconstrained."}
+  work_item:     {field_presence: required,   field_type: wikilink, desc: "The work item this belongs to."}
 ---
 
 # Outcome

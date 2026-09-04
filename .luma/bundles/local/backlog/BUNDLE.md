@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.1.0
+version: 0.2.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,25 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.2.0` — **`obligation` is now `field_presence`, and `mandatory` is
+`required`.** The knowledge format renamed both in `luma-types` 0.10.0; these
+types were written before that and kept the old spelling, so a consumer reading
+`field_presence` found nothing here.
+
+Same three presence levels, same meaning, and no field's presence was
+strengthened or weakened — only what declares it. Minor rather than patch,
+matching how `luma-types` shipped the identical rename: breaking for anything
+parsing the old key, and the pre-1.0 allowance is what lets it travel as minor.
+Stated here so it does not read as a mistake later.
+
+**Nothing reads either spelling yet.** The tool does not consume these type
+definitions, so the rename cost nothing to make and would have cost more the
+longer it waited.
+
+*Checked and unchanged:* `stage` stays `draft` — the audience has not moved, and
+this is still developed by its maintainers for their own use. `survival` stays
+undeclared, which reads as `intended`.
 
 `0.1.0` — extracted rather than designed. The types and procedures existed and
 were scattered; this gives them one address. Nothing about them changed in the
