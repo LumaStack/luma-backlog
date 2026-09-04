@@ -209,6 +209,13 @@ progress, delivered*, and *capture costs one command* is a verified outcome of
 the first build. It names how the record got there rather than what kind of
 thing it is, which is what lets one rung hold ideas and bugs alike.
 
+**Against it: `captured` names a moment, and the zone is not a moment.** Where an
+organization runs a real evaluation pipeline there, a record several steps into
+being valued and costed has not been merely captured for some time. No other rung
+has this problem — the rest name states that hold for as long as the record sits
+in them. So the name may be describing the entry point rather than the zone, and
+what replaces it would have to be true of the whole width of it.
+
 **Where the pile lives.** Whether it stays a rung on this ladder or moves out of
 the backlog into a tier of its own is open. Bugs and issues sitting in it is
 evidence for the rung: a bug is unambiguously work, so a tier called *ideas*
