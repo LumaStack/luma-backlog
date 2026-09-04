@@ -1,6 +1,9 @@
 package backlog
 
 import (
+	"path"
+	"strings"
+
 	"github.com/lumastack/luma-backlog/internal/root"
 )
 
@@ -10,14 +13,28 @@ type Completion struct {
 	Unpassing []Item // of those, the ones with no evidence
 	Retired   []Item // archived, and excluded (docs/spec.md §4.4)
 
-	// Skipped is every outcome file that could not be read. A count computed
-	// over an incomplete read is not a count, and the caller has to be told
-	// before it acts on Complete().
+	// Skipped is every file under this work item's outcomes that could not be
+	// read. Each one is a live outcome for all anybody knows, so the count has
+	// lost its denominator and Complete() cannot be true.
+	//
+	// Scoped to this work item deliberately: a corrupt record belonging to
+	// somebody else's work is a real problem and not this caller's, and
+	// blocking every close in the repository on it would be a refusal nobody
+	// could act on.
 	Skipped []Skip
 }
 
 // Complete reports whether every live outcome has passed.
-func (c Completion) Complete() bool { return len(c.Live) > 0 && len(c.Unpassing) == 0 }
+//
+// False when anything was skipped. "Every live outcome" is a claim about a set,
+// and a set read incompletely does not support it — an unreadable file is
+// missing from Live, so it can never appear in Unpassing, and the arithmetic
+// would come out clean on evidence nobody has seen. Completion is computed
+// rather than asserted (docs/spec.md §2.4), and a count over an incomplete read
+// is an assertion wearing a count's clothes.
+func (c Completion) Complete() bool {
+	return len(c.Live) > 0 && len(c.Unpassing) == 0 && len(c.Skipped) == 0
+}
 
 // CompletionOf counts the outcomes of a work item.
 //
@@ -31,7 +48,11 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 	}
 
 	var c Completion
-	c.Skipped = skipped
+	for _, sk := range skipped {
+		if couldBeOutcomeOf(sk.Path, workItem) {
+			c.Skipped = append(c.Skipped, sk)
+		}
+	}
 	for _, it := range items {
 		// A retired outcome is archived rather than deleted, and excluded
 		// from the arithmetic — otherwise retiring one could never let a
@@ -78,3 +99,17 @@ func IsCloseReason(s string) bool {
 // work precisely because it was unfinished — which is the only reason anyone
 // ever cancels anything.
 func (r CloseReason) GatedOnCompletion() bool { return r == Delivered }
+
+// couldBeOutcomeOf reports whether an unreadable file sits where an outcome of
+// this work item would.
+//
+// It has to go by path, because a file that will not parse has no type to read.
+// That is the whole difficulty: the record cannot say what it is, so its
+// location is the only evidence available.
+func couldBeOutcomeOf(rel, workItem string) bool {
+	if workItem == "" {
+		return false
+	}
+	dir := path.Join(BundleDir, "work-items", workItem, childDirs[Outcome])
+	return strings.HasPrefix(path.Clean(rel), dir+"/")
+}
