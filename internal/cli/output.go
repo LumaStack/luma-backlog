@@ -39,6 +39,17 @@ type recordJSON struct {
 	Body   string         `json:"body"`
 }
 
+// reportSkipped names every record that could not be read.
+//
+// It writes nothing when there is nothing to say, so ordinary runs are as quiet
+// as they were. The path comes first because the path is what somebody has to
+// go and open.
+func reportSkipped(w io.Writer, skipped []backlog.Skip) {
+	for _, s := range skipped {
+		fmt.Fprintf(w, "luma-backlog: skipped %s: %v\n", s.Path, s.Err)
+	}
+}
+
 func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
 	return itemJSON{
 		Path:     i.Path,

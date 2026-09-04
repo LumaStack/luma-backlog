@@ -59,6 +59,13 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 		return failure("%w", err)
 	}
 
+	// Before any conclusion is drawn from the count. An outcome that could not
+	// be read is missing from Live, so it can never be counted in Unpassing —
+	// the arithmetic runs on a denominator it has quietly lost. Whether that
+	// should refuse outright is
+	// work-items/close-must-not-deliver-on-records-it-could-not-read.
+	reportSkipped(cmd.ErrOrStderr(), c.Skipped)
+
 	// The tool's only refusal, and it holds a caller to their OWN declarations
 	// rather than to an opinion of its own (docs/spec.md §5.0).
 	if backlog.CloseReason(reason).GatedOnCompletion() {

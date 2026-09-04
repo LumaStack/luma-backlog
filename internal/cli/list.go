@@ -41,10 +41,15 @@ func newListCommand(app *App) *cobra.Command {
 				f.Unit = args[0]
 			}
 
-			items, err := backlog.List(b, f)
+			items, skipped, err := backlog.List(b, f)
 			if err != nil {
 				return failure("%w", err)
 			}
+
+			// To stderr, always: stdout stays a clean listing and --json stays
+			// parseable, so a caller piping the output is unaffected while
+			// still being told.
+			reportSkipped(cmd.ErrOrStderr(), skipped)
 
 			out := cmd.OutOrStdout()
 			if asJSON {
