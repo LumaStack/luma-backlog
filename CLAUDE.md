@@ -11,6 +11,7 @@ A git-native backlog worked by people and agents at the same time. Records are m
 - `docs/development.md` — setup, tests, conventions. **Start here to work on the code.**
 - `docs/principles.md` — the values decisions are argued against.
 - `docs/spec.md` — the design. Normative.
+- `docs/workflow-status.md` — the status ladder and the model behind it. Normative, and the only place the default vocabulary is written down.
 - `docs/lifecycle.md` — the loop. Non-normative, expected to move to the workflow project.
 - `docs/open-questions.md` — what is unsettled, and **why settled things were settled.** Read before reopening anything.
 
