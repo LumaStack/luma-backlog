@@ -18,11 +18,21 @@ Work moves through **two pipelines separated by two gates**, and each pipeline
 has the same three states: not started, under way, finished.
 
 ```
-captured*                                      may or may not become work
-────────────────── selection ──────────────────
-unprepared*  →  preparing  →  prepared*        the preparation pipeline
-────────────────── selection ──────────────────
-todo         →  in_progress  →  closed         the work pipeline
+┌─ may or may not become work ─────────────────┐
+│  captured*                                   │
+└──────────────────────────────────────────────┘
+                    │
+                selection
+                    ▼
+┌─ the preparation pipeline ───────────────────┐
+│  unprepared*  →  preparing  →  prepared*     │
+└──────────────────────────────────────────────┘
+                    │
+                selection
+                    ▼
+┌─ the work pipeline ──────────────────────────┐
+│  todo  →  in_progress  →  closed             │
+└──────────────────────────────────────────────┘
 ```
 
 *\* names not settled — see the end of this document.*

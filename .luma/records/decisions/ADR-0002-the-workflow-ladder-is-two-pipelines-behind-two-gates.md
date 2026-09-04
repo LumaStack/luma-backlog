@@ -44,11 +44,21 @@ defend.
 Work moves through two pipelines, each with a selection gate in front of it:
 
 ```
-captured                                       may or may not become work
-────────────────── selection ──────────────────
-unprepared  →  preparing  →  prepared          the preparation pipeline
-────────────────── selection ──────────────────
-todo        →  in_progress  →  closed          the work pipeline
+┌─ may or may not become work ─────────────────┐
+│  captured                                    │
+└──────────────────────────────────────────────┘
+                    │
+                selection
+                    ▼
+┌─ the preparation pipeline ───────────────────┐
+│  unprepared  →  preparing  →  prepared       │
+└──────────────────────────────────────────────┘
+                    │
+                selection
+                    ▼
+┌─ the work pipeline ──────────────────────────┐
+│  todo  →  in_progress  →  closed             │
+└──────────────────────────────────────────────┘
 ```
 
 **A rung is named for the pipeline it is queued for, or the state it has reached
