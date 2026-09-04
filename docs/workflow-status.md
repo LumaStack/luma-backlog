@@ -57,7 +57,7 @@ and are never rungs or record types — see
 
 | Rung | Means |
 | --- | --- |
-| `captured` | Written down so it is not lost. Might become work; nobody has decided. Holds every kind — ideas, bugs, issues, requests. |
+| `captured` | Written down so it is not lost. Might become work; nobody has decided. Holds work of every kind, bugs and requests alongside things nobody has classified. |
 | `unprepared` | Will become work, and nothing has been worked out yet. The top of the preparation pipeline. |
 | `preparing` | Being actively shaped — broken down, requirements refined, consensus reached, made well-formed. |
 | `prepared` | Shaping is finished. The work is well-formed and could be picked up. |
@@ -222,12 +222,16 @@ mechanism.
 
 ### What `captured` needs and does not have
 
-**A kind.** What sort of thing this is — `idea`, `bug`, `issue`, `request`. The
-word is already settled: ADR-0001 records *kinds, not types*, because promoting a
-record to a different type mid-life would change its path-based identity and
-break every inbound link. That decision is what lets one rung hold all of them.
-**No field declares it.** It is a concept the specification argues from and
-nothing stores.
+**A kind — now built.** `bug`, `request` or `idea`, with absence meaning
+ordinary work. The word was already settled by ADR-0001 (*kinds, not types*,
+because promoting a record to a different type mid-life would change its
+path-based identity); the field, the `--kind` flag and `list --kind` shipped on
+2026-09-04. The values and the test for adding one live on the `work-item` type.
+
+**`idea` is the kind that sits upstream of the others**, and the reason the
+distance to the first gate is not the same for every record: a bug or a request
+arrives judgeable, while an idea has to be developed into one of them — or into
+ordinary work — before there is anything to judge.
 
 **What the values are is not obvious, and `issue` is the trap.** A record arriving
 from an external tracker can be a bug, a request, a question or a discussion —
