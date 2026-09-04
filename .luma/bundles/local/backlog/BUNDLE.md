@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.3.0
+version: 0.3.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,16 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.3.1` — **why there is no fourth kind, written down.** The three cover what has
+to happen before a record can be judged, and ordinary work has already been
+judged — a completeness check rather than a taste for short lists. Also records
+that `story` is a template rather than a kind, that *is anybody owed an answer*
+is the line rather than internal against external, and that a missing kind cannot
+be told apart from ordinary work, which is accepted.
+
+Patch: no field, value or rule changed. A reader who understood `0.3.0`
+behaves identically.
 
 `0.3.0` — **`work-item` gains `kind`, and its workflow vocabulary catches up
 with what the tool ships.**

@@ -42,6 +42,30 @@ is the tell: `idea` describes how finished the capture is, while `bug` and
 captured zone is a zone and not a moment — and why the distance to `unprepared`
 is not the same for every record.
 
+**Why there is no fourth, checked the way `spec.md` §2.1 checks units.** The
+three name what has to happen before a record can be judged — fix it, answer
+them, develop it. Ordinary work has already been judged: somebody decided it.
+Between them those cover every state a record can be in on the way to the first
+gate, which is a completeness argument rather than a preference for short lists.
+
+**`story` is not a kind.** It is a narrative template for *describing* work, not
+a statement about where the work came from or what has to happen next. A team
+that says *story* is relabeling the unit (`spec.md` §2.1), and ADR-0001 declined
+the word as the unit's own name precisely because it carries that template.
+
+**Internal against external is not the line; *is anybody owed an answer* is.** A
+request from another department and one from a customer are both requests, and
+`request` is the right word for both — it is external to the team even when it is
+internal to the organization. Work somebody on the team decided to do is **not**
+a request, and recording it as one would make an author role-play a requester.
+That is the strain that set aside `request` and `ask` as names for the unit
+itself (`open-questions.md` §16).
+
+**The cost of absence, stated once.** A record with no kind may be ordinary work,
+or may be one nobody has classified. Nothing distinguishes them. That is accepted
+because nothing behaves differently on the difference — and if something ever
+does, the answer is a value for one of the two, not a second field.
+
 **What would earn a fourth.** Something whose next step is none of *fix it*,
 *answer them*, or *develop it*. Candidates that look like kinds and are not:
 a **question** is a request for information; an **incident** is a bug plus
