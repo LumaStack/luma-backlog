@@ -54,7 +54,7 @@ and are never rungs or record types — see
 | `preparing` | Being actively shaped — broken down, requirements refined, consensus reached, made well-formed. |
 | `prepared` | Shaping is finished. The work is well-formed and could be picked up. |
 | `todo` | Selected for work and enqueued. Committed to within some timeframe or capacity; the only thing between it and progress is capacity. |
-| `in_progress` | Somebody owns it and is working on it, or owns it and is delegating it. Either way they are responsible. |
+| `in_progress` | Somebody owns it and is working on it or delegating it. Either way they are responsible. |
 | `closed` | Work ended, for one of several reasons — only one of which is success (`spec.md` §5.3.1). |
 
 **`unprepared` and `todo` are the same kind of thing** — the head of a queue,
