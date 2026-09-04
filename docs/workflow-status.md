@@ -253,6 +253,26 @@ is what would make it structural rather than a word people pick from a list.
 a bug once it is `prepared`. It is most visible in `captured` because that is
 where heterogeneous intake sits, not because it belongs to that rung.
 
+**Who requested it does not fragment `kind`.** A customer, another department
+and a teammate all leave somebody owed an answer, so the next step is the same
+for all three. What changes is **what the answer costs** — validating a customer
+report, checking it is not a duplicate, writing back. That is *which gates
+apply*, which is already recorded below as a fact about the work item rather than
+about the repository. **So the requester is an input to gate conditionality, not
+a fourth kind**, and it is the most obvious such input there is.
+
+**Authority is a third axis, and it is already homeless somewhere else.**
+*Leadership asked for this* carries weight that *a user asked for this* does not,
+and that weight can co-occur with any requester — which is what makes it an axis
+rather than another value on one. The `decision` type in `decision-records`
+records the identical gap for archival: *who directed it* is an authority rather
+than a reason, with three candidate homes and none chosen. **Two types needing
+the same thing is evidence the estate wants one answer, not two local fields.**
+
+**No values are proposed for either.** The test that governs kinds governs these
+too: something has to behave differently. Today nothing does, and a requester
+enum invented now would be a guess about a consumer nobody has built.
+
 **Requester data is a second axis, not a kind.** Who asked for this, and whether
 they are inside or outside the organization. Folding that into `kind` would force
 a choice between two facts that coexist — the error `spec.md` §4.2 already names
