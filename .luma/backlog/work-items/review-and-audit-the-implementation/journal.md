@@ -4,6 +4,10 @@
 
 ---
 
+## ▶ 2026-09-04
+
+classified as an inquiry — the kind that did not exist when this record was left blank, and the record that argued it into existence
+
 ## ▶ 2026-08-10 — the debt is now the whole build
 
 **All eleven tasks are done and none of the code has been read.** When this was parked, six tasks were complete; the first build is now finished and running against this repository's own backlog.

@@ -76,6 +76,39 @@ it with nobody shaping anything is a signal worth seeing.
 **Final checks belong at the second gate**, not after it. A record entering
 `todo` is one somebody expects to be picked up without further questions.
 
+## Kinds
+
+**A kind classifies a work item; a rung says where it is.** They are orthogonal —
+a defect can sit at any rung, and a rung holds every kind at once. Kinds are
+never record types, which ADR-0001 settled: promoting a record to a different
+type mid-life would change its path-based identity and break every inbound link.
+
+**What separates them is what each one produces.**
+
+| | produces |
+| --- | --- |
+| `defect` | a fix |
+| `request` | an answer you already have the standing to give |
+| `idea` | a classification — it becomes one of the others |
+| `inquiry` | more work items, and nothing else |
+| `change` | the work itself |
+| *absent* | — nobody has classified it |
+
+**An inquiry is work that exists to create more work.** Spikes, experiments,
+surveys, assessments, examinations, reviews, probes, audits, investigations —
+all of them are inquiries. What comes out is **work items, or a report that
+generates work items**, and nothing else: an inquiry changes nothing itself.
+
+**So finding nothing still counts as done**, because the looking was the work.
+That inverts the relation between output and completion for exactly one kind — a
+defect that produces no fix is not delivered, an audit that finds no problems is
+— and completion is the thing this tool computes.
+
+`review`, `audit`, `investigation` and `spike` are accepted and stored as
+`inquiry`; `bug` and `ask` as `defect` and `request`. Canonical names are
+emitted, aliases accepted (`spec.md` §9.1). The full argument for each value, and
+the test a sixth would have to pass, is on the `work-item` type.
+
 ## Where work enters, and what may stop it
 
 **The ladder is the usual path, not a required one.** Plenty of work does not
@@ -220,46 +253,18 @@ everything below is an organization's structure rather than a backlog's, and
 building it before anybody has asked would be inventing process to sell a
 mechanism.
 
-### What `captured` needs and does not have
+### What `captured` needs beyond a kind
 
-**A kind — now built.** `bug`, `request` or `idea`, with absence meaning
-ordinary work. The word was already settled by ADR-0001 (*kinds, not types*,
-because promoting a record to a different type mid-life would change its
-path-based identity); the field, the `--kind` flag and `list --kind` shipped on
-2026-09-04. The values and the test for adding one live on the `work-item` type.
+**Requester data is a second axis, not a kind.** Who asked for this, and whether
+they are inside or outside the organization. Folding that into `kind` would force
+a choice between two facts that coexist — the error `spec.md` §4.2 already names
+for `blocked` and `paused`.
 
-**`idea` is the kind that sits upstream of the others**, and the reason the
-distance to the first gate is not the same for every record: a bug or a request
-arrives judgeable, while an idea has to be developed into one of them — or into
-ordinary work — before there is anything to judge.
-
-**What the values are is not obvious, and `issue` is the trap.** A record arriving
-from an external tracker can be a bug, a request, a question or a discussion —
-*issue* names **where it came from**, not what it is. It belongs on the
-provenance axis beside the requester, and putting it in an enum next to `bug`
-imports a source system's vocabulary as though it were a distinction we need.
-
-**A kind earns its place the way a unit does** (`spec.md` §2.1): something has to
-behave differently because of it. Today nothing does, so the values can wait
-until something routes, filters or decides on one. A kind that changes nothing is
-a label, and labels attract categories that fit language rather than use.
-
-**If `bug` earns one, this is the distinction that would do it:** a bug's desired
-state was already supposed to hold and does not; everything else declares a *new*
-desired state. That is a difference in the outcomes, not in the vocabulary, which
-is what would make it structural rather than a word people pick from a list.
-
-**A kind is not a rung, and does not stop being true at a gate.** A bug is still
-a bug once it is `prepared`. It is most visible in `captured` because that is
-where heterogeneous intake sits, not because it belongs to that rung.
-
-**Who requested it does not fragment `kind`.** A customer, another department
-and a teammate all leave somebody owed an answer, so the next step is the same
-for all three. What changes is **what the answer costs** — validating a customer
-report, checking it is not a duplicate, writing back. That is *which gates
-apply*, which is already recorded below as a fact about the work item rather than
-about the repository. **So the requester is an input to gate conditionality, not
-a fourth kind**, and it is the most obvious such input there is.
+**An external intake population is a recorded trigger, not a new question.**
+ADR-0001 deferred splitting requests from work items and said what would reopen
+it: *an intake population distinct from the people working the backlog, needing
+its own lifecycle — answered, declined, duplicate.* External requesters are that
+population once there are enough of them.
 
 **Authority is a third axis, and it is already homeless somewhere else.**
 *Leadership asked for this* carries weight that *a user asked for this* does not,
@@ -270,21 +275,7 @@ than a reason, with three candidate homes and none chosen. **Two types needing
 the same thing is evidence the estate wants one answer, not two local fields.**
 
 **No values are proposed for either.** The test that governs kinds governs these
-too: something has to behave differently. Today nothing does, and a requester
-enum invented now would be a guess about a consumer nobody has built.
-
-**Requester data is a second axis, not a kind.** Who asked for this, and whether
-they are inside or outside the organization. Folding that into `kind` would force
-a choice between two facts that coexist — the error `spec.md` §4.2 already names
-for `blocked` and `paused`, where a single field with a kind would make you pick
-between waiting on a vendor and having deliberately parked the work.
-
-**An external intake population is a recorded trigger, not a new question.**
-ADR-0001 deferred splitting requests from work items and said what would reopen
-it: *an intake population distinct from the people working the backlog, needing
-its own lifecycle — answered, declined, duplicate.* External requesters are that
-population once there are enough of them. Read that record before designing
-around it.
+too: something has to behave differently. Today nothing does.
 
 ### Preparing may hold many gates, sequential or parallel
 

@@ -241,3 +241,34 @@ func TestANewDecisionCarriesTheContractsFields(t *testing.T) {
 		t.Errorf("the pre-bundle section shape survived:\n%s", got)
 	}
 }
+
+func TestInquiryInstancesAreStoredAsInquiry(t *testing.T) {
+	// review, audit, investigation and spike are INSTANCES of an inquiry
+	// rather than synonyms for it, so the alias loses a shade of meaning that
+	// bug against defect does not. Accepted, because without it some records
+	// say spike and some say inquiry, and the filter that earns the field
+	// stops finding half of them.
+	app, project := initialized(t)
+	for _, tc := range []struct{ typed, slug string }{
+		{"review", "read-the-code"},
+		{"audit", "check-the-books"},
+		{"investigation", "what-broke-on-tuesday"},
+		{"spike", "can-we-use-parquet"},
+	} {
+		if code, _, e := run(t, app, "new", "work-item", strings.ReplaceAll(tc.slug, "-", " "), "--kind", tc.typed); code != ExitOK {
+			t.Fatalf("--kind %s failed: %s", tc.typed, e)
+		}
+		got := readFile(t, project, "backlog/work-items/"+tc.slug+"/index.md")
+		if !strings.Contains(got, "kind: inquiry") {
+			t.Errorf("--kind %s was not stored as inquiry:\n%s", tc.typed, got)
+		}
+	}
+
+	// And all four are findable as one, which is the point of aliasing them.
+	_, out, _ := run(t, app, "list", "--kind", "inquiry")
+	for _, slug := range []string{"read-the-code", "check-the-books", "what-broke-on-tuesday", "can-we-use-parquet"} {
+		if !strings.Contains(out, slug) {
+			t.Errorf("%s was not listed as an inquiry:\n%s", slug, out)
+		}
+	}
+}

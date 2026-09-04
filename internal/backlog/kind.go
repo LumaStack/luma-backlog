@@ -1,8 +1,9 @@
 package backlog
 
-// Kinds are the classifications a work item may carry. A kind says what has to
-// happen before the record can be judged: verify it, answer them, develop it —
-// or nothing, for a change, which is work that is none of the other three.
+// Kinds are the classifications a work item may carry, and what separates them
+// is WHAT EACH ONE PRODUCES: a defect produces a fix, a request an answer you
+// already have the standing to give, an idea a classification, an inquiry more
+// work items and nothing else, and a change the work itself.
 //
 // An absent kind means nobody has classified it, which is not the same as
 // Change.
@@ -10,6 +11,7 @@ const (
 	Defect  = "defect"
 	Request = "request"
 	Idea    = "idea"
+	Inquiry = "inquiry"
 	Change  = "change"
 )
 
@@ -23,6 +25,17 @@ const (
 var kindAliases = map[string]string{
 	"bug": Defect,
 	"ask": Request,
+
+	// These four are INSTANCES of an inquiry rather than synonyms for it, so
+	// aliasing them loses a shade of meaning that "bug" does not lose against
+	// "defect". Accepted, because the alternative is worse: without it, some
+	// records say spike and some say inquiry, and the filter that earns the
+	// field stops finding half of them. What kind of looking it was belongs in
+	// the title, where it does not fragment anything.
+	"review":        Inquiry,
+	"audit":         Inquiry,
+	"investigation": Inquiry,
+	"spike":         Inquiry,
 }
 
 // CanonicalKind resolves an alias. Anything unrecognized is returned unchanged:

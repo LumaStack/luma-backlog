@@ -22,10 +22,14 @@ func newNewCommand(app *App) *cobra.Command {
 			"from the title, the work item from where you are, the timestamp and\n" +
 			"actor from the environment.\n\n" +
 			"Running it twice with the same title leaves the first one alone.\n\n" +
-			"--kind classifies a work item — defect, request, idea, or change. A kind\n" +
-			"says what has to happen before the record can be judged: verify it,\n" +
-			"answer them, develop it, or nothing, which is what change means.\n\n" +
-			"bug and ask are accepted and stored as defect and request.",
+			"--kind classifies a work item by what it produces:\n" +
+			"  defect   a fix\n" +
+			"  request  an answer you already have the standing to give\n" +
+			"  idea     a classification — it becomes one of the others\n" +
+			"  inquiry  more work items, and nothing else\n" +
+			"  change   the work itself\n\n" +
+			"bug and ask are stored as defect and request; review, audit,\n" +
+			"investigation and spike are stored as inquiry.",
 		Args:         cobra.ExactArgs(2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -77,6 +81,7 @@ func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string) er
 				"  --kind defect   something broke\n"+
 				"  --kind request  somebody asked\n"+
 				"  --kind idea     a thought nobody can judge yet\n"+
+				"  --kind inquiry  going to look, and it will produce work\n"+
 				"  --kind change   none of those\n"+
 				"Leave it blank only when nobody has looked at this yet.\n")
 	}
