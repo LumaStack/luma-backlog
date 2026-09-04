@@ -69,6 +69,11 @@ func (i Item) Status(defaultStatus string) string {
 		if s, ok := i.Record.Get("stage"); ok && s != "" {
 			return s
 		}
+		// A type that declares no workflow_status has no lifecycle for a
+		// default to fill in. Falling through here stamped "todo" onto a
+		// luma/project — a fact nobody wrote, and one a reader cannot tell
+		// apart from a status somebody set deliberately.
+		return ""
 	}
 	return defaultStatus
 }

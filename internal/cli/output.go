@@ -15,11 +15,14 @@ import (
 
 // itemJSON is one record in a listing.
 type itemJSON struct {
-	Path     string `json:"path"`
-	Type     string `json:"type"`
-	Slug     string `json:"slug"`
-	Title    string `json:"title"`
-	Status   string `json:"status"`
+	Path  string `json:"path"`
+	Type  string `json:"type"`
+	Slug  string `json:"slug"`
+	Title string `json:"title"`
+	// Status is omitted rather than emptied when the record's type declares
+	// no workflow status. A consumer can then tell "no lifecycle" from a
+	// lifecycle whose value happens to be blank.
+	Status   string `json:"status,omitempty"`
 	WorkItem string `json:"work_item,omitempty"`
 }
 
