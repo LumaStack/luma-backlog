@@ -1,9 +1,15 @@
 # Journal — Rename the unit to work item
 
-> The deliverable's memory. Newest entry first; everything below the top block is
+> The work item's memory. Newest entry first; everything below the top block is
 > historical. Append, never curate. Shape: `spec.md` §5.5.
 
 ---
+
+## ▶ 2026-09-04
+
+closing: the vocabulary shipped 2026-09-03 and the tail this record listed as still pending — effort to estimate, command aliases — was explicitly out of scope or deferred to a later spec pass
+found while closing: five journals still carried the pre-rename header, The deliverable's memory, because the header is written once at creation and the rename never revisited existing files. Fixed; the entries themselves are untouched.
+the outcome here was declared at close rather than before the work, so read it as a description of what was done and not as the bar the work was held to
 
 ## ▶ 2026-09-03
 

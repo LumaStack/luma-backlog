@@ -1,6 +1,6 @@
 # Journal — lint the corpus
 
-> The deliverable's memory. Newest entry first; everything below the top block is historical. Append, never curate.
+> The work item's memory. Newest entry first; everything below the top block is historical. Append, never curate.
 
 ---
 
