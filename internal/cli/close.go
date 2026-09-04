@@ -59,16 +59,30 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 		return failure("%w", err)
 	}
 
-	// Before any conclusion is drawn from the count. An outcome that could not
-	// be read is missing from Live, so it can never be counted in Unpassing —
-	// the arithmetic runs on a denominator it has quietly lost. Whether that
-	// should refuse outright is
-	// work-items/close-must-not-deliver-on-records-it-could-not-read.
-	reportSkipped(cmd.ErrOrStderr(), c.Skipped)
-
 	// The tool's only refusal, and it holds a caller to their OWN declarations
 	// rather than to an opinion of its own (docs/spec.md §5.0).
 	if backlog.CloseReason(reason).GatedOnCompletion() {
+		// Refused for want of an answer rather than on an opinion. An outcome
+		// that cannot be read is missing from the count, so it can never be
+		// counted as failing, and "delivered" would come out clean on evidence
+		// nobody has seen. That is the one thing this design cannot allow: a
+		// wrong answer that looks exactly like a right one.
+		//
+		// Every other reason closes freely. None of them claims the work
+		// succeeded, so none of them needs a count — which is also the way out
+		// when a file is beyond repair.
+		if len(c.Skipped) > 0 {
+			var b strings.Builder
+			fmt.Fprintf(&b, "%s cannot be delivered: %d outcome(s) could not be read, so there is no count.\n",
+				it.Slug(), len(c.Skipped))
+			for _, sk := range c.Skipped {
+				fmt.Fprintf(&b, "  %s: %v\n", sk.Path, sk.Err)
+			}
+			b.WriteString("\nAn unreadable outcome might be failing, and nothing here can tell.\n")
+			b.WriteString("Repair the file, or close with a reason that claims nothing about evidence.")
+			return coded{ExitRefused, fmt.Errorf("%s", b.String())}
+		}
+
 		if !c.Complete() && len(c.Live) == 0 {
 			return coded{ExitRefused, fmt.Errorf(
 				"%s has no outcomes, so there is nothing that says it was delivered.\n"+
@@ -86,6 +100,12 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 				it.Slug(), len(c.Unpassing), len(c.Live), strings.Join(names, "\n"))}
 		}
 	}
+
+	// Only on a path that did not refuse. A refusal already names the files it
+	// refused over, and saying the same path twice teaches a reader to skim the
+	// part that matters. Closing for a reason that claims nothing about
+	// evidence still gets the warning, because the record is still broken.
+	reportSkipped(cmd.ErrOrStderr(), c.Skipped)
 
 	it.Record.Set("workflow_status", "closed")
 	if err := it.Record.SetRaw("closed", fmt.Sprintf("{on: %s, reason: %s, by: %s}",
