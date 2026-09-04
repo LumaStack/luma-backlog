@@ -78,6 +78,56 @@ it with nobody shaping anything is a signal worth seeing.
 **Final checks belong at the second gate**, not after it. A record entering
 `todo` is one somebody expects to be picked up without further questions.
 
+## Where work enters, and what may stop it
+
+**The ladder is the usual path, not a required one.** Plenty of work does not
+start at the top, and should not be made to.
+
+**Imported work has already been through this elsewhere.** A record synced from
+an upstream system of record was captured and selected there, by whatever
+process that organization runs. Landing it at the first rung would reopen a
+question somebody already answered.
+
+**Work is often created further down the ladder** — straight into `todo`, say —
+because it is urgent, or because it arrives already well-formed. Any rung is a
+legitimate entry point. Neither case is a shortcut somebody is getting away
+with.
+
+**Preparation is still worth having for urgent work** — an incident with no
+outcomes recorded is one nobody can prove is over. So help somebody fill it in
+afterwards, and never make it a condition of starting.
+
+### What may actually block
+
+One rule, and it is the specification's rather than this document's
+(`spec.md` §5.0):
+
+> **The tool may refuse only what the caller's own record contradicts.**
+
+Closing as *delivered* while an outcome is unverified is refused because **the
+team wrote that outcome**. The tool holds a caller to their own words, never to
+an opinion of its own. Skipping rungs contradicts nothing anybody declared, so
+there is nothing there to refuse.
+
+**The asymmetry is deliberate.** A wrong observation gets ignored; a wrong
+refusal stops work, teaches people to reach for a force flag, and destroys the
+guardrail. Observe liberally, refuse narrowly.
+
+**So where somebody is working in a way the system handles badly, say so and
+continue.** `work-item.formation-disputed` already does exactly this — a
+work item whose declared rung its own structure contradicts, a one-line item
+claiming to be fully shaped, is reported as a condition and not blocked.
+Name the better path, and let them past. Somebody who knows they are cutting a
+corner and has decided it is worth it is usually right about their own
+situation, and a tool that argues with them gets routed around.
+
+### Teams that want a real gate
+
+Some will, and they should have one — but **they author it** (`spec.md` §5.4).
+The tool supplies the mechanism and ships no gate: a repository that declares
+nothing gets nothing. That is what keeps an agreed policy possible without
+making one team's process everybody else's default.
+
 ## What configuration may change
 
 **The words, the count, and the order.** A team preferring `idea · ready ·
@@ -96,7 +146,7 @@ recording it as doubt makes the field say something nobody chose.
 
 ## Expect the rungs to multiply
 
-**A larger organization will want steps inside `preparing` and `in_progress`.**
+**A larger organization may want steps inside `preparing` and `in_progress`.**
 Analysis, design, estimation and approval are all *preparing*; development,
 review, quality assurance and staging are all *in progress*. Teams that work
 that way are not doing something exotic, and the default being coarse is not a
