@@ -1,11 +1,11 @@
 ---
 type: work-item
 title: Close must not deliver on records it could not read
-workflow_status: idea
+workflow_status: unprepared
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:08:05Z'}
 sources: ["[[work-items/lint-the-corpus]]"]
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:08:05Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:36:46Z'}
 ---
 
 # Close must not deliver on records it could not read

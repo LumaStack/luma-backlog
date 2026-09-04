@@ -16,17 +16,18 @@ const DefaultFile = `# luma-backlog configuration — see docs/spec.md §8
 lkf_version:    0.0.2          # format grammar this bundle is written against
 type_namespace: luma/backlog   # records write short type names; this resolves them
 
-# Where the work is. The first three describe how far the planning has gone
-# rather than where the work is, so a glance tells you what is an idea and what
-# is ready to pick up. An absent status means the first value here.
+# Where the work is. A selection gate sits between captured and unprepared, and
+# another between prepared and todo — everything between them is preparation.
+# An absent status means the first value here.
 workflow_status:
-  work-item:   [idea, preparing, ready, todo, in_progress, closed]
+  work-item:   [captured, unprepared, preparing, prepared, todo, in_progress, closed]
   task:        [todo, in_progress, closed]
 
 # Statuses grouped into board columns, so a precise vocabulary still renders as
 # a legible board.
 columns:
-  Backlog:     [idea, preparing, ready]
+  Captured:    [captured]
+  Preparing:   [unprepared, preparing, prepared]
   To Do:       [todo]
   In Progress: [in_progress]
   Closed:      [closed]

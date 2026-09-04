@@ -4,7 +4,7 @@
     "type": "work-item",
     "slug": "payments-v2",
     "title": "Payments v2",
-    "status": "idea",
+    "status": "captured",
     "work_item": "payments-v2"
   },
   {
@@ -28,7 +28,7 @@
     "type": "work-item",
     "slug": "search-relevance",
     "title": "Search relevance",
-    "status": "idea",
+    "status": "captured",
     "work_item": "search-relevance"
   }
 ]

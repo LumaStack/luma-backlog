@@ -46,7 +46,7 @@ func TestParseKeepsFallbacksForAbsentKeys(t *testing.T) {
 	if c.TypeNamespace != "acme/work" {
 		t.Errorf("TypeNamespace = %q", c.TypeNamespace)
 	}
-	if got := c.DefaultStatusFor("work-item"); got != "idea" {
+	if got := c.DefaultStatusFor("work-item"); got != "captured" {
 		t.Errorf("fallback lost: DefaultStatusFor = %q, want idea", got)
 	}
 }
@@ -66,7 +66,7 @@ func TestParseRejectsAnEmptyNamespace(t *testing.T) {
 
 func TestDefaultStatusIsTheFirstConfiguredValue(t *testing.T) {
 	c := Default()
-	if got, want := c.DefaultStatusFor("work-item"), "idea"; got != want {
+	if got, want := c.DefaultStatusFor("work-item"), "captured"; got != want {
 		t.Errorf("work item default = %q, want %q", got, want)
 	}
 	if got, want := c.DefaultStatusFor("task"), "todo"; got != want {
@@ -74,7 +74,7 @@ func TestDefaultStatusIsTheFirstConfiguredValue(t *testing.T) {
 	}
 	// An unknown unit falls back to the TASK vocabulary. The extra rungs
 	// describe how far planning has gone on a backlog item, and only a
-	// work item's one — stamping a new outcome "idea" would file it in
+	// work item's one — stamping a new outcome "captured" would file it in
 	// the Backlog column.
 	for _, unit := range []string{"outcome", "exploration", "wave"} {
 		if got, want := c.DefaultStatusFor(unit), "todo"; got != want {
