@@ -46,7 +46,7 @@ the binary's.
 | `--kind defect` | something does not work and nobody planned for it |
 | `--kind request` | somebody asked for something, and it may be answered *no* |
 | `--kind idea` | a thought worth not losing that nobody can judge yet |
-| `--kind inquiry` | going to look — a review, audit, investigation or spike, whose output is work items |
+| `--kind inquiry` | going to look — a review, audit, investigation or spike, to understand or de-risk; its output is work items |
 | `--kind change` | none of those — nothing broke, nobody asked, and it is formed enough to judge |
 | *nothing* | nobody has classified it yet |
 

@@ -1,9 +1,10 @@
 package backlog
 
 // Kinds are the classifications a work item may carry, and what separates them
-// is WHAT EACH ONE PRODUCES: a defect produces a fix, a request an answer you
-// already have the standing to give, an idea a classification, an inquiry more
-// work items and nothing else, and a change the work itself.
+// is WHAT EACH ONE PRODUCES: a defect produces a fix, a request a change plus
+// answers owed to whoever asked, an idea a classification, an inquiry
+// understanding and the work items that follow from it, and a change the work
+// itself.
 //
 // An absent kind means nobody has classified it, which is not the same as
 // Change.

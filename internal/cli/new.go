@@ -26,7 +26,7 @@ func newNewCommand(app *App) *cobra.Command {
 			"  defect   a fix\n" +
 			"  request  an answer you already have the standing to give\n" +
 			"  idea     a classification — it becomes one of the others\n" +
-			"  inquiry  more work items, and nothing else\n" +
+			"  inquiry  understanding, and the work items that follow\n" +
 			"  change   the work itself\n\n" +
 			"bug and ask are stored as defect and request; review, audit,\n" +
 			"investigation and spike are stored as inquiry.",

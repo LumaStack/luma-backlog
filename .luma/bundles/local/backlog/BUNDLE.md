@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.6.1
+version: 0.6.2
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,23 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.6.2` — **an inquiry gains understanding, not only work.** De-risking
+something, or finding out what is there, is the point of a spike whether or not
+any work falls out of it — so *its only product is more work items* was too
+narrow, and the type now says understanding first and the work items that follow.
+
+**And the completion inversion is qualified in both directions.** It read *a
+defect that produces no fix is not delivered; an audit that finds no problems
+is*. Now: a **confirmed** defect, and an audit that finds nothing **can be**
+delivered. An unconfirmed defect producing no fix was never a failure, and an
+audit can still fall short for reasons of its own.
+
+Both corrections came from the maintainer and reached `workflow-status.md` first;
+this carries them into the type, which is the normative source and had drifted to
+being the less careful of the two.
+
+Patch: descriptions sharpened. No value, rule or alias changed.
 
 `0.6.1` — **`request` was described wrongly, and the correction adds a column.**
 It said a request produces *an answer you already have the standing to give*,

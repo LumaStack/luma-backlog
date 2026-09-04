@@ -108,15 +108,15 @@ your own team wrote it, which already puts it further along.
 **Both are vetted; only the question differs.** Reading `change` as *no vetting*
 is the misreading worth heading off.
 
-**An inquiry is work that exists to gain understanding (e.g. de-risk) and create 
-more work.** Spikes, experiments, surveys, assessments, examinations, reviews, probes, 
-audits, investigations — all of them are inquiries. What comes out is 
-**work items, or a report that generates work items**, and nothing else: an 
+**An inquiry is work that exists to gain understanding (e.g. de-risk) and create
+more work.** Spikes, experiments, surveys, assessments, examinations, reviews, probes,
+audits, investigations — all of them are inquiries. What comes out is
+**work items, or a report that generates work items**, and nothing else: an
 inquiry changes nothing itself.
 
 **So finding nothing still counts as done**, because the looking was the work.
 That inverts the relation between output and completion for exactly one kind — a
-confirmed defect that produces no fix is not delivered, an audit that 
+confirmed defect that produces no fix is not delivered, an audit that
 finds no problems can be — and completion is the thing this tool computes.
 
 `review`, `audit`, `investigation` and `spike` are accepted and stored as
