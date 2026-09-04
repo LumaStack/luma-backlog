@@ -21,6 +21,10 @@ So the mechanism is built and unfed. Declaring the retired spellings in `.luma/c
 **Upstream, since the same shape caused it:** `bundle-manager`'s Type Definition template still names the field `obligation` in its prose while its own example uses `field_presence` (luma-catalog#156). An author starting from that template writes the drift in fresh, which is worth knowing before building a checker that assumes drift only ages in.
 
 ---
+scope settled by benjamin 2026-09-04: the tool validates as it goes, so a hand edit gets flagged when it causes a problem — not a separate pass somebody remembers to run. That rules out three of the four candidates this item was parked on: a check subcommand, a repository test, and a CI step.
+and the principle behind it: permissive should mean the tool keeps working, not that it says nothing. Skipping an unreadable record is right; skipping it silently is the gap.
+demonstrated 2026-09-04: a record listed by the tool disappears entirely after a careless hand edit — list exits 0 and never mentions it. Not a wrong answer, an invisible absence, which is the worse failure.
+smallest slice that carries the principle: list reports what it skipped. The skip already happens and is already correct; only the count is thrown away. No new validation logic, no new command, and no answer needed to what done means.
 
 ## ▶ 2026-08-09 — parked as an idea
 

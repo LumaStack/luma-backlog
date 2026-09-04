@@ -4,6 +4,13 @@
 
 ---
 
+## ▶ 2026-09-04
+
+desired_state corrected to match this outcome's own body, which already said to expect hand-editing to win sometimes and to read that as signal — the bar said no record is hand-edited and contradicted the paragraph beneath it
+where hand-editing wins today, 1 of 2: a record's body. new scaffolds headings and set writes fields only, so all prose is authored in place. Expected at this stage — the bootstrap order says the skill leads and the command backfills — and the command that would close it is a body-writing mode on new or set.
+where hand-editing wins today, 2 of 2: a journal entry with shape. journal appends one line at a time, so a wrap-up is a stack of lines; hand-editing produces a better artifact. The command that would close it is a compose mode on journal.
+everything else the pass hit was a rough edge rather than a hand-editing win: paths printed relative to .luma/, close taking a work item while a task closes with set, and the rung vocabulary never being exercised
+
 ## ▶ 2026-08-10 — the build works; one outcome remains — START HERE
 
 **State: the first build is complete and in use on this repository.** Eleven tasks closed. `init`, `new`, `show`, `list`, `set`, `journal`, `verify`, and `close` all work. Tests green, `vet` and `gofmt` clean, 86.7% coverage across `internal/`.

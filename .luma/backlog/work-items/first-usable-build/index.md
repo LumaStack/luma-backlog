@@ -2,10 +2,11 @@
 type: work-item
 title: First usable build
 description: The smallest binary that lets this project keep its own backlog.
-workflow_status: in_progress
+workflow_status: closed
 stage: provisional
-created:  {by: "human:benjamin", at: 2026-08-08T06:00:00Z}
-modified: {by: "agent:opus-5/luma-backlog", at: 2026-08-08T06:00:00Z}
+created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:55:36Z'}
+closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 ---
 
 # First usable build
