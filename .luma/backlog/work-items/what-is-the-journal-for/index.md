@@ -5,6 +5,8 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T20:55:03Z'}
+key: WORK-00012
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 ---
 
 # What is the journal for

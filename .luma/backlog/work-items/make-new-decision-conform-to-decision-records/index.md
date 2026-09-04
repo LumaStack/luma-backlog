@@ -4,9 +4,10 @@ title: Make new decision conform to decision-records
 workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:40:10Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:08:44Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 kind: defect
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
+key: WORK-00006
 ---
 
 # Make new decision conform to decision-records

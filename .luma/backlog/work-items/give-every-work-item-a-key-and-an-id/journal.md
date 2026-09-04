@@ -8,3 +8,5 @@
 ## ▶ 2026-09-04
 
 the decision records already solved this: the number is the identity for finding, the path is the identity for linking — work items have only the second
+the trap the decisions hit does not exist here: a work item's path is still its slug, so a retry returns before a number is allocated — pinned by a test so it cannot be reintroduced
+backfilled the twelve existing work items in creation order, so WORK-00001 is first-usable-build

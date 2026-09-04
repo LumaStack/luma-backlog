@@ -5,8 +5,9 @@ description: Nothing written so far has been read by the maintainer.
 workflow_status: unprepared
 stage: draft
 created: {by: "human:benjamin", at: '2026-08-09T07:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:35:17Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 kind: inquiry
+key: WORK-00003
 ---
 
 # Review and audit the implementation

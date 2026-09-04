@@ -1,6 +1,6 @@
-TYPE          STATUS      SLUG                    TITLE
-luma/project              PROJECT                 Example
-work-item     captured    payments-v2             Payments v2
-outcome       unverified  the-retry-queue-drains  The retry queue drains
-task          todo        add-the-retry-queue     Add the retry queue
-work-item     captured    search-relevance        Search relevance
+TYPE          KEY         STATUS      SLUG                    TITLE
+luma/project                          PROJECT                 Example
+work-item     WORK-00001  captured    payments-v2             Payments v2
+outcome                   unverified  the-retry-queue-drains  The retry queue drains
+task                      todo        add-the-retry-queue     Add the retry queue
+work-item     WORK-00002  captured    search-relevance        Search relevance

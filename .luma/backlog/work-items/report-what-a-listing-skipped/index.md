@@ -5,9 +5,10 @@ workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:08:04Z'}
 sources: ["[[work-items/lint-the-corpus]]"]
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 kind: defect
+key: WORK-00008
 ---
 
 # Report what a listing skipped

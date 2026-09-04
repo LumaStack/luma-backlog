@@ -15,8 +15,12 @@ import (
 
 // itemJSON is one record in a listing.
 type itemJSON struct {
-	Path  string `json:"path"`
-	Type  string `json:"type"`
+	Path string `json:"path"`
+	Type string `json:"type"`
+	// Key is the handle somebody quotes — WORK-00002. Omitted where there is
+	// none: only a work item carries one, and a record written before keys
+	// existed has none either.
+	Key   string `json:"key,omitempty"`
 	Slug  string `json:"slug"`
 	Title string `json:"title"`
 	// Status is omitted rather than emptied when the record's type declares
@@ -54,6 +58,7 @@ func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
 	return itemJSON{
 		Path:     i.Path,
 		Type:     i.Type(),
+		Key:      i.Key(),
 		Slug:     i.Slug(),
 		Title:    i.Title(),
 		Status:   i.Status(defaultStatus),

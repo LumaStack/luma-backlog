@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.6.2
+version: 0.7.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,26 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.7.0` — **a work item carries a key: `WORK-00002`.**
+
+**The key is for finding, the path is for linking**, and both are true at once —
+the same split the decision records already run on, and the reason a superseded
+decision stays findable after it moves. Work items had only the path, so every
+reference was a slug derived from a title, and changing a title meant breaking
+inbound links or leaving a slug that no longer matched.
+
+**`WORK` is the only prefix, written into the record rather than derived**, so a
+repository that later wants its own changes what gets written from then on and
+nothing already on disk is renamed. A derived key would rewrite the corpus the
+moment the setting changed.
+
+Allocated at creation from one project-wide sequence, after the existence check —
+so asking twice for the same title returns the first record and burns no number,
+which is the trap the decision numbering had to be rescued from.
+
+Minor: a recommended field added. A record written before keys has none, and
+that is not an error.
 
 `0.6.2` — **an inquiry gains understanding, not only work.** De-risking
 something, or finding out what is there, is the point of a spike whether or not

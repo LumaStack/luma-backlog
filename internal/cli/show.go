@@ -43,6 +43,9 @@ func newShowCommand(app *App) *cobra.Command {
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
 			fmt.Fprintf(w, "path\t%s\n", it.Path)
 			fmt.Fprintf(w, "type\t%s\n", it.Type())
+			if k := it.Key(); k != "" {
+				fmt.Fprintf(w, "key\t%s\n", k)
+			}
 			if st := it.Status(cfg.DefaultStatusFor(it.Type())); st != "" {
 				fmt.Fprintf(w, "status\t%s\n", st)
 			}

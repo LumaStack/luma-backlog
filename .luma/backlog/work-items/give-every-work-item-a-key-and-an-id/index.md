@@ -1,10 +1,13 @@
 ---
 type: work-item
 title: Give every work item a key and an id
-workflow_status: captured
+workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T20:55:03Z'}
+key: WORK-00011
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:02:21Z'}
+closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 ---
 
 # Give every work item a key and an id
