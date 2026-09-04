@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.4.2
+version: 0.4.3
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,13 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.4.3` — **the recorded inversion names its fourth value `needs_triage`.** The
+other three say what has to happen before a record can be judged, and *triage
+it* is that shape where *undetermined* was a state. It does not change B's
+safety, only makes the value an importer has to write an obvious one.
+
+Patch: wording inside an alternative that is not taken.
 
 `0.4.2` — **the inversion is written down.** The same four states can be arranged
 with `change` explicit and blank meaning *nobody looked*, which is what ships, or
