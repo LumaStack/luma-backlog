@@ -1,11 +1,12 @@
 ---
 type: work-item
 title: Rename the unit to work item
-workflow_status: in_progress
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
 kind: change
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:02:01Z'}
+closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 ---
 
 # Rename the unit to work item
