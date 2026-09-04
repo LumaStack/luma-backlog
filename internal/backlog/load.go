@@ -78,6 +78,19 @@ func (i Item) Status(defaultStatus string) string {
 	return defaultStatus
 }
 
+// Skip is a file the listing could not use, and the reason it could not.
+//
+// Skipping is deliberate: one malformed record must not make the whole backlog
+// unlistable (docs/spec.md §4.1). Skipping in SILENCE is the part that is
+// wrong. A record that vanishes without comment is an invisible absence, which
+// is worse than a wrong answer because nothing prompts anyone to look for it.
+//
+// Permissive means the tool keeps working, not that it says nothing.
+type Skip struct {
+	Path string
+	Err  error
+}
+
 // Filter narrows a listing. A zero Filter matches everything.
 type Filter struct {
 	Unit     string
@@ -90,8 +103,9 @@ type Filter struct {
 // Unreadable files are skipped rather than fatal: one malformed record must
 // not make the whole backlog unlistable, which is the permissive posture the
 // format requires (docs/spec.md §4.1).
-func List(b *root.Backlog, f Filter) ([]Item, error) {
+func List(b *root.Backlog, f Filter) ([]Item, []Skip, error) {
 	var items []Item
+	var skipped []Skip
 
 	err := b.Walk(func(rel string) error {
 		if !strings.HasSuffix(rel, ".md") || !isRecordPath(rel) {
@@ -99,10 +113,12 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 		}
 		data, err := b.ReadFile(rel)
 		if err != nil {
+			skipped = append(skipped, Skip{Path: rel, Err: err})
 			return nil
 		}
 		r, err := record.Parse(data)
 		if err != nil {
+			skipped = append(skipped, Skip{Path: rel, Err: err})
 			return nil
 		}
 		it := Item{Path: rel, Record: r, WorkItem: WorkItemFromPath(rel), Raw: data}
@@ -112,13 +128,18 @@ func List(b *root.Backlog, f Filter) ([]Item, error) {
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
+
+	// A skip is reported whatever the filter, because a record that cannot be
+	// read cannot be filtered: narrowing the listing must not narrow the
+	// warning and hide the very record somebody is looking for.
+	sort.Slice(skipped, func(a, b int) bool { return skipped[a].Path < skipped[b].Path })
 
 	// Sorted by path: stable across runs and across machines, which is what
 	// makes the output safe to pin in a golden file.
 	sort.Slice(items, func(a, b int) bool { return items[a].Path < items[b].Path })
-	return items, nil
+	return items, skipped, nil
 }
 
 // isRecordPath excludes files that are not units — the bundle root, journals,
@@ -162,7 +183,11 @@ func matches(i Item, f Filter) bool {
 // Picking one quietly is how the wrong record gets edited and nobody finds out
 // until later.
 func Resolve(b *root.Backlog, ref string) (Item, error) {
-	items, err := List(b, Filter{})
+	// Skips are not surfaced here yet. Resolve answers "which record did you
+	// mean", and a broken record reports as not found — misleading, but a
+	// smaller wrong than this slice takes on. Tracked on
+	// work-items/report-what-a-listing-skipped.
+	items, _, err := List(b, Filter{})
 	if err != nil {
 		return Item{}, err
 	}

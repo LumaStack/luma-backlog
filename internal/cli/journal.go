@@ -97,7 +97,8 @@ func resolveJournalWorkItem(b *root.Backlog, flag, projectRoot, workingDir strin
 		return fromDir, nil
 	}
 
-	items, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
+	// Deferred with Resolve, and for the same reason — see load.go.
+	items, _, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
 	if err != nil {
 		return "", failure("%w", err)
 	}

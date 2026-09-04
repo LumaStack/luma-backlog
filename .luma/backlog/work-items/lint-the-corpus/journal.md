@@ -25,6 +25,7 @@ scope settled by benjamin 2026-09-04: the tool validates as it goes, so a hand e
 and the principle behind it: permissive should mean the tool keeps working, not that it says nothing. Skipping an unreadable record is right; skipping it silently is the gap.
 demonstrated 2026-09-04: a record listed by the tool disappears entirely after a careless hand edit — list exits 0 and never mentions it. Not a wrong answer, an invisible absence, which is the worse failure.
 smallest slice that carries the principle: list reports what it skipped. The skip already happens and is already correct; only the count is thrown away. No new validation logic, no new command, and no answer needed to what done means.
+fanned out into two work items rather than being converted: report-what-a-listing-skipped is the thin slice, close-must-not-deliver-on-records-it-could-not-read is the correctness bug it exposed. Both carry sources back here; this capture stays as it is.
 
 ## ▶ 2026-08-09 — parked as an idea
 
