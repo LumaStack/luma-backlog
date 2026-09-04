@@ -75,3 +75,34 @@ func (i Item) Key() string {
 	k, _ := i.Record.Get("key")
 	return k
 }
+
+// Ref is how a record is written and said: WORK-00002-lint-the-corpus.
+//
+// Key and slug joined, the way a decision's filename joins its number and slug.
+// One string rather than two columns, because a reader wants one thing to copy
+// and a listing with a key column leaves an empty cell on every record that
+// carries none.
+//
+// It is a REFERENCE, not a path. The directory is still the slug alone, so
+// nothing about this moves a file or changes what a record is (docs/spec.md
+// §7.1).
+func (i Item) Ref() string {
+	if k := i.Key(); k != "" {
+		return k + "-" + i.Slug()
+	}
+	return i.Slug()
+}
+
+// refPattern matches the joined form: WORK-00002-lint-the-corpus.
+var refPattern = regexp.MustCompile(`^([A-Za-z]+-\d+)(-.*)$`)
+
+// NormalizeRef upper-cases the key half of a joined reference and leaves the
+// slug alone, since a slug is lower-case by construction and upper-casing it
+// would stop it matching.
+func NormalizeRef(ref string) string {
+	m := refPattern.FindStringSubmatch(ref)
+	if m == nil {
+		return ref
+	}
+	return strings.ToUpper(m[1]) + m[2]
+}

@@ -201,12 +201,16 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 
 	// A key is matched case-insensitively, so `work-00002` finds `WORK-00002`.
 	// Somebody typing a handle from memory should not have to hold the shift
-	// key to be understood.
+	// key to be understood. The joined form is normalized the same way, so
+	// `work-00002-lint-the-corpus` resolves as readily as it is written.
 	normalized := NormalizeKey(ref)
+	normalizedRef := NormalizeRef(ref)
 
 	var exact, prefix []Item
 	for _, it := range items {
 		switch {
+		case it.Ref() != "" && it.Ref() == normalizedRef:
+			exact = append(exact, it)
 		case it.Key() != "" && it.Key() == normalized:
 			exact = append(exact, it)
 		case it.Path == ref || it.Slug() == ref:

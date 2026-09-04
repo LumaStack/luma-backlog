@@ -241,6 +241,28 @@ next number and somebody renumbers on merge.
 **A record written before keys existed has none**, and that is not an error. The
 field is `recommended` rather than required for exactly that reason.
 
+### Written and said as one string
+
+`WORK-00002-lint-the-corpus` — the key and the slug joined, the way a decision's
+filename joins its number and its slug. That is the form to use in prose, in a
+commit message and out loud, and all of it resolves: the joined form, the key
+alone, and the slug alone, with the key half matched case-insensitively.
+
+**One identifier rather than two columns.** A reader wants one thing to copy, and
+a listing with a key column leaves an empty cell on every record that carries
+none — only a work item has a key, so an outcome's identifier is its slug and the
+column is never blank.
+
+**It is a reference, not a path.** The directory is still the slug alone. Whether
+it should become `WORK-00002-lint-the-corpus/` is open and deliberately not
+answered here: it would match the decision records, where the number *is* in the
+filename, and it would sort a directory listing by number. It would also rename
+every work item, break the `work_item` wikilink on every outcome and task inside
+them, and change what each record *is* — `spec.md` §7.1 is explicit that a
+record's identity is its path. **A reference costs nothing and a rename costs
+that**, which is why one shipped and the other is a decision somebody should make
+deliberately.
+
 ## What this deliberately does not declare
 
 **Core fields** — `title`, `description`, `created`, `modified`, `stage` — are inherited and must not be restated here.

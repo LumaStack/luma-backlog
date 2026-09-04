@@ -45,6 +45,7 @@ func newShowCommand(app *App) *cobra.Command {
 			fmt.Fprintf(w, "type\t%s\n", it.Type())
 			if k := it.Key(); k != "" {
 				fmt.Fprintf(w, "key\t%s\n", k)
+				fmt.Fprintf(w, "ref\t%s\n", it.Ref())
 			}
 			if st := it.Status(cfg.DefaultStatusFor(it.Type())); st != "" {
 				fmt.Fprintf(w, "status\t%s\n", st)

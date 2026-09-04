@@ -20,7 +20,11 @@ type itemJSON struct {
 	// Key is the handle somebody quotes — WORK-00002. Omitted where there is
 	// none: only a work item carries one, and a record written before keys
 	// existed has none either.
-	Key   string `json:"key,omitempty"`
+	Key string `json:"key,omitempty"`
+	// Ref is the two joined — WORK-00002-lint-the-corpus — which is how a
+	// record is written and said. Key and slug are kept beside it so a
+	// consumer can use either half without parsing this one apart.
+	Ref   string `json:"ref"`
 	Slug  string `json:"slug"`
 	Title string `json:"title"`
 	// Status is omitted rather than emptied when the record's type declares
@@ -59,6 +63,7 @@ func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
 		Path:     i.Path,
 		Type:     i.Type(),
 		Key:      i.Key(),
+		Ref:      i.Ref(),
 		Slug:     i.Slug(),
 		Title:    i.Title(),
 		Status:   i.Status(defaultStatus),

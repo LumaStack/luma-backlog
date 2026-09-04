@@ -6,7 +6,7 @@ Every container has an index. This is the project's: one entry per bundle, what 
 
 ## Offered — open a bundle's index when its line matches the work
 
-- `local/backlog` 0.7.0 — The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
+- `local/backlog` 0.7.1 — The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
 - `lumastack/luma-catalog/backlog-ideas` 0.14.1 — Ideas as individual files rather than one growing IDEAS.md — what earns a file, how capture stays fast, and how the list gets tended rather than accumulating.
 - `lumastack/luma-catalog/bundle-manager` 0.15.1 — Creating, updating, auditing, repairing, migrating and retiring bundles — the layout they use and which catalog they belong in.
 - `lumastack/luma-catalog/decision-records` 0.12.1 — Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
