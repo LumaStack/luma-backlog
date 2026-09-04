@@ -34,6 +34,15 @@ func TestTheProjectsOwnRecordsParse(t *testing.T) {
 			return err
 		}
 		rel, _ := filepath.Rel(repo, path)
+		// Bundles are not this project's records. They are adopted copies of
+		// somebody else's documents, plus generated INDEX.md and MANIFEST.md
+		// files that carry no frontmatter by design, and templates that
+		// deliberately omit it so they are never indexed as live records.
+		// backlog.isRecordPath excludes the same subtree for the same reason;
+		// luma-foreman audits what is in there.
+		if strings.Contains(filepath.ToSlash(rel), "/bundles/") {
+			return nil
+		}
 		if strings.HasSuffix(path, "journal.md") && !strings.HasPrefix(string(data), "---") {
 			return nil // journals carry no frontmatter yet
 		}
