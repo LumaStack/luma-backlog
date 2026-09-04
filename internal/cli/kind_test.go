@@ -116,3 +116,47 @@ func TestAnUnknownKindIsKeptAsWritten(t *testing.T) {
 		t.Errorf("an unrecognized kind was not kept:\n%s", got)
 	}
 }
+
+func TestBlankKindIsNudgedNotRefused(t *testing.T) {
+	// Avoided, not denied. Capture has to stay free — an issue arriving from
+	// elsewhere genuinely has no kind until somebody looks — but blank left
+	// frictionless becomes the path of least resistance, and then every idea
+	// arrives blank and the field means nothing.
+	app, _ := initialized(t)
+	code, out, errOut := run(t, app, "new", "work-item", "Something arrived")
+	if code != ExitOK {
+		t.Fatalf("capture was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(out, "created") {
+		t.Errorf("the record was not created:\n%s", out)
+	}
+	if !strings.Contains(errOut, "no kind") {
+		t.Errorf("nothing was said about the missing kind:\n%q", errOut)
+	}
+	for _, k := range []string{"defect", "request", "idea", "change"} {
+		if !strings.Contains(errOut, k) {
+			t.Errorf("the nudge did not name %q:\n%s", k, errOut)
+		}
+	}
+}
+
+func TestNoNudgeWhenAKindIsGiven(t *testing.T) {
+	// A warning that fires on correct use is one people learn to ignore.
+	app, _ := initialized(t)
+	_, _, errOut := run(t, app, "new", "work-item", "A crash", "--kind", "defect")
+	if strings.Contains(errOut, "no kind") {
+		t.Errorf("a classified record was nudged anyway:\n%q", errOut)
+	}
+}
+
+func TestOtherUnitsAreNotNudged(t *testing.T) {
+	// Only a work item takes a kind, so only a work item can be missing one.
+	app, _ := initialized(t)
+	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+		t.Fatalf("setup failed: %s", e)
+	}
+	_, _, errOut := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2")
+	if strings.Contains(errOut, "no kind") {
+		t.Errorf("an outcome was nudged about kind:\n%q", errOut)
+	}
+}

@@ -51,10 +51,18 @@ the binary's.
 
 `bug` and `ask` are accepted and stored as `defect` and `request`.
 
-**Leaving it off says nobody has classified it**, which is honest when you
-cannot tell. A guessed kind is worse than an absent one. But most work a team
-writes for itself is a `change`, so reach for that rather than leaving the field
-empty when you do know.
+**Leaving it off says nobody has looked at this yet.** That is honest for
+something synced in from another tracker, and wrong almost everywhere else —
+whoever writes a record usually knows what they are holding. A jotted thought is
+an `idea`; a reported failure is a `defect`. Most work a team writes for itself
+is a `change`.
+
+**The tool says so and continues.** Creating a work item with no kind prints a
+note naming the four and creates the record anyway. Capture must stay free —
+denying a blank would make classification a toll on intake, which is how things
+stop being written down at all. But blank left frictionless becomes the path of
+least resistance, and then every idea arrives unclassified and the field means
+nothing.
 
 **Do not reach for a kind to describe how the work feels.** Debt, chores and
 clean-ups are changes. The test is what has to happen before the record can be

@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.4.0
+version: 0.4.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,19 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.4.1` — **a blank kind is now avoided rather than merely allowed.** Creating a
+work item without one prints the four values and creates the record anyway.
+
+Capture has to stay free: denying a blank would make classification a toll on
+intake, and a toll on intake is how things stop being written down. But blank
+left frictionless is the path of least resistance, and then every idea arrives
+unclassified and the field means nothing. So the tool names the better path and
+lets you past, which is what `spec.md` §5.0 asks of everything that is not the
+one refusal.
+
+Patch: no field, value or rule changed. A record written before this is
+unaffected, and nothing new is required of anyone.
 
 `0.4.0` — **`change` joins the kinds, `defect` replaces `bug` as canonical, and
 `bug` and `ask` become aliases.**
