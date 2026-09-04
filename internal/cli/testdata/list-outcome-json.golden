@@ -2,6 +2,7 @@
   {
     "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
     "type": "outcome",
+    "ref": "the-retry-queue-drains",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
     "status": "unverified",

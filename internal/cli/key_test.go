@@ -89,3 +89,55 @@ func TestAskingTwiceDoesNotBurnAKey(t *testing.T) {
 		t.Errorf("repeated asks burned a number:\n%s", got)
 	}
 }
+
+func TestTheJoinedFormResolves(t *testing.T) {
+	// WORK-00002-lint-the-corpus is how a work item is written and said, the
+	// way a decision's filename joins its number and slug. All three forms
+	// have to reach the same record, or the one people actually type is the
+	// one that fails.
+	app, _ := initialized(t)
+	if code, _, e := run(t, app, "new", "work-item", "Lint the corpus", "--kind", "change"); code != ExitOK {
+		t.Fatalf("setup failed: %s", e)
+	}
+	for _, ref := range []string{
+		"WORK-00001-lint-the-corpus",
+		"work-00001-lint-the-corpus",
+		"WORK-00001",
+		"lint-the-corpus",
+	} {
+		code, out, errOut := run(t, app, "show", ref, "--json")
+		if code != ExitOK {
+			t.Fatalf("show %s failed: %s", ref, errOut)
+		}
+		var rec map[string]any
+		if err := json.Unmarshal([]byte(out), &rec); err != nil {
+			t.Fatalf("show %s did not emit JSON: %v", ref, err)
+		}
+		if rec["ref"] != "WORK-00001-lint-the-corpus" {
+			t.Errorf("show %s emitted ref %v", ref, rec["ref"])
+		}
+	}
+}
+
+func TestARecordWithoutAKeyRefsAsItsSlug(t *testing.T) {
+	// Only a work item carries a key, so an outcome's reference is its slug
+	// and the identifier column is never empty.
+	app, _ := initialized(t)
+	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+		t.Fatalf("setup failed: %s", e)
+	}
+	if code, _, e := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2"); code != ExitOK {
+		t.Fatalf("setup failed: %s", e)
+	}
+	_, out, _ := run(t, app, "show", "it-drains", "--json")
+	var rec map[string]any
+	if err := json.Unmarshal([]byte(out), &rec); err != nil {
+		t.Fatal(err)
+	}
+	if rec["ref"] != "it-drains" {
+		t.Errorf("an outcome's ref = %v, want its slug", rec["ref"])
+	}
+	if _, hasKey := rec["key"]; hasKey {
+		t.Errorf("an outcome carries a key: %v", rec["key"])
+	}
+}

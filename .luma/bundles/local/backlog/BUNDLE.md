@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.7.0
+version: 0.7.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,22 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.7.1` — **a work item is written as `WORK-00002-lint-the-corpus`.** Key and
+slug joined, the way a decision's filename joins its number and slug, and all
+three forms resolve — joined, key alone, slug alone.
+
+That replaces the key column added in `0.7.0`, which left an empty cell on every
+outcome and task. One identifier column instead: a work item reads as the joined
+form and everything else as its slug, so the column is never blank.
+
+**It is a reference and not a path.** The directory is still the slug alone, and
+whether it should carry the key is recorded as open — it would match the decision
+records and sort by number, and it would rename every work item, break the
+`work_item` link on every outcome and task, and change what each record is.
+
+Patch: how a record is displayed and addressed. Nothing on disk moved, and the
+`key` field is unchanged.
 
 `0.7.0` — **a work item carries a key: `WORK-00002`.**
 

@@ -68,13 +68,14 @@ func newListCommand(app *App) *cobra.Command {
 				return nil
 			}
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
-			// KEY sits between TYPE and STATUS, empty for records that carry
-			// none. A handle nobody can see is not a handle, and the common
-			// listing — work items — has it filled.
-			fmt.Fprintln(w, "TYPE\tKEY\tSTATUS\tSLUG\tTITLE")
+			// One identifier rather than a key column and a slug column. A
+			// work item reads WORK-00002-lint-the-corpus; everything else
+			// reads as its slug, because only a work item carries a key and an
+			// empty column on every other row is noise.
+			fmt.Fprintln(w, "TYPE\tSTATUS\tID\tTITLE")
 			for _, it := range items {
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
-					it.Type(), it.Key(), it.Status(cfg.DefaultStatusFor(it.Type())), it.Slug(), it.Title())
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",
+					it.Type(), it.Status(cfg.DefaultStatusFor(it.Type())), it.Ref(), it.Title())
 			}
 			return w.Flush()
 		},

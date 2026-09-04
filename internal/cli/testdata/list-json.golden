@@ -3,6 +3,7 @@
     "path": "backlog/work-items/payments-v2/index.md",
     "type": "work-item",
     "key": "WORK-00001",
+    "ref": "WORK-00001-payments-v2",
     "slug": "payments-v2",
     "title": "Payments v2",
     "status": "captured",
@@ -11,6 +12,7 @@
   {
     "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
     "type": "outcome",
+    "ref": "the-retry-queue-drains",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
     "status": "unverified",
@@ -19,6 +21,7 @@
   {
     "path": "backlog/work-items/payments-v2/tasks/add-the-retry-queue.md",
     "type": "task",
+    "ref": "add-the-retry-queue",
     "slug": "add-the-retry-queue",
     "title": "Add the retry queue",
     "status": "todo",
@@ -28,6 +31,7 @@
     "path": "backlog/work-items/search-relevance/index.md",
     "type": "work-item",
     "key": "WORK-00002",
+    "ref": "WORK-00002-search-relevance",
     "slug": "search-relevance",
     "title": "Search relevance",
     "status": "captured",

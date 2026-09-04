@@ -1,6 +1,7 @@
 {
   "path": "PROJECT.md",
   "type": "luma/project",
+  "ref": "PROJECT",
   "slug": "PROJECT",
   "title": "Example",
   "hash": "c84944ed335baacd3cf1091b74403d2857c825fed31456bdef586cdec46c5f70",
