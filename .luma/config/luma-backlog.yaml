@@ -6,11 +6,12 @@ lkf_version:    0.0.2          # format grammar this bundle is written against
 type_namespace: luma/backlog   # records write short type names; this resolves them
 
 workflow_status:
-  work-item:   [idea, preparing, ready, todo, in_progress, closed]
+  work-item:   [captured, unprepared, preparing, prepared, todo, in_progress, closed]
   task:        [todo, in_progress, closed]
 
 columns:
-  Backlog:     [idea, preparing, ready]
+  Captured:    [captured]
+  Preparing:   [unprepared, preparing, prepared]
   To Do:       [todo]
   In Progress: [in_progress]
   Closed:      [closed]

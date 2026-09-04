@@ -18,6 +18,7 @@ type Spec struct {
 	Unit     string
 	Title    string
 	WorkItem string // slug; empty means derive from context or omit
+	Kind     string // classifies a work item; empty means ordinary work
 }
 
 // Result reports what happened, so a caller can tell a creation from a
@@ -106,6 +107,12 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 	// unbacked assertion this design exists to distrust (docs/spec.md §4.4).
 	if IsWorked(s.Unit) {
 		r.Set("workflow_status", cfg.DefaultStatusFor(s.Unit))
+	}
+	// A kind is written only when somebody said one. Absence means ordinary
+	// work — something we decided to do, obliging nobody — which is the
+	// common case and is why the field is not defaulted (docs/spec.md §4.2).
+	if s.Kind != "" {
+		r.Set("kind", s.Kind)
 	}
 	r.Set("stage", "draft")
 	if err := r.SetRaw("created", "{by: "+e.Actor.String()+", at: "+e.Now()+"}"); err != nil {

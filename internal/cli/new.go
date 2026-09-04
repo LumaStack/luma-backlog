@@ -13,7 +13,7 @@ import (
 )
 
 func newNewCommand(app *App) *cobra.Command {
-	var workItem string
+	var workItem, kind string
 
 	cmd := &cobra.Command{
 		Use:   "new <" + strings.Join(backlog.Units, "|") + "> <title>",
@@ -21,19 +21,24 @@ func newNewCommand(app *App) *cobra.Command {
 		Long: "Creates a record from a title. Everything else is derived: the file name\n" +
 			"from the title, the work item from where you are, the timestamp and\n" +
 			"actor from the environment.\n\n" +
-			"Running it twice with the same title leaves the first one alone.",
+			"Running it twice with the same title leaves the first one alone.\n\n" +
+			"--kind classifies a work item — bug, request, idea. Leave it off for\n" +
+			"ordinary work, which is most of it. A kind says what has to happen\n" +
+			"before the record can be judged: fix it, answer them, or develop it.",
 		Args:         cobra.ExactArgs(2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runNew(app, cmd, args[0], args[1], workItem)
+			return runNew(app, cmd, args[0], args[1], workItem, kind)
 		},
 	}
 	cmd.Flags().StringVarP(&workItem, "work-item", "w", "",
 		"the work item this belongs to (default: derived from the working directory)")
+	cmd.Flags().StringVarP(&kind, "kind", "k", "",
+		"what sort of work item this is (default: none, meaning ordinary work)")
 	return cmd
 }
 
-func runNew(app *App, cmd *cobra.Command, unit, title, workItem string) error {
+func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string) error {
 	b, cfg, projectRoot, err := openBacklog(app)
 	if err != nil {
 		return err
@@ -44,10 +49,15 @@ func runNew(app *App, cmd *cobra.Command, unit, title, workItem string) error {
 		workItem = workItemFromWorkingDir(projectRoot, app.WorkingDir)
 	}
 
+	if kind != "" && unit != backlog.WorkItem {
+		return usageErr("--kind classifies a work item; %s does not take one", unit)
+	}
+
 	res, err := backlog.Create(b, cfg, app.Env, backlog.Spec{
 		Unit:     unit,
 		Title:    title,
 		WorkItem: workItem,
+		Kind:     kind,
 	})
 	if err != nil {
 		return usageErr("%w", err)

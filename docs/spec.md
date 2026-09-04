@@ -1188,11 +1188,12 @@ labels:
   work item: story              # what people see; records still say work item
 
 workflow_status:
-  work item: [idea, preparing, ready, todo, in_progress, closed]
+  work item: [captured, unprepared, preparing, prepared, todo, in_progress, closed]
   task:        [todo, in_progress, closed]
 
 columns:                          # statuses grouped into board columns (§11)
-  Backlog:     [idea, preparing, ready]
+  Captured:    [captured]
+  Preparing:   [unprepared, preparing, prepared]
   To Do:       [todo]
   In Progress: [in_progress]
   Closed:      [closed]

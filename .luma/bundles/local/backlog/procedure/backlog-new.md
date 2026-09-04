@@ -34,6 +34,28 @@ Get these right and the record is correct even if the wording is not.
 - **Membership lives on the member.** A task names its work item; a work item never lists its tasks.
 - **Never delete.** Archive by setting `stage: archived`.
 
+## Say what kind it is, when you can tell
+
+**Pass `--kind` on a work item when one of the three fits.** The tool does not
+guess from the title, deliberately — inference is a layer over a precise command
+and the command ships first (`spec.md` §9.0.2). Working that out is your job, not
+the binary's.
+
+| Say | When |
+| --- | --- |
+| `--kind bug` | something does not work and nobody planned for it |
+| `--kind request` | somebody asked for something, and it may be answered *no* |
+| `--kind idea` | a thought worth not losing that nobody can judge yet |
+| *nothing* | ordinary work somebody decided to do — **most work items** |
+
+**Leaving it off is the common case, not a failure to classify.** A kind that is
+guessed is worse than one that is absent, because absent honestly says nobody
+has said.
+
+**Do not reach for a kind to describe how the work feels.** Debt, chores and
+clean-ups are ordinary work. The test is what has to happen before the record can
+be judged — fix it, answer them, or develop it.
+
 ## Where it goes
 
 ```

@@ -96,6 +96,7 @@ type Filter struct {
 	Unit     string
 	WorkItem string
 	Status   string
+	Kind     string
 }
 
 // List reads every record in the backlog, filtered.
@@ -166,6 +167,12 @@ func matches(i Item, f Filter) bool {
 	}
 	if f.WorkItem != "" && i.WorkItem != f.WorkItem {
 		return false
+	}
+	if f.Kind != "" {
+		k, _ := i.Record.Get("kind")
+		if k != f.Kind {
+			return false
+		}
 	}
 	if f.Status != "" {
 		s, _ := i.Record.Get("workflow_status")

@@ -4,7 +4,8 @@ title: Make new decision conform to decision-records
 workflow_status: unprepared
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:40:10Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:36:46Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:50:20Z'}
+kind: bug
 ---
 
 # Make new decision conform to decision-records
