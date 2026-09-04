@@ -197,6 +197,18 @@ by a different group — none can be missing. Drop *maybe* and there is nowhere 
 put something nobody has judged yet; drop *preparing* and shaping happens
 somewhere the backlog cannot see; drop *doing* and there is no work.
 
+## Room the design has to leave
+
+**Everything above is the model. Everything in this section is a direction**, and
+most of it is a long way past a first release. It says where the design must not
+close itself off — not what gets built, and not in what order.
+
+**A first release ships one preparation pipeline**, no gate as a thing in its own
+right, and no conditionality at all. That is the right place to start:
+everything below is an organization's structure rather than a backlog's, and
+building it before anybody has asked would be inventing process to sell a
+mechanism.
+
 ### Preparing may hold many gates, sequential or parallel
 
 **Different groups prepare different things**, and each wants its own steps and
@@ -252,7 +264,8 @@ requires** before work may cross, and **whether it applies at all** are three
 things that do not exist — which is why this is a direction rather than a
 feature.
 
-**Not for a first release**, and recorded so the shape is not designed shut.
+**Recorded so the shape is not designed shut** — nothing here is a commitment
+to build any of it.
 
 ## What is not settled
 
