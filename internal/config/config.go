@@ -38,7 +38,7 @@ func Default() Config {
 		LKFVersion:    "0.0.2",
 		TypeNamespace: "luma/backlog",
 		WorkflowStatus: map[string][]string{
-			"work-item": {"idea", "preparing", "ready", "todo", "in_progress", "closed"},
+			"work-item": {"captured", "unprepared", "preparing", "prepared", "todo", "in_progress", "closed"},
 			"task":      {"todo", "in_progress", "closed"},
 		},
 		Columns: columns,
@@ -46,7 +46,8 @@ func Default() Config {
 }
 
 const defaultColumns = `
-Backlog:     [idea, preparing, ready]
+Captured:    [captured]
+Preparing:   [unprepared, preparing, prepared]
 To Do:       [todo]
 In Progress: [in_progress]
 Closed:      [closed]
@@ -71,13 +72,14 @@ func Parse(data []byte) (Config, error) {
 // StatusesFor returns the workflow vocabulary for a unit.
 //
 // A unit with none of its own falls back to the TASK vocabulary, not the
-// work item's. The extra rungs — idea, preparing, ready — describe how
-// far the planning has gone on a backlog item, and a work item's the
-// backlog item. An outcome or an exploration is never "an idea we might drop";
-// it is todo, in progress, or closed.
+// work item's. The extra rungs — captured, unprepared, preparing, prepared —
+// describe how far the planning has gone on a backlog item, and a work item's
+// the backlog item. An outcome or an exploration is never "something we might
+// drop"; it is todo, in progress, or closed.
 //
 // Falling back to the work item's list instead would stamp a new outcome
-// "idea", which is not merely odd — it would place it in the Backlog column.
+// "captured", which is not merely odd — it would file it above the first
+// selection gate, among the things nobody has decided to do.
 func (c Config) StatusesFor(unit string) []string {
 	if s, ok := c.WorkflowStatus[unit]; ok && len(s) > 0 {
 		return s

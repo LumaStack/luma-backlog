@@ -2,9 +2,10 @@
 type: work-item
 title: Lint the corpus
 description: Catch records, documents, and references that have drifted out of shape.
-workflow_status: idea
+workflow_status: captured
 stage: draft
-created: {by: "human:benjamin", at: 2026-08-09T02:00:00Z}
+created: {by: "human:benjamin", at: '2026-08-09T02:00:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:36:46Z'}
 ---
 
 # Lint the corpus

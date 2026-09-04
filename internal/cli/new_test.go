@@ -72,7 +72,7 @@ func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 	}
 	// Absent means the first configured value, so it is written explicitly
 	// rather than left to be inferred by every reader.
-	if got, _ := r.Get("workflow_status"); got != "idea" {
+	if got, _ := r.Get("workflow_status"); got != "captured" {
 		t.Errorf("workflow_status = %q, want idea", got)
 	}
 	if !r.Has("created") {

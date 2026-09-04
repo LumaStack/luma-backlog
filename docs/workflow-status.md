@@ -1,7 +1,7 @@
 # Workflow status
 
-**Status: draft.** The shape below is settled; two of the names are not, and
-they are marked where they appear.
+**Status: draft.** The shape and the seven rung names are settled as of
+2026-09-04 and are what the tool ships. What remains open is listed at the end.
 
 `workflow_status` says where a piece of work sits. It is **declared** —
 somebody sets it — which is what lets it map to board columns and what keeps it
@@ -19,13 +19,13 @@ has the same three states: not started, under way, finished.
 
 ```
 ┌─ may or may not become work ─────────────────┐
-│  captured*                                   │
+│  captured                                    │
 └──────────────────────────────────────────────┘
                     │
                 selection
                     ▼
 ┌─ the preparation pipeline ───────────────────┐
-│  unprepared*  →  preparing  →  prepared*     │
+│  unprepared  →  preparing  →  prepared       │
 └──────────────────────────────────────────────┘
                     │
                 selection
@@ -34,8 +34,6 @@ has the same three states: not started, under way, finished.
 │  todo  →  in_progress  →  closed             │
 └──────────────────────────────────────────────┘
 ```
-
-*\* names not settled — see the end of this document.*
 
 **Both gates are a selection**, which is why no rung is called *selected*: the
 word names the gate, and there are two of them. It is also why a rung cannot be
@@ -144,19 +142,33 @@ first rung has to be honest about what creating a record means, and why `idea`
 is wrong as a default for a *work item*: creating one is an act of intent, and
 recording it as doubt makes the field say something nobody chose.
 
-## Expect the rungs to multiply
+## Where complexity actually lands
 
-**A larger organization may want steps inside any of the three zones.** Analysis,
-design, estimation and approval are all *preparing*; development, review, quality
-assurance and staging are all *in progress*. Teams that work that way are not
-doing something exotic, and the default being coarse is not a claim that their
-shape is wrong.
+**Seven rungs is expected to be enough, even in a complicated organization.**
+What grows is not the ladder — it is the **decision logic inside three of the
+rungs**.
 
-**The pile is a pipeline too, in some organizations.** Understanding a request,
+**Three of them are activities; four are resting points.**
+
+| | |
+| --- | --- |
+| **`captured`, `preparing`, `in_progress`** | something is happening. Work is being evaluated, shaped, or done, by people who may disagree and may need to sign off. **This is where complexity accumulates.** |
+| **`unprepared`, `prepared`, `todo`, `closed`** | nothing is happening. The record is at the head of a queue, or at the end of one, waiting for the next thing to start. **These stay simple however complicated the organization.** |
+
+That is why the ladder is stable. A resting point has nothing to elaborate: a
+record is queued or it is not. An activity can always be broken into steps,
+owners and approvals — and the more parties involved, the more of that there is.
+
+**What accumulates inside `captured`** is evaluation: understanding a request,
 validating it, quantifying the pain, measuring the value, checking strategic
 alignment, exploring solutions, estimating cost and risk, weighing one against
-the other — all of that happens before anybody commits to anything, and a single
-rung flattens it into a heap.
+the other. All of it before anybody has committed to anything.
+
+**Subdividing a rung is possible and not the expected shape.** A team can name
+its own steps — analysis, design, approval inside *preparing*; development,
+review, quality assurance inside *in progress* — and nothing stops them. But
+most organizations will keep the seven and want richer decisions inside three of
+them, which is a different requirement and a harder one.
 
 **Which zone a step belongs to is itself the choice.** The same evaluation can
 sit above the first gate, where it decides whether the work is worth doing at
@@ -177,17 +189,16 @@ code. That is the second opinion `spec.md` §5.0 demands a configurable surface
 be able to serve — a real shape a real team wants, that the same machinery
 serves without special handling.
 
-**What survives subdivision is that there are two gates, not where they fall.**
-However many steps an organization runs, they resolve into three zones: before
-anybody has committed, after committing and before starting, and under way. The
-zones are the model; the rungs inside them, and which side of a gate each sits
-on, are vocabulary. A team that splits `preparing` into four has changed its
-vocabulary and not the shape.
+**What survives all of it is that there are two gates, not where they fall.**
+However an organization arranges its steps, they resolve into three zones:
+before anybody has committed, after committing and before starting, and under
+way. The zones are the model; the rungs, and which side of a gate each sits on,
+are vocabulary.
 
-**Which is the argument for keeping the default coarse.** A default a team must
-delete from is worse than one they extend, because deleting means deciding which
-of somebody else's steps they do not do, and the tool has no opinion to offer
-them. Ship the fewest rungs that make the two gates visible.
+**Which is the argument for shipping these seven and no more.** A default a team
+must delete from is worse than one they extend, because deleting means deciding
+which of somebody else's steps they do not do, and the tool has no opinion to
+offer them.
 
 ### What cannot be absent
 
@@ -208,6 +219,48 @@ right, and no conditionality at all. That is the right place to start:
 everything below is an organization's structure rather than a backlog's, and
 building it before anybody has asked would be inventing process to sell a
 mechanism.
+
+### What `captured` needs and does not have
+
+**A kind.** What sort of thing this is — `idea`, `bug`, `issue`, `request`. The
+word is already settled: ADR-0001 records *kinds, not types*, because promoting a
+record to a different type mid-life would change its path-based identity and
+break every inbound link. That decision is what lets one rung hold all of them.
+**No field declares it.** It is a concept the specification argues from and
+nothing stores.
+
+**What the values are is not obvious, and `issue` is the trap.** A record arriving
+from an external tracker can be a bug, a request, a question or a discussion —
+*issue* names **where it came from**, not what it is. It belongs on the
+provenance axis beside the requester, and putting it in an enum next to `bug`
+imports a source system's vocabulary as though it were a distinction we need.
+
+**A kind earns its place the way a unit does** (`spec.md` §2.1): something has to
+behave differently because of it. Today nothing does, so the values can wait
+until something routes, filters or decides on one. A kind that changes nothing is
+a label, and labels attract categories that fit language rather than use.
+
+**If `bug` earns one, this is the distinction that would do it:** a bug's desired
+state was already supposed to hold and does not; everything else declares a *new*
+desired state. That is a difference in the outcomes, not in the vocabulary, which
+is what would make it structural rather than a word people pick from a list.
+
+**A kind is not a rung, and does not stop being true at a gate.** A bug is still
+a bug once it is `prepared`. It is most visible in `captured` because that is
+where heterogeneous intake sits, not because it belongs to that rung.
+
+**Requester data is a second axis, not a kind.** Who asked for this, and whether
+they are inside or outside the organization. Folding that into `kind` would force
+a choice between two facts that coexist — the error `spec.md` §4.2 already names
+for `blocked` and `paused`, where a single field with a kind would make you pick
+between waiting on a vendor and having deliberately parked the work.
+
+**An external intake population is a recorded trigger, not a new question.**
+ADR-0001 deferred splitting requests from work items and said what would reopen
+it: *an intake population distinct from the people working the backlog, needing
+its own lifecycle — answered, declined, duplicate.* External requesters are that
+population once there are enough of them. Read that record before designing
+around it.
 
 ### Preparing may hold many gates, sequential or parallel
 
@@ -267,40 +320,51 @@ feature.
 **Recorded so the shape is not designed shut** — nothing here is a commitment
 to build any of it.
 
-## What is not settled
+## Settled, and the arguments that settled them
 
-**The name of the second rung.** `unprepared` names what has not happened yet
-and pairs with `prepared`, and this tool already uses a negative state that
-nobody reads as criticism — an outcome starts `unverified`. The objection is
-that it names an absence. Alternatives that name the gate instead — `accepted`,
-`queued`, `selected` — all fail because they are equally true of `todo`.
+**The seven rungs are adopted as the shipped default** (2026-09-04). The
+arguments are kept because a name that survives an argument is worth more than
+one nobody examined.
 
-**The name of the fourth rung.** `ready` is what the major trackers call it, and
-it does not say *how* it is ready. `prepared` answers that by pointing back at
-the process that produced it. `actionable` is available and deliberately unused:
+**`unprepared`** names what has not happened yet and pairs with `prepared`. It
+names an absence, which is the objection — blunted by this tool already using one
+that nobody reads as criticism, since an outcome starts `unverified`.
+Alternatives that name the gate instead — `accepted`, `queued`, `selected` — all
+fail, because they are equally true of `todo` and of every rung below it.
+
+**`prepared`** over `ready`, which is what the major trackers call it and does not
+say *how* it is ready. `prepared` answers that by pointing back at the process
+that produced it. `actionable` is available and deliberately unused:
 `open-questions.md` §7 shelved it as a formation-bar word, and adopting it here
 would quietly take on semantics that were left undecided.
 
-**The name of the first rung.** `captured` is the word this project already uses
-for the state — ADR-0001 describes the arc as *raw capture, preparation, in
-progress, delivered*, and *capture costs one command* is a verified outcome of
-the first build. It names how the record got there rather than what kind of
-thing it is, which is what lets one rung hold ideas and bugs alike.
+**`captured`** is the word this project already used for the state — ADR-0001
+describes the arc as *raw capture, preparation, in progress, delivered*, and
+*capture costs one command* is a verified outcome of the first build. It names
+how the record got there rather than what kind of thing it is, which is what lets
+one rung hold ideas and bugs alike.
 
-**Against it: `captured` names a moment, and the zone is not a moment.** Where an
-organization runs a real evaluation pipeline there, a record several steps into
-being valued and costed has not been merely captured for some time. No other rung
-has this problem — the rest name states that hold for as long as the record sits
-in them. So the name may be describing the entry point rather than the zone, and
-what replaces it would have to be true of the whole width of it.
+**The argument against `captured` is recorded rather than resolved.** It names a
+moment, and the zone is not a moment: where an organization runs a real
+evaluation pipeline there, a record several steps into being valued and costed
+has not been merely captured for some time. No other rung has this problem — the
+rest name states that hold for as long as the record sits in them. It is adopted
+anyway, because nothing proposed is true of the whole width of the zone either,
+and a name that is right at the entry beats one that is wrong everywhere.
 
-**Where the pile lives.** Whether it stays a rung on this ladder or moves out of
-the backlog into a tier of its own is open. Bugs and issues sitting in it is
-evidence for the rung: a bug is unambiguously work, so a tier called *ideas*
-could not hold one without lying about it. The shape above does not depend on
-the answer — if the pile moves out, the rung is simply never used.
+**Seven is expected to be enough**, including in a complicated organization. What
+grows is the decision logic inside `captured`, `preparing` and `in_progress`, not
+the number of rungs — see *Where complexity actually lands*.
 
-**Whether seven rungs is too many.** `unprepared` and `todo` are structurally
-parallel rather than redundant, and so are `prepared` and `todo` — but a ladder
-reads as precision on paper and can behave as indecision in use. Settled by
-using it.
+## What is not settled
+
+**Where the pile lives.** Whether `captured` stays a rung on this ladder or moves
+out of the backlog into a tier of its own is open. Bugs and issues sitting in it
+is evidence for the rung: a bug is unambiguously work, so a tier called *ideas*
+could not hold one without lying about it. The shape does not depend on the
+answer — if the pile moves out, the rung is simply never used.
+
+**`kind` is settled as a concept and unbuilt as a field.** ADR-0001 says kinds
+classify a work item and are never record types; nothing declares or stores one.
+What its values are, and whether requester data sits beside it, are open — see
+*What `captured` needs and does not have*.

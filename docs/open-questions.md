@@ -268,9 +268,11 @@ The first of those is the live one; the other two only matter once gates exist.
 
 ## 7. Default workflow status vocabulary
 
-**Status:** **Partly settled (2026-09-04).** The *shape* is decided and recorded in [[records/decisions/ADR-0002-the-workflow-ladder-is-two-pipelines-behind-two-gates]]: two pipelines, a selection gate before each, and every rung named for the pipeline it is queued for rather than for the gate it passed. [`workflow-status.md`](workflow-status.md) is the normative source.
+**Status:** **Settled (2026-09-04)**, and shipped the same day. The shape is recorded in [[records/decisions/ADR-0002-the-workflow-ladder-is-two-pipelines-behind-two-gates]]: two pipelines, a selection gate before each, and every rung named for the pipeline it is queued for rather than for the gate it passed.
 
-**Three names remain open** — the first rung, the second, and whether `ready` becomes `prepared`. They are listed with their arguments in that document rather than here, because they are now choices within a settled model rather than an open question about the model.
+**The default is `captured · unprepared · preparing · prepared · todo · in_progress · closed`.** [`workflow-status.md`](workflow-status.md) is the normative source and carries the argument for each name, including the one argument against `captured` that was recorded rather than resolved.
+
+**Seven is expected to be enough.** What grows in a complicated organization is the decision logic inside `captured`, `preparing` and `in_progress` — not the number of rungs.
 
 Still decided (2026-09-02): **the formation-bar words are deliberately not in use yet.** Designing gate semantics before a gate is needed was judged getting ahead of our needs. That still holds, and it is why `actionable` is not being adopted as the name for `prepared` even though it is available.
 

@@ -64,10 +64,12 @@ Work moves through two pipelines, each with a selection gate in front of it:
 **A rung is named for the pipeline it is queued for, or the state it has reached
 in one.** Never for the gate it passed.
 
-The model is settled. Three of the names are not, and
-[`workflow-status.md`](../../../docs/workflow-status.md) records which and why.
-It is the normative source; the specification links to it rather than restating
-it.
+The seven rungs are `captured`, `unprepared`, `preparing`, `prepared`, `todo`,
+`in_progress` and `closed`, adopted as the shipped default on 2026-09-04 —
+three of them were still open when this record was first written.
+[`workflow-status.md`](../../../docs/workflow-status.md) is the normative source
+and carries the argument for each; the specification links to it rather than
+restating it.
 
 ## Why
 
@@ -143,9 +145,11 @@ chose.
 
 ## Follow-up
 
-- The three unsettled names, recorded in [`workflow-status.md`](../../../docs/workflow-status.md).
-- Nothing is implemented: `config.go` still ships the old vocabulary, and the board still groups `Backlog: [idea, preparing, ready]`, which draws the second gate and not the first.
+- Shipped 2026-09-04: the vocabulary, the scaffolded configuration, and columns that draw both gates.
+- **`kind` is settled as a concept and unbuilt as a field.** ADR-0001 says kinds classify a work item and are never record types; nothing declares or stores one. Requester data — who asked, and whether they are inside or outside the organization — is a second axis rather than a kind.
+- **An external intake population is ADR-0001's recorded trigger** for reopening the split between requests and work items.
 - Where the pile lives — a rung, or a tier outside the backlog — is open, and bugs sitting in it is evidence for the rung.
+- **Complexity is expected inside `captured`, `preparing` and `in_progress`**, as decision logic rather than as more rungs.
 
 ## References
 
