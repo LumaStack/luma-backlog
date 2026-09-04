@@ -26,7 +26,7 @@ is owed and of what sort.
 | `defect` | a fix | is it real, and does it reproduce |
 | `request` | a change, and answers owed to whoever asked | is it legitimate, aligned, worthy |
 | `idea` | a classification — it becomes one of the others | is it even work yet |
-| `inquiry` | **more work items, and nothing else** | is it worth looking into |
+| `inquiry` | **understanding, and more work items** | is it worth looking into |
 | `change` | the work itself | do we still need it |
 
 | | |
@@ -34,7 +34,7 @@ is owed and of what sort.
 | **`defect`** | Something does not work, and nobody planned for it. A desired state was already supposed to hold and does not, which is a different shape from declaring a new one. **Judgeable now:** is it worth fixing? |
 | **`request`** | **A change somebody outside asked for**, and you are accountable to them. That is the kind's whole point: a request may be declined, which ordinary work never is — you simply do not do ordinary work — and somebody is waiting until it is settled. It carries the heaviest vetting, and three separate questions: is it legitimate, is it aligned, is it worthy. |
 | **`idea`** | Neither of the above, and **not judgeable yet**. A thought worth not losing, whose capture is not finished: somebody has to develop it before there is anything to evaluate, and what it becomes is one of the rows above or ordinary work. |
-| **`inquiry`** | **Going to look.** A review, an audit, an investigation, a spike. Its only product is more work items — it changes nothing itself, and finding nothing still counts as done, because the looking was the work. |
+| **`inquiry`** | **Going to look.** A review, an audit, an investigation, a spike. It exists to gain understanding — to de-risk something, to find out what is there — and what comes out is work items, or a report that generates them. It changes nothing itself, and finding nothing still counts as done, because the looking was the work. |
 | **`change`** | **None of the above.** Nothing broke, nobody asked, and it is formed enough to judge. Most of what a team builds. |
 | *absent* | **Nobody has classified it.** Not a sixth state — a missing answer. |
 
@@ -136,10 +136,12 @@ children attests later that it did. Those are not redundant — one looks forwar
 one records — and it makes this the one kind whose claim can be checked against
 the corpus rather than believed.
 
-**Finding nothing is success here and failure everywhere else.** A defect that
-produces no fix is not delivered; an audit that finds no problems is. That
-inversion is about completion, which is the thing this tool computes, and it is
-the sharpest reason `inquiry` is a kind rather than a flavor of `change`.
+**Finding nothing can be success here and is failure everywhere else.** A
+*confirmed* defect that produces no fix is not delivered; an audit that finds no
+problems can be. Both qualifiers matter — an unconfirmed defect producing no fix
+was never a failure, and an audit can still fall short for reasons of its own.
+That inversion is about completion, which is the thing this tool computes, and it
+is the sharpest reason `inquiry` is a kind rather than a flavor of `change`.
 
 **`review`, `audit`, `investigation` and `spike` are stored as `inquiry`.** They
 are **instances** of it rather than synonyms for it, so unlike `bug` against
