@@ -46,10 +46,12 @@ the binary's.
 | `--kind defect` | something does not work and nobody planned for it |
 | `--kind request` | somebody asked for something, and it may be answered *no* |
 | `--kind idea` | a thought worth not losing that nobody can judge yet |
+| `--kind inquiry` | going to look — a review, audit, investigation or spike, whose output is work items |
 | `--kind change` | none of those — nothing broke, nobody asked, and it is formed enough to judge |
 | *nothing* | nobody has classified it yet |
 
-`bug` and `ask` are accepted and stored as `defect` and `request`.
+`bug` and `ask` are stored as `defect` and `request`; `review`, `audit`,
+`investigation` and `spike` are stored as `inquiry`.
 
 **Leaving it off says nobody has looked at this yet.** That is honest for
 something synced in from another tracker, and wrong almost everywhere else —
@@ -64,9 +66,9 @@ stop being written down at all. But blank left frictionless becomes the path of
 least resistance, and then every idea arrives unclassified and the field means
 nothing.
 
-**Do not reach for a kind to describe how the work feels.** Debt, chores and
-clean-ups are changes. The test is what has to happen before the record can be
-judged — verify it, answer them, develop it, or nothing.
+**The test is what the record produces** — a fix, an answer, a classification,
+more work, or the work itself. Debt, chores and clean-ups are changes with a mood
+attached, not kinds of their own.
 
 ## A decision is numbered for you
 

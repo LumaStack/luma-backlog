@@ -2,7 +2,7 @@
 type: type_definition
 defines: work-item
 fields:
-  kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
+  kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
   blocked:         {field_presence: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
   paused:          {field_presence: optional, desc: "Present means deliberately paused. { on, why}. Undeclared shape, as above." }
@@ -14,18 +14,27 @@ The unit of delivery, and the thing that sits on a backlog. Judged on its outcom
 
 **Body sections:** *The problem* · *What is being delivered* · *Out of scope* · *Constraints*. Leave one out rather than writing nothing under it.
 
-## Three kinds, and the test for a fourth
+## Five kinds, and what separates them
 
-**A kind says what has to happen before the record can be judged.** That is the
-test, and it is why the list is short.
+**What separates a kind is what it produces.** That is the test, and it is what
+makes the set complete rather than merely short.
+
+| | produces |
+| --- | --- |
+| `defect` | a fix |
+| `request` | an answer you already have the standing to give |
+| `idea` | a classification — it becomes one of the others |
+| `inquiry` | **more work items, and nothing else** |
+| `change` | the work itself |
 
 | | |
 | --- | --- |
 | **`defect`** | Something does not work, and nobody planned for it. A desired state was already supposed to hold and does not, which is a different shape from declaring a new one. **Judgeable now:** is it worth fixing? |
 | **`request`** | Somebody asked for something nobody had thought of. **Judgeable now:** is it a real problem, is there a solution, does it align, is it worth doing — and it may be answered *no*, which ordinary work never is. You simply do not do ordinary work; you decline a request. |
 | **`idea`** | Neither of the above, and **not judgeable yet**. A thought worth not losing, whose capture is not finished: somebody has to develop it before there is anything to evaluate, and what it becomes is one of the rows above or ordinary work. |
+| **`inquiry`** | **Going to look.** A review, an audit, an investigation, a spike. Its only product is more work items — it changes nothing itself, and finding nothing still counts as done, because the looking was the work. |
 | **`change`** | **None of the above.** Nothing broke, nobody asked, and it is formed enough to judge. Most of what a team builds. |
-| *absent* | **Nobody has classified it.** Not a fourth state — a missing answer. |
+| *absent* | **Nobody has classified it.** Not a sixth state — a missing answer. |
 
 **`idea` is not a restatement of `workflow_status: captured`.** The rung says
 nobody has *decided*; the kind says the record is not a complete statement of
@@ -112,12 +121,44 @@ the cost of a flag nobody types, and B is simply the truth about how it is being
 used. That is a measurement, not an argument — count the blanks after a few
 months.
 
-**Why four is the whole set, checked the way `spec.md` §2.1 checks units.** Three
-name what has to happen before a record can be judged — fix it, answer them,
-develop it — and the fourth is everything already judgeable that arrived by none
-of those routes. Between them they cover every state a record can be in on the
-way to the first gate, which is a completeness argument rather than a preference
-for short lists.
+**The test used to be different, and could not hold five.** An earlier version
+sorted them by *what has to happen before the record can be judged* — verify it,
+answer them, develop it, nothing. That derived the first four and cannot place an
+inquiry, which is judgeable the moment it is written: *is this worth looking
+into?* is answerable now. What distinguishes it is not what it needs first but
+what comes out of it, which is why the test is now what each kind produces.
+
+**`inquiry` is the only kind that predicts a relationship.** When it is written
+it has no children; the kind claims it will produce some, and `sources` on those
+children attests later that it did. Those are not redundant — one looks forward,
+one records — and it makes this the one kind whose claim can be checked against
+the corpus rather than believed.
+
+**Finding nothing is success here and failure everywhere else.** A defect that
+produces no fix is not delivered; an audit that finds no problems is. That
+inversion is about completion, which is the thing this tool computes, and it is
+the sharpest reason `inquiry` is a kind rather than a flavor of `change`.
+
+**`review`, `audit`, `investigation` and `spike` are stored as `inquiry`.** They
+are **instances** of it rather than synonyms for it, so unlike `bug` against
+`defect` the alias loses a shade of meaning. Accepted, because the alternative is
+worse: without it some records say *spike* and some say *inquiry*, and the filter
+that earns the whole field stops finding half of them. What kind of looking it
+was belongs in the title, where it fragments nothing.
+
+**Why not `question`, `investigation` or `exploration`.** `investigation` is one
+instance promoted over the others — a spike is not an investigation, and both are
+inquiries. `exploration` is this project's word for the same idea one level down,
+where it is a **unit**, and using it here would put one word at two altitudes.
+`question` was the strongest rival: it names what you hold, which is the grammar
+of `defect` and `request`, and *file this as a question* reads better than *file
+this as an inquiry*. `inquiry` won on naming the finding-out rather than the
+asking, which is what generates the work.
+
+**Not settled beyond the concept.** English seems to handle this category as a
+compound — *research question*, *open question*, *due diligence*, *feasibility
+study* — and every single word is either one instance promoted or a vague
+abstraction. **Re-open when a better one turns up.**
 
 **`story` is not a kind.** It is a narrative template for *describing* work, not
 a statement about where the work came from or what has to happen next. A team
@@ -136,14 +177,19 @@ itself (`open-questions.md` §16).
 either ordinary work or an unclassified record and nothing told them apart. It
 means unclassified, and ordinary work says `change`.
 
-**What would earn a fourth.** Something whose next step is none of *fix it*,
-*answer them*, or *develop it*. Candidates that look like kinds and are not:
-a **question** is a request for information; an **incident** is a bug plus
-urgency, and urgency is a different axis; **debt** and **chores** are ordinary
-work with a mood attached.
+**What would earn a sixth.** Something that produces none of a fix, an answer, a
+classification, more work, or the work itself. Candidates that look like kinds
+and are not: an **incident** is a defect plus urgency, and urgency is a different
+axis; **debt** and **chores** are changes with a mood attached.
+
+*A **question** was on that list, on the grounds that it is a request for
+information. That was wrong, and it collapsed two things: a question somebody
+asks you, whose answer is a decision you have the standing to make, and a
+question you are asking, whose answer you can only get by doing work. The second
+is an inquiry.*
 
 **`issue` is not a kind.** It names where a record came from, not what it is — a
-record arriving from an external tracker may be any of the three, or none. That
+record arriving from an external tracker may be any of them, or none. That
 belongs on a provenance axis, and putting it beside `bug` would import a source
 system's vocabulary as though it were a distinction we need.
 

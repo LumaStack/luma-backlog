@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.5.0
+version: 0.6.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,25 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.6.0` — **`inquiry` joins the kinds: work that exists to create more work.**
+Spikes, experiments, surveys, assessments, examinations, reviews, probes, audits
+and investigations are all inquiries, and what comes out is work items, or a
+report that generates work items. An inquiry changes nothing itself, so finding
+nothing still counts as done.
+
+**The test the kinds are sorted by changed with it.** It was *what has to happen
+before the record can be judged*, which derived the first four and cannot place
+an inquiry — that is judgeable the moment it is written. It is now **what each
+kind produces**, which separates all five.
+
+`review`, `audit`, `investigation` and `spike` are accepted and stored as
+`inquiry`. Unlike `bug` against `defect` these are instances rather than
+synonyms, so the alias loses a shade of meaning — accepted, because the
+alternative fragments the filter that earns the field.
+
+Minor: a value added and a test restated. No record has to change, and a kind
+written under `0.5.0` still means what it meant.
 
 `0.5.0` — **`new decision` conforms to the `decision-records` contract.** It
 allocates the next `ADR-NNNN` from one project-wide sequence, writes the
