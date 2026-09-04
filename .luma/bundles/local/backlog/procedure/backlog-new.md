@@ -43,18 +43,22 @@ the binary's.
 
 | Say | When |
 | --- | --- |
-| `--kind bug` | something does not work and nobody planned for it |
+| `--kind defect` | something does not work and nobody planned for it |
 | `--kind request` | somebody asked for something, and it may be answered *no* |
 | `--kind idea` | a thought worth not losing that nobody can judge yet |
-| *nothing* | ordinary work somebody decided to do — **most work items** |
+| `--kind change` | none of those — nothing broke, nobody asked, and it is formed enough to judge |
+| *nothing* | nobody has classified it yet |
 
-**Leaving it off is the common case, not a failure to classify.** A kind that is
-guessed is worse than one that is absent, because absent honestly says nobody
-has said.
+`bug` and `ask` are accepted and stored as `defect` and `request`.
+
+**Leaving it off says nobody has classified it**, which is honest when you
+cannot tell. A guessed kind is worse than an absent one. But most work a team
+writes for itself is a `change`, so reach for that rather than leaving the field
+empty when you do know.
 
 **Do not reach for a kind to describe how the work feels.** Debt, chores and
-clean-ups are ordinary work. The test is what has to happen before the record can
-be judged — fix it, answer them, or develop it.
+clean-ups are changes. The test is what has to happen before the record can be
+judged — verify it, answer them, develop it, or nothing.
 
 ## Where it goes
 

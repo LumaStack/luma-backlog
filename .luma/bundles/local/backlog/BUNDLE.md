@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.3.1
+version: 0.4.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,29 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.4.0` — **`change` joins the kinds, `defect` replaces `bug` as canonical, and
+`bug` and `ask` become aliases.**
+
+`change` is work that is none of the other three — nothing broke, nobody asked,
+and it is formed enough to judge. It is defined by exclusion, which is why the
+word reads weakly and why the search for a better one failed: a negatively
+defined category has no positive noun. All work changes something, so it is at
+least true. **Re-open when a better word turns up.**
+
+**Absence changes meaning, and this is the breaking part.** A blank `kind` used
+to mean ordinary work; it now means nobody has classified it, and ordinary work
+says `change`. A record written under `0.3.x` with no kind now reads as
+unclassified rather than as ordinary — no file is invalid, but a reader draws a
+different conclusion from the same bytes.
+
+`defect` is canonical because `spec.md` §2.1 puts the precise word where a
+machine reads and the familiar one where a person types. `bug` and `ask` are
+accepted on input and stored canonically, which makes importing from a tracker
+that emits *bug* a relabel rather than a mapping exercise.
+
+Minor rather than major under the pre-1.0 allowance, and said out loud because
+the meaning of existing records moved.
 
 `0.3.1` — **why there is no fourth kind, written down.** The three cover what has
 to happen before a record can be judged, and ordinary work has already been

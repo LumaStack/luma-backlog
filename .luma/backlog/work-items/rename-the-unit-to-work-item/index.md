@@ -4,6 +4,8 @@ title: Rename the unit to work item
 workflow_status: in_progress
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
+kind: change
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
 ---
 
 # Rename the unit to work item

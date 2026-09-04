@@ -112,7 +112,7 @@ func render(s Spec, cfg config.Config, e env.Env) ([]byte, error) {
 	// work — something we decided to do, obliging nobody — which is the
 	// common case and is why the field is not defaulted (docs/spec.md §4.2).
 	if s.Kind != "" {
-		r.Set("kind", s.Kind)
+		r.Set("kind", CanonicalKind(s.Kind))
 	}
 	r.Set("stage", "draft")
 	if err := r.SetRaw("created", "{by: "+e.Actor.String()+", at: "+e.Now()+"}"); err != nil {

@@ -2,7 +2,7 @@
 type: type_definition
 defines: work-item
 fields:
-  kind:            {field_presence: optional, field_type: enum, values: [bug, request, idea], desc: "What sort of work item this is. ABSENT MEANS ORDINARY WORK — something we decided to do — which is the common case. A kind says what has to happen before the record can be judged; see the body."}
+  kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
   blocked:         {field_presence: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
   paused:          {field_presence: optional, desc: "Present means deliberately paused. { on, why}. Undeclared shape, as above." }
@@ -21,10 +21,11 @@ test, and it is why the list is short.
 
 | | |
 | --- | --- |
-| **`bug`** | Something does not work, and nobody planned for it. A desired state was already supposed to hold and does not, which is a different shape from declaring a new one. **Judgeable now:** is it worth fixing? |
+| **`defect`** | Something does not work, and nobody planned for it. A desired state was already supposed to hold and does not, which is a different shape from declaring a new one. **Judgeable now:** is it worth fixing? |
 | **`request`** | Somebody asked for something nobody had thought of. **Judgeable now:** is it a real problem, is there a solution, does it align, is it worth doing — and it may be answered *no*, which ordinary work never is. You simply do not do ordinary work; you decline a request. |
 | **`idea`** | Neither of the above, and **not judgeable yet**. A thought worth not losing, whose capture is not finished: somebody has to develop it before there is anything to evaluate, and what it becomes is one of the rows above or ordinary work. |
-| *absent* | **Ordinary work.** Somebody decided to do it. Most work items, and nothing is gained by classifying them. |
+| **`change`** | **None of the above.** Nothing broke, nobody asked, and it is formed enough to judge. Most of what a team builds. |
+| *absent* | **Nobody has classified it.** Not a fourth state — a missing answer. |
 
 **`idea` is not a restatement of `workflow_status: captured`.** The rung says
 nobody has *decided*; the kind says the record is not a complete statement of
@@ -42,11 +43,35 @@ is the tell: `idea` describes how finished the capture is, while `bug` and
 captured zone is a zone and not a moment — and why the distance to `unprepared`
 is not the same for every record.
 
-**Why there is no fourth, checked the way `spec.md` §2.1 checks units.** The
-three name what has to happen before a record can be judged — fix it, answer
-them, develop it. Ordinary work has already been judged: somebody decided it.
-Between them those cover every state a record can be in on the way to the first
-gate, which is a completeness argument rather than a preference for short lists.
+**`change` is defined by exclusion, and that is why it reads weakly.** The other
+three each carry a fact: something broke, somebody asked, it is not formed yet.
+`change` carries none — it is the remainder, *work that is none of the other
+three*. All work changes something, so the word is true; it is just not doing the
+work the others do.
+
+**It was chosen as least-bad rather than argued for**, and a future reader should
+know that rather than assume it was reasoned to. The search failed for a
+structural reason: a negatively-defined category has no positive noun, so every
+candidate named something narrower than the category.
+
+Two failed on opposite halves of it. **`improvement`** cannot cover creation —
+building a first version improves nothing. **`original`** covers creation and
+reads wrong for a rename. `opportunity` and `elective` were serviceable and
+carried sales and medical flavors respectively. `own`, `native` and
+`self-originated` describe origin rather than the work, and every stance word —
+`chosen`, `planned`, `committed`, `intended` — fails because the stance applies
+to all four once the work is accepted.
+
+**The live cost:** `spec.md` uses *change* 73 times as ordinary English, and each
+one is now slightly ambiguous. **Re-open when a better word turns up**; nothing
+depends on this one beyond the value itself.
+
+**Why four is the whole set, checked the way `spec.md` §2.1 checks units.** Three
+name what has to happen before a record can be judged — fix it, answer them,
+develop it — and the fourth is everything already judgeable that arrived by none
+of those routes. Between them they cover every state a record can be in on the
+way to the first gate, which is a completeness argument rather than a preference
+for short lists.
 
 **`story` is not a kind.** It is a narrative template for *describing* work, not
 a statement about where the work came from or what has to happen next. A team
@@ -61,10 +86,9 @@ a request, and recording it as one would make an author role-play a requester.
 That is the strain that set aside `request` and `ask` as names for the unit
 itself (`open-questions.md` §16).
 
-**The cost of absence, stated once.** A record with no kind may be ordinary work,
-or may be one nobody has classified. Nothing distinguishes them. That is accepted
-because nothing behaves differently on the difference — and if something ever
-does, the answer is a value for one of the two, not a second field.
+**Absence now means what it says.** Before `change` existed, a blank field meant
+either ordinary work or an unclassified record and nothing told them apart. It
+means unclassified, and ordinary work says `change`.
 
 **What would earn a fourth.** Something whose next step is none of *fix it*,
 *answer them*, or *develop it*. Candidates that look like kinds and are not:

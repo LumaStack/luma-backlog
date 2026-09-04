@@ -22,9 +22,10 @@ func newNewCommand(app *App) *cobra.Command {
 			"from the title, the work item from where you are, the timestamp and\n" +
 			"actor from the environment.\n\n" +
 			"Running it twice with the same title leaves the first one alone.\n\n" +
-			"--kind classifies a work item — bug, request, idea. Leave it off for\n" +
-			"ordinary work, which is most of it. A kind says what has to happen\n" +
-			"before the record can be judged: fix it, answer them, or develop it.",
+			"--kind classifies a work item — defect, request, idea, or change. A kind\n" +
+			"says what has to happen before the record can be judged: verify it,\n" +
+			"answer them, develop it, or nothing, which is what change means.\n\n" +
+			"bug and ask are accepted and stored as defect and request.",
 		Args:         cobra.ExactArgs(2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

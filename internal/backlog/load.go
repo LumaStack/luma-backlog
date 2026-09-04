@@ -170,7 +170,7 @@ func matches(i Item, f Filter) bool {
 	}
 	if f.Kind != "" {
 		k, _ := i.Record.Get("kind")
-		if k != f.Kind {
+		if CanonicalKind(k) != CanonicalKind(f.Kind) {
 			return false
 		}
 	}
