@@ -85,24 +85,39 @@ type mid-life would change its path-based identity and break every inbound link.
 
 **What separates them is what each one produces.**
 
-| | produces |
-| --- | --- |
-| `defect` | a fix |
-| `request` | an answer you already have the standing to give |
-| `idea` | a classification — it becomes one of the others |
-| `inquiry` | more work items, and nothing else |
-| `change` | the work itself |
-| *absent* | — nobody has classified it |
+| | produces | what it needs vetted |
+| --- | --- | --- |
+| `defect` | a fix | is it real, and does it reproduce |
+| `request` | a change, and answers owed to whoever asked | is it legitimate, aligned, worthy |
+| `idea` | a classification — it becomes one of the others | is it even work yet |
+| `inquiry` | more work items | is it worth looking into |
+| `change` | the work itself | do we still need it |
+| *absent* | — | nobody has classified it |
 
-**An inquiry is work that exists to create more work.** Spikes, experiments,
-surveys, assessments, examinations, reviews, probes, audits, investigations —
-all of them are inquiries. What comes out is **work items, or a report that
-generates work items**, and nothing else: an inquiry changes nothing itself.
+**A request is a change somebody outside asked for**, and it differs on two
+counts. **You are accountable to them.** And it has to be evaluated before you
+can trust it at all — is it legitimate, aligned, worthy. A change your team wrote
+for itself requires less preparation than a request.
+
+**That is what the kind is for when you are scanning for something to pick up.**
+It tells you at a glance how much vetting is owed and of what sort. A request
+needs the heaviest, and three separate questions of it. A change needs the
+lightest, and a different question entirely — *do we still need this* — because
+your own team wrote it, which already puts it further along.
+
+**Both are vetted; only the question differs.** Reading `change` as *no vetting*
+is the misreading worth heading off.
+
+**An inquiry is work that exists to gain understanding (e.g. de-risk) and create 
+more work.** Spikes, experiments, surveys, assessments, examinations, reviews, probes, 
+audits, investigations — all of them are inquiries. What comes out is 
+**work items, or a report that generates work items**, and nothing else: an 
+inquiry changes nothing itself.
 
 **So finding nothing still counts as done**, because the looking was the work.
 That inverts the relation between output and completion for exactly one kind — a
-defect that produces no fix is not delivered, an audit that finds no problems is
-— and completion is the thing this tool computes.
+confirmed defect that produces no fix is not delivered, an audit that 
+finds no problems can be — and completion is the thing this tool computes.
 
 `review`, `audit`, `investigation` and `spike` are accepted and stored as
 `inquiry`; `bug` and `ask` as `defect` and `request`. Canonical names are

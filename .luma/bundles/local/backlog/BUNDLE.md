@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.6.0
+version: 0.6.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,22 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.6.1` — **`request` was described wrongly, and the correction adds a column.**
+It said a request produces *an answer you already have the standing to give*,
+which came from an earlier framing where a request was a yes-or-no decision. It
+is not. A request is **a change somebody outside asked for**, and it differs on
+two counts: you are accountable to them, and it has to be evaluated for whether
+it is legitimate, aligned and worthy.
+
+That surfaced what the kinds are *for* when scanning: each now records **what it
+needs vetted**. A request carries the heaviest — is it legitimate, aligned,
+worthy — and a change the lightest and a different question, *do we still need
+it*, because your own team wrote it and it is already further along. Both are
+vetted; reading `change` as *no vetting* is the misreading worth heading off.
+
+Patch: a description corrected and a column added. No value, rule or alias
+changed.
 
 `0.6.0` — **`inquiry` joins the kinds: work that exists to create more work.**
 Spikes, experiments, surveys, assessments, examinations, reviews, probes, audits
