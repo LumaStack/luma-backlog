@@ -43,7 +43,9 @@ func newShowCommand(app *App) *cobra.Command {
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
 			fmt.Fprintf(w, "path\t%s\n", it.Path)
 			fmt.Fprintf(w, "type\t%s\n", it.Type())
-			fmt.Fprintf(w, "status\t%s\n", it.Status(cfg.DefaultStatusFor(it.Type())))
+			if st := it.Status(cfg.DefaultStatusFor(it.Type())); st != "" {
+				fmt.Fprintf(w, "status\t%s\n", st)
+			}
 			for _, k := range it.Record.Keys() {
 				switch k {
 				case "type", "title", "workflow_status":

@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -9,6 +11,12 @@ import (
 func populated(t *testing.T) *App {
 	t.Helper()
 	app, _ := initialized(t)
+	seed(t, app)
+	return app
+}
+
+func seed(t *testing.T, app *App) {
+	t.Helper()
 	for _, args := range [][]string{
 		{"new", "work-item", "Payments v2"},
 		{"new", "outcome", "The retry queue drains", "-w", "payments-v2"},
@@ -19,7 +27,49 @@ func populated(t *testing.T) *App {
 			t.Fatalf("%v failed: %s", args, e)
 		}
 	}
+}
+
+// withProject adds a record whose type declares no workflow_status at all.
+//
+// A luma/project has no lifecycle — it is not todo, not done, not anything —
+// and neither does it carry a stage. `new` cannot create one and `init` does
+// not write one, so the fixture puts it there directly. Without it the whole
+// non-worked, stage-less case is uncovered by construction.
+func withProject(t *testing.T) *App {
+	t.Helper()
+	app, project := initialized(t)
+	seed(t, app)
+
+	const projectRecord = `---
+type: luma/project
+title: Example
+disclosure_level: public
+description: A project record, which has no workflow status.
+---
+`
+	path := filepath.Join(project, ".luma", "PROJECT.md")
+	if err := os.WriteFile(path, []byte(projectRecord), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	return app
+}
+
+func TestListTableReportsNoStatusForATypeThatDeclaresNone(t *testing.T) {
+	app := withProject(t)
+	code, out, errOut := run(t, app, "list")
+	if code != ExitOK {
+		t.Fatalf("exit = %d, stderr: %s", code, errOut)
+	}
+	checkGolden(t, "list-with-project-table", out)
+}
+
+func TestShowProjectJSONOmitsStatus(t *testing.T) {
+	app := withProject(t)
+	code, out, errOut := run(t, app, "show", "PROJECT", "--json")
+	if code != ExitOK {
+		t.Fatalf("exit = %d, stderr: %s", code, errOut)
+	}
+	checkGolden(t, "show-project-json", out)
 }
 
 func TestListJSONShape(t *testing.T) {
