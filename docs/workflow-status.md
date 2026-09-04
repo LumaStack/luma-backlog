@@ -201,7 +201,8 @@ somewhere the backlog cannot see; drop *doing* and there is no work.
 
 **Different groups prepare different things**, and each wants its own steps and
 its own gate — inside the preparing phase rather than beside it, so the three
-phases stay three:
+phases stay three. Product, legal, compliance, security, engineering, quality,
+and whoever else an organization puts in the path:
 
 ```
                     ↓  selection
@@ -231,10 +232,25 @@ positions in it — which is the argument `spec.md` §4.1.1 already makes about
 `blocked`: it can be true while preparing and true while in progress, so it is
 not a place in the sequence.
 
-**And either way, what is missing is the gate itself.** Gates are implicit today,
-nothing more than the transition between two rungs. Who owns one, and what it
-requires before work may cross, are not modeled — which is why this is a
-direction rather than a feature.
+**Which gates apply is a fact about the work item, not about the repository.**
+One change needs legal signoff and the next does not; a security review matters
+for anything touching authentication and nowhere else. So the set of gates a
+record passes through is computed per record rather than fixed by the
+vocabulary — which is a larger departure than adding rungs, because two work
+items in the same repository no longer take the same path.
+
+**Most of them should advise rather than stop.** *Development should not start
+until product has answered its questions* is usually right and occasionally
+worth overriding, and that is the posture already set out above: name the better
+path and let somebody past. A team that genuinely needs the hard version authors
+it (`spec.md` §5.4). Shipping every gate as a refusal is the fastest way to
+teach people to route around the tool.
+
+**And either way, the gate itself is not modeled.** Gates are implicit today,
+nothing more than the transition between two rungs. **Who owns one**, **what it
+requires** before work may cross, and **whether it applies at all** are three
+things that do not exist — which is why this is a direction rather than a
+feature.
 
 **Not for a first release**, and recorded so the shape is not designed shut.
 
