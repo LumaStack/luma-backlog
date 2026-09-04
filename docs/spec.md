@@ -121,18 +121,15 @@ That is not because tasks specify nothing. **They specify a different thing:** o
 
 A backlog is only useful if **capturing something is cheap**. But a board of half-thoughts is useless in a different way, so the difference has to be visible at a glance — and *stay* visible, or unformed things quietly accumulate the authority of planned work simply by sitting there long enough.
 
-Formation lives in **`workflow_status`** rather than a field of its own. The lowest rungs describe how far the *thinking* has gone; the rest describe where the *work* is:
+Formation lives in **`workflow_status`** rather than a field of its own. The lowest rungs describe how far the *thinking* has gone; the rest describe where the *work* is.
 
-| Value | Means |
-|---|---|
-| `idea` | Just an idea. Captured so it is not lost. |
-| `preparing` | Work is being done to make it ready. |
-| `ready` | Good enough to pull into a sprint or a to-do column whenever someone wants to. |
-| `todo`, `in_progress`, `closed` | Where the work is (§8, §5.3.1). |
+**The default vocabulary, and the model behind it, are in [`workflow-status.md`](workflow-status.md)** — normative, and not restated here. In outline: a pile that may or may not become work, a preparation pipeline, and a work pipeline, with a selection gate before each of the last two.
 
-**`preparing` covers every activity, and names none.** Getting from an idea to ready is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
+**`preparing` covers every activity, and names none.** Getting something from a rough note to well-formed is rarely just planning — it is de-risking, estimating, spiking, splitting, checking feasibility, and coordinating with whoever else is affected. Elsewhere the same work is called *backlog refinement*, and the meeting where it happens goes by a dozen names.
 
 Naming one of those activities would misdescribe the rest, which is why every more specific candidate needed a disclaimer. Modeling *which* activity is underway would be worse still: it would mean this tool holding opinions about how work gets prepared, which is a workflow layer's business (§1). The tool records that a work item is being made ready; what that requires, and in what order, is not its concern.
+
+**That is a rule about what ships, not a limit on what a team may configure.** An organization that works through analysis, design and approval can name those steps in its own vocabulary and group them under one column ([`workflow-status.md`](workflow-status.md)). The tool still holds no opinion — it stores the values and groups them as configured.
 
 A team wanting to distinguish a spike from an estimate has dimensions (§2.7) and its own records for it. Exploration produced along the way is an ordinary record (§7.2), and this is the stage where it usually appears.
 
@@ -383,7 +380,9 @@ The same rule produced two other decisions here: `blocked` carries **when and wh
 
 Any record may carry **`references`**: material an actor should read before working on it. A path, a link, an identifier in some other system, a name only a particular loader understands.
 
-**Absence is meaningful, which is why the field is recommended rather than mandatory.** A record with no `workflow_status` reads as the first value in the configured vocabulary — `idea` by default, which is semantically right rather than a convenience: something jotted down with nothing said about it *is* an idea. This follows the format's own handling of `stage`, which defaults to `provisional` when absent. A field is only safely optional when omitting it says something; otherwise it should be mandatory.
+**Absence is meaningful, which is why the field is recommended rather than mandatory.** A record with no `workflow_status` reads as the first value in the configured vocabulary ([`workflow-status.md`](workflow-status.md)). This follows the format's own handling of `stage`, which defaults to `provisional` when absent. A field is only safely optional when omitting it says something; otherwise it should be mandatory.
+
+**So the first value has to be whatever creating a record means.** It was `idea`, on the argument that something jotted down with nothing said about it *is* an idea. That argument does not survive two cases: a bug is not an idea, and creating a work item is an act of intent — recording it as doubt makes the field assert something nobody chose.
 
 **The values are opaque.** This tool stores them, shows them, and hands them over. It does not resolve them, rank them, fetch them by default, validate them, or know what they mean.
 
@@ -405,7 +404,7 @@ So the division is:
 
 | Field | Obligation | Field type | Meaning |
 |---|---|---|---|
-| `workflow_status` | recommended | enum | Position in the workflow. Vocabulary is **configurable** (§8) and carries no meaning to the tool. **Absent means the first configured value** — `idea` by default. |
+| `workflow_status` | recommended | enum | Position in the workflow. Vocabulary is **configurable** (§8) and carries no meaning to the tool. **Absent means the first configured value** ([`workflow-status.md`](workflow-status.md)). |
 | `priority` | optional | enum | Configurable ordered set. May be derived — see below. |
 | `effort` | optional | number | Scoring input. **Reserved name.** |
 | `impact` | optional | number | Scoring input. **Reserved name.** |
@@ -539,7 +538,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `work_item` | mandatory | wikilink | What this is part of delivering. |
 | `wave` | recommended | wikilink | The attempt this task belongs to. |
 | `advances` | recommended | list of wikilink | The outcomes this task exists to make true. Many-to-many and deliberately loose — not every outcome needs a task, and one task may advance several. |
-| `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. **Absent means the first configured value** — `idea` by default. |
+| `workflow_status` | recommended | enum | Position in the workflow. Configurable (§8), no meaning to the tool. **Absent means the first configured value** ([`workflow-status.md`](workflow-status.md)). |
 | `parallel_group` | optional | list of text | Labels granting permission to overlap. Two tasks may run at the same time if they share at least one (§4.5.1). |
 | `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or work item boundary (§4.5.1). |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
