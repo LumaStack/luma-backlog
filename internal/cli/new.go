@@ -64,6 +64,23 @@ func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string) er
 		return usageErr("%w", err)
 	}
 
+	// Avoided, not denied. Blank is honest when nobody has looked yet — an
+	// issue synced from elsewhere, a note taken in a hurry — and it is the
+	// wrong answer the rest of the time, because whoever writes a record
+	// usually knows what they are holding. Left free, blank becomes the path
+	// of least resistance and the field stops meaning anything.
+	//
+	// So: say so and continue (docs/spec.md §5.0). Nothing is refused.
+	if res.Created && unit == backlog.WorkItem && kind == "" {
+		fmt.Fprintf(cmd.ErrOrStderr(),
+			"luma-backlog: no kind — recorded as unclassified.\n"+
+				"  --kind defect   something broke\n"+
+				"  --kind request  somebody asked\n"+
+				"  --kind idea     a thought nobody can judge yet\n"+
+				"  --kind change   none of those\n"+
+				"Leave it blank only when nobody has looked at this yet.\n")
+	}
+
 	out := cmd.OutOrStdout()
 	if res.Created {
 		fmt.Fprintf(out, "created  %s\n", res.Path)
