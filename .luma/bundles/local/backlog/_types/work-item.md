@@ -66,6 +66,40 @@ to all four once the work is accepted.
 one is now slightly ambiguous. **Re-open when a better word turns up**; nothing
 depends on this one beyond the value itself.
 
+## The inversion, recorded and not taken
+
+There are two coherent arrangements of the same four states, and this bundle
+ships the first.
+
+| | values | blank means |
+| --- | --- | --- |
+| **A — shipped** | `defect` `request` `idea` `change` | nobody has looked |
+| **B** | `defect` `request` `idea` `undetermined` | it is a change |
+
+**B is ergonomically better and A is safer, and that is the whole trade.**
+
+Under B the common case is free: ordinary work says nothing, and only the
+exceptions carry a value. That matches how the field will actually be used,
+since most of what a team builds is a change.
+
+Under A blank never asserts anything. Under B it asserts *somebody looked at
+this and it is none of the other three* — which is false for every record that
+arrives unlooked-at. **An issue synced from another tracker would silently read
+as a change**, and a wrong classification is worse than a missing one because
+nothing about it looks wrong. B answers that with an explicit `undetermined`
+that importers must write; A needs nothing written to stay honest.
+
+The same reasoning settled the `workflow_status` default: a record was born
+`idea` and asserted doubt about work somebody had just decided to do. **Absence
+should make the smallest claim available**, and *nobody has looked* claims less
+than *this is a change*.
+
+**Re-open when real use says the field is empty anyway.** If people do not reach
+for `--kind change` and most records sit blank, A is carrying no information at
+the cost of a flag nobody types, and B is simply the truth about how it is being
+used. That is a measurement, not an argument — count the blanks after a few
+months.
+
 **Why four is the whole set, checked the way `spec.md` §2.1 checks units.** Three
 name what has to happen before a record can be judged — fix it, answer them,
 develop it — and the fourth is everything already judgeable that arrived by none

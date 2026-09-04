@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.4.1
+version: 0.4.2
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,15 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.4.2` — **the inversion is written down.** The same four states can be arranged
+with `change` explicit and blank meaning *nobody looked*, which is what ships, or
+with `undetermined` explicit and blank meaning *change*. The second is
+ergonomically better and the first is safer, and the re-open condition is a
+count rather than an argument: if most records sit blank anyway, the shipped
+arrangement is carrying no information.
+
+Patch: an alternative recorded, nothing changed.
 
 `0.4.1` — **a blank kind is now avoided rather than merely allowed.** Creating a
 work item without one prints the four values and creates the record anyway.
