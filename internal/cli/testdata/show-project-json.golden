@@ -1,0 +1,14 @@
+{
+  "path": "PROJECT.md",
+  "type": "luma/project",
+  "slug": "PROJECT",
+  "title": "Example",
+  "hash": "c84944ed335baacd3cf1091b74403d2857c825fed31456bdef586cdec46c5f70",
+  "fields": {
+    "description": "A project record, which has no workflow status.",
+    "disclosure_level": "public",
+    "title": "Example",
+    "type": "luma/project"
+  },
+  "body": ""
+}
