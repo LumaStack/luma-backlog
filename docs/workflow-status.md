@@ -92,6 +92,11 @@ review, quality assurance and staging are all *in progress*. Teams that work
 that way are not doing something exotic, and the default being coarse is not a
 claim that their shape is wrong.
 
+**This does not contradict `spec.md` §2.2.1**, which refuses to model *which*
+preparation activity is underway. That is a rule about what the tool ships an
+opinion on. A team naming its own steps is configuration, and the tool still
+stores the values without knowing what they mean.
+
 **The machinery already carries it.** The vocabulary is a list and columns map a
 heading to *several* statuses (`spec.md` §8, §11), so
 `In Progress: [in_development, in_review, in_qa]` needs configuration and no
