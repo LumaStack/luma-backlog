@@ -5,8 +5,8 @@ workflow_status: unprepared
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:08:05Z'}
 sources: ["[[work-items/lint-the-corpus]]"]
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:50:20Z'}
-kind: bug
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
+kind: defect
 ---
 
 # Close must not deliver on records it could not read

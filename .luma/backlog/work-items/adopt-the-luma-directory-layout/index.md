@@ -4,6 +4,8 @@ title: Adopt the luma directory layout
 workflow_status: in_progress
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T21:15:03Z'}
+kind: change
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T18:24:59Z'}
 ---
 
 # Adopt the luma directory layout
