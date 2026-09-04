@@ -9,6 +9,11 @@ type Completion struct {
 	Live      []Item // outcomes counted toward completion
 	Unpassing []Item // of those, the ones with no evidence
 	Retired   []Item // archived, and excluded (docs/spec.md §4.4)
+
+	// Skipped is every outcome file that could not be read. A count computed
+	// over an incomplete read is not a count, and the caller has to be told
+	// before it acts on Complete().
+	Skipped []Skip
 }
 
 // Complete reports whether every live outcome has passed.
@@ -20,12 +25,13 @@ func (c Completion) Complete() bool { return len(c.Live) > 0 && len(c.Unpassing)
 // the verification records do not already say, and a stored copy could
 // disagree with them (docs/spec.md §2.4).
 func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
-	items, err := List(b, Filter{Unit: Outcome, WorkItem: workItem})
+	items, skipped, err := List(b, Filter{Unit: Outcome, WorkItem: workItem})
 	if err != nil {
 		return Completion{}, err
 	}
 
 	var c Completion
+	c.Skipped = skipped
 	for _, it := range items {
 		// A retired outcome is archived rather than deleted, and excluded
 		// from the arithmetic — otherwise retiring one could never let a
