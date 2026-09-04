@@ -74,7 +74,7 @@ ships the first.
 | | values | blank means |
 | --- | --- | --- |
 | **A — shipped** | `defect` `request` `idea` `change` | nobody has looked |
-| **B** | `defect` `request` `idea` `undetermined` | it is a change |
+| **B** | `defect` `request` `idea` `needs_triage` | it is a change |
 
 **B is ergonomically better and A is safer, and that is the whole trade.**
 
@@ -86,8 +86,20 @@ Under A blank never asserts anything. Under B it asserts *somebody looked at
 this and it is none of the other three* — which is false for every record that
 arrives unlooked-at. **An issue synced from another tracker would silently read
 as a change**, and a wrong classification is worse than a missing one because
-nothing about it looks wrong. B answers that with an explicit `undetermined`
-that importers must write; A needs nothing written to stay honest.
+nothing about it looks wrong. B answers that with an explicit value that
+importers must write; A needs nothing written to stay honest.
+
+**`needs_triage` rather than `undetermined`, if B is ever taken.** The other
+three name what has to happen before the record can be judged — verify it,
+answer them, develop it — and `needs_triage` is that shape: triage it.
+`undetermined` names a state instead, leaving one value in the set answering a
+different question from the rest. It is also the good version of naming the
+value `issue`: it keeps *requires triage* and drops the conflation with a
+container that holds defects, requests and questions alike.
+
+It does not fix B's safety, only softens it. Blank still asserts *change* for
+anything nobody looked at; `needs_triage` makes the write an importer has to
+remember an obvious one rather than an admission.
 
 The same reasoning settled the `workflow_status` default: a record was born
 `idea` and asserted doubt about work somebody had just decided to do. **Absence
