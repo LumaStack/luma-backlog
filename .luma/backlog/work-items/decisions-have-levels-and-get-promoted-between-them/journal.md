@@ -10,3 +10,6 @@
 spec.md §4.8.1 already covers work item to project — copies never moves, promoted_from, and the two records having different jobs. The new parts are the third level, the keys, and the guidelines.
 under copy semantics the key worry may dissolve: the promoted record is a NEW record with its own key at its own level, and the original keeps the key it always had
 the body above a project is a GitHub organization, a company, a department, a steering committee — and if its decisions live in its own repository, promotion crosses repositories and a wikilink does not
+position: the tool creates work item decisions and can promote them; whether it creates project decisions directly is open, and if it does it is a flag rather than an inference
+found while recording it: nothing lets you say which level a decision is — new decision derives it from the working directory, so the level is decided by where you were standing, which where-an-idea-lives names as the failure that happens silently
+all three ADRs here were created from the repository root and are correctly project-level; none of them was placed on purpose
