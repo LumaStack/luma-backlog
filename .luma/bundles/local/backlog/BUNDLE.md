@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.8.0
+version: 0.8.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,17 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.8.1` — **why the field is `key` and not `id`, written down.** A record's
+identity is its path, so a field called `id` would claim an identity something
+else already holds, and two things claiming to identify one record is the shape
+of failure this project keeps designing against. `key` claims less and is true:
+a handle for finding.
+
+Recorded because it is the kind of question that gets raised again, and the
+answer is cheaper to keep than to re-derive.
+
+Patch: reasoning added, nothing changed.
 
 `0.8.0` — **a decision states its level.** `new decision` takes `--work-item` or
 `--project`, and refuses with neither.
