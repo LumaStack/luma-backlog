@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.9.1
+version: 0.10.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,22 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.10.0` — **`WORK-0002-lint-the-corpus` is a name.**
+
+The vocabulary in one place: a **path** is the identity, a **key** is the short
+handle, a **slug** is what the work is about, a **name** is the two joined and
+literally the directory's name, and a **title** is prose for a person.
+
+It was `ref`, which was a poor choice: in a tool that lives inside git a ref is a
+branch or a tag, and borrowing a word the surrounding system has claimed is the
+mistake that set aside `change` for a kind and `committed` for a rung. `name` is
+free, plain, and true — the model and the filesystem now agree on what a record
+is called.
+
+**Breaking for anything reading the JSON**, where `ref` becomes `name`. Shipped
+hours ago and nothing consumes it yet, which is the cheapest this rename will
+ever be.
 
 `0.9.1` — **four digits rather than five, and `journal` resolves its work item.**
 

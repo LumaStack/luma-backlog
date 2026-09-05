@@ -75,7 +75,7 @@ func newListCommand(app *App) *cobra.Command {
 			fmt.Fprintln(w, "TYPE\tSTATUS\tID\tTITLE")
 			for _, it := range items {
 				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",
-					it.Type(), it.Status(cfg.DefaultStatusFor(it.Type())), it.Ref(), it.Title())
+					it.Type(), it.Status(cfg.DefaultStatusFor(it.Type())), it.Name(), it.Title())
 			}
 			return w.Flush()
 		},

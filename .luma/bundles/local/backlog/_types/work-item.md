@@ -264,6 +264,24 @@ next number and somebody renumbers on merge.
 **A record written before keys existed has none**, and that is not an error. The
 field is `recommended` rather than required for exactly that reason.
 
+### The vocabulary, once
+
+| | |
+| --- | --- |
+| **path** | `backlog/work-items/WORK-0002-lint-the-corpus/index.md` — the **identity**. A wikilink resolves against it, and it is what a record *is* (`spec.md` §7.1). |
+| **key** | `WORK-0002` — the short handle, unique, and what survives a move. |
+| **slug** | `lint-the-corpus` — what the work is about, derived from the title. |
+| **name** | `WORK-0002-lint-the-corpus` — the two joined, and literally the directory's name. |
+| **title** | *Lint the corpus* — prose for a person. |
+
+**A title is prose; a name is what the thing is called.** The name is unique like
+the key and legible like the slug, which is why it is the form to write and say.
+Nothing else in the format uses the word, which is why it was free.
+
+**Not `ref`.** In a tool that lives inside git, a ref is a branch or a tag —
+borrowing a word the surrounding system has already claimed is the mistake that
+set aside `change` for a kind and `committed` for a rung.
+
 ### Written and said as one string
 
 `WORK-0002-lint-the-corpus` — the key and the slug joined, the way a decision's
