@@ -55,6 +55,27 @@ So there are two collision surfaces with different odds, and only one of them wa
 - **Keys that never change once established.** Appending does move the loser's key once, which is the one exception, and it is the cost of not having had uniqueness in the first place.
 - **A way to confirm there was no collision** — detection rather than allocation, useful immediately, and independent of which scheme wins. Split out as [[work-items/WORK-0014-detect-two-records-holding-one-key]].
 
+### The option with a production system behind it: let the key change, and redirect
+
+**The major trackers allow it.** Move an issue between projects and its key
+changes, and the old key stays resolvable as a redirect, so a link or a commit
+message citing it still lands.
+
+**That is the opposite of what this record leans toward**, which is appending
+precisely so a key never has to move. It is worth recording because it is the
+only option here with a large production system behind it, and because it
+attacks a different part of the problem: appending protects the key by refusing
+to move it, and a redirect protects the citation while letting the key move.
+
+**What it would cost us that it does not cost them** is the reason it is not the
+lead. A redirect needs somewhere to record that `WORK-0007` now means
+`WORK-0031`, and a server has a table for that where a git repository would need
+a record — one more thing to write, keep, and eventually prune. Appending needs
+nothing.
+
+**Reopen it if a case appears where a key genuinely must move** and appending
+cannot serve, since a redirect is what makes that survivable.
+
 ### Fractions are kept as a fallback, and may never be needed
 
 **A fraction is now a second-line escape valve rather than the plan.** It exists for a case appending cannot serve — where a record's position in the sequence genuinely matters and cannot move. Nobody has produced that case yet, and the reason for keeping it written down is that it was reasoned through and should not be re-derived if one appears.
