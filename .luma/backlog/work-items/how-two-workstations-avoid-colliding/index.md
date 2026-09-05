@@ -22,7 +22,18 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 **Two questions are tangled here and may separate.**
 
-*Can work be inserted between work?* If `WORK-00013` is taken twice, one answer is to insert rather than renumber — a fractional key, a gap-leaving sequence, an actor-specific component. Each changes what a key is: sortable, dense, or unique-by-construction, and no scheme gives all three.
+*Can work be inserted between work?* If `WORK-00013` is taken twice, one answer is to insert rather than renumber. Every scheme that allows it trades away one of three properties, and **no scheme has all three**:
+
+| scheme | sortable | dense | unique by construction |
+| --- | --- | --- | --- |
+| **a counter** — `WORK-00013`, what ships today | yes | yes | **no** — two actors allocate the same number |
+| **a fractional key** — `WORK-00013.5` | yes | **no** — gaps by design, widening with each insert | no — two actors can still pick the same fraction |
+| **a gap-leaving sequence** — 10, 20, 30 | yes | **no** — numbers spent to buy room, and the room runs out | no — two actors still choose the same gap |
+| **an actor-specific component** — `WORK-ab3-00013` | **no** — orders by actor before number | yes | yes |
+
+**The three cannot coexist**, and the reason is the topology rather than a want of cleverness. Uniqueness across actors who never talk needs either coordination — which `spec.md` §6.1 forbids, because independent work must never serialize — or something per-actor in the name, which destroys a single global order, or gaps big enough that two actors are unlikely to choose the same one, which is density traded for a probability rather than a guarantee.
+
+**So the question is which property to give up**, and that depends on what a key is for. If it is for citation, uniqueness matters most and sorting is decoration. If it is for reading a backlog in order, sorting is the point. Nobody has said which, and the answer falls out of that rather than out of comparing schemes.
 
 *What about two people doing the same thing?* That is a duplicate of the **work**, not of the identifier. Two records with different keys describing one job is a different failure from two records claiming one key, and it is not obvious the same mechanism should address both.
 
