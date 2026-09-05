@@ -18,6 +18,8 @@ spacing unsettled; the outer principle probably decides it — sequential decima
 better answer: pick a loser and append it to the end. One record moves, nothing cascades, no fractions, and the corpus stays dense integers.
 correcting this record: the cascade claim assumed repairing to n+1. The repair is to append, and the end of the sequence is free by construction, so there was never a cascade to avoid.
 the cost is that a key stops implying creation order, which is acceptable because created already records it — a key encoding order would be a second copy of a fact another field holds
+written up as ADR-0003, draft, for review — decided is deliberately empty because the position is not binding until benjamin says so
+the inquiry stays open: it produced a decision on repair, and the questions it was asked about prevention and duplicate work are untouched
 
 ## ▶ 2026-09-04
 
