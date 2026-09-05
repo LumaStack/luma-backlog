@@ -49,7 +49,52 @@ So there are two collision surfaces with different odds, and only one of them wa
 - **Keys that never change once established** — which the escape valve already serves, since only the record being repaired moves.
 - **A way to confirm there was no collision.** That is *detection* rather than allocation, it is useful immediately, and it does not depend on which scheme wins. A check that scans the corpus for two records holding one key would work against a counter today.
 
-**What is still open under this leaning:** whether a fraction sorts acceptably (`13.5` between `13` and `14` needs the sort to be numeric, not lexical, or the padding to make lexical work), what happens when a fraction itself collides, and how deep the fractions may go before the scheme is admitting it has failed.
+### Increment first; use a fraction only when incrementing would break something
+
+**A fraction is the exception, not the scheme** (benjamin, 2026-09-04). When a
+collision is found, the first move is the ordinary one: bump one record to the
+next number. That keeps the corpus dense and keeps fractions rare, which is the
+property the table above says a fraction costs.
+
+**The fraction is for the case where bumping would cascade.** If `WORK-00015`
+and `WORK-00016` already exist, incrementing walks into them and the repair runs
+through the corpus. Then, and only then, one record becomes a fraction and
+nothing else moves.
+
+**"Or if nothing references them yet" is the dangerous half of that rule.**
+Whether the next numbers *exist* is checkable — the tool walks the corpus. Whether
+anything *references* them is not: a key can be cited in a commit message, in a
+conversation, in another repository, in somebody's notes. `decision-records`
+already names this for archived records — *assume you will miss one* — and it is
+the reason a number is worth having at all, because it survives what a path
+cannot.
+
+So the safe form of the test is **existence, not reference**. Bump when the next
+number is free; take a fraction when it is not. Leaning on *nothing references it*
+means betting on knowledge the tool cannot have.
+
+### How wide the fractions are spaced is open
+
+`13.1`, `13.2`, `13.3` — readable, and nine of them before it needs two digits.
+Inserting between `13.1` and `13.2` means `13.15`.
+
+`13.5`, then `13.25`, `13.75` — bisection always leaves room on both sides
+forever, and produces numbers nobody wants to say out loud within about three
+repairs.
+
+**The same principle that decided the outer rule probably decides this one:**
+take the simple thing until it would break, then fall back. Sequential decimals
+first — `13.1`, `13.2` — and bisect only when something has to go between two of
+them. Common case readable, rare case unbounded, and no ceremony spent on
+insurance against something that has not happened.
+
+*Not settled.* Recorded because the question was raised and the reasoning is
+worth not re-deriving.
+
+**What is still open under this leaning:** whether a fraction sorts acceptably
+(`13.5` between `13` and `14` needs the sort to be numeric, not lexical, or the
+padding to make lexical work), what happens when a fraction itself collides, and
+how deep the fractions may go before the scheme is admitting it has failed.
 
 *What about two people doing the same thing?* That is a duplicate of the **work**, not of the identifier. Two records with different keys describing one job is a different failure from two records claiming one key, and it is not obvious the same mechanism should address both.
 

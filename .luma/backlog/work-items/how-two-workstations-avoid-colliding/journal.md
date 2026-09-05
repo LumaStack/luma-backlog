@@ -12,6 +12,9 @@ which property to give up depends on what a key is for — citation wants unique
 leaning toward a fraction, and the table had it wrong: it judged every scheme as allocation, and a fraction is repair — nothing hands out 13.5 up front
 the property that makes it work is that it does not cascade: renumbering to the next integer walks into whatever holds it and the fix runs through the corpus, where a fraction moves one record and nothing else
 confirming no collision is detection rather than allocation, useful immediately, and independent of which scheme wins — a check for two records holding one key works against the counter shipped today
+increment first, fraction only when incrementing would cascade — that keeps fractions rare and the corpus dense, which is the cost the table charged them
+the safe test is whether the next number EXISTS, not whether anything references it: existence is checkable, references escape the corpus into commits and conversations, and decision-records already says assume you will miss one
+spacing unsettled; the outer principle probably decides it — sequential decimals until one has to go between two of them, then bisect
 
 ## ▶ 2026-09-04
 
