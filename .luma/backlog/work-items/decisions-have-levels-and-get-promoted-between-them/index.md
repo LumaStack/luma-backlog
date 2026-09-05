@@ -79,6 +79,43 @@ That is a usage error rather than a refusal about content — the tool is not ju
 
 **A current work item would still be worth having**, for the other commands and for a person. The question is only whether it may decide a level, and the answer that keeps the level honest is no.
 
+### Option: a decision gets a key only when it is promoted
+
+**Work item decisions carry no number; project decisions do, and promotion is
+where one is earned** (benjamin, 2026-09-04). Recorded as an option rather than a
+plan.
+
+**A number exists to be cited**, in a commit, in conversation, from another
+record. A work item decision is cited inside the work item that produced it,
+where its slug already suffices and its path is stable. A project decision is
+cited from anywhere, which is exactly the case a short handle is for.
+
+**It makes `ADR-0007` mean something.** Today a work item decision consumes a
+number from the same sequence, so a project's standing rules are interleaved with
+records that are not rules at all and the number says nothing about which it is.
+Under this option the sequence counts the project's standing rules and nothing
+else.
+
+**It removes the key-per-level question entirely.** There is no `WDR` to design
+against `ADR`, because only one level has keys. What promotion changes is not a
+prefix but whether a number exists at all — which sits comfortably with §4.8.1's
+copy semantics: the promoted record is new, so it takes a new number, and the
+original never had one to change.
+
+**And it makes collisions rarer where they are most likely.** Most decisions are
+work item decisions. If they take no numbers, the sequence advances slowly, and
+two workstations allocating the same next number becomes correspondingly less
+frequent — see [[work-items/how-two-workstations-avoid-colliding]] and
+[[records/decisions/ADR-0003-a-colliding-key-is-repaired-by-appending]].
+
+**The cost is that a work item decision has no short handle**, so citing one
+means naming its work item and slug. That is more typing and it is honest about
+scope: a record that is not a standing rule does not get to be quoted as though
+it were.
+
+**It contradicts what ships today**, where `new decision --work-item` allocates
+from the same sequence as `--project`. Adopting it would stop that.
+
 ## Out of scope
 
 **Where an organization decision lives.** If the body is a GitHub organization, its decisions plausibly belong in that organization's own repository rather than this one — which is what `where-an-idea-lives` already says for ideas. That makes promotion a cross-repository write, and a wikilink does not cross repositories. Named here so the design does not assume it away; answering it is part of the work.
