@@ -228,6 +228,17 @@ had only the path, so every reference was a slug derived from a title, and
 changing a title meant either breaking inbound links or leaving a slug that no
 longer matched the record.
 
+**It is `key` rather than `id`, and the reason is the sentence above.** This
+format says a record's identity *is* its path (`spec.md` §7.1, §4.1). A field
+called `id` would claim that identity, and then two things would claim to
+identify one record — which is the shape of failure this project keeps designing
+against. `key` makes the smaller and true claim: a handle for finding, not an
+identity. It also matches what the major trackers call the same thing, so nobody
+has to be taught it.
+
+*Considered and not taken (2026-09-04): `id`. Reopen if the format ever stops
+treating the path as identity, which would make the objection disappear.*
+
 **`WORK` is the only prefix, and it is written rather than derived.** A
 repository that later wants its own three letters changes what gets written from
 then on; nothing already on disk is renamed. A derived key would silently
