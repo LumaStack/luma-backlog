@@ -17,7 +17,7 @@ order records were created in.
 
 ## Problem
 
-A work item's key is a counter allocated optimistically — `WORK-00014` is
+A work item's key is a counter allocated optimistically — `WORK-0014` is
 whatever the highest key was, plus one. Two workstations creating work at the
 same moment both read the same highest key and both allocate the same next one.
 
@@ -43,13 +43,13 @@ prevent a collision but what to do when one has already happened.
 ## Decision
 
 **On detecting a collision, one record keeps the key and the other takes the
-next free number at the end of the sequence.** Two records claim `WORK-00014`
+next free number at the end of the sequence.** Two records claim `WORK-0014`
 while `15`, `16` and `17` exist: the winner stays `14`, the loser becomes `18`.
 
 **Exactly one record moves.** Nothing else in the corpus is touched.
 
-**Keys carry no ordering guarantee.** `WORK-00018` may have been written before
-`WORK-00015`, and that is not a defect to be corrected.
+**Keys carry no ordering guarantee.** `WORK-0018` may have been written before
+`WORK-0015`, and that is not a defect to be corrected.
 
 ## Why
 
@@ -121,7 +121,7 @@ Each is set aside with what would bring it back. None is rejected.
 
 ## Follow-up
 
-- [[work-items/WORK-00014-detect-two-records-holding-one-key]] — nothing notices a duplicate today, and this decision is inert without it.
+- [[work-items/WORK-0014-detect-two-records-holding-one-key]] — nothing notices a duplicate today, and this decision is inert without it.
 - **How the winner is chosen** is unspecified and needs a deterministic rule, or two actors repairing independently produce a new divergence. Candidates: earliest `created`, lowest path, or whichever reached the integration branch first.
 - Nothing here is implemented.
 
@@ -131,4 +131,4 @@ Each is set aside with what would bring it back. None is rejected.
 - `docs/spec.md` §6.1 — independent work never serializes, which rules out a coordinator.
 - `docs/spec.md` §3.2, §2.4 — one fact, one place; why the key does not also carry order.
 - `docs/open-questions.md` §8 — the storage topology this sits inside.
-- [[work-items/WORK-00013-how-two-workstations-avoid-colliding]] — the inquiry this came out of, including the trilemma table and the reasoning that was corrected on the way here.
+- [[work-items/WORK-0013-how-two-workstations-avoid-colliding]] — the inquiry this came out of, including the trilemma table and the reasoning that was corrected on the way here.

@@ -91,7 +91,19 @@ func newJournalCommand(app *App) *cobra.Command {
 // stops it happening at all.
 func resolveJournalWorkItem(b *root.Backlog, flag, projectRoot, workingDir string) (string, error) {
 	if flag != "" {
-		return flag, nil
+		// Resolved, not taken as written. A caller names a work item by its
+		// directory, its slug half, or its key, and journal has to reach the
+		// same record every other command does — otherwise it writes to
+		// work-items/<whatever-was-typed>/journal.md and quietly creates a
+		// directory that is not a work item at all.
+		dir, err := backlog.ResolveWorkItemDir(b, flag)
+		if err != nil {
+			return "", failure("%w", err)
+		}
+		if !b.Exists(path.Join(backlog.BundleDir, "work-items", dir, "index.md")) {
+			return "", usageErr("no work item %q", flag)
+		}
+		return dir, nil
 	}
 	if fromDir := workItemFromWorkingDir(projectRoot, workingDir); fromDir != "" {
 		return fromDir, nil

@@ -227,7 +227,7 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 // wiDir finds a work item's directory by its slug half.
 //
 // The key leads the directory name and is allocated in creation order, so
-// hard-coding WORK-00001 into an assertion would couple every test to the order
+// hard-coding WORK-0001 into an assertion would couple every test to the order
 // of its fixture. Tests say what they mean — this work item — and let the
 // helper find it.
 func wiDir(t *testing.T, project, slug string) string {

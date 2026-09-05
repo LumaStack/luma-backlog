@@ -2,7 +2,7 @@
 type: type_definition
 defines: work-item
 fields:
-  key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-00002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
+  key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-0002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
   kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
   blocked:         {field_presence: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
@@ -239,6 +239,18 @@ has to be taught it.
 *Considered and not taken (2026-09-04): `id`. Reopen if the format ever stops
 treating the path as identity, which would make the objection disappear.*
 
+**Four digits, matching the ADR numbers.** Padding exists so a lexical sort
+matches a numeric one, which is what `ls`, git and an editor give you. It stops
+working past 9999 — and by then nobody is reading a directory of ten thousand
+work items by eye, so the property fails exactly where it had stopped being
+worth anything. Padding buys legibility in the range you browse, and that range
+is well inside four digits.
+
+*Considered and not taken: five digits, on the argument that a sort break is
+unfixable once keys are immutable. It is unfixable and it does not matter — and
+if the order ever did matter at that scale, the fix is sorting numerically in
+the tool, which touches no record and disturbs no key.*
+
 **`WORK` is the only prefix, and it is written rather than derived.** A
 repository that later wants its own three letters changes what gets written from
 then on; nothing already on disk is renamed. A derived key would silently
@@ -254,7 +266,7 @@ field is `recommended` rather than required for exactly that reason.
 
 ### Written and said as one string
 
-`WORK-00002-lint-the-corpus` — the key and the slug joined, the way a decision's
+`WORK-0002-lint-the-corpus` — the key and the slug joined, the way a decision's
 filename joins its number and its slug. That is the form to use in prose, in a
 commit message and out loud, and all of it resolves: the joined form, the key
 alone, and the slug alone, with the key half matched case-insensitively.
@@ -264,7 +276,7 @@ a listing with a key column leaves an empty cell on every record that carries
 none — only a work item has a key, so an outcome's identifier is its slug and the
 column is never blank.
 
-**And it is the directory name.** `work-items/WORK-00002-lint-the-corpus/` — the
+**And it is the directory name.** `work-items/WORK-0002-lint-the-corpus/` — the
 key leads so a listing sorts by it, and the slug follows so the directory still
 reads as what the work is. That matches the decision records, where the number is
 in the filename too.

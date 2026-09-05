@@ -1,6 +1,6 @@
-TYPE          STATUS      ID                           TITLE
-luma/project              PROJECT                      Example
-work-item     captured    WORK-00001-payments-v2       Payments v2
-outcome       unverified  the-retry-queue-drains       The retry queue drains
-task          todo        add-the-retry-queue          Add the retry queue
-work-item     captured    WORK-00002-search-relevance  Search relevance
+TYPE          STATUS      ID                          TITLE
+luma/project              PROJECT                     Example
+work-item     captured    WORK-0001-payments-v2       Payments v2
+outcome       unverified  the-retry-queue-drains      The retry queue drains
+task          todo        add-the-retry-queue         Add the retry queue
+work-item     captured    WORK-0002-search-relevance  Search relevance
