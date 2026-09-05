@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.10.0
+version: 0.11.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,27 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.11.0` — **a key held by two records is reported.**
+
+Keys are allocated optimistically, because the alternative is a coordinator and
+`spec.md` §6.1 forbids one. Two workstations read the same highest key and both
+take the next, and §6.4 is explicit that across branches this is not solvable by
+local means. **A merge will not raise it either** — two work items created on two
+branches touch different files, so git merges them cleanly and the duplicate
+arrives with no conflict and no warning.
+
+So something has to look, and nothing was. `list` and `close` now name both
+records and the key they share, on stderr, and each still does its job:
+a duplicate key is a real problem and not a reason to stop working.
+
+**Detection, not repair.** What a duplicate becomes belongs to
+`WORK-0013-how-two-workstations-avoid-colliding`, and choosing it here would
+pre-empt that. Reporting is useful before it is settled and is what makes any
+repair usable at all — a repair nobody knows is needed does not happen.
+
+The check runs over the whole work item set rather than the rows a caller asked
+for, because a filtered listing would miss a duplicate outside its filter.
 
 `0.10.0` — **`WORK-0002-lint-the-corpus` is a name.**
 

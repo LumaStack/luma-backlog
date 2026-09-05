@@ -106,6 +106,10 @@ func runClose(app *App, cmd *cobra.Command, ref, reason string) error {
 	// part that matters. Closing for a reason that claims nothing about
 	// evidence still gets the warning, because the record is still broken.
 	reportSkipped(cmd.ErrOrStderr(), c.Skipped)
+	// Closing is where acting on the wrong record costs most: it is the one
+	// command that writes a terminal state, and a key naming two records means
+	// a citation of this close could land on either.
+	reportDuplicateKeys(cmd.ErrOrStderr(), b)
 
 	it.Record.Set("workflow_status", "closed")
 	if err := it.Record.SetRaw("closed", fmt.Sprintf("{on: %s, reason: %s, by: %s}",

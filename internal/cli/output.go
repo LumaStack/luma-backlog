@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/root"
 )
 
 // The JSON shapes below are published contract (docs/spec.md §9.3), which is
@@ -55,6 +56,30 @@ type recordJSON struct {
 func reportSkipped(w io.Writer, skipped []backlog.Skip) {
 	for _, s := range skipped {
 		fmt.Fprintf(w, "luma-backlog: skipped %s: %v\n", s.Path, s.Err)
+	}
+}
+
+// reportDuplicateKeys names every key held by more than one record.
+//
+// Run over the whole work item set rather than over whatever a caller happened
+// to ask for: a filtered listing would miss a duplicate outside its filter, and
+// a check that only fires when you were already looking in the right place is
+// not a check.
+//
+// Silent when there is nothing to say. A warning that appears on ordinary runs
+// is one people learn to scroll past, and this one has to survive being ignored
+// for months before it matters once.
+func reportDuplicateKeys(w io.Writer, b *root.Backlog) {
+	items, _, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
+	if err != nil {
+		return
+	}
+	for _, d := range backlog.Duplicates(items) {
+		fmt.Fprintf(w, "luma-backlog: %s is held by %d records:\n", d.Key, len(d.Paths))
+		for _, p := range d.Paths {
+			fmt.Fprintf(w, "  %s\n", p)
+		}
+		fmt.Fprintf(w, "A key is meant to name one record, and every citation of this one is ambiguous.\n")
 	}
 }
 
