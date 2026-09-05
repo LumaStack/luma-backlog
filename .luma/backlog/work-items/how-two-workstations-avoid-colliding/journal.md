@@ -9,6 +9,9 @@
 
 the trilemma is the shape of it: sortable, dense, unique-by-construction — pick two. A counter drops uniqueness, a fraction or a gap drops density, an actor component drops sorting.
 which property to give up depends on what a key is for — citation wants uniqueness and treats sorting as decoration; reading a backlog in order wants sorting. Nobody has said which.
+leaning toward a fraction, and the table had it wrong: it judged every scheme as allocation, and a fraction is repair — nothing hands out 13.5 up front
+the property that makes it work is that it does not cascade: renumbering to the next integer walks into whatever holds it and the fix runs through the corpus, where a fraction moves one record and nothing else
+confirming no collision is detection rather than allocation, useful immediately, and independent of which scheme wins — a check for two records holding one key works against the counter shipped today
 
 ## ▶ 2026-09-04
 

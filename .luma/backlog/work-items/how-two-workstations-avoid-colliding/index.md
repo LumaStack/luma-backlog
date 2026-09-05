@@ -35,6 +35,22 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 **So the question is which property to give up**, and that depends on what a key is for. If it is for citation, uniqueness matters most and sorting is decoration. If it is for reading a backlog in order, sorting is the point. Nobody has said which, and the answer falls out of that rather than out of comparing schemes.
 
+### The leaning: a fraction as repair, not as allocation
+
+**The table above judges every scheme as a way to hand out keys, and that is the wrong frame for a fraction** (benjamin, 2026-09-04). Nothing allocates `WORK-00013.5` up front. It exists for the moment two records already claim `WORK-00013` and one of them has to move.
+
+**Judged as repair it has a property nothing else has: it does not cascade.** Renumbering to the next integer walks into whatever already holds it — bump the second `13` to `14` and it collides with the existing `14`, which goes to `15`, and the fix runs through the corpus. A fraction stops dead: one record becomes `13.5` and nothing else moves. That is the difference between repairing one record and renumbering a backlog, and it is what protects the property that matters — **a key does not change once it is established.**
+
+**Uniqueness is not wanted in the short term.** Collisions are expected and soon; what is wanted is a cheap, local, non-cascading way out of one. Optimistic allocation with an escape valve buys that, and buys it without a coordinator, which `spec.md` §6.1 would refuse anyway.
+
+**Three things are wanted in the long term**, and they are separable from the escape valve:
+
+- **True uniqueness**, by construction rather than by luck.
+- **Keys that never change once established** — which the escape valve already serves, since only the record being repaired moves.
+- **A way to confirm there was no collision.** That is *detection* rather than allocation, it is useful immediately, and it does not depend on which scheme wins. A check that scans the corpus for two records holding one key would work against a counter today.
+
+**What is still open under this leaning:** whether a fraction sorts acceptably (`13.5` between `13` and `14` needs the sort to be numeric, not lexical, or the padding to make lexical work), what happens when a fraction itself collides, and how deep the fractions may go before the scheme is admitting it has failed.
+
 *What about two people doing the same thing?* That is a duplicate of the **work**, not of the identifier. Two records with different keys describing one job is a different failure from two records claiming one key, and it is not obvious the same mechanism should address both.
 
 ## What is being delivered
