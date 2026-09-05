@@ -70,6 +70,24 @@ nothing.
 more work, or the work itself. Debt, chores and clean-ups are changes with a mood
 attached, not kinds of their own.
 
+## A decision states its level
+
+**`--work-item <slug>` or `--project`, and never neither.** A decision belonging
+to a work item is a point-in-time record of what was decided during that work,
+and it is supposed to freeze. A project decision is a standing rule, amended as
+things change (`spec.md` §4.8.1).
+
+**Most decisions are work item decisions.** Promotion to the project is a
+separate, deliberate act, and a project tier that fills up with records nobody
+needed is worse than one that fills up slowly.
+
+**The level is never inferred from where the command was run.** The working
+directory says *which work item*; it does not say *which level*. A person at a
+terminal is usually standing where they are working, and an agent runs from the
+repository root whatever it is doing — so for an agent the inference has no
+information in it, and the result is a repository where every decision is
+project-level and none was placed on purpose. Deciding the level is your job.
+
 ## A decision is numbered for you
 
 `new decision` allocates the next `ADR-NNNN`, writes the heading, and scaffolds
