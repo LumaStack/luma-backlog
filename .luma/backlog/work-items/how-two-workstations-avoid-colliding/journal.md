@@ -15,6 +15,9 @@ confirming no collision is detection rather than allocation, useful immediately,
 increment first, fraction only when incrementing would cascade — that keeps fractions rare and the corpus dense, which is the cost the table charged them
 the safe test is whether the next number EXISTS, not whether anything references it: existence is checkable, references escape the corpus into commits and conversations, and decision-records already says assume you will miss one
 spacing unsettled; the outer principle probably decides it — sequential decimals until one has to go between two of them, then bisect
+better answer: pick a loser and append it to the end. One record moves, nothing cascades, no fractions, and the corpus stays dense integers.
+correcting this record: the cascade claim assumed repairing to n+1. The repair is to append, and the end of the sequence is free by construction, so there was never a cascade to avoid.
+the cost is that a key stops implying creation order, which is acceptable because created already records it — a key encoding order would be a second copy of a fact another field holds
 
 ## ▶ 2026-09-04
 

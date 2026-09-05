@@ -33,63 +33,35 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 **The three cannot coexist**, and the reason is the topology rather than a want of cleverness. Uniqueness across actors who never talk needs either coordination — which `spec.md` §6.1 forbids, because independent work must never serialize — or something per-actor in the name, which destroys a single global order, or gaps big enough that two actors are unlikely to choose the same one, which is density traded for a probability rather than a guarantee.
 
-**So the question is which property to give up**, and that depends on what a key is for. If it is for citation, uniqueness matters most and sorting is decoration. If it is for reading a backlog in order, sorting is the point. Nobody has said which, and the answer falls out of that rather than out of comparing schemes.
+**So the question is which property to give up**, and that depends on what a key is for. If it is for citation, uniqueness matters most and sorting is decoration. If it is for reading a backlog in order, sorting is the point.
 
-### The leaning: a fraction as repair, not as allocation
+**The answer turned out to be a fourth thing the table does not contain: give up *ordering*, not sorting.** Keys still sort — they are integers — they just stop implying the order records were written in, which `created` holds anyway. The table compares schemes for handing out and inserting keys, and the leaning below does neither: it appends.
 
-**The table above judges every scheme as a way to hand out keys, and that is the wrong frame for a fraction** (benjamin, 2026-09-04). Nothing allocates `WORK-00013.5` up front. It exists for the moment two records already claim `WORK-00013` and one of them has to move.
+### The leaning: pick a loser and send it to the end
 
-**Judged as repair it has a property nothing else has: it does not cascade.** Renumbering to the next integer walks into whatever already holds it — bump the second `13` to `14` and it collides with the existing `14`, which goes to `15`, and the fix runs through the corpus. A fraction stops dead: one record becomes `13.5` and nothing else moves. That is the difference between repairing one record and renumbering a backlog, and it is what protects the property that matters — **a key does not change once it is established.**
+**On a collision, one record keeps the key and the other takes the next free number at the end of the sequence** (benjamin, 2026-09-04). Two records claim `WORK-00014` and `15`, `16`, `17` already exist: the winner stays `14`, the loser becomes `18`.
 
-**Uniqueness is not wanted in the short term.** Collisions are expected and soon; what is wanted is a cheap, local, non-cascading way out of one. Optimistic allocation with an escape valve buys that, and buys it without a coordinator, which `spec.md` §6.1 would refuse anyway.
+**That does not cascade, and an earlier draft of this record said it would.** The claim rested on repairing to *n+1* — bump the second `14` to `15`, hit the existing `15`, and the fix runs through the corpus. That is not the repair. The repair is to append, and **the end of the sequence is free by construction**, so exactly one record moves and nothing else is touched.
 
-**Three things are wanted in the long term**, and they are separable from the escape valve:
+**What it costs is that a key stops implying creation order.** `WORK-00018` may have been written before `WORK-00015`. That is judged acceptable: allowing keys to fall a little out of order is a fair price for a repair that touches one record.
+
+**And the order is not lost, only moved off the key.** `created` records when a record was written, exactly and always. A key that also encoded order would be a second copy of a fact another field already holds, and the rule this project keeps returning to is that two copies of one fact eventually disagree — which is why membership lives on the member and why an outcome's status is derived rather than stored.
+
+**Uniqueness is not wanted in the short term.** Collisions are expected and soon; what is wanted is a cheap, local repair. Optimistic allocation with a repair rule buys that without a coordinator, which `spec.md` §6.1 would refuse anyway.
+
+**Three things are wanted in the long term**, and they are separable from the repair:
 
 - **True uniqueness**, by construction rather than by luck.
-- **Keys that never change once established** — which the escape valve already serves, since only the record being repaired moves.
-- **A way to confirm there was no collision.** That is *detection* rather than allocation, it is useful immediately, and it does not depend on which scheme wins. A check that scans the corpus for two records holding one key would work against a counter today.
+- **Keys that never change once established.** Appending does move the loser's key once, which is the one exception, and it is the cost of not having had uniqueness in the first place.
+- **A way to confirm there was no collision** — detection rather than allocation, useful immediately, and independent of which scheme wins. Split out as [[work-items/detect-two-records-holding-one-key]].
 
-### Increment first; use a fraction only when incrementing would break something
+### Fractions are kept as a fallback, and may never be needed
 
-**A fraction is the exception, not the scheme** (benjamin, 2026-09-04). When a
-collision is found, the first move is the ordinary one: bump one record to the
-next number. That keeps the corpus dense and keeps fractions rare, which is the
-property the table above says a fraction costs.
+**A fraction is now a second-line escape valve rather than the plan.** It exists for a case appending cannot serve — where a record's position in the sequence genuinely matters and cannot move. Nobody has produced that case yet, and the reason for keeping it written down is that it was reasoned through and should not be re-derived if one appears.
 
-**The fraction is for the case where bumping would cascade.** If `WORK-00015`
-and `WORK-00016` already exist, incrementing walks into them and the repair runs
-through the corpus. Then, and only then, one record becomes a fraction and
-nothing else moves.
+If it is ever reached: sequential decimals first — `13.1`, `13.2` — and bisect to `13.15` only when something has to go between two of them. Simple thing until it breaks, then fall back, which is the same principle as preferring the append.
 
-**"Or if nothing references them yet" is the dangerous half of that rule.**
-Whether the next numbers *exist* is checkable — the tool walks the corpus. Whether
-anything *references* them is not: a key can be cited in a commit message, in a
-conversation, in another repository, in somebody's notes. `decision-records`
-already names this for archived records — *assume you will miss one* — and it is
-the reason a number is worth having at all, because it survives what a path
-cannot.
-
-So the safe form of the test is **existence, not reference**. Bump when the next
-number is free; take a fraction when it is not. Leaning on *nothing references it*
-means betting on knowledge the tool cannot have.
-
-### How wide the fractions are spaced is open
-
-`13.1`, `13.2`, `13.3` — readable, and nine of them before it needs two digits.
-Inserting between `13.1` and `13.2` means `13.15`.
-
-`13.5`, then `13.25`, `13.75` — bisection always leaves room on both sides
-forever, and produces numbers nobody wants to say out loud within about three
-repairs.
-
-**The same principle that decided the outer rule probably decides this one:**
-take the simple thing until it would break, then fall back. Sequential decimals
-first — `13.1`, `13.2` — and bisect only when something has to go between two of
-them. Common case readable, rare case unbounded, and no ceremony spent on
-insurance against something that has not happened.
-
-*Not settled.* Recorded because the question was raised and the reasoning is
-worth not re-deriving.
+**Whether the next number is free is checkable; whether anything references it is not.** A key can be cited in a commit message, a conversation, another repository, somebody's notes. `decision-records` names this for archived records — *assume you will miss one* — and it is the reason a number is worth having at all, since it survives what a path cannot. Appending sidesteps the question entirely, because the end of the sequence is unreferenced by definition.
 
 **What is still open under this leaning:** whether a fraction sorts acceptably
 (`13.5` between `13` and `14` needs the sort to be numeric, not lexical, or the
