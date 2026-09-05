@@ -114,14 +114,14 @@ func TestTheJoinedFormResolves(t *testing.T) {
 		if err := json.Unmarshal([]byte(out), &rec); err != nil {
 			t.Fatalf("show %s did not emit JSON: %v", ref, err)
 		}
-		if rec["ref"] != "WORK-0001-lint-the-corpus" {
-			t.Errorf("show %s emitted ref %v", ref, rec["ref"])
+		if rec["name"] != "WORK-0001-lint-the-corpus" {
+			t.Errorf("show %s emitted name %v", ref, rec["name"])
 		}
 	}
 }
 
 func TestARecordWithoutAKeyRefsAsItsSlug(t *testing.T) {
-	// Only a work item carries a key, so an outcome's reference is its slug
+	// Only a work item carries a key, so an outcome's nameerence is its slug
 	// and the identifier column is never empty.
 	app, _ := initialized(t)
 	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
@@ -135,8 +135,8 @@ func TestARecordWithoutAKeyRefsAsItsSlug(t *testing.T) {
 	if err := json.Unmarshal([]byte(out), &rec); err != nil {
 		t.Fatal(err)
 	}
-	if rec["ref"] != "it-drains" {
-		t.Errorf("an outcome's ref = %v, want its slug", rec["ref"])
+	if rec["name"] != "it-drains" {
+		t.Errorf("an outcome's name = %v, want its slug", rec["name"])
 	}
 	if _, hasKey := rec["key"]; hasKey {
 		t.Errorf("an outcome carries a key: %v", rec["key"])

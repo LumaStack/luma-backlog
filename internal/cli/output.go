@@ -21,10 +21,10 @@ type itemJSON struct {
 	// none: only a work item carries one, and a record written before keys
 	// existed has none either.
 	Key string `json:"key,omitempty"`
-	// Ref is the two joined — WORK-00002-lint-the-corpus — which is how a
-	// record is written and said. Key and slug are kept beside it so a
-	// consumer can use either half without parsing this one apart.
-	Ref   string `json:"ref"`
+	// Name is the two joined — WORK-0002-lint-the-corpus — which is what the
+	// record is called and what its directory is named. Key and slug are kept
+	// beside it so a consumer can use either half without parsing this apart.
+	Name  string `json:"name"`
 	Slug  string `json:"slug"`
 	Title string `json:"title"`
 	// Status is omitted rather than emptied when the record's type declares
@@ -63,7 +63,7 @@ func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
 		Path:     i.Path,
 		Type:     i.Type(),
 		Key:      i.Key(),
-		Ref:      i.Ref(),
+		Name:     i.Name(),
 		Slug:     i.Slug(),
 		Title:    i.Title(),
 		Status:   i.Status(defaultStatus),

@@ -84,17 +84,20 @@ func (i Item) Key() string {
 	return k
 }
 
-// Ref is how a record is written and said: WORK-00002-lint-the-corpus.
+// Name is what a record is called: WORK-0002-lint-the-corpus.
 //
-// Key and slug joined, the way a decision's filename joins its number and slug.
-// One string rather than two columns, because a reader wants one thing to copy
-// and a listing with a key column leaves an empty cell on every record that
-// carries none.
+// Key and slug joined, the way a decision's filename joins its number and slug,
+// and literally the name of the directory — so the model and the filesystem
+// agree rather than each holding their own idea of what this record is called.
 //
-// It is a REFERENCE, not a path. The directory is still the slug alone, so
-// nothing about this moves a file or changes what a record is (docs/spec.md
-// §7.1).
-func (i Item) Ref() string {
+// A TITLE is prose for a person: "Lint the corpus". A NAME is what the thing is
+// called, unique like the key and legible like the slug. Nothing else in the
+// format uses the word, which is why it was free to take.
+//
+// Not "ref": in a tool that lives inside git, a ref is a branch or a tag, and
+// borrowing a word the surrounding system has already claimed is the mistake
+// that set aside `change` for a kind and `committed` for a rung.
+func (i Item) Name() string {
 	// The key leads the directory name, so a work item's slug already carries
 	// it and joining again would double it. Kept as its own method because it
 	// is the published name for "the identifier you write", and because a
@@ -102,14 +105,14 @@ func (i Item) Ref() string {
 	return i.Slug()
 }
 
-// refPattern matches the joined form: WORK-00002-lint-the-corpus.
-var refPattern = regexp.MustCompile(`^([A-Za-z]+-\d+)(-.*)$`)
+// namePattern matches the joined form: WORK-0002-lint-the-corpus.
+var namePattern = regexp.MustCompile(`^([A-Za-z]+-\d+)(-.*)$`)
 
-// NormalizeRef upper-cases the key half of a joined reference and leaves the
-// slug alone, since a slug is lower-case by construction and upper-casing it
-// would stop it matching.
-func NormalizeRef(ref string) string {
-	m := refPattern.FindStringSubmatch(ref)
+// NormalizeName upper-cases the key half of a name and leaves the slug alone,
+// since a slug is lower-case by construction and upper-casing it would stop it
+// matching.
+func NormalizeName(ref string) string {
+	m := namePattern.FindStringSubmatch(ref)
 	if m == nil {
 		return ref
 	}
