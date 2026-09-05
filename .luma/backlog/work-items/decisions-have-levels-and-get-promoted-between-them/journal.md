@@ -16,3 +16,5 @@ all three ADRs here were created from the repository root and are correctly proj
 the working directory is a good signal for a person and a constant for an agent, which is why every decision here is project-level — in an agent-first tool that is the signal not to lean on
 which work item and which level are two questions; cwd can answer the first and answers the second only by accident
 precedent for requiring it: new task already refuses without a work item, as a usage error rather than a judgment about content
+option recorded: no key until promotion. It makes ADR-NNNN mean a project standing rule rather than any decision anybody made, removes the WDR-vs-ADR question, and slows the sequence so collisions are rarer.
+it contradicts what shipped today — new decision --work-item currently takes a number from the same sequence, which is arguably already wrong since it interleaves standing rules with records that are not rules
