@@ -165,7 +165,10 @@ func matches(i Item, f Filter) bool {
 	if f.Unit != "" && i.Type() != f.Unit {
 		return false
 	}
-	if f.WorkItem != "" && i.WorkItem != f.WorkItem {
+	// A caller may name a work item by its directory — WORK-00001-payments-v2 —
+	// or by the slug half alone, or by its key. All three reach the same work,
+	// and requiring the long form would make the key a tax rather than a handle.
+	if f.WorkItem != "" && !matchesWorkItem(i.WorkItem, f.WorkItem) {
 		return false
 	}
 	if f.Kind != "" {
@@ -215,7 +218,12 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 			exact = append(exact, it)
 		case it.Path == ref || it.Slug() == ref:
 			exact = append(exact, it)
-		case strings.HasPrefix(it.Slug(), ref):
+		// The slug half alone, for a work item whose directory leads with a
+		// key. It is what people typed before the key existed and what they
+		// will keep typing, and the long form is not always to hand.
+		case SlugOf(it.Slug()) == ref:
+			exact = append(exact, it)
+		case strings.HasPrefix(it.Slug(), ref) || strings.HasPrefix(SlugOf(it.Slug()), ref):
 			prefix = append(prefix, it)
 		}
 	}

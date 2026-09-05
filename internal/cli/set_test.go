@@ -19,7 +19,7 @@ func withWorkItem(t *testing.T) (*App, string) {
 
 func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 	app, project := withWorkItem(t)
-	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
+	path := filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "index.md"))
 
 	// A key from another system, which this tool knows nothing about.
 	data, _ := os.ReadFile(path)
@@ -32,7 +32,7 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 		t.Fatalf("set failed: %s", e)
 	}
 
-	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	if got, _ := r.Get("workflow_status"); got != "in_progress" {
 		t.Errorf("workflow_status = %q", got)
 	}
@@ -49,7 +49,7 @@ func TestSetStampsModified(t *testing.T) {
 	app, project := withWorkItem(t)
 	run(t, app, "set", "payments-v2", "workflow_status=todo")
 
-	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	if !r.Has("modified") {
 		t.Error("no modified stamp after an edit")
 	}
@@ -60,7 +60,7 @@ func TestSetDoesNotOverruleAnExplicitModified(t *testing.T) {
 	app, project := withWorkItem(t)
 	run(t, app, "set", "payments-v2", "modified=yesterday")
 
-	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	if got, _ := r.Get("modified"); got != "yesterday" {
 		t.Errorf("modified = %q, want the value that was passed", got)
 	}
@@ -71,7 +71,7 @@ func TestSetRawWritesStructure(t *testing.T) {
 	if code, _, e := run(t, app, "set", "payments-v2", `blocked:=[{on: 2026-08-09, why: vendor}]`); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
-	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	node := r.Node("blocked")
 	if node == nil {
 		t.Fatal("blocked absent")
@@ -92,7 +92,7 @@ func TestSetKeepsWikilinksIntact(t *testing.T) {
 	app, project := withWorkItem(t)
 	run(t, app, "set", "payments-v2", "supersedes=[[work-items/payments-v1]]")
 
-	r := readRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	got, ok := r.Get("supersedes")
 	if !ok {
 		t.Fatal("supersedes absent, or not a scalar — it was parsed as a list")
@@ -107,7 +107,7 @@ func TestSetUnsetRemovesAField(t *testing.T) {
 	if code, _, e := run(t, app, "set", "payments-v2", "--unset", "stage"); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
-	if readRecord(t, project, "backlog/work-items/payments-v2/index.md").Has("stage") {
+	if readRecord(t, project, wiPath(t, project, "payments-v2", "index.md")).Has("stage") {
 		t.Error("--unset left the field in place")
 	}
 }
@@ -128,7 +128,7 @@ func TestSetRefusesAStaleWrite(t *testing.T) {
 	}
 
 	// Somebody else writes in between.
-	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
+	path := filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "index.md"))
 	data, _ := os.ReadFile(path)
 	os.WriteFile(path, append(data, []byte("\nsomeone else was here\n")...), 0o644)
 

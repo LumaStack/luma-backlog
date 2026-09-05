@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.8.1
+version: 0.9.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,24 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.9.0` — **a work item's directory carries its key.**
+`work-items/WORK-00002-lint-the-corpus/` — the key leads so a listing sorts by
+it, the slug follows so the directory still reads as what the work is, and it
+matches the decision records where the number is in the filename too.
+
+**Breaking, and migrated in the same commit.** Every outcome and task carries a
+`work_item` link naming its parent directory, so the rename touched 32 records.
+That number only grows, which is why it was done at 32.
+
+**Three forms still reach the same work item** — the directory, the slug half
+alone, and the key — because requiring the long form everywhere would make the
+key a tax rather than a handle.
+
+The trap the decision numbering hit returns here and is handled the same way: a
+work item's path is no longer derivable from its title, so creation looks for
+one whose slug half matches before allocating anything. Asking twice does not
+make a second directory.
 
 `0.8.1` — **why the field is `key` and not `id`, written down.** A record's
 identity is its path, so a field called `id` would claim an identity something

@@ -264,15 +264,20 @@ a listing with a key column leaves an empty cell on every record that carries
 none — only a work item has a key, so an outcome's identifier is its slug and the
 column is never blank.
 
-**It is a reference, not a path.** The directory is still the slug alone. Whether
-it should become `WORK-00002-lint-the-corpus/` is open and deliberately not
-answered here: it would match the decision records, where the number *is* in the
-filename, and it would sort a directory listing by number. It would also rename
-every work item, break the `work_item` wikilink on every outcome and task inside
-them, and change what each record *is* — `spec.md` §7.1 is explicit that a
-record's identity is its path. **A reference costs nothing and a rename costs
-that**, which is why one shipped and the other is a decision somebody should make
-deliberately.
+**And it is the directory name.** `work-items/WORK-00002-lint-the-corpus/` — the
+key leads so a listing sorts by it, and the slug follows so the directory still
+reads as what the work is. That matches the decision records, where the number is
+in the filename too.
+
+**Migrating cost 32 link repairs, and it was done while there were 32.** Every
+outcome and task carries `work_item: [[work-items/<directory>]]`, so a rename
+touches every child of every work item — and that number only grows. `spec.md`
+§7.1 is explicit that a record's identity is its path, so this changed what each
+record is, once, deliberately, with the links repointed in the same commit.
+
+**Three forms reach the same work item**: the directory, the slug half alone, and
+the key. Requiring the long form everywhere would make the key a tax rather than
+a handle, and the short forms are what people typed before it existed.
 
 ## What this deliberately does not declare
 

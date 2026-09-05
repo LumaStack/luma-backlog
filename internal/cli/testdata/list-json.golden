@@ -1,40 +1,40 @@
 [
   {
-    "path": "backlog/work-items/payments-v2/index.md",
+    "path": "backlog/work-items/WORK-00001-payments-v2/index.md",
     "type": "work-item",
     "key": "WORK-00001",
     "ref": "WORK-00001-payments-v2",
-    "slug": "payments-v2",
+    "slug": "WORK-00001-payments-v2",
     "title": "Payments v2",
     "status": "captured",
-    "work_item": "payments-v2"
+    "work_item": "WORK-00001-payments-v2"
   },
   {
-    "path": "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md",
+    "path": "backlog/work-items/WORK-00001-payments-v2/outcomes/the-retry-queue-drains.md",
     "type": "outcome",
     "ref": "the-retry-queue-drains",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
     "status": "unverified",
-    "work_item": "payments-v2"
+    "work_item": "WORK-00001-payments-v2"
   },
   {
-    "path": "backlog/work-items/payments-v2/tasks/add-the-retry-queue.md",
+    "path": "backlog/work-items/WORK-00001-payments-v2/tasks/add-the-retry-queue.md",
     "type": "task",
     "ref": "add-the-retry-queue",
     "slug": "add-the-retry-queue",
     "title": "Add the retry queue",
     "status": "todo",
-    "work_item": "payments-v2"
+    "work_item": "WORK-00001-payments-v2"
   },
   {
-    "path": "backlog/work-items/search-relevance/index.md",
+    "path": "backlog/work-items/WORK-00002-search-relevance/index.md",
     "type": "work-item",
     "key": "WORK-00002",
     "ref": "WORK-00002-search-relevance",
-    "slug": "search-relevance",
+    "slug": "WORK-00002-search-relevance",
     "title": "Search relevance",
     "status": "captured",
-    "work_item": "search-relevance"
+    "work_item": "WORK-00002-search-relevance"
   }
 ]

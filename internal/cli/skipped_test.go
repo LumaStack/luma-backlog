@@ -24,7 +24,7 @@ func TestListNamesWhatItSkipped(t *testing.T) {
 	// skipped and the command still succeeds, but the reader is told.
 	app, project := initialized(t)
 	seed(t, app)
-	breakRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	breakRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 
 	code, out, errOut := run(t, app, "list")
 	if code != ExitOK {
@@ -44,7 +44,7 @@ func TestSkipReportStaysOutOfStdout(t *testing.T) {
 	// helpful message into a second outage.
 	app, project := initialized(t)
 	seed(t, app)
-	breakRecord(t, project, "backlog/work-items/payments-v2/index.md")
+	breakRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 
 	code, out, errOut := run(t, app, "list", "--json")
 	if code != ExitOK {
@@ -73,7 +73,7 @@ func TestCloseReportsAnOutcomeItCouldNotRead(t *testing.T) {
 	if code, _, e := run(t, app, "verify", "latency-holds", "-e", "measured"); code != ExitOK {
 		t.Fatalf("verify failed: %s", e)
 	}
-	breakRecord(t, project, "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md")
+	breakRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
 	_, _, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
 	if !strings.Contains(errOut, "the-retry-queue-drains.md") {

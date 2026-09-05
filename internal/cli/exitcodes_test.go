@@ -54,7 +54,7 @@ func TestExitCodes(t *testing.T) {
 		}
 		json.Unmarshal([]byte(out), &seen)
 
-		path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
+		path := filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "index.md"))
 		data, _ := os.ReadFile(path)
 		os.WriteFile(path, append(data, []byte("\nchanged\n")...), 0o644)
 

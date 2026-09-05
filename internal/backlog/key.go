@@ -87,9 +87,10 @@ func (i Item) Key() string {
 // nothing about this moves a file or changes what a record is (docs/spec.md
 // §7.1).
 func (i Item) Ref() string {
-	if k := i.Key(); k != "" {
-		return k + "-" + i.Slug()
-	}
+	// The key leads the directory name, so a work item's slug already carries
+	// it and joining again would double it. Kept as its own method because it
+	// is the published name for "the identifier you write", and because a
+	// record created before keys were in paths still refs as its slug.
 	return i.Slug()
 }
 

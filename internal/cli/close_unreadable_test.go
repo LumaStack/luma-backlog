@@ -40,7 +40,7 @@ func TestDeliveredIsRefusedWhenAnOutcomeCannotBeRead(t *testing.T) {
 	// broken produced exit 0 and a work item closed as delivered, with an
 	// outcome sitting on disk that nothing had checked.
 	app, project := withTwoOutcomes(t)
-	breakOutcome(t, project, "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md")
+	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
 	code, _, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
 	if code == ExitOK {
@@ -59,7 +59,7 @@ func TestOtherReasonsCloseOverAnUnreadableOutcome(t *testing.T) {
 	// nothing about evidence, so it needs no count — gating it would make it
 	// impossible to stop work precisely because the record was broken.
 	app, project := withTwoOutcomes(t)
-	breakOutcome(t, project, "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md")
+	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
 	code, out, errOut := run(t, app, "close", "payments-v2", "--reason", "canceled")
 	if code != ExitOK {
@@ -81,7 +81,7 @@ func TestASkipElsewhereDoesNotBlockThisWorkItem(t *testing.T) {
 	if code, _, e := run(t, app, "new", "outcome", "Results rank well", "-w", "search-relevance"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	breakOutcome(t, project, "backlog/work-items/search-relevance/outcomes/results-rank-well.md")
+	breakOutcome(t, project, wiPath(t, project, "search-relevance", "outcomes", "results-rank-well.md"))
 
 	code, out, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
 	if code != ExitOK {
@@ -96,7 +96,7 @@ func TestAnUnreadableOutcomeIsStillReported(t *testing.T) {
 	// Refusing is the new half; saying so was already true and must stay true,
 	// because a refusal that does not name the file leaves somebody hunting.
 	app, project := withTwoOutcomes(t)
-	breakOutcome(t, project, "backlog/work-items/payments-v2/outcomes/the-retry-queue-drains.md")
+	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
 	_, _, errOut := run(t, app, "close", "payments-v2", "--reason", "canceled")
 	if !strings.Contains(errOut, "skipped") {
