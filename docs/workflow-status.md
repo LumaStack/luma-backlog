@@ -61,7 +61,7 @@ and are never rungs or record types — see
 | `unprepared` | Will become work, and nothing has been worked out yet. The top of the preparation pipeline. |
 | `preparing` | Being actively shaped — broken down, requirements refined, consensus reached, made well-formed. |
 | `prepared` | Shaping is finished. The work is well-formed and could be picked up. |
-| `todo` | Selected for work and enqueued. Committed to within some timeframe or capacity; the only thing between it and progress is capacity. |
+| `todo` | Enqueued for action. Committed to within some timeframe or capacity; should start when capacity allows. |
 | `in_progress` | Somebody owns it and is working on it or delegating it. Either way they are responsible. |
 | `closed` | Work ended, for one of several reasons — only one of which is success (`spec.md` §5.3.1). |
 

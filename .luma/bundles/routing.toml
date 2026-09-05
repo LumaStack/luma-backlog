@@ -54,6 +54,14 @@ on_violation = "allow"
 matches = ["topic:deciding which catalog a bundle belongs in"]
 
 [[rule]]
+bundle = "lumastack/luma-catalog/command-line-interface"
+document = "policy/command-line-interface-guidelines"
+title = "Command line interface guidelines"
+path = ".luma/bundles/lumastack/luma-catalog/command-line-interface/policy/command-line-interface-guidelines.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/decision-records"
 document = "policy/decision-guidelines"
 title = "Writing a decision record"
