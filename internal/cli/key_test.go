@@ -16,9 +16,9 @@ func TestWorkItemsGetSequentialKeys(t *testing.T) {
 		}
 	}
 	for path, want := range map[string]string{
-		wiPath(t, project, "payments-v2", "index.md"):      "key: WORK-00001",
-		wiPath(t, project, "search-relevance", "index.md"): "key: WORK-00002",
-		wiPath(t, project, "exports", "index.md"):          "key: WORK-00003",
+		wiPath(t, project, "payments-v2", "index.md"):      "key: WORK-0001",
+		wiPath(t, project, "search-relevance", "index.md"): "key: WORK-0002",
+		wiPath(t, project, "exports", "index.md"):          "key: WORK-0003",
 	} {
 		if got := readFile(t, project, path); !strings.Contains(got, want) {
 			t.Errorf("%s is missing %q:\n%s", path, want, got)
@@ -53,7 +53,7 @@ func TestAKeyResolvesLikeASlug(t *testing.T) {
 	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	for _, ref := range []string{"WORK-00001", "work-00001"} {
+	for _, ref := range []string{"WORK-0001", "work-0001"} {
 		code, out, errOut := run(t, app, "show", ref, "--json")
 		if code != ExitOK {
 			t.Fatalf("show %s failed: %s", ref, errOut)
@@ -63,10 +63,10 @@ func TestAKeyResolvesLikeASlug(t *testing.T) {
 			t.Fatalf("show %s did not emit JSON: %v", ref, err)
 		}
 		// The slug is the directory name, which now leads with the key.
-		if rec["slug"] != "WORK-00001-payments-v2" {
+		if rec["slug"] != "WORK-0001-payments-v2" {
 			t.Errorf("show %s resolved to %v", ref, rec["slug"])
 		}
-		if rec["key"] != "WORK-00001" {
+		if rec["key"] != "WORK-0001" {
 			t.Errorf("show %s emitted key %v", ref, rec["key"])
 		}
 	}
@@ -86,13 +86,13 @@ func TestAskingTwiceDoesNotBurnAKey(t *testing.T) {
 	if code, _, e := run(t, app, "new", "work-item", "Search relevance", "--kind", "change"); code != ExitOK {
 		t.Fatalf("second item failed: %s", e)
 	}
-	if got := readFile(t, project, wiPath(t, project, "search-relevance", "index.md")); !strings.Contains(got, "key: WORK-00002") {
+	if got := readFile(t, project, wiPath(t, project, "search-relevance", "index.md")); !strings.Contains(got, "key: WORK-0002") {
 		t.Errorf("repeated asks burned a number:\n%s", got)
 	}
 }
 
 func TestTheJoinedFormResolves(t *testing.T) {
-	// WORK-00002-lint-the-corpus is how a work item is written and said, the
+	// WORK-0002-lint-the-corpus is how a work item is written and said, the
 	// way a decision's filename joins its number and slug. All three forms
 	// have to reach the same record, or the one people actually type is the
 	// one that fails.
@@ -101,9 +101,9 @@ func TestTheJoinedFormResolves(t *testing.T) {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, ref := range []string{
-		"WORK-00001-lint-the-corpus",
-		"work-00001-lint-the-corpus",
-		"WORK-00001",
+		"WORK-0001-lint-the-corpus",
+		"work-0001-lint-the-corpus",
+		"WORK-0001",
 		"lint-the-corpus",
 	} {
 		code, out, errOut := run(t, app, "show", ref, "--json")
@@ -114,7 +114,7 @@ func TestTheJoinedFormResolves(t *testing.T) {
 		if err := json.Unmarshal([]byte(out), &rec); err != nil {
 			t.Fatalf("show %s did not emit JSON: %v", ref, err)
 		}
-		if rec["ref"] != "WORK-00001-lint-the-corpus" {
+		if rec["ref"] != "WORK-0001-lint-the-corpus" {
 			t.Errorf("show %s emitted ref %v", ref, rec["ref"])
 		}
 	}

@@ -1,12 +1,12 @@
 {
-  "path": "backlog/work-items/WORK-00001-payments-v2/outcomes/the-retry-queue-drains.md",
+  "path": "backlog/work-items/WORK-0001-payments-v2/outcomes/the-retry-queue-drains.md",
   "type": "outcome",
   "ref": "the-retry-queue-drains",
   "slug": "the-retry-queue-drains",
   "title": "The retry queue drains",
   "status": "unverified",
-  "work_item": "WORK-00001-payments-v2",
-  "hash": "5c48cfb93b18a1223f6880da11ac6d5ba4673163840a865c182de61bf21ba4e5",
+  "work_item": "WORK-0001-payments-v2",
+  "hash": "186acb1e74bbbca814fec0a2f01fee2cfbf7a664389130e14c9b3a60ae41e9d4",
   "fields": {
     "created": {
       "at": "2026-08-09T12:00:00Z",
@@ -17,7 +17,7 @@
     "title": "The retry queue drains",
     "type": "outcome",
     "verify_by": "",
-    "work_item": "[[work-items/WORK-00001-payments-v2]]"
+    "work_item": "[[work-items/WORK-0001-payments-v2]]"
   },
   "body": "# The retry queue drains\n\nWhy this matters, and anything needed to read the check correctly.\n"
 }

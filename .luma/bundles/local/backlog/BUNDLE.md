@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.9.0
+version: 0.9.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -44,8 +44,24 @@ they need.
 
 ## Version
 
+`0.9.1` — **four digits rather than five, and `journal` resolves its work item.**
+
+Padding exists so a lexical sort matches a numeric one. It stops working past
+9999, and by then nobody is reading a directory of ten thousand work items by
+eye — so the property fails exactly where it had stopped being worth anything.
+Four digits also match the ADR numbers.
+
+**And a bug shipped in `0.9.0` is fixed.** `journal -w` took its argument as
+written rather than resolving it, so any form that was not the exact directory
+name created a new directory containing only a journal. `journal -w WORK-0001`
+and `journal -w payments-v2` each made one. It now resolves like every other
+command, and a name matching nothing is an error rather than a new directory.
+
+One stray directory from that bug is removed and its entry recovered into the
+journal it was meant for.
+
 `0.9.0` — **a work item's directory carries its key.**
-`work-items/WORK-00002-lint-the-corpus/` — the key leads so a listing sorts by
+`work-items/WORK-0002-lint-the-corpus/` — the key leads so a listing sorts by
 it, the slug follows so the directory still reads as what the work is, and it
 matches the decision records where the number is in the filename too.
 
@@ -94,7 +110,7 @@ good at. Only the level is withheld from it.
 shape as `new task` refusing without a work item — the tool is not judging the
 work, it is saying it was not told enough.
 
-`0.7.1` — **a work item is written as `WORK-00002-lint-the-corpus`.** Key and
+`0.7.1` — **a work item is written as `WORK-0002-lint-the-corpus`.** Key and
 slug joined, the way a decision's filename joins its number and slug, and all
 three forms resolve — joined, key alone, slug alone.
 
@@ -110,7 +126,7 @@ records and sort by number, and it would rename every work item, break the
 Patch: how a record is displayed and addressed. Nothing on disk moved, and the
 `key` field is unchanged.
 
-`0.7.0` — **a work item carries a key: `WORK-00002`.**
+`0.7.0` — **a work item carries a key: `WORK-0002`.**
 
 **The key is for finding, the path is for linking**, and both are true at once —
 the same split the decision records already run on, and the reason a superseded

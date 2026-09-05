@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -129,5 +130,48 @@ func TestJournalRejectsEmptyText(t *testing.T) {
 	app, _ := withWorkItem(t)
 	if code, _, _ := run(t, app, "journal", "   "); code != ExitUsage {
 		t.Error("empty text was accepted")
+	}
+}
+
+func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
+	// It used to write to work-items/<whatever-was-typed>/journal.md, which
+	// quietly created a directory that was not a work item at all. Every form
+	// has to reach the one journal, and a name that matches nothing has to be
+	// an error rather than a new directory.
+	app, project := initialized(t)
+	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+		t.Fatalf("setup failed: %s", e)
+	}
+	dir := wiDir(t, project, "payments-v2")
+	for _, ref := range []string{"WORK-0001", "payments-v2", dir} {
+		if code, _, e := run(t, app, "journal", "-w", ref, "via "+ref); code != ExitOK {
+			t.Fatalf("journal -w %s failed: %s", ref, e)
+		}
+	}
+	body := readFile(t, project, wiPath(t, project, "payments-v2", "journal.md"))
+	for _, ref := range []string{"WORK-0001", "payments-v2", dir} {
+		if !strings.Contains(body, "via "+ref) {
+			t.Errorf("journal -w %s did not reach the work item's journal", ref)
+		}
+	}
+
+	entries, err := os.ReadDir(filepath.Join(project, ".luma", "backlog", "work-items"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) != 1 {
+		var names []string
+		for _, e := range entries {
+			names = append(names, e.Name())
+		}
+		t.Errorf("journal created stray directories: %v", names)
+	}
+
+	code, _, errOut := run(t, app, "journal", "-w", "WORK-9999", "nope")
+	if code == ExitOK {
+		t.Error("journalling to a work item that does not exist succeeded")
+	}
+	if !strings.Contains(errOut, "no work item") {
+		t.Errorf("the error did not say what was wrong: %q", errOut)
 	}
 }

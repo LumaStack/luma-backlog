@@ -17,15 +17,23 @@ import (
 // the corpus the moment the setting changed.
 const KeyPrefix = "WORK"
 
-// keyPattern matches a work item key: WORK-00002.
+// keyPattern matches a work item key: WORK-0002.
 //
-// Five digits rather than four, and the same accepted cost as an ADR number:
-// two branches can both claim the next one and somebody renumbers on merge.
+// Four digits, matching the ADR numbers, and the same accepted cost: two
+// branches can both claim the next one and somebody repairs it on merge
+// (records/decisions/ADR-0003).
+//
+// Padding exists so a lexical sort matches a numeric one, which is what `ls`,
+// git and an editor give you. It stops working past 9999 — and by then nobody
+// is reading a directory of ten thousand work items by eye, so the property
+// fails exactly where it had stopped being worth anything. If that order ever
+// matters at that scale, the fix is sorting numerically in the tool, which
+// touches no record and does not disturb a key that is meant never to change.
 var keyPattern = regexp.MustCompile(`^([A-Z]+)-(\d+)$`)
 
 // FormatKey renders a key from its number.
 func FormatKey(number int) string {
-	return fmt.Sprintf("%s-%05d", KeyPrefix, number)
+	return fmt.Sprintf("%s-%04d", KeyPrefix, number)
 }
 
 // IsKey reports whether a reference looks like a key rather than a slug.
