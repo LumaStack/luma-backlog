@@ -36,6 +36,22 @@ Not settled. What this idea is for is working out:
 - **Guidelines for what earns each level**, so the tier is a judgment somebody can make consistently rather than a mood.
 - **How keys work across levels** — possibilities rather than an answer, since the concept is what matters.
 
+## The position so far
+
+**The tool creates work item decisions; the model decides the level** (benjamin, 2026-09-04). A first pass has `new decision` producing a work item decision, and the tool able to **promote** one to the project. Whether it can create a project decision directly is unsettled; if it can, that is a flag rather than an inference.
+
+**The judgment is never mechanical.** Which level a decision belongs to is the model's call, following guidelines. What the tool contributes is one reliable way to carry it out, so every model does it the same way instead of each shuffling files slightly differently. That is `spec.md` §4.8.1 already — *the tool provides the operation and never judges* — and it is the bootstrap rule in `CLAUDE.md`: what earns a command is an invariant prose cannot hold, and *promotion writes exactly these files* is one.
+
+**Stated as a gut reaction, not a finding.** It has not been felt in use, and the record says so because a first instinct recorded as a conclusion is how an untested guess acquires authority.
+
+### The level is currently decided by where you were standing
+
+**There is no way to say which level a decision is.** `new decision` writes to the records tier when run from the repository root, and into a work item when run inside one, because the work item is derived from the working directory. Nobody chooses; the path does.
+
+**This estate already names that failure for ideas.** `where-an-idea-lives` says it outright: *do not let the location be decided by where you were standing — that is the most common way an idea ends up invisible, and it happens silently.* Decisions have the same shape and no equivalent warning.
+
+**Every decision in this repository was created from the root**, so all three are project decisions. They are correctly placed, and none of them was placed on purpose.
+
 ## Out of scope
 
 **Where an organization decision lives.** If the body is a GitHub organization, its decisions plausibly belong in that organization's own repository rather than this one — which is what `where-an-idea-lives` already says for ideas. That makes promotion a cross-repository write, and a wikilink does not cross repositories. Named here so the design does not assume it away; answering it is part of the work.
