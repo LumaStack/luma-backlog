@@ -52,6 +52,33 @@ Not settled. What this idea is for is working out:
 
 **Every decision in this repository was created from the root**, so all three are project decisions. They are correctly placed, and none of them was placed on purpose.
 
+### Default, or state it every time
+
+**The saving is a few characters and the cost is a wrong level nobody notices.** A default that is right most of the time produces records that are wrong occasionally and silently, and a decision at the wrong level is not visibly broken — it is simply somewhere nobody looks.
+
+**Two things are conflated today and probably want separating:**
+
+- **Which work item** — the working directory can answer this, or `--work-item` can.
+- **Which level** — nothing answers this. It falls out of the first, which is how the level ends up being decided by where somebody was standing.
+
+Splitting them lets the working directory keep doing the job it is good at without deciding a thing it was never asked about.
+
+**And the working directory is a good signal for a person and a poor one for an agent.** Somebody in a terminal is usually standing where they are working. An agent runs from the repository root whatever it is working on, so the context it would infer from is a constant. That is not hypothetical: every decision in this repository is project-level because every one of them was created from the root.
+
+**In an agent-first tool the signal that fails for agents is the one not to lean on.**
+
+**There is already a precedent for requiring it.** A task refuses to be created without a work item:
+
+```
+$ luma-backlog new task "Do a thing"
+luma-backlog: a task belongs to a work item: pass --work-item, or run inside one
+exit: 2
+```
+
+That is a usage error rather than a refusal about content — the tool is not judging the work, it is saying it was not told enough. A decision with no level stated is the same shape.
+
+**A current work item would still be worth having**, for the other commands and for a person. The question is only whether it may decide a level, and the answer that keeps the level honest is no.
+
 ## Out of scope
 
 **Where an organization decision lives.** If the body is a GitHub organization, its decisions plausibly belong in that organization's own repository rather than this one — which is what `where-an-idea-lives` already says for ideas. That makes promotion a cross-repository write, and a wikilink does not cross repositories. Named here so the design does not assume it away; answering it is part of the work.
