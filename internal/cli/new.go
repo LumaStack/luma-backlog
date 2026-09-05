@@ -14,6 +14,7 @@ import (
 
 func newNewCommand(app *App) *cobra.Command {
 	var workItem, kind string
+	var project bool
 
 	cmd := &cobra.Command{
 		Use:   "new <" + strings.Join(backlog.Units, "|") + "> <title>",
@@ -22,6 +23,9 @@ func newNewCommand(app *App) *cobra.Command {
 			"from the title, the work item from where you are, the timestamp and\n" +
 			"actor from the environment.\n\n" +
 			"Running it twice with the same title leaves the first one alone.\n\n" +
+			"A decision states its level: --work-item for one belonging to that work\n" +
+			"item, --project for a standing rule. It is never inferred from where the\n" +
+			"command was run.\n\n" +
 			"--kind classifies a work item by what it produces:\n" +
 			"  defect   a fix\n" +
 			"  request  an answer you already have the standing to give\n" +
@@ -33,17 +37,19 @@ func newNewCommand(app *App) *cobra.Command {
 		Args:         cobra.ExactArgs(2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runNew(app, cmd, args[0], args[1], workItem, kind)
+			return runNew(app, cmd, args[0], args[1], workItem, kind, project, cmd.Flags().Changed("work-item"))
 		},
 	}
 	cmd.Flags().StringVarP(&workItem, "work-item", "w", "",
 		"the work item this belongs to (default: derived from the working directory)")
 	cmd.Flags().StringVarP(&kind, "kind", "k", "",
 		"what sort of work item this is (default: none, meaning ordinary work)")
+	cmd.Flags().BoolVar(&project, "project", false,
+		"a decision at the project level, rather than one belonging to a work item")
 	return cmd
 }
 
-func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string) error {
+func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string, project, workItemGiven bool) error {
 	b, cfg, projectRoot, err := openBacklog(app)
 	if err != nil {
 		return err
@@ -52,6 +58,32 @@ func runNew(app *App, cmd *cobra.Command, unit, title, workItem, kind string) er
 
 	if workItem == "" {
 		workItem = workItemFromWorkingDir(projectRoot, app.WorkingDir)
+	}
+
+	// A decision's level is stated, never inferred. The working directory can
+	// say WHICH work item, and it must not be allowed to say WHICH LEVEL: a
+	// person at a terminal is usually standing where they are working, and an
+	// agent runs from the repository root whatever it is doing, so the context
+	// it would infer from is a constant. Every decision in this repository is
+	// project-level because every one of them was created from the root.
+	//
+	// The cost of being wrong is asymmetric. A decision filed at the wrong
+	// level is not visibly broken; it is simply somewhere nobody looks.
+	if unit == backlog.Decision {
+		if project && workItemGiven {
+			return usageErr("--project and --work-item say different levels: pass one")
+		}
+		if !project && !workItemGiven {
+			return usageErr("a decision needs its level stated:\n" +
+				"  --work-item <slug>  it belongs to that work item, and is a point-in-time record\n" +
+				"  --project           it is a standing rule for the project\n" +
+				"Most decisions are work item decisions. Promotion is a separate act.")
+		}
+		if project {
+			// Stated as project-level, so the working directory does not get
+			// to attach it to whatever the caller happened to be standing in.
+			workItem = ""
+		}
 	}
 
 	if kind != "" && unit != backlog.WorkItem {

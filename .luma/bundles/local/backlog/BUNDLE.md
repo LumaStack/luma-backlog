@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.7.1
+version: 0.8.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,6 +43,27 @@ they need.
   memory a session leaves behind.
 
 ## Version
+
+`0.8.0` — **a decision states its level.** `new decision` takes `--work-item` or
+`--project`, and refuses with neither.
+
+The level used to fall out of the working directory: the records tier from the
+repository root, a work item from inside one. Nobody chose; the path did. That
+is the failure `where-an-idea-lives` names for ideas — *do not let the location
+be decided by where you were standing, it happens silently* — and decisions had
+the same shape with no equivalent warning.
+
+**It fails asymmetrically for agents.** A person at a terminal is usually
+standing where they are working; an agent runs from the repository root whatever
+it is doing, so the context it would infer from is a constant. Every decision in
+this repository is project-level for exactly that reason.
+
+The working directory still answers *which work item*, which is the job it is
+good at. Only the level is withheld from it.
+
+**Breaking:** `new decision` with no level is now a usage error. It is the same
+shape as `new task` refusing without a work item — the tool is not judging the
+work, it is saying it was not told enough.
 
 `0.7.1` — **a work item is written as `WORK-00002-lint-the-corpus`.** Key and
 slug joined, the way a decision's filename joins its number and slug, and all

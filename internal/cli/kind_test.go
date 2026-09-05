@@ -173,9 +173,9 @@ func TestDecisionsAreNumberedFromOneSequence(t *testing.T) {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, args := range [][]string{
-		{"new", "decision", "Catalogs do not inherit"},
+		{"new", "decision", "Catalogs do not inherit", "--project"},
 		{"new", "decision", "Retry inside the worker", "-w", "payments-v2"},
-		{"new", "decision", "Store evidence as events"},
+		{"new", "decision", "Store evidence as events", "--project"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -198,17 +198,17 @@ func TestAskingTwiceForADecisionDoesNotBurnANumber(t *testing.T) {
 	// cannot be a path lookup — asking twice has to find the first record
 	// rather than allocate a second number for the same title.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit"); code != ExitOK {
+	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit", "--project"); code != ExitOK {
 		t.Fatalf("first create failed: %s", e)
 	}
-	code, out, _ := run(t, app, "new", "decision", "Catalogs do not inherit")
+	code, out, _ := run(t, app, "new", "decision", "Catalogs do not inherit", "--project")
 	if code != ExitOK {
 		t.Fatalf("second create exited %d", code)
 	}
 	if !strings.Contains(out, "exists") || !strings.Contains(out, "ADR-0001") {
 		t.Errorf("the second ask did not find the first record:\n%s", out)
 	}
-	if code, _, _ := run(t, app, "new", "decision", "Something else"); code != ExitOK {
+	if code, _, _ := run(t, app, "new", "decision", "Something else", "--project"); code != ExitOK {
 		t.Fatal("third create failed")
 	}
 	_, out, _ = run(t, app, "list", "decision")
@@ -223,7 +223,7 @@ func TestANewDecisionCarriesTheContractsFields(t *testing.T) {
 	// is NOT stamped with today, because it records when the position became
 	// binding, which is not when the file appeared.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit"); code != ExitOK {
+	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit", "--project"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	got := readFile(t, project, "records/decisions/ADR-0001-catalogs-do-not-inherit.md")
