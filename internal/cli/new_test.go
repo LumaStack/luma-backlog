@@ -58,7 +58,7 @@ func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
-	const want = "backlog/work-items/payments-v2/index.md"
+	want := wiPath(t, project, "payments-v2", "index.md")
 	if !strings.Contains(out, want) {
 		t.Errorf("output did not name the path:\n%s", out)
 	}
@@ -81,7 +81,7 @@ func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 
 	// A journal exists at once: somewhere to write has to be there before
 	// anyone needs it, or the writing does not happen.
-	if _, err := os.Stat(filepath.Join(project, ".luma", "backlog/work-items/payments-v2/journal.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "journal.md"))); err != nil {
 		t.Errorf("no journal alongside the work item: %v", err)
 	}
 }
@@ -90,7 +90,7 @@ func TestNewIsIdempotentByName(t *testing.T) {
 	app, project := initialized(t)
 	run(t, app, "new", "work-item", "Payments v2")
 
-	path := filepath.Join(project, ".luma", "backlog/work-items/payments-v2/index.md")
+	path := filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "index.md"))
 	if err := os.WriteFile(path, []byte("---\ntype: work item\ntitle: Edited\n---\n\nmine\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -119,8 +119,8 @@ func TestNewOutcomeTakesItsWorkItemFromAFlag(t *testing.T) {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
 
-	r := readRecord(t, project, "backlog/work-items/payments-v2/outcomes/the-queue-drains.md")
-	if got, _ := r.Get("work_item"); got != "[[work-items/payments-v2]]" {
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-queue-drains.md"))
+	if got, _ := r.Get("work_item"); got != "[[work-items/"+wiDir(t, project, "payments-v2")+"]]" {
 		t.Errorf("work item = %q", got)
 	}
 	// desired_state is present and empty rather than absent: an empty field
@@ -139,9 +139,9 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	run(t, app, "new", "work-item", "Payments v2")
 
 	for _, tc := range []struct{ unit, path string }{
-		{"outcome", "backlog/work-items/payments-v2/outcomes/a-thing.md"},
-		{"decision", "backlog/work-items/payments-v2/decisions/ADR-0001-a-thing.md"},
-		{"exploration", "backlog/work-items/payments-v2/explorations/a-thing.md"},
+		{"outcome", wiPath(t, project, "payments-v2", "outcomes", "a-thing.md")},
+		{"decision", wiPath(t, project, "payments-v2", "decisions", "ADR-0001-a-thing.md")},
+		{"exploration", wiPath(t, project, "payments-v2", "explorations", "a-thing.md")},
 	} {
 		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
@@ -153,7 +153,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 
 	// A task is worked, so it does carry one.
 	run(t, app, "new", "task", "Do it", "-w", "payments-v2")
-	if r := readRecord(t, project, "backlog/work-items/payments-v2/tasks/do-it.md"); !r.Has("workflow_status") {
+	if r := readRecord(t, project, wiPath(t, project, "payments-v2", "tasks", "do-it.md")); !r.Has("workflow_status") {
 		t.Error("a new task has no workflow_status")
 	}
 }
@@ -168,8 +168,8 @@ func TestNewTakesItsWorkItemFromTheWorkingDirectory(t *testing.T) {
 	if code, _, e := run(t, app, "new", "task", "Add the queue"); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
-	r := readRecord(t, project, "backlog/work-items/payments-v2/tasks/add-the-queue.md")
-	if got, _ := r.Get("work_item"); got != "[[work-items/payments-v2]]" {
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "tasks", "add-the-queue.md"))
+	if got, _ := r.Get("work_item"); got != "[[work-items/"+wiDir(t, project, "payments-v2")+"]]" {
 		t.Errorf("work item was not derived from the working directory: %q", got)
 	}
 }
@@ -222,4 +222,26 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 			t.Errorf("wrote outside the backlog: %s", path)
 		}
 	}
+}
+
+// wiDir finds a work item's directory by its slug half.
+//
+// The key leads the directory name and is allocated in creation order, so
+// hard-coding WORK-00001 into an assertion would couple every test to the order
+// of its fixture. Tests say what they mean — this work item — and let the
+// helper find it.
+func wiDir(t *testing.T, project, slug string) string {
+	t.Helper()
+	matches, err := filepath.Glob(filepath.Join(project, ".luma", "backlog", "work-items", "*-"+slug))
+	if err != nil || len(matches) != 1 {
+		t.Fatalf("expected exactly one work item directory for %q, got %v (%v)", slug, matches, err)
+	}
+	return filepath.Base(matches[0])
+}
+
+// wiPath builds a path inside a work item, found by slug.
+func wiPath(t *testing.T, project, slug string, rest ...string) string {
+	t.Helper()
+	parts := append([]string{"backlog", "work-items", wiDir(t, project, slug)}, rest...)
+	return filepath.Join(parts...)
 }

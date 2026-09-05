@@ -17,14 +17,14 @@ func TestKindIsWrittenOnlyWhenGiven(t *testing.T) {
 	if code, _, e := run(t, app, "new", "work-item", "Ordinary work"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
-	if got := readFile(t, project, "backlog/work-items/ordinary-work/index.md"); strings.Contains(got, "kind:") {
+	if got := readFile(t, project, wiPath(t, project, "ordinary-work", "index.md")); strings.Contains(got, "kind:") {
 		t.Errorf("a kind was written when none was given:\n%s", got)
 	}
 
 	if code, _, e := run(t, app, "new", "work-item", "A crash", "--kind", "defect"); code != ExitOK {
 		t.Fatalf("new --kind failed: %s", e)
 	}
-	if got := readFile(t, project, "backlog/work-items/a-crash/index.md"); !strings.Contains(got, "kind: defect") {
+	if got := readFile(t, project, wiPath(t, project, "a-crash", "index.md")); !strings.Contains(got, "kind: defect") {
 		t.Errorf("--kind defect was not recorded:\n%s", got)
 	}
 }
@@ -86,8 +86,8 @@ func TestAliasesAreAcceptedAndCanonicalIsStored(t *testing.T) {
 		}
 	}
 	for path, want := range map[string]string{
-		"backlog/work-items/a-crash/index.md":            "kind: defect",
-		"backlog/work-items/please-add-exports/index.md": "kind: request",
+		wiPath(t, project, "a-crash", "index.md"):            "kind: defect",
+		wiPath(t, project, "please-add-exports", "index.md"): "kind: request",
 	} {
 		if got := readFile(t, project, path); !strings.Contains(got, want) {
 			t.Errorf("%s did not store %q:\n%s", path, want, got)
@@ -114,7 +114,7 @@ func TestAnUnknownKindIsKeptAsWritten(t *testing.T) {
 	if code, _, e := run(t, app, "new", "work-item", "Something", "--kind", "chore"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
-	if got := readFile(t, project, "backlog/work-items/something/index.md"); !strings.Contains(got, "kind: chore") {
+	if got := readFile(t, project, wiPath(t, project, "something", "index.md")); !strings.Contains(got, "kind: chore") {
 		t.Errorf("an unrecognized kind was not kept:\n%s", got)
 	}
 }
@@ -183,7 +183,7 @@ func TestDecisionsAreNumberedFromOneSequence(t *testing.T) {
 	}
 	for _, want := range []string{
 		"records/decisions/ADR-0001-catalogs-do-not-inherit.md",
-		"backlog/work-items/payments-v2/decisions/ADR-0002-retry-inside-the-worker.md",
+		wiPath(t, project, "payments-v2", "decisions", "ADR-0002-retry-inside-the-worker.md"),
 		"records/decisions/ADR-0003-store-evidence-as-events.md",
 	} {
 		if _, err := os.Stat(filepath.Join(project, ".luma", want)); err != nil {
@@ -258,7 +258,7 @@ func TestInquiryInstancesAreStoredAsInquiry(t *testing.T) {
 		if code, _, e := run(t, app, "new", "work-item", strings.ReplaceAll(tc.slug, "-", " "), "--kind", tc.typed); code != ExitOK {
 			t.Fatalf("--kind %s failed: %s", tc.typed, e)
 		}
-		got := readFile(t, project, "backlog/work-items/"+tc.slug+"/index.md")
+		got := readFile(t, project, wiPath(t, project, tc.slug, "index.md"))
 		if !strings.Contains(got, "kind: inquiry") {
 			t.Errorf("--kind %s was not stored as inquiry:\n%s", tc.typed, got)
 		}

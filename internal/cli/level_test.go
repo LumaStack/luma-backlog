@@ -40,7 +40,7 @@ func TestEachLevelLandsWhereItBelongs(t *testing.T) {
 	// record wherever it sits.
 	for _, rel := range []string{
 		"records/decisions/ADR-0001-use-the-new-queue.md",
-		"backlog/work-items/payments-v2/decisions/ADR-0002-retry-inside-the-worker.md",
+		wiPath(t, project, "payments-v2", "decisions", "ADR-0002-retry-inside-the-worker.md"),
 	} {
 		if _, err := os.Stat(filepath.Join(project, ".luma", rel)); err != nil {
 			t.Errorf("expected %s: %v", rel, err)
@@ -87,7 +87,7 @@ func TestStandingInAWorkItemDoesNotDecideTheLevel(t *testing.T) {
 		t.Fatalf("a task lost its work item from the working directory: %s", e)
 	}
 	if _, err := os.Stat(filepath.Join(project, ".luma",
-		"backlog/work-items/payments-v2/tasks/route-jobs.md")); err != nil {
+		wiPath(t, project, "payments-v2", "tasks", "route-jobs.md"))); err != nil {
 		t.Errorf("the task did not land in the work item: %v", err)
 	}
 }

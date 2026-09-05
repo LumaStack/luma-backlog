@@ -41,9 +41,50 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		return Result{}, fmt.Errorf("a title is required")
 	}
 
+	// However the caller named the work item — directory, slug half, or key —
+	// everything below needs the directory, because that is where a child is
+	// written and what its work_item link must say.
+	if s.WorkItem != "" {
+		resolved, resolveErr := ResolveWorkItemDir(b, s.WorkItem)
+		if resolveErr != nil {
+			return Result{}, resolveErr
+		}
+		s.WorkItem = resolved
+	}
+
 	slug := Slugify(s.Title)
 	if slug == "" {
 		return Result{}, fmt.Errorf("title %q has no characters that can form a filename", s.Title)
+	}
+
+	// A work item's directory carries its key, so its path is not derivable
+	// from the title alone either. Look for one whose slug half matches before
+	// allocating anything.
+	if s.Unit == WorkItem {
+		existing, findErr := findWorkItemBySlug(b, slug)
+		if findErr != nil {
+			return Result{}, findErr
+		}
+		if existing != "" {
+			return Result{Path: path.Join(BundleDir, "work-items", existing, "index.md"), Created: false}, nil
+		}
+	}
+
+	// Allocated before the path, because the path contains it. Safe to do
+	// here only because the existence check above already returned for a work
+	// item that exists — a retry never reaches this line, so a number cannot
+	// be burned by one.
+	key := ""
+	if s.Unit == WorkItem {
+		highest, keyErr := highestKey(b)
+		if keyErr != nil {
+			return Result{}, keyErr
+		}
+		key = FormatKey(highest + 1)
+		// The key leads the directory name, so a listing sorts by it and the
+		// identifier on disk is the one people say. The slug follows, so the
+		// directory still reads as what the work is.
+		slug = key + "-" + slug
 	}
 
 	// A decision is numbered, so its filename is not derived from the title
@@ -71,19 +112,6 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 
 	if b.Exists(rel) {
 		return Result{Path: rel, Created: false}, nil
-	}
-
-	// After the existence check, deliberately. A work item's path is still its
-	// slug, so asking twice for the same title returns above and never reaches
-	// here — the number cannot be burned by a retry, which is the trap the
-	// decision numbering had to be rescued from.
-	key := ""
-	if s.Unit == WorkItem {
-		highest, keyErr := highestKey(b)
-		if keyErr != nil {
-			return Result{}, keyErr
-		}
-		key = FormatKey(highest + 1)
 	}
 
 	body, err := render(s, cfg, e, adr, key)

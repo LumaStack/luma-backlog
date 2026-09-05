@@ -16,9 +16,9 @@ func TestWorkItemsGetSequentialKeys(t *testing.T) {
 		}
 	}
 	for path, want := range map[string]string{
-		"backlog/work-items/payments-v2/index.md":      "key: WORK-00001",
-		"backlog/work-items/search-relevance/index.md": "key: WORK-00002",
-		"backlog/work-items/exports/index.md":          "key: WORK-00003",
+		wiPath(t, project, "payments-v2", "index.md"):      "key: WORK-00001",
+		wiPath(t, project, "search-relevance", "index.md"): "key: WORK-00002",
+		wiPath(t, project, "exports", "index.md"):          "key: WORK-00003",
 	} {
 		if got := readFile(t, project, path); !strings.Contains(got, want) {
 			t.Errorf("%s is missing %q:\n%s", path, want, got)
@@ -34,8 +34,8 @@ func TestOnlyWorkItemsCarryAKey(t *testing.T) {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, tc := range []struct{ unit, path string }{
-		{"outcome", "backlog/work-items/payments-v2/outcomes/a-thing.md"},
-		{"task", "backlog/work-items/payments-v2/tasks/a-thing.md"},
+		{"outcome", wiPath(t, project, "payments-v2", "outcomes", "a-thing.md")},
+		{"task", wiPath(t, project, "payments-v2", "tasks", "a-thing.md")},
 	} {
 		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
@@ -62,7 +62,8 @@ func TestAKeyResolvesLikeASlug(t *testing.T) {
 		if err := json.Unmarshal([]byte(out), &rec); err != nil {
 			t.Fatalf("show %s did not emit JSON: %v", ref, err)
 		}
-		if rec["slug"] != "payments-v2" {
+		// The slug is the directory name, which now leads with the key.
+		if rec["slug"] != "WORK-00001-payments-v2" {
 			t.Errorf("show %s resolved to %v", ref, rec["slug"])
 		}
 		if rec["key"] != "WORK-00001" {
@@ -85,7 +86,7 @@ func TestAskingTwiceDoesNotBurnAKey(t *testing.T) {
 	if code, _, e := run(t, app, "new", "work-item", "Search relevance", "--kind", "change"); code != ExitOK {
 		t.Fatalf("second item failed: %s", e)
 	}
-	if got := readFile(t, project, "backlog/work-items/search-relevance/index.md"); !strings.Contains(got, "key: WORK-00002") {
+	if got := readFile(t, project, wiPath(t, project, "search-relevance", "index.md")); !strings.Contains(got, "key: WORK-00002") {
 		t.Errorf("repeated asks burned a number:\n%s", got)
 	}
 }
