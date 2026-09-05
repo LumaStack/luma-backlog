@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0014
 title: Detect two records holding one key
-workflow_status: captured
+workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T00:17:27Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T01:45:47Z'}
+closed: {on: 2026-09-05, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 ---
 
 # Detect two records holding one key

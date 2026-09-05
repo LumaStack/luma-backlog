@@ -51,6 +51,7 @@ func newListCommand(app *App) *cobra.Command {
 			// parseable, so a caller piping the output is unaffected while
 			// still being told.
 			reportSkipped(cmd.ErrOrStderr(), skipped)
+			reportDuplicateKeys(cmd.ErrOrStderr(), b)
 
 			out := cmd.OutOrStdout()
 			if asJSON {
