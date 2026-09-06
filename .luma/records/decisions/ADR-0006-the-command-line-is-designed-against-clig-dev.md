@@ -5,8 +5,7 @@ decided: 2026-09-05
 stage: provisional
 reopen_trigger: a departure recorded here turns out to be an oversight rather than a choice, or clig.dev changes a rule this record relies on
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:10:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T02:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:29:25Z'}
 ---
 
 # ADR-0006: The command line is designed against clig.dev
@@ -68,6 +67,41 @@ records the design so it can be added rather than re-derived.
 terminal is attached**, and prints concise help otherwise. CLIG's help section
 carries an explicit exception for programs that are interactive by default;
 this invokes it, and adds the terminal condition the specification omits.
+
+### Presentation follows gh where CLIG is silent
+
+CLIG prescribes no synopsis format and no help layout — it shows examples and
+formalizes nothing. Where it is silent, **gh is the model.**
+
+**Not docker**, whose `docker [OPTIONS] COMMAND` advertises global options
+before the command. This tool has none: the specification defines no global
+flags, nothing registers a persistent one, and `--help` and `--version`
+terminate rather than combine. Borrowing that synopsis would promise a shape
+that does not exist. **Not kubectl**, whose `kubectl [flags] [options]` names no
+command at all.
+
+gh fits because its shape is already ours: `gh <command> <subcommand> [flags]`
+is *noun then verb*, decided above.
+
+Concretely:
+
+- **Uppercase section headers without colons** — `USAGE`, `FLAGS`, `EXAMPLES`.
+- **`luma-backlog <command> <subcommand> [flags]`**, one line. Cobra emits two
+  for a root that both runs and has subcommands; neither is what anyone types.
+- **Commands grouped, not listed flat.** Nouns together, standalone verbs
+  together, `completion` and `help` out of the way. They currently interleave
+  alphabetically as though they were peers.
+- **`EXAMPLES` and `LEARN MORE`**, which are *help text leading with examples*
+  and *a documentation link in top-level help* — both already adopted below,
+  neither built.
+- **Help topics for the published contracts**, `luma-backlog help exit-codes`
+  first, because §9.4 makes those a promise and the promise currently lives
+  only in the specification.
+
+**The bracket convention carries meaning and is not decorative.** `[command]`
+is optional because a bare invocation is a real call — the board when
+interactive, help otherwise, decided above. docker writes `COMMAND` unbracketed
+because for docker it is required. Ours must stay optional.
 
 ### Adopted from CLIG, absent from the specification
 
