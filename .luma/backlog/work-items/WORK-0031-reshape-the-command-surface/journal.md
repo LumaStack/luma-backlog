@@ -26,3 +26,6 @@ replace-move-with-work-item-rank was one task holding five: ADR-0005 needs confi
 workflow_status now accepts a mapping of status to ordinal as ADR-0005 asks, and still accepts a list, deriving ordinals ten apart — every config written before this is a list, including this repo's own, so refusing it would have been a migration nobody asked for yet
 a mapping's ordinals are read from the yaml node rather than the decoded map, because ranging a Go map loses the document order that IS the ladder order
 ordinals must ascend with the ladder and are refused at load if they do not — a ladder that reads one way and sorts another would put the board in an order nobody wrote down
+the ordinal prefix has to be zero-padded like the position, which neither ADR-0005 nor spec 9.6 says — without it ordinal 100 sorts before 20 as text and the prefix that exists to make sorting work is the thing breaking it
+positions use big.Rat rather than float — bisection halves, halving a finite decimal stays finite, so every value is representable exactly and precision extends by one digit at a time instead of rounding
+spec 9.6's worked table is now a test, so the document and the code cannot drift; the squeezed row was the one worth having, since it is where precision extends past three decimals
