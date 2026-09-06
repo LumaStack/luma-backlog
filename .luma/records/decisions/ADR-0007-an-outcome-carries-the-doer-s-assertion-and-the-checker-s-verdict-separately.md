@@ -5,6 +5,7 @@ decided: 2026-09-05
 stage: draft
 reopen_trigger: the two axes are found to always agree in real use, which would mean the split is recording a distinction nobody makes
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:40:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:05:00Z'}
 ---
 
 # ADR-0007: An outcome carries the doer's assertion and the checker's verdict separately
@@ -51,18 +52,31 @@ verified: [{by: 'human:maintainer', at: …, verdict: proven}]
   ([[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]]),
   and the field is shaped as an event so a list can subsume it without a
   contract change.
-- **`verified`** — the checker, and `proven`, `failed`, or `unmeasurable`.
+- **`verified`** — the checker, and `proven`, `disproven`, or `unmeasurable`.
   Already a list.
+
+**`disproven` rather than `failed`.** *Failed* slides between two different
+findings — *the desired state does not hold* and *the check itself broke* — and
+they call for opposite responses. `proven` and `disproven` are a matched pair
+about the **condition**, both of them positive findings: somebody looked and
+established something. If `failed` did mean *the verification failed*, it would
+be `unmeasurable` under another name.
 
 **`unmeasurable` is a verdict on the outcome, not on the work.** It says
 `verify_by` is broken or impossible, which is feedback owed to whoever wrote
 the outcome rather than to whoever did the work.
 
+**The two axes use deliberately different words.** A doer says `succeeded` or
+`failed`; a checker says `proven` or `disproven`. The doer is reporting an
+attempt, the checker is establishing a fact, and the weaker vocabulary on the
+weaker claim means an assertion can never be misread as a verdict — including
+by somebody scanning the raw file.
+
 ### The commands
 
 ```
 outcome assert <ref> <succeeded|failed>
-outcome verify <ref> <proven|failed|unmeasurable> [--evidence …]
+outcome verify <ref> <proven|disproven|unmeasurable> [--evidence …]
 ```
 
 **The verdict is required, not defaulted.** Recording proof must be said out
@@ -78,7 +92,7 @@ whose thesis is that unbacked assertions are untrustworthy should not have
 the design distrusts, and would let a doer close their own work.
 
 `work-item close <ref> delivered` is refused unless **at least one live outcome
-exists and every one is proven.** Unreadable, unverified, verified-failed and
+exists and every one is proven.** Unreadable, unverified, disproven and
 unmeasurable are all the same answer: not proven. This collapses the three
 refusal paths in `close.go` into one.
 
@@ -176,7 +190,7 @@ distrusted.
 | Candidate | Set aside because |
 | --- | --- |
 | **One axis, as §4.4 has it** | Cannot distinguish *nobody checked* from *checked and failed*. The same test correctly removes `abandoned` from the dispositions and correctly adds verdicts here; §4.4 applied it and got this case wrong. |
-| **`verify --failed` / `--unmeasurable`, success as default** | Backwards compatible and ergonomic. Set aside on the asymmetry above. *Reopened if requiring the verdict proves to cost more than the accidental-proof it prevents.* |
+| **`verify --disproven` / `--unmeasurable`, success as default** | Backwards compatible and ergonomic. Set aside on the asymmetry above. *Reopened if requiring the verdict proves to cost more than the accidental-proof it prevents.* |
 | **A separate verb for a negative verdict** | Reads better in isolation; splits one evidence trail across two commands and grows a verb per verdict. `check` is unavailable — §9.2 assigns it to evaluating conditions. |
 | **Blocking agent self-verification** | What the maintainer first wanted, and it would be the first gate the tool ships — §5.0 and §5.4 both need amending for it. Deferred to configuration. *Reopened when somebody wants the strict posture enforced rather than reported.* |
 | **Keeping `abandoned`** | Derivable. *Reopened if the distinction between stopped-before-starting and stopped-midway turns out to be one people make and the record cannot reconstruct.* |

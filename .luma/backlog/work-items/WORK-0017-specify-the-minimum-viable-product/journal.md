@@ -8,6 +8,7 @@
 ## ▶ 2026-09-06
 
 swept the session for decisions living only in conversation — the completion model became ADR-0007, and ADR-0005 gained the rank verb rename, the sort direction, and the rule that set refuses the rank field
+verification verdicts are proven, disproven, unmeasurable — failed was ambiguous between the state not holding and the check breaking, and under the second reading it was unmeasurable by another name
 
 ## ▶ 2026-09-05
 
