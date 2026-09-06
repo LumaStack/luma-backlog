@@ -1,23 +1,58 @@
 ---
 type: procedure
 title: Show where a work item stands
-description: Show a work item and everything about it — details, outcomes, tasks, journal and what would move it along — or show whichever work items were asked for, by status, by column, by kind, or all of them. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see work items. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-next), or to change anything.
+description: Show one record and everything about it, show a column or status, or show the backlog at a glance when nothing is named. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see records. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-next), or to change anything.
 ---
 
 # Show where a work item stands
 
-**Two questions arrive in the same words: one work item, or several.** Work out
-which before reading anything --- "where is the retry work" and "what's in
-progress" want completely different answers.
+**Three requests arrive in the same word. Route before reading anything.**
 
-This is the way into both `work-item show` and `work-item list`. Choosing
-between them, and choosing the filter, is the work.
+| asked for | do |
+| --- | --- |
+| a named record --- `WORK-0031`, an outcome, a task | **one record**, below |
+| a column or status --- "To Do", "what's in progress" | **a listing**, below |
+| nothing at all | **the summary**, below --- and stop there |
 
 ---
 
-# One work item
+# Nothing named: the summary
 
-**Four reads and a synthesis.** No command gives the whole picture yet.
+```
+luma-backlog work-item list --json
+```
+
+**Print the count and the columns. Then say how else to ask. Then stop.**
+
+> 42 work items
+>
+> | column | count |
+> | --- | --- |
+> | Captured | 18 |
+> | Preparing | 11 --- ten unprepared, one prepared |
+> | To Do | 0 |
+> | In Progress | 0 |
+> | Closed | 13 |
+>
+> Ask for a record --- *show WORK-0031* --- a column --- *show To Do* --- or a
+> kind --- *show the defects*.
+
+**Say nothing else.** No diagnosis, no shape commentary, no observation about
+what the counts imply, no recommendation. Somebody who wanted an opinion will
+ask for one, and the summary exists so they can see what to ask about.
+
+**Split a column's count only where the statuses inside it differ** --- *"11 ---
+ten unprepared, one prepared"* --- because a column that groups three statuses
+otherwise hides which of them the work is sitting at. One status, one number.
+
+**Columns come from `.luma/config`**, not from this file. Read them there; a
+project may rename or regroup them.
+
+---
+
+# A named record
+
+**A work item takes four reads.** Nothing gives the whole picture yet.
 
 ```
 luma-backlog show <ref>                 # the record itself
@@ -26,8 +61,12 @@ luma-backlog outcome list -w <ref>      # what must be true
 luma-backlog work-item journal -w <ref> # what was learned
 ```
 
+**Anything else takes one.** An outcome, a task, a decision or an exploration
+has nothing hanging off it --- `show <ref>` is the whole answer, and running the
+other three returns nothing while looking thorough.
+
 **Read all four before saying anything.** Each answers a different question and
-any one of them alone is misleading — a work item with every task closed and an
+any one alone is misleading --- a work item with every task closed and an
 unverified outcome is **not done**, and a work item with no tasks may be
 perfectly healthy.
 
@@ -83,63 +122,40 @@ has made is a real answer and a more useful one than inventing a task.
 
 ---
 
-# Several work items
+---
 
-**Map the question to a filter. Do not list everything and narrow by reading.**
+# A column or a status
 
 ```
-luma-backlog work-item list                      # all of them
-luma-backlog work-item list --status <status>    # one status
-luma-backlog work-item list --kind <kind>        # defects, requests, inquiries…
-luma-backlog work-item list --tree               # with tasks and outcomes beneath
+luma-backlog work-item list --status <status>   # once per status in the column
+luma-backlog work-item list --kind <kind>
 ```
+
+**Map what was asked to a filter. Do not list everything and narrow by reading.**
 
 | asked for | filter |
 | --- | --- |
 | "what's in progress" | `--status in_progress` |
 | "what have we captured" | `--status captured` |
 | "show me the defects" | `--kind defect` |
-| "what's in To Do" | a column --- see below |
-| "everything on X" | `--tree`, or [[backlog-show]] on that one item |
-
-## Columns are groups of statuses
-
-A column is defined in `.luma/config`, not here. **Read it there** --- a project
-may rename or regroup them, which is the point of it being configuration.
-
-| column | statuses |
-| --- | --- |
-| Captured | `captured` |
-| Preparing | `unprepared`, `preparing`, `prepared` |
-| To Do | `todo` |
-| In Progress | `in_progress` |
-| Closed | `closed` |
+| "what's in To Do" | the statuses that column groups |
 
 **There is no `--column` flag**, so a column spanning three statuses costs three
 calls concatenated in ladder order. Say so when it shows --- it is a gap, not a
-technique.
-
-**Two other things the command cannot express**, worth naming rather than
-working around silently: there is no way to ask for *everything except closed*,
-and no way to pass more than one status.
-
-## Reading a listing
+technique. There is also no way to ask for *everything except closed*, and no
+way to pass more than one status.
 
 **Order is rank**, so the top is what somebody chose to be next. Records nobody
-ranked sort last --- that is an absence of a decision, not neglect.
+ranked sort last --- an absence of a decision, not neglect.
 
-**Report the shape when it is the answer.** Someone asking what is in progress
-and finding nine things has been told something more useful than the nine names.
-What to *do* about it is [[backlog-next]].
+**Report the shape only when it is the answer.** Somebody asking what is in
+progress and finding nine things has been told something useful. What to *do*
+about it is [[backlog-next]].
 
-- **In Progress with many items** --- more started than finished.
-- **To Do long and unmoving** --- more committed to than gets done.
-- **Captured growing while Preparing stays empty** --- intake without selection.
-- **Preparing full and To Do empty** --- work understood and then not chosen,
-  usually a missing decision rather than missing effort.
+**An empty result is an answer.** Say the filter that produced it, so they can
+tell an empty column from a wrong question.
 
-**An empty result is an answer.** Say the filter that produced it, so the person
-can tell an empty column from a wrong question.
+---
 
 ## What this never does
 
@@ -147,6 +163,6 @@ can tell an empty column from a wrong question.
 asked cannot tell what they had. If something needs fixing, say so and let them
 ask.
 
-**It does not recommend.** Describing a column and choosing what to work on are
-different acts --- see [[backlog-next]]. Somebody asking what is in To Do wants
-to know what is in To Do.
+**It does not recommend.** Describing and choosing are different acts --- see
+[[backlog-next]]. Somebody asking what is in To Do wants to know what is in
+To Do.
