@@ -68,6 +68,15 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 			return nil, UsageError(
 				"rank is not set directly --- use: work-item rank <ref> --top | --bottom | --before <ref> | --after <ref>")
 		}
+		// A status change is one operation that writes rank too (ADR-0005).
+		// Routing it here rather than letting the assignment through is what
+		// stops a caller producing a record whose two fields disagree.
+		if a.Field == "workflow_status" {
+			if err := s.applyStatus(it, a.Value); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if a.Raw {
 			if err := it.Record.SetRaw(a.Field, a.Value); err != nil {
 				return nil, UsageError("%w", err)

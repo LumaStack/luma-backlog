@@ -59,6 +59,7 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 		Observations: Observations{
 			Skipped:    skips(skipped),
 			Duplicates: s.duplicateKeys(),
+			Drifted:    s.statusDrift(items),
 		},
 	}, nil
 }

@@ -93,7 +93,12 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		}
 	}
 
-	it.Record.Set("workflow_status", "closed")
+	// Status and rank move together, always (ADR-0005). Closing is a status
+	// change like any other, so it goes through the one operation that writes
+	// both rather than setting the field itself.
+	if err := s.applyStatus(it, "closed"); err != nil {
+		return nil, err
+	}
 	if err := it.Record.SetRaw("closed", fmt.Sprintf("{on: %s, reason: %s, by: %s}",
 		s.Env.Today(), req.Reason, s.Env.Actor.String())); err != nil {
 		return nil, FailureError("%w", err)

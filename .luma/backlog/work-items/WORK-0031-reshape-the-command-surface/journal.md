@@ -48,3 +48,7 @@ settled on --reverse over git branch's --sort=-key: the sign-prefix form exists 
 direction goes in the sort key as --sort=-updated, not a separate --reverse: two flags for one ordering is the weaker model, and it extends to multi-key later without a second mechanism
 the parsing objection against --sort=-key was false and nearly decided it — pflag takes the next argument as a value whether or not it starts with a dash; checked rather than assumed, after asserting it the other way
 --reverse is not being built, so the -r collision recorded on ADR-0009 an hour ago dissolved; the note is corrected rather than left, since stale guidance in a record in force is worse than none
+status and rank are written by one operation in internal/app that no caller can bypass — set routes a workflow_status assignment into it and close calls it rather than setting the field, so there is no path that produces a record where the two disagree
+drift from a hand-edited vocabulary is observed and never refused, in the shape list already uses for skips: it names the record, the ordinal the status carries now, and the rank that says otherwise
+ascending ordinals give ladder order, so a flat listing leads with captured and trails with closed — right for a board with columns, wrong for a terminal where the least actionable work ends up on top; belongs with --group rather than here
+rank repair is not built — ADR-0005 names it as the third mechanism and the message tells you to re-set the status instead, which does the same thing one record at a time

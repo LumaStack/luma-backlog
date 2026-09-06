@@ -35,4 +35,12 @@ func observe(w io.Writer, o app.Observations) {
 		}
 		fmt.Fprintf(w, "A key is meant to name one record, and every citation of this one is ambiguous.\n")
 	}
+	for _, d := range o.Drifted {
+		fmt.Fprintf(w, "luma-backlog: %s ranks at a status it no longer holds:\n"+
+			"  status %q now carries ordinal %d, and its rank reads %s\n",
+			d.Path, d.Status, d.Ordinal, d.Rank)
+	}
+	if len(o.Drifted) > 0 {
+		fmt.Fprintf(w, "The status vocabulary was edited by hand. Re-set the status on each to repair it.\n")
+	}
 }
