@@ -20,6 +20,10 @@ things.
 **For now the command does nothing.** The model should do its best, and tool
 support comes later.
 
+**The journal should hold learnings related to that work item, not unrelated
+things.** And when a learning has been journalled once, it should not be
+journalled again on unrelated work items.
+
 ---
 
 *Everything above is the maintainer's, with wording improved and intent
@@ -42,6 +46,18 @@ the second is exactly what running it as prose first will show.
 learn, and what should we do differently?"* — and `docs/design/mvp.md` does not.
 `docs/lifecycle.md` carries the same phase. So the concept is designed and
 absent rather than missing.
+
+**Both rules were broken within minutes of the practice starting.** Closing
+WORK-0018 produced six entries; two did not belong. One repeated a learning
+already on WORK-0032, and one was about `show` printing a key twice — a fact
+about the corpus, not about that work, now filed on WORK-0002. So the failure
+mode is real, immediate, and was invisible until somebody read the journal back.
+
+**And it fights the journal's own rule.** §5.5 says *append, never curate* —
+which is right for history and offers nothing for a misfiling. Correcting one
+means moving it to the record it belongs on, which is neither appending nor
+curating. That the two entries survived a commit before anybody noticed is the
+argument that prose may not hold this.
 
 **Two different learnings are being asked for, and they have different readers.**
 
@@ -70,6 +86,12 @@ condition may already half-cover it.
 | **A condition** — closed with nothing journalled since work began | Fits §5.2 exactly, reports rather than refuses, and needs no new field. |
 | **A flag on close** — `--learned "…"` writing a journal line as part of closing | One invocation. §5.5's own argument applies: *friction at the moment of writing is what loses the learning.* |
 | **A record type** | Heaviest. Probably where a systemic learning wants to live, and probably not where a per-work-item one does. |
+
+**Whatever is chosen has to answer "does this belong here?"**, which none of the
+mechanisms above do. A flag makes writing cheap and does nothing about writing
+it in the wrong place; a condition can see an empty journal and cannot see a
+misfiled entry. Detecting a repeat across work items is at least mechanical —
+the same sentence appearing twice is findable. Detecting *unrelated* is not.
 
 The flag and the condition are complementary rather than alternatives: one makes
 it cheap, the other makes its absence visible.
