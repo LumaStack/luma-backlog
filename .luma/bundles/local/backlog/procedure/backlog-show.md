@@ -159,76 +159,9 @@ A reader must be able to tell them apart without being told.
   sentence and should read as one.
 - **A mark carries the state, not a column.**
 
-  | | means |
-  | --- | --- |
-  | `○` | not started --- a `todo` task, an unverified outcome |
-  | `◐` | under way --- `in_progress` |
-  | `✔` | delivered, success, or proven --- it came out |
-  | `↪` | superseded --- picked up elsewhere |
-  | `⊘` | cancelled or disabled --- switched off on purpose |
-  | `✘` | error, failed, or abandoned --- it did not come out |
-
-  **Unfinished work shares the circle; finished work changes shape.** `○` and
-  `◐` differ only by fill, which is right --- they are the same thing at two
-  points. A filled circle would join that family and be confused with an empty
-  one in a column; `✔` is a different mark entirely, so *done* separates from
-  *not done* before anything is read, and the fill only has to distinguish the
-  two unfinished states from each other.
-
-  **Use the heavy marks --- `✔` (U+2714) and `✘` (U+2718), not `✓` and `✗`.**
-  The light pair is visibly thinner than the circles beside it, so a finished
-  row reads as fainter than an unfinished one --- backwards, since finished work
-  is what a scan is trying to skip past.
-
-  **`✘` mirrors `✔` for the same reason.** An ending that did not go well should
-  not look like one that did, and it should still read as an ending.
-
-  **Four endings, and the line between them is who decided and how it went.**
-
-  - **`✔` delivered, success, proven** --- **it came out.** The work landed, the
-    check passed, the outcome holds.
-  - **`↪` superseded** --- a hand-off. The work continues under another record.
-  - **`⊘` cancelled or disabled** --- **switched off on purpose.** Somebody chose
-    not to do this, or turned it off. A healthy outcome, and it must not carry a
-    mark that reads as failure.
-  - **`✘` error, failed, or abandoned** --- **it did not come out.** The work
-    failed, the check errored, or it stopped with nobody deciding and nobody
-    coming back.
-
-  **`⊘` is a decision; `✘` is the absence of one or the failure of one.** That is
-  the whole distinction, and recording an abandonment as a cancellation invents a
-  choice nobody made.
-
-  **Most of this the tool cannot yet say.** `canceled` and `abandoned` are real
-  dispositions today. *Error*, *failed* and *disabled* are not --- an outcome is
-  `unverified` or `passing`, with nothing between, and ADR-0007's verdicts are
-  unbuilt. Use `✘` where the record claims it; **do not infer a failure the
-  record does not make.**
-
-  **`unverified` is `○`, not `✘`.** Nobody having looked is not a bad result ---
-  it is no result. The distinction that has nowhere to go today is the outcome
-  that *was* checked and could not be decided; it records as `unverified` and is
-  indistinguishable from untouched, which hides the outcomes that can never be
-  verified as written.
-
-  **`↪` is not a verdict.** Superseded work did not fail --- it moved, and
-  something else covers it now, which is often a good result. Marking it `✘`
-  would report a loss where there was a hand-off. The hooked arrow says *picked up
-  over there*, which is also the prompt: **name what superseded it, on the same
-  line.** A supersession with no successor named is the one shape of this that
-  is genuinely lost work.
-
-  **`✘` has little to attach to yet.** A task has no failure state --- it closes
-  or it does not --- and an outcome is `unverified` or `passing` with nothing in
-  between. It applies today to a work item closed as `canceled`, `abandoned` or
-  `superseded`, and it is waiting on ADR-0007's verdicts for outcomes. Do not
-  invent a failure the record does not claim.
-
-  The mark replaces a status column: three symbols in a fixed first position
-  scan in one pass, where a word per row has to be read. It also puts outcomes
-  and tasks in the same visual language, which is what lets somebody see at a
-  glance that every task is `✔` and every outcome is `○` --- the state worth
-  noticing most, and the one a grouped list hides.
+  **The marks, the list shape, and the rule about showing the command are
+  [[showing-records]].** Read it there; it is shared with [[backlog-next]] and a
+  copy here would drift from it.
 
 - **One list each, in a fixed order: `○`, `◐`, `✔`, `↪`, `⊘`, `✘`.** Endings
   last, best first, and `✘` last of all --- it is the one worth arriving at

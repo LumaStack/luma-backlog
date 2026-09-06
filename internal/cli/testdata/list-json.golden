@@ -6,6 +6,10 @@
     "name": "WORK-0001-payments-v2",
     "slug": "WORK-0001-payments-v2",
     "title": "Payments v2",
+    "created": {
+      "by": "agent:test",
+      "at": "2026-08-09T12:00:00Z"
+    },
     "status": "captured",
     "work_item": "WORK-0001-payments-v2"
   },
@@ -16,6 +20,10 @@
     "name": "WORK-0002-search-relevance",
     "slug": "WORK-0002-search-relevance",
     "title": "Search relevance",
+    "created": {
+      "by": "agent:test",
+      "at": "2026-08-09T12:00:00Z"
+    },
     "status": "captured",
     "work_item": "WORK-0002-search-relevance"
   }

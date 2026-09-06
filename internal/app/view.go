@@ -29,6 +29,16 @@ type View struct {
 	// record nobody has placed, which is most of them: ranking one record
 	// writes one file, so a status is not seeded just because it was read.
 	Rank string
+	// Created and Modified are the record's stamps. Empty where a record has
+	// none --- one written before stamps existed, or one nobody has edited.
+	Created  Stamp
+	Modified Stamp
+}
+
+// Stamp is who did something and when.
+type Stamp struct {
+	By string
+	At string
 }
 
 // Record is a view with everything a single-record read needs.
@@ -63,6 +73,8 @@ func (s *Session) view(it corpus.Item) View {
 		Status:   it.Status(s.Config.DefaultStatusFor(it.Type())),
 		WorkItem: it.WorkItem,
 		Rank:     rankOf(it),
+		Created:  stampOf(it, "created"),
+		Modified: stampOf(it, "modified"),
 	}
 }
 
@@ -118,6 +130,12 @@ type Skip struct {
 type Duplicate struct {
 	Key   string
 	Paths []string
+}
+
+// stampOf reads a {by, at} field, or an empty stamp where there is none.
+func stampOf(it corpus.Item, key string) Stamp {
+	by, at := it.Record.Stamp(key)
+	return Stamp{By: by, At: at}
 }
 
 // rankOf reads a record's rank, or empty where it has none.

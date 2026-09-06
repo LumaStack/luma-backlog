@@ -123,6 +123,25 @@ func (r *Record) Get(key string) (string, bool) {
 	return "", false
 }
 
+// Stamp reads a `{by: ..., at: ...}` field --- the shape `created` and
+// `modified` use. Missing keys come back empty rather than as an error: a
+// record written before stamps existed has neither, and that is not a fault.
+func (r *Record) Stamp(key string) (by, at string) {
+	_, v := r.find(key)
+	if v == nil || v.Kind != yaml.MappingNode {
+		return "", ""
+	}
+	for i := 0; i+1 < len(v.Content); i += 2 {
+		switch v.Content[i].Value {
+		case "by":
+			by = v.Content[i+1].Value
+		case "at":
+			at = v.Content[i+1].Value
+		}
+	}
+	return by, at
+}
+
 // Has reports whether a key is present, whatever its shape.
 func (r *Record) Has(key string) bool {
 	_, v := r.find(key)

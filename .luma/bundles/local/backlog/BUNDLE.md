@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.12.0
+version: 0.13.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -35,6 +35,12 @@ they need.
 - `_types/outcome` — the condition that must hold for a work item to be done.
   True or false, never a task in disguise.
 
+**Policies**
+
+- [[showing-records]] — how a record is rendered anywhere: the state marks, the
+  shape of a list, and showing the command that produced it. Shared, so two
+  procedures cannot drift apart.
+
 **Procedures** — one per thing somebody does to a backlog. Each holds the
 judgment and calls the command for everything else.
 
@@ -54,6 +60,24 @@ judgment and calls the command for everything else.
 - [[backlog-next]] — picks the next thing to work on, and says why.
 
 ## Version
+
+`0.13.0` — **one place says how a record is rendered.**
+
+`backlog-show` and `backlog-next` both print lists of records, and each carried
+its own copy of the marks and the list shape. Two procedures rendering the same
+thing differently teach a reader to look in two places, and the difference is
+never deliberate — it is one of them having been edited. [[showing-records]] is
+now the source and both point at it.
+
+`backlog-next` is rewritten around what somebody actually wants on arrival:
+what they last touched, what is under way and queued, what is worth preparing
+if nothing is, then a rule, then risks and a ranked shortlist. It said one
+useful thing before — that an empty queue is the answer — and buried it.
+
+The marks mirror `command-line-interface` `policy/ascii-styleguide`, which is
+the real source. The vendored copy of that bundle here is 0.1.0 and predates it,
+so the section carries a note to replace itself with a pointer once this project
+adopts 0.3.0 or later.
 
 `0.12.0` — **the procedures call the commands.**
 

@@ -405,3 +405,38 @@ func TestTheLastChildClosesTheBranch(t *testing.T) {
 		t.Errorf("expected exactly one closing branch:\n%s", out)
 	}
 }
+
+// A listing carries each record's stamps, so a caller can answer "what changed
+// recently" without opening every file. Additive to the --json shape
+// (spec.md §9.9).
+func TestListingCarriesStamps(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+
+	_, out, _ := run(t, app, "work-item", "list", "--json")
+	if !strings.Contains(out, `"created"`) {
+		t.Errorf("listing omitted created:\n%s", out)
+	}
+	if !strings.Contains(out, `"at"`) || !strings.Contains(out, `"by"`) {
+		t.Errorf("a stamp lost its parts:\n%s", out)
+	}
+}
+
+// A record nobody has edited has no modified stamp, and the field is absent
+// rather than empty --- absent says the record has none, where {"by":"","at":""}
+// says the tool read one and found nothing in it.
+func TestAnUneditedRecordHasNoModifiedStamp(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+
+	_, out, _ := run(t, app, "work-item", "list", "--json")
+	if strings.Contains(out, `"modified"`) {
+		t.Errorf("an unedited record carried a modified stamp:\n%s", out)
+	}
+
+	run(t, app, "set", "WORK-0001", "workflow_status=todo")
+	_, after, _ := run(t, app, "work-item", "list", "--json")
+	if !strings.Contains(after, `"modified"`) {
+		t.Errorf("an edited record has no modified stamp:\n%s", after)
+	}
+}
