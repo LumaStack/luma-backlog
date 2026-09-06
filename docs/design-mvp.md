@@ -122,6 +122,12 @@ this section disagree, this one is the scope.
 - **Creating a work item.**
 - **Creating an outcome.**
 - **Creating a task.**
+- **Computed completion on the card** — how many of a work item's live outcomes
+  are proven, out of how many there are. This is the board's reason to exist
+  (`spec.md` §11.1): it is derived by counting evidence, appears nowhere on
+  disk, and without it a column of identifiers and titles shows exactly what a
+  directory listing shows. `CompletionOf` already computes it, so the cost is
+  display rather than arithmetic.
 
 ### Should
 
@@ -175,13 +181,6 @@ That is a coherent split — creating is the expensive typing, completing is one
 short command — and it is deliberate rather than an omission.
 
 ### Still open
-
-**Whether a card shows computed completion.** `spec.md` §11.1 says this is the
-board's reason to exist — *"opening a record in an editor tells you what it
-says; the board tells you what is true"* — and completion is derived by counting
-outcomes with evidence, appearing nowhere on disk. A board of identifiers and
-titles shows nothing a directory listing does not. The arithmetic already exists
-(`CompletionOf`), so the cost is display rather than computation.
 
 **How horizontal movement works.** Whether moving the cursor past the last
 visible column shifts the viewport by one, or whether paging the column set is

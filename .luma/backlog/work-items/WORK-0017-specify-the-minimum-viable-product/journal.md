@@ -15,6 +15,7 @@ new takes a title either way — positional words joined as the documented path,
 taking and owning separated — taken {by, at, expires} on a task, ownership left unmodelled so the word stays free; taken beat claimed because this repository already spends claim on assertions about truth
 design-interface.md renamed to design-sketches.md and its header rewritten — the file is concept art with a short life, and a future session reasoning from a drawing as though it were settled is the specific failure the new header exists to prevent
 board scope set in three tiers — must is a navigable multi-column board plus creating work items, outcomes and tasks; ranking, detail, assert and verify are should; filters and menus are nice to have
+three outcomes written — spec.md agreeing with the decisions, the command surface enumerated in one place, and every board capability naming its command or declaring itself view state; approving these is what approving the specification means
 
 ## ▶ 2026-09-05
 
