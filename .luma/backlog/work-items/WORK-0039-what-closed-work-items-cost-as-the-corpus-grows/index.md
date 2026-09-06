@@ -25,6 +25,9 @@ external projects will break and stay broken.**
 
 **Which should we choose?**
 
+**And `spec.md` §7.1 is in scope.** The rule that a record never moves is part
+of what this inquiry revisits, not a constraint on it.
+
 ---
 
 *Everything above is the maintainer's, with wording improved and intent
@@ -32,24 +35,47 @@ unchanged. Everything below was added by the agent while capturing it.*
 
 ## Added while capturing
 
-### Moving them is already forbidden, for a reason better than broken links
+### What §7.1 claims, and what has changed since it was written
 
-`spec.md` §7.1 exists to prevent exactly this:
+The rule is stated three times — §7.1, and again in §9.2 and §9.10 as *archive
+never deletes and never moves*. Its argument:
 
 > Filing a record under `active/` and later moving it to `archived/` therefore
 > **changes what the record *is***, breaking every inbound link to it and
 > severing it from its own history.
 
-Identity **is** the path in this format. So a moved record does not merely have
-stale links pointing at it — it has stopped being the record those links meant.
-§9.2 and §9.10 say the same twice more: `archive` never deletes **and never
-moves**.
+So the claim is not *links break* but **identity is the path**, and a moved
+record has stopped being the record those links meant.
 
-**And the objection already raised is the decisive one.** Auto-fixing links
-works inside the repository and does nothing for anything outside it — which
-is every citation in a commit message, a pull request, another repository, or a
-person's notes. §7.1's rule is what keeps those working forever; moving records
-breaks them permanently and silently.
+**Two things weaken that premise, and neither existed when it was written.**
+
+**Records now have keys.** WORK-0011 gave every work item one, and this
+conversation settled that a reference is key-scoped —
+`WORK-0017/outcomes/<slug>`
+([[backlog/work-items/WORK-0023-refer-to-a-record-by-the-path-a-person-would-type]]).
+**A citation by key survives any move.** Only a path citation breaks, and the
+project has already decided paths are not how records should be named. That
+does not overturn §7.1 — the format still resolves by path — but it removes
+much of what the rule was protecting.
+
+**§7.1 does not consider a tombstone.** Leaving a stub at the old path pointing
+at the new one is ordinary practice everywhere else that moves addressable
+things, and it makes an external citation resolve rather than break. §7.1
+weighs *move* against *do not move* and never weighs *move and leave a
+forwarding record*.
+
+**What still stands**, and would have to be answered:
+
+- **A tombstone is a new record type**, and every one of them is a permanent
+  file. Moving to save reading files that produces a file per move is worth
+  checking arithmetic on.
+- **Git history follows a rename** and a reader following it does not, which is
+  the *"severed from its own history"* half — untouched by keys or tombstones.
+- **The externally-broken-citation objection** is the maintainer's own and is
+  not answered by auto-fixing, only by a tombstone.
+
+**This is normative text with the rule repeated in three places**, so
+overturning it wants a decision record rather than an edit.
 
 ### The cost was measurable, so it was measured
 
@@ -93,8 +119,11 @@ building it once.
 
 ### What is genuinely open
 
-- **Whether to build it before anything hurts.** Nothing does yet, and §7.1
-  names the index as the answer without saying when.
+- **Whether §7.1 still holds** now that keys exist and a tombstone is on the
+  table. That is the question the maintainer put in scope, and the rest depends
+  on it.
+- **Whether to build an index before anything hurts.** Nothing does yet, and
+  §7.1 names it as the answer without saying when.
 - **Where it lives**, and whether it is committed. Derived data in a
   committed-only tree is a question the `luma-layout` bundle owns.
 - **Whether `list` should hide closed records by default** — which is a
@@ -106,8 +135,9 @@ building it once.
 ## What this produces
 
 A decision. **Concluding that nothing is built until the board makes it hurt is
-a complete result** — the measurement above supports it, and the option it
-rules out was already ruled out by §7.1.
+a complete result**, and the measurement above supports it. So is concluding
+that §7.1 should be narrowed — but that one needs a decision record, since the
+rule is stated in three places and other things lean on it.
 
 ## References
 
