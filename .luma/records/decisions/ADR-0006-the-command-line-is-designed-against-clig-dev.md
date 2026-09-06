@@ -5,6 +5,7 @@ decided: 2026-09-05
 stage: provisional
 reopen_trigger: a departure recorded here turns out to be an oversight rather than a choice, or clig.dev changes a rule this record relies on
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:10:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T01:00:00Z'}
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
@@ -146,12 +147,43 @@ to wrap; evidence about how agents actually behave when a subprocess blocks on
 input, which is reasoning here rather than measurement; or a convention for
 signaling *I am waiting for input* that a non-interactive caller can detect.
 
+### A title may be given either way
+
+```
+work-item new Fix the login timeout on mobile     # positional, words joined
+work-item new --title "Fix the login timeout"     # precise
+```
+
+**Both, and an error if both are supplied.**
+
+**The positional is the documented path**, and it absorbs multiple words — no
+quoting, no field name, nothing to remember. That is not a nicety here: cheap
+capture is load-bearing (`design-mvp.md` — *"make capture extremely cheap"*),
+and `capture-is-one-command` is a **verified** outcome of WORK-0001, so a
+flag-only form would be giving back a property this project already proved.
+
+It is also what §9.0.1 requires — *"a command whose only path requires knowing
+field names"* is ruled out, and `--title` is a field name. That section's
+argument is about the moment a person takes the pen, *"least willing to spend
+attention on a schema."*
+
+**`--title` exists for the precise case**, which §9.0.1 also names: agents want
+flags, and a title beginning with `-` or generated programmatically is safer
+given explicitly.
+
+**CLIG's objection is real in general and weak here.** It warns that positionals
+become ambiguous once further input is added — but everything else `new` takes
+is a named attribute (`--kind`, `--work-item`), and under noun-verb ordering
+there is no plausible second positional. The failure it warns about mostly
+cannot occur.
+
 ## Still open
 
-**Whether `new` takes its title positionally or as `--title`.** CLIG prefers
-flags. `spec.md` §9.0.1 rules out *"a command whose only path requires knowing
-field names"* and says a positional title must be enough — so `--title` as the
-only path would need that section amended. Accepting both satisfies each.
+**The configuration file format.** The estate's precedence model is adopted —
+six layers, `[defaults]` and `[require]`, read per invocation, resolved at one
+site. Whether the file is TOML is not this project's decision to make alone;
+`.luma/config/` is shared across tools, and `spec.md` §8.1 argues for YAML on a
+premise — that a repository should carry one format — already false here.
 
 ## Alternatives
 
@@ -160,6 +192,7 @@ only path would need that section amended. Accepting both satisfies each.
 | **Verb then noun**, matching what the binary does today | Precedent, not a decision. Noun-first gives completion something to offer at every position and lets a new record type arrive without touching an existing command (`spec.md` §9.1). |
 | **Keeping exit code `6`** | Deferred until claiming ships, at which point it is additive. |
 | **`--agent` to disable prompting** rather than `--prompt` to enable it | Puts the hang risk on the default path — an agent that forgets the flag stalls silently. The dangerous behavior should require the explicit word. *Reopened only if prompting ships and opt-in proves unusable.* |
+| **A title only as `--title`** | The more disciplined shape, and one obvious way to do it. Set aside because it requires amending §9.0.1, loses quote-free capture, and can be added later additively while removing a positional is breaking. |
 | **Flags for the dispositions** — `close --as delivered` | Safer against enum churn, and we removed `abandoned` while designing this. Set aside for brevity on the most-typed commands; the enum is small and closed. *Reopened if the dispositions change again, which would be evidence the positional is too rigid.* |
 
 ## Revisit When
