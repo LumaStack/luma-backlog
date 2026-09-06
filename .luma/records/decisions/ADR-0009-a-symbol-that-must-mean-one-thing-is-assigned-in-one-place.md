@@ -79,6 +79,23 @@ partial flag set means redoing it. **Re-open when the last command in
 [[work-items/WORK-0031-reshape-the-command-surface]] lands** and the full set
 can be seen at once.
 
+*Input for that decision, recorded as it turns up:*
+
+- **`-r` should be `--reverse`.** It is the listing convention --- `sort -r`,
+  `ls -r`. The competing meaning, *recursive*, belongs to commands that operate
+  on files (`cp -r`, `grep -r`) and does not read that way here. `-R` is worse,
+  since `ls -R` is recursive.
+- **`--reason` should give it up, and take `-m`.** `git commit -m` is the
+  convention, a reason is a message, and
+  [[records/decisions/ADR-0007-an-outcome-carries-the-doer-s-assertion-and-the-checker-s-verdict-separately]]
+  turns `--reason` from an enum into free prose, which makes it more
+  message-shaped rather than less.
+- **This was the first collision the record predicted.** `-r` was already
+  `--reason` before `--reverse` existed. Had the letter been settled when
+  `close` was written, the conventional one would now be unavailable to the
+  command that has the stronger claim --- which is the argument for deferring
+  rather than assigning as you go.
+
 **Hotkeys entirely.** The board does not exist. Re-open with it.
 
 ## References
