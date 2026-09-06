@@ -31,9 +31,12 @@ listing that does not follow it is not a backlog.
   than a thing of its own. It also extends to multi-key ordering later without
   a second mechanism.
 
-  Costs, accepted: reversing the default means naming it (`--sort=-rank`)
-  rather than saying `--reverse`; and the convention has to be taught in the
-  help text, where `--reverse` would explain itself.
+  Costs, accepted: reversing the default means naming it (`--sort=-rank`);
+  and the convention has to be taught in the help text, where a named flag
+  would have explained itself.
+
+  **There is no `--reverse`.** Not deferred --- not being built. One way to
+  express an ordering.
 
   **A parsing objection was raised and is false.** `--sort -updated` was
   expected to be read as flags rather than a value. It is not --- pflag takes
