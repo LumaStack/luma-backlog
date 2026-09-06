@@ -119,25 +119,25 @@ this section disagree, this one is the scope.
 - **Navigation between columns, and up and down within a column.**
 - **Navigation to columns that are offscreen.** Seven statuses do not fit at
   once; `captured` and `closed` are the bookends.
-- **Creating a work item.**
-- **Creating an outcome.**
-- **Creating a task.**
 - **Computed completion on the card** — how many of a work item's live outcomes
   are proven, out of how many there are. This is the board's reason to exist
   (`spec.md` §11.1): it is derived by counting evidence, appears nowhere on
   disk, and without it a column of identifiers and titles shows exactly what a
-  directory listing shows. `CompletionOf` already computes it, so the cost is
-  display rather than arithmetic.
+  directory listing shows. `CompletionOf` already computes it.
+- **A detail view of one work item** — its outcomes, their state, its tasks.
+- **Creating a work item, an outcome, and a task.**
+- **Moving a work item between columns, and ranking it within one**, with the
+  arrow keys.
 
 ### Should
 
-- **One visible column beside a detail view.**
-- **Ranking, and moving between columns, with the arrow keys.**
+- **One visible column beside the detail view**, as an alternative arrangement
+  to the columns.
 - **A loading screen** while work items are read from disk, and while whatever
   worktrees and branches turn out to require is resolved.
 - **Asserting an outcome.**
 - **Verifying an outcome.**
-- **Opening and editing a work item.**
+- **Opening a work item in an editor.**
 
 ### Nice to have
 
@@ -146,6 +146,28 @@ this section disagree, this one is the scope.
 - **Saying which person is present**, for attribution. Until then this is
   uncommitted per-machine configuration.
 - **Basic support for people working at the same time.**
+
+### Three things moved out of the tier they were first given
+
+**The detail view is a must, not a should.** Creating an outcome means adding it
+*to* a work item, which means standing on one and seeing what it already has —
+and completion on the card is a pointer that demands somewhere to resolve it.
+*Four of six proven* invites exactly one question, and a board that cannot
+answer it has put a number on screen to no purpose.
+
+**Moving and ranking are one interaction, so they are one scope item.**
+`spec.md` §11.2 describes a single modal move mode — *"enter it, reposition with
+the arrow keys across columns and within one, confirm or cancel."* Shipping the
+mode gives both; splitting them across tiers means building half a mode and
+paying for it twice. And *advance* is one of this document's six stages, so a
+board that cannot move a card leaves a stage with no board at all.
+
+**Asserting and verifying stay a should.** Once they are there the board runs
+the whole loop, which is the right eventual shape and more than a first release
+needs. The split that remains is deliberate: **the board arranges the work and
+the command line records the evidence.** Creating and arranging is the expensive
+typing; asserting is one short command. Both ship as commands regardless — this
+is only about which surface reaches them first.
 
 ### What this leaves out, and why it is not an oversight
 
@@ -167,18 +189,6 @@ is generous, the working surface is not."* This board does the opposite: the
 pile is simply the leftmost column, which is what makes `captured` a bookend.
 The intent behind §11.2 survives elsewhere, since nothing forces a person to
 look at that column.
-
-### Two readings this section assumes
-
-**Creating an outcome does not require the detail view.** Creating is a must and
-the detail view is a should, so the create flow opens from a selected card
-rather than from inside an opened work item. If that turns out to be wrong, the
-detail view moves up a tier rather than creation moving down.
-
-**The first board builds plans; the command line closes them.** Creating work
-items, outcomes and tasks is a must, while asserting and verifying are a should.
-That is a coherent split — creating is the expensive typing, completing is one
-short command — and it is deliberate rather than an omission.
 
 ### Still open
 
