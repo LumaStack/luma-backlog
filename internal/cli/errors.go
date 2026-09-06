@@ -3,6 +3,8 @@ package cli
 import (
 	"errors"
 	"fmt"
+
+	"github.com/lumastack/luma-backlog/internal/app"
 )
 
 // coded pairs an error with the exit code a caller should see.
@@ -43,9 +45,33 @@ func codeFor(err error) int {
 	if err == nil {
 		return ExitOK
 	}
+	// The layer classifies a failure without naming an exit code — the numbers
+	// are this surface's contract, and a board has no use for them. Translating
+	// is the adapter's job (.luma/records/decisions/ADR-0004).
+	if kind, ok := app.KindOf(err); ok {
+		return exitFor(kind)
+	}
 	var c coded
 	if as(err, &c) {
 		return c.code
 	}
 	return ExitUsage
+}
+
+// exitFor maps a failure kind onto the published exit code (docs/spec.md §9.4).
+func exitFor(k app.Kind) int {
+	switch k {
+	case app.Usage:
+		return ExitUsage
+	case app.NotFound:
+		return ExitNotFound
+	case app.Conflict:
+		return ExitConflict
+	case app.Refused:
+		return ExitRefused
+	case app.Taken:
+		return ExitClaimed
+	default:
+		return ExitError
+	}
 }

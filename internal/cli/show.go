@@ -5,11 +5,10 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
 	"github.com/spf13/cobra"
 )
 
-func newShowCommand(app *App) *cobra.Command {
+func newShowCommand(a *App) *cobra.Command {
 	var asJSON bool
 	cmd := &cobra.Command{
 		Use:   "show <record>",
@@ -19,48 +18,44 @@ func newShowCommand(app *App) *cobra.Command {
 		Args:         cobra.ExactArgs(1),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			b, cfg, _, err := openBacklog(app)
+			s, err := open(a)
 			if err != nil {
 				return err
 			}
-			defer b.Close()
+			defer s.Close()
 
-			it, err := backlog.Resolve(b, args[0])
+			rec, err := s.Get(args[0])
 			if err != nil {
-				return coded{ExitNotFound, err}
+				return err
 			}
 
 			out := cmd.OutOrStdout()
 			if asJSON {
-				rj, err := toRecordJSON(it, cfg.DefaultStatusFor(it.Type()))
-				if err != nil {
-					return failure("%w", err)
-				}
-				return writeJSON(out, rj)
+				return writeJSON(out, toRecordJSON(rec))
 			}
 
-			fmt.Fprintf(out, "%s\n%s\n\n", it.Title(), strings.Repeat("─", len([]rune(it.Title()))))
+			fmt.Fprintf(out, "%s\n%s\n\n", rec.Title, strings.Repeat("─", len([]rune(rec.Title))))
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
-			fmt.Fprintf(w, "path\t%s\n", it.Path)
-			fmt.Fprintf(w, "type\t%s\n", it.Type())
-			if k := it.Key(); k != "" {
-				fmt.Fprintf(w, "key\t%s\n", k)
-				fmt.Fprintf(w, "name\t%s\n", it.Name())
+			fmt.Fprintf(w, "path\t%s\n", rec.Path)
+			fmt.Fprintf(w, "type\t%s\n", rec.Type)
+			if rec.Key != "" {
+				fmt.Fprintf(w, "key\t%s\n", rec.Key)
+				fmt.Fprintf(w, "name\t%s\n", rec.Name)
 			}
-			if st := it.Status(cfg.DefaultStatusFor(it.Type())); st != "" {
-				fmt.Fprintf(w, "status\t%s\n", st)
+			if rec.Status != "" {
+				fmt.Fprintf(w, "status\t%s\n", rec.Status)
 			}
-			for _, k := range it.Record.Keys() {
+			for _, k := range rec.Order {
 				switch k {
 				case "type", "title", "workflow_status":
 					continue
 				}
-				if v, ok := it.Record.Get(k); ok {
+				if v, ok := rec.Raw[k]; ok {
 					fmt.Fprintf(w, "%s\t%s\n", k, v)
 				}
 			}
 			w.Flush()
-			if body := strings.TrimSpace(it.Record.Body()); body != "" {
+			if body := strings.TrimSpace(rec.Body); body != "" {
 				fmt.Fprintf(out, "\n%s\n", body)
 			}
 			return nil

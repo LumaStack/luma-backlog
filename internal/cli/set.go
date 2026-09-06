@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/app"
 	"github.com/spf13/cobra"
 )
 
-func newSetCommand(app *App) *cobra.Command {
+func newSetCommand(a *App) *cobra.Command {
 	var (
 		ifUnchanged string
 		unset       []string
@@ -26,7 +26,7 @@ func newSetCommand(app *App) *cobra.Command {
 		Args:         cobra.MinimumNArgs(1),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runSet(app, cmd, args[0], args[1:], unset, ifUnchanged)
+			return runSet(a, cmd, args[0], args[1:], unset, ifUnchanged)
 		},
 	}
 	cmd.Flags().StringVar(&ifUnchanged, "if-unchanged", "",
@@ -35,86 +35,38 @@ func newSetCommand(app *App) *cobra.Command {
 	return cmd
 }
 
-func runSet(app *App, cmd *cobra.Command, ref string, assignments, unset []string, ifUnchanged string) error {
-	b, cfg, _, err := openBacklog(app)
+func runSet(a *App, cmd *cobra.Command, ref string, assignments, unset []string, ifUnchanged string) error {
+	s, err := open(a)
 	if err != nil {
 		return err
 	}
-	defer b.Close()
+	defer s.Close()
 
-	if len(assignments) == 0 && len(unset) == 0 {
-		return usageErr("nothing to change: pass field=value, or --unset field")
-	}
-
-	it, err := backlog.Resolve(b, ref)
-	if err != nil {
-		return coded{ExitNotFound, err}
-	}
-
-	// Optimistic concurrency: the caller states what it saw, and a write that
-	// would clobber a change it never saw is refused rather than applied
-	// (docs/spec.md §6.3). Exit 4 means re-read and retry, which is different
-	// advice from "something broke" — and it is the distinction a retrying
-	// agent depends on.
-	if ifUnchanged != "" && it.Hash() != ifUnchanged {
-		return coded{ExitConflict, fmt.Errorf(
-			"%s changed since you read it — re-read and retry\n  you saw:  %s\n  it is now: %s",
-			it.Path, short(ifUnchanged), short(it.Hash()))}
-	}
-
-	for _, a := range assignments {
-		key, value, ok := strings.Cut(a, "=")
+	parsed := make([]app.Assignment, 0, len(assignments))
+	for _, raw := range assignments {
+		key, value, ok := strings.Cut(raw, "=")
 		if !ok || key == "" {
-			return usageErr("%q is not field=value", a)
+			return usageErr("%q is not field=value", raw)
 		}
-		if raw := strings.HasSuffix(key, ":"); raw {
-			key = strings.TrimSuffix(key, ":")
-			if err := it.Record.SetRaw(key, value); err != nil {
-				return usageErr("%w", err)
-			}
-			continue
-		}
-		it.Record.Set(key, value)
-	}
-	for _, key := range unset {
-		it.Record.Remove(key)
+		// field:=value is parsed as YAML; field=value is a string. The two are
+		// separate because a wikilink looks like a YAML list.
+		isRaw := strings.HasSuffix(key, ":")
+		parsed = append(parsed, app.Assignment{
+			Field: strings.TrimSuffix(key, ":"),
+			Value: value,
+			Raw:   isRaw,
+		})
 	}
 
-	// modified advances on edit, as the format defines it. Written after the
-	// caller's own changes so an explicit modified: wins — the tool should not
-	// overrule something it was just told.
-	if !assigned(assignments, "modified") {
-		if err := it.Record.SetRaw("modified",
-			"{by: "+app.Env.Actor.String()+", at: "+app.Env.Now()+"}"); err != nil {
-			return failure("%w", err)
-		}
-	}
-
-	out, err := it.Record.Bytes()
+	res, err := s.Set(app.SetRequest{
+		Ref:         ref,
+		Assignments: parsed,
+		Unset:       unset,
+		IfUnchanged: ifUnchanged,
+	})
 	if err != nil {
-		return failure("serializing %s: %w", it.Path, err)
+		return err
 	}
-	if err := b.WriteFileAtomic(it.Path, out, 0o644); err != nil {
-		return failure("%w", err)
-	}
-
-	fmt.Fprintf(cmd.OutOrStdout(), "updated  %s\n", it.Path)
-	_ = cfg
+	fmt.Fprintf(cmd.OutOrStdout(), "updated  %s\n", res.Path)
 	return nil
-}
-
-func assigned(assignments []string, key string) bool {
-	for _, a := range assignments {
-		if k, _, _ := strings.Cut(a, "="); strings.TrimSuffix(k, ":") == key {
-			return true
-		}
-	}
-	return false
-}
-
-func short(hash string) string {
-	if len(hash) > 12 {
-		return hash[:12]
-	}
-	return hash
 }

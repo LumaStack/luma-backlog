@@ -2,16 +2,13 @@ package cli
 
 import (
 	"fmt"
-	"path"
-	"sort"
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
-	"github.com/lumastack/luma-backlog/internal/root"
+	"github.com/lumastack/luma-backlog/internal/app"
 	"github.com/spf13/cobra"
 )
 
-func newJournalCommand(app *App) *cobra.Command {
+func newJournalCommand(a *App) *cobra.Command {
 	var workItem string
 
 	cmd := &cobra.Command{
@@ -26,41 +23,31 @@ func newJournalCommand(app *App) *cobra.Command {
 		Example: "  luma-backlog journal \"the ceiling must be symlink-resolved\"\n" +
 			"  luma-backlog journal -- \"--use-hold pins the source snapshot\"",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			b, _, projectRoot, err := openBacklog(app)
+			s, err := open(a)
 			if err != nil {
 				return err
 			}
-			defer b.Close()
+			defer s.Close()
 
-			slug, err := resolveJournalWorkItem(b, workItem, projectRoot, app.WorkingDir)
+			line := ""
+			if len(args) == 1 {
+				line = args[0]
+			}
+			res, err := s.Journal(app.JournalRequest{WorkItem: workItem, Line: line})
 			if err != nil {
 				return err
 			}
-			rel := path.Join(backlog.BundleDir, "work-items", slug, "journal.md")
 
-			current := ""
-			if data, err := b.ReadFile(rel); err == nil {
-				current = string(data)
-			}
-
-			if len(args) == 0 {
-				if strings.TrimSpace(current) == "" {
-					fmt.Fprintf(cmd.OutOrStdout(), "The journal for %s is empty.\n", slug)
-					return nil
-				}
-				fmt.Fprint(cmd.OutOrStdout(), current)
+			out := cmd.OutOrStdout()
+			if res.Written {
+				fmt.Fprintf(out, "written  %s\n", res.Path)
 				return nil
 			}
-
-			line := strings.TrimSpace(args[0])
-			if line == "" {
-				return usageErr("nothing to write")
+			if strings.TrimSpace(res.Content) == "" {
+				fmt.Fprintf(out, "The journal for %s is empty.\n", res.Slug)
+				return nil
 			}
-			if err := b.WriteFileAtomic(rel, []byte(
-				backlog.AppendLine(current, app.Env.Today(), line)), 0o644); err != nil {
-				return failure("%w", err)
-			}
-			fmt.Fprintf(cmd.OutOrStdout(), "written  %s\n", rel)
+			fmt.Fprint(out, res.Content)
 			return nil
 		},
 	}
@@ -78,54 +65,4 @@ func newJournalCommand(app *App) *cobra.Command {
 		return err
 	})
 	return cmd
-}
-
-// resolveJournalWorkItem decides whose journal to write to.
-//
-// In order: the flag, then the working directory, then — only when there is
-// exactly one work item — that one. The last is a real convenience early on
-// and errs safe: the moment there are two, it stops guessing and names them.
-//
-// The precedence matters more here than for other commands. Capture has to
-// cost one invocation, and requiring a flag every time is the friction that
-// stops it happening at all.
-func resolveJournalWorkItem(b *root.Backlog, flag, projectRoot, workingDir string) (string, error) {
-	if flag != "" {
-		// Resolved, not taken as written. A caller names a work item by its
-		// directory, its slug half, or its key, and journal has to reach the
-		// same record every other command does — otherwise it writes to
-		// work-items/<whatever-was-typed>/journal.md and quietly creates a
-		// directory that is not a work item at all.
-		dir, err := backlog.ResolveWorkItemDir(b, flag)
-		if err != nil {
-			return "", failure("%w", err)
-		}
-		if !b.Exists(path.Join(backlog.BundleDir, "work-items", dir, "index.md")) {
-			return "", usageErr("no work item %q", flag)
-		}
-		return dir, nil
-	}
-	if fromDir := workItemFromWorkingDir(projectRoot, workingDir); fromDir != "" {
-		return fromDir, nil
-	}
-
-	// Deferred with Resolve, and for the same reason — see load.go.
-	items, _, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
-	if err != nil {
-		return "", failure("%w", err)
-	}
-	switch len(items) {
-	case 0:
-		return "", usageErr("no work items yet — create one first")
-	case 1:
-		return items[0].Slug(), nil
-	}
-
-	slugs := make([]string, 0, len(items))
-	for _, it := range items {
-		slugs = append(slugs, it.Slug())
-	}
-	sort.Strings(slugs)
-	return "", usageErr("more than one work item — say which with --work-item:\n  %s",
-		strings.Join(slugs, "\n  "))
 }
