@@ -2,11 +2,9 @@ package cli
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
-	"github.com/lumastack/luma-backlog/internal/root"
+	"github.com/lumastack/luma-backlog/internal/app"
 )
 
 // The JSON shapes below are published contract (docs/spec.md §9.3), which is
@@ -48,71 +46,26 @@ type recordJSON struct {
 	Body   string         `json:"body"`
 }
 
-// reportSkipped names every record that could not be read.
-//
-// It writes nothing when there is nothing to say, so ordinary runs are as quiet
-// as they were. The path comes first because the path is what somebody has to
-// go and open.
-func reportSkipped(w io.Writer, skipped []backlog.Skip) {
-	for _, s := range skipped {
-		fmt.Fprintf(w, "luma-backlog: skipped %s: %v\n", s.Path, s.Err)
-	}
-}
-
-// reportDuplicateKeys names every key held by more than one record.
-//
-// Run over the whole work item set rather than over whatever a caller happened
-// to ask for: a filtered listing would miss a duplicate outside its filter, and
-// a check that only fires when you were already looking in the right place is
-// not a check.
-//
-// Silent when there is nothing to say. A warning that appears on ordinary runs
-// is one people learn to scroll past, and this one has to survive being ignored
-// for months before it matters once.
-func reportDuplicateKeys(w io.Writer, b *root.Backlog) {
-	items, _, err := backlog.List(b, backlog.Filter{Unit: backlog.WorkItem})
-	if err != nil {
-		return
-	}
-	for _, d := range backlog.Duplicates(items) {
-		fmt.Fprintf(w, "luma-backlog: %s is held by %d records:\n", d.Key, len(d.Paths))
-		for _, p := range d.Paths {
-			fmt.Fprintf(w, "  %s\n", p)
-		}
-		fmt.Fprintf(w, "A key is meant to name one record, and every citation of this one is ambiguous.\n")
-	}
-}
-
-func toItemJSON(i backlog.Item, defaultStatus string) itemJSON {
+func toItemJSON(v app.View) itemJSON {
 	return itemJSON{
-		Path:     i.Path,
-		Type:     i.Type(),
-		Key:      i.Key(),
-		Name:     i.Name(),
-		Slug:     i.Slug(),
-		Title:    i.Title(),
-		Status:   i.Status(defaultStatus),
-		WorkItem: i.WorkItem,
+		Path:     v.Path,
+		Type:     v.Type,
+		Key:      v.Key,
+		Name:     v.Name,
+		Slug:     v.Slug,
+		Title:    v.Title,
+		Status:   v.Status,
+		WorkItem: v.WorkItem,
 	}
 }
 
-func toRecordJSON(i backlog.Item, defaultStatus string) (recordJSON, error) {
-	fields := map[string]any{}
-	for _, k := range i.Record.Keys() {
-		var v any
-		if node := i.Record.Node(k); node != nil {
-			if err := node.Decode(&v); err != nil {
-				return recordJSON{}, fmt.Errorf("decoding %s: %w", k, err)
-			}
-		}
-		fields[k] = v
-	}
+func toRecordJSON(r app.Record) recordJSON {
 	return recordJSON{
-		itemJSON: toItemJSON(i, defaultStatus),
-		Hash:     i.Hash(),
-		Fields:   fields,
-		Body:     i.Record.Body(),
-	}, nil
+		itemJSON: toItemJSON(r.View),
+		Hash:     r.Hash,
+		Fields:   r.Fields,
+		Body:     r.Body,
+	}
 }
 
 // writeJSON emits indented JSON with a trailing newline, so output is

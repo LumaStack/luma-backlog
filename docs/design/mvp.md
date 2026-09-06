@@ -215,7 +215,7 @@ update. That matters most while the interface is moving.
 
 ### Deliberately absent
 
-`serve` — the web interface (§11.7) is a follow-up.
+`serve` — the browser interface (§11.7) is a follow-up.
 `check` — conditions are reported where records are read rather than asked for
 separately.
 `config` — configuration is a file people edit; a command for it is not owed yet.

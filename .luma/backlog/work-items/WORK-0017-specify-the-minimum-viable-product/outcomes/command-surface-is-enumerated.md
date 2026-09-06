@@ -10,6 +10,13 @@ verify_by:
 work_item: '[[work-items/WORK-0017-specify-the-minimum-viable-product]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T01:34:02Z'}
+verified:
+  - at: "2026-09-06T13:16:22Z"
+    by: human:warden
+evidence:
+  - at: "2026-09-06T13:16:22Z"
+    by: human:warden
+    what: 'PR #58, #61'
 ---
 
 # Command surface is enumerated

@@ -2,11 +2,12 @@
 type: work-item
 key: WORK-0017
 title: Specify the minimum viable product
-workflow_status: in_progress
+workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:30:56Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T06:20:00Z'}
+modified: {by: 'human:warden', at: '2026-09-06T13:16:22Z'}
+closed: {on: 2026-09-06, reason: delivered, by: 'human:warden'}
 ---
 
 # Specify the minimum viable product

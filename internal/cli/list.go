@@ -5,11 +5,11 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/app"
 	"github.com/spf13/cobra"
 )
 
-func newListCommand(app *App) *cobra.Command {
+func newListCommand(a *App) *cobra.Command {
 	var (
 		asJSON   bool
 		workItem string
@@ -18,7 +18,7 @@ func newListCommand(app *App) *cobra.Command {
 	)
 
 	cmd := &cobra.Command{
-		Use:   "list [" + strings.Join(backlog.Units, "|") + "]",
+		Use:   "list [" + strings.Join(app.Units, "|") + "]",
 		Short: "Read many records",
 		Long:  "Lists records, optionally narrowed by unit, work item, status, or kind.",
 		Args:  cobra.MaximumNArgs(1),
@@ -27,56 +27,43 @@ func newListCommand(app *App) *cobra.Command {
 		// make a caller treat "none yet" as a failure.
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			b, cfg, _, err := openBacklog(app)
+			s, err := open(a)
 			if err != nil {
 				return err
 			}
-			defer b.Close()
+			defer s.Close()
 
-			f := backlog.Filter{WorkItem: workItem, Status: status, Kind: kind}
+			f := app.Filter{WorkItem: workItem, Status: status, Kind: kind}
 			if len(args) == 1 {
-				if !backlog.IsUnit(args[0]) {
-					return usageErr("unknown unit %q: expected one of %s",
-						args[0], strings.Join(backlog.Units, ", "))
-				}
 				f.Unit = args[0]
 			}
 
-			items, skipped, err := backlog.List(b, f)
+			res, err := s.List(f)
 			if err != nil {
-				return failure("%w", err)
+				return err
 			}
 
 			// To stderr, always: stdout stays a clean listing and --json stays
 			// parseable, so a caller piping the output is unaffected while
 			// still being told.
-			reportSkipped(cmd.ErrOrStderr(), skipped)
-			reportDuplicateKeys(cmd.ErrOrStderr(), b)
+			observe(cmd.ErrOrStderr(), res.Observations)
 
 			out := cmd.OutOrStdout()
 			if asJSON {
-				rows := make([]itemJSON, 0, len(items))
-				for _, it := range items {
-					rows = append(rows, toItemJSON(it, cfg.DefaultStatusFor(it.Type())))
+				rows := make([]itemJSON, 0, len(res.Items))
+				for _, it := range res.Items {
+					rows = append(rows, toItemJSON(it))
 				}
-				// An empty result is [] rather than null: a caller iterating
-				// the response should not have to special-case nothing.
 				return writeJSON(out, rows)
 			}
 
-			if len(items) == 0 {
-				fmt.Fprintln(out, "No records match.")
+			if len(res.Items) == 0 {
 				return nil
 			}
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
-			// One identifier rather than a key column and a slug column. A
-			// work item reads WORK-00002-lint-the-corpus; everything else
-			// reads as its slug, because only a work item carries a key and an
-			// empty column on every other row is noise.
 			fmt.Fprintln(w, "TYPE\tSTATUS\tID\tTITLE")
-			for _, it := range items {
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",
-					it.Type(), it.Status(cfg.DefaultStatusFor(it.Type())), it.Name(), it.Title())
+			for _, it := range res.Items {
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", it.Type, it.Status, it.Name, it.Title)
 			}
 			return w.Flush()
 		},
