@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // View is one record as a surface needs to show it.
@@ -47,7 +47,7 @@ type Record struct {
 	Body string
 }
 
-func (s *Session) view(it backlog.Item) View {
+func (s *Session) view(it corpus.Item) View {
 	return View{
 		Path:     it.Path,
 		Type:     it.Type(),
@@ -60,7 +60,7 @@ func (s *Session) view(it backlog.Item) View {
 	}
 }
 
-func (s *Session) record(it backlog.Item) (Record, error) {
+func (s *Session) record(it corpus.Item) (Record, error) {
 	fields := map[string]any{}
 	order := it.Record.Keys()
 	for _, k := range order {
@@ -89,7 +89,7 @@ func (s *Session) record(it backlog.Item) (Record, error) {
 }
 
 // Units are the record types a caller may name.
-var Units = backlog.Units
+var Units = corpus.Units
 
 // Skip is a record that could not be read.
 type Skip struct {

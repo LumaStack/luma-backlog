@@ -47,7 +47,7 @@ func (b *Backlog) Path() string { return b.path }
 // Close releases the handle.
 func (b *Backlog) Close() error { return b.root.Close() }
 
-// ReadFile reads a file within the backlog.
+// ReadFile reads a file within the corpus.
 func (b *Backlog) ReadFile(name string) ([]byte, error) { return b.root.ReadFile(name) }
 
 // WriteFile writes a file within the backlog, creating parent directories.
@@ -60,7 +60,7 @@ func (b *Backlog) WriteFile(name string, data []byte, perm os.FileMode) error {
 	return b.root.WriteFile(name, data, perm)
 }
 
-// MkdirAll creates a directory within the backlog.
+// MkdirAll creates a directory within the corpus.
 func (b *Backlog) MkdirAll(name string) error { return b.root.MkdirAll(name, 0o755) }
 
 // Exists reports whether a path is present.

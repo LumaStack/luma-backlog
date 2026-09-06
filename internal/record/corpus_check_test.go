@@ -38,7 +38,7 @@ func TestTheProjectsOwnRecordsParse(t *testing.T) {
 		// somebody else's documents, plus generated INDEX.md and MANIFEST.md
 		// files that carry no frontmatter by design, and templates that
 		// deliberately omit it so they are never indexed as live records.
-		// backlog.isRecordPath excludes the same subtree for the same reason;
+		// corpus.isRecordPath excludes the same subtree for the same reason;
 		// luma-foreman audits what is in there.
 		if strings.Contains(filepath.ToSlash(rel), "/bundles/") {
 			return nil

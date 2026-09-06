@@ -3,7 +3,7 @@ package app
 import (
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // Filter narrows a listing.
@@ -17,7 +17,7 @@ type Filter struct {
 // Get reads one record. A reference is a slug, a path, or an unambiguous
 // prefix; an ambiguous one is an error rather than a guess (docs/spec.md §9.1).
 func (s *Session) Get(ref string) (Record, error) {
-	it, err := backlog.Resolve(s.Backlog, ref)
+	it, err := corpus.Resolve(s.Backlog, ref)
 	if err != nil {
 		return Record{}, &Error{Kind: NotFound, Err: err}
 	}
@@ -36,11 +36,11 @@ type ListResult struct {
 // are both ordinary, and failing would make a caller treat "none yet" as a
 // fault (docs/spec.md §9.3).
 func (s *Session) List(f Filter) (*ListResult, error) {
-	if f.Unit != "" && !backlog.IsUnit(f.Unit) {
+	if f.Unit != "" && !corpus.IsUnit(f.Unit) {
 		return nil, UsageError("unknown unit %q: expected one of %s",
-			f.Unit, strings.Join(backlog.Units, ", "))
+			f.Unit, strings.Join(corpus.Units, ", "))
 	}
-	items, skipped, err := backlog.List(s.Backlog, backlog.Filter{
+	items, skipped, err := corpus.List(s.Backlog, corpus.Filter{
 		Unit:     f.Unit,
 		WorkItem: f.WorkItem,
 		Status:   f.Status,

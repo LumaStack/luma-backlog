@@ -14,7 +14,7 @@ const ActorEnvVar = "LUMA_BACKLOG_ACTOR"
 //
 //	<kind>:<producer>/<version>
 //
-// where the version is optional — human:fsmith, agent:opus-5/luma-backlog.
+// where the version is optional — human:fsmith, agent:opus-5/luma-corpus.
 type Actor struct {
 	Kind     string // human, agent, process, team — or anything else
 	Producer string

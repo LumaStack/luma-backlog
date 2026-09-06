@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // CloseRequest ends a work item, recording why.
 type CloseRequest struct {
 	// Ref names the work item.
 	Ref string
-	// Reason is why the work ended — one of backlog.CloseReasons.
+	// Reason is why the work ended — one of corpus.CloseReasons.
 	Reason string
 }
 
@@ -36,24 +36,24 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 			"Closing silently is how a backlog loses its own history — cancelled work\n"+
 			"and delivered work look identical afterwards.", reasonList())
 	}
-	if !backlog.IsCloseReason(req.Reason) {
+	if !corpus.IsCloseReason(req.Reason) {
 		return nil, UsageError("unknown reason %q: expected %s", req.Reason, reasonList())
 	}
 
-	it, err := backlog.Resolve(s.Backlog, req.Ref)
+	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
 		return nil, &Error{Kind: NotFound, Err: err}
 	}
-	if it.Type() != backlog.WorkItem {
+	if it.Type() != corpus.WorkItem {
 		return nil, UsageError("%s is a %s — close applies to a work item", it.Slug(), it.Type())
 	}
 
-	c, err := backlog.CompletionOf(s.Backlog, it.Slug())
+	c, err := corpus.CompletionOf(s.Backlog, it.Slug())
 	if err != nil {
 		return nil, FailureError("%w", err)
 	}
 
-	if backlog.CloseReason(req.Reason).GatedOnCompletion() {
+	if corpus.CloseReason(req.Reason).GatedOnCompletion() {
 		// Refused for want of an answer rather than on an opinion. An outcome
 		// that cannot be read is missing from the count, so it can never be
 		// counted as failing, and "delivered" would come out clean on evidence
@@ -130,7 +130,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 
 func reasonList() string {
 	var s []string
-	for _, r := range backlog.CloseReasons {
+	for _, r := range corpus.CloseReasons {
 		s = append(s, string(r))
 	}
 	return strings.Join(s, ", ")

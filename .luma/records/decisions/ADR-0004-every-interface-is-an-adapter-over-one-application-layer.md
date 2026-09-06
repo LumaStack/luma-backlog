@@ -32,7 +32,7 @@ double-serializes every request and loses typed errors on the way.
 
 **And the rule is unenforced where it matters most.** `internal/cli/close.go`
 holds the tool's only refusal (§5.0) and the mutation that follows it.
-`internal/backlog` computes completion but enforces nothing. A second caller
+`internal/corpus` computes completion but enforces nothing. A second caller
 gets the arithmetic without the rule — so the invariant this design is built
 around is currently protected by there being exactly one caller.
 
@@ -43,7 +43,7 @@ added.
 
 ## Decision
 
-We will put **`internal/app`** between the interfaces and `internal/backlog`.
+We will put **`internal/app`** between the interfaces and `internal/corpus`.
 It takes typed requests, returns typed results and typed refusals, and holds
 every validation, policy check and mutation. It knows nothing of Cobra,
 terminals, keystrokes, or rendering.
@@ -61,7 +61,7 @@ Three sentences of `spec.md` change and no position does:
 - **§11.6** — "do something the command interface cannot" is **scoped to
   mutations**, so ephemeral view state is outside it.
 
-**Adapters may not import `internal/backlog`**, enforced by a containment test
+**Adapters may not import `internal/corpus`**, enforced by a containment test
 rather than by convention.
 
 **Adapters own their own vocabulary.** What a surface *calls* an action is its
@@ -113,7 +113,7 @@ that does not get worse as surfaces are added.
 
 | Candidate | Set aside because |
 | --- | --- |
-| **Adapters call `internal/backlog` directly** | Conventional, and already broken: it is the shape that lets a board close work as delivered over unverified outcomes. The policy has no home, so each adapter grows its own copy. |
+| **Adapters call `internal/corpus` directly** | Conventional, and already broken: it is the shape that lets a board close work as delivered over unverified outcomes. The policy has no home, so each adapter grows its own copy. |
 | **Adapters construct argv and run the command layer in-process** | Guarantees parity absolutely, and pays for it with a stringly-typed encoding on every keystroke, untyped errors, and a process-global actor a multi-user surface cannot use. Buying a guarantee to compensate for a missing layer. |
 | **Adapters shell out to the binary** | The above, plus process overhead per interaction, and no workable answer for §11.3's coalesced updates. |
 | **Export `internal/app` as a library** | It would be a good one. Deferred rather than taken — §9a.1's second-public-surface reasoning holds. *Reopened by a second tool that wants to embed the backlog rather than shell out to it.* |

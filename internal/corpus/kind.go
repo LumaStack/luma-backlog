@@ -1,4 +1,4 @@
-package backlog
+package corpus
 
 // Kinds are the classifications a work item may carry, and what separates them
 // is WHAT EACH ONE PRODUCES: a defect produces a fix, a request a change plus

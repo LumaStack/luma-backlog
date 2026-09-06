@@ -13,7 +13,7 @@ import (
 // FileName is the tool's configuration file, relative to .luma/. It lives in
 // the config tier per the luma directory layout policy: one file per tool,
 // named for the tool so nobody has to guess which binary a file belongs to.
-const FileName = "config/luma-backlog.yaml"
+const FileName = "config/luma-corpus.yaml"
 
 // Config is the settings a repository declares.
 type Config struct {

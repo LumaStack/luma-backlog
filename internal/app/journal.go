@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // JournalRequest reads or appends to a work item's journal.
@@ -36,7 +36,7 @@ func (s *Session) Journal(req JournalRequest) (*JournalResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	rel := path.Join(backlog.BundleDir, "work-items", slug, "journal.md")
+	rel := path.Join(corpus.BundleDir, "work-items", slug, "journal.md")
 
 	current := ""
 	if data, err := s.Backlog.ReadFile(rel); err == nil {
@@ -52,7 +52,7 @@ func (s *Session) Journal(req JournalRequest) (*JournalResult, error) {
 		return nil, UsageError("nothing to write")
 	}
 	if err := s.Backlog.WriteFileAtomic(rel, []byte(
-		backlog.AppendLine(current, s.Env.Today(), line)), 0o644); err != nil {
+		corpus.AppendLine(current, s.Env.Today(), line)), 0o644); err != nil {
 		return nil, FailureError("%w", err)
 	}
 	return &JournalResult{Slug: slug, Path: rel, Written: true}, nil
@@ -74,11 +74,11 @@ func (s *Session) journalWorkItem(given string) (string, error) {
 		// the same record everything else does — otherwise it writes to
 		// work-items/<whatever-was-typed>/journal.md and quietly creates a
 		// directory that is not a work item at all.
-		dir, err := backlog.ResolveWorkItemDir(s.Backlog, given)
+		dir, err := corpus.ResolveWorkItemDir(s.Backlog, given)
 		if err != nil {
 			return "", FailureError("%w", err)
 		}
-		if !s.Backlog.Exists(path.Join(backlog.BundleDir, "work-items", dir, "index.md")) {
+		if !s.Backlog.Exists(path.Join(corpus.BundleDir, "work-items", dir, "index.md")) {
 			return "", UsageError("no work item %q", given)
 		}
 		return dir, nil
@@ -88,7 +88,7 @@ func (s *Session) journalWorkItem(given string) (string, error) {
 	}
 
 	// Deferred with Resolve, and for the same reason — see load.go.
-	items, _, err := backlog.List(s.Backlog, backlog.Filter{Unit: backlog.WorkItem})
+	items, _, err := corpus.List(s.Backlog, corpus.Filter{Unit: corpus.WorkItem})
 	if err != nil {
 		return "", FailureError("%w", err)
 	}
