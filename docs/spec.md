@@ -1390,6 +1390,14 @@ Top-level:
 
 **`--json` produces the machine contract**, always using canonical names regardless of local display labels, and always the same shape for the same command. Human-readable output is free to change; structured output is not.
 
+**Completion is part of the contract**, on reads that return a work item. It is **counts, never a ratio** — proven, live, retired, and unreadable — because the distinction between *unproven* and *unreadable* is what makes §5.3's refusal defensible, and a single number destroys it. A consumer divides if it wants a percentage.
+
+```json
+"completion": {"proven": 2, "live": 5, "retired": 1, "unreadable": 0}
+```
+
+It is computed per invocation and **never stored** (§2.4): storing it would let it drift from the outcomes it counts.
+
 **Empty results are not errors.** A list matching nothing exits zero with an empty collection. Agents must not have to distinguish "none" from "failed."
 
 ### 9.4 Exit codes

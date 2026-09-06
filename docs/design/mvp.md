@@ -225,11 +225,6 @@ separately.
 
 ### Still open
 
-**Whether `--json` output carries computed completion.** It does not today —
-`show --json` returns no completion key — and the board must show it on every
-card. Either the structured output gains it or the board computes it
-independently, and the second is the divergence ADR-0004 exists to prevent.
-
 **Whether `--dry-run` ships**, and on what. `spec.md` §9.6's multi-record
 operations are the case for it; none of them is a first-release command, so it
 may have nothing to attach to yet.
@@ -246,7 +241,10 @@ this section disagree, this one is the scope.
 - **Navigation to columns that are offscreen.** Seven statuses do not fit at
   once; `captured` and `closed` are the bookends.
 - **Computed completion on the card** — how many of a work item's live outcomes
-  are proven, out of how many there are. This is the board's reason to exist
+  are proven, out of how many there are. `show` and `list` carry it in their
+  structured output (`spec.md` §9.3); `CompletionOf` already computes it and
+  `close` already layers its gating on top, so this is plumbing an existing
+  function into the read path. This is the board's reason to exist
   (`spec.md` §11.1): it is derived by counting evidence, appears nowhere on
   disk, and without it a column of identifiers and titles shows exactly what a
   directory listing shows. `CompletionOf` already computes it.
