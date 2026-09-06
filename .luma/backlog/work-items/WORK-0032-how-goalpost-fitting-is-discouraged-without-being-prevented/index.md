@@ -23,11 +23,14 @@ It is a multi-layer approach:
 
 **There is an ordering, worst to best:**
 
-1. Writing no outcomes. **Barely allowed** — closing needs `--force`.
+1. Writing no outcomes.
 2. Writing outcomes after the fact, and still proving them.
 3. Writing outcomes ahead of execution.
 
 **All three are allowed. Users and agents should be steered toward the last.**
+
+**Writing no outcomes should be barely allowed — you have to use `--force` to
+close it.**
 
 **And we should surface when work is not yet something you can work on** — if no
 outcomes are present it is not startable, or workable, or whatever that ends up
