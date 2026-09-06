@@ -5,7 +5,7 @@ decided: 2026-09-05
 stage: draft
 reopen_trigger: a case appears where something earlier in the workflow genuinely needs to be worked before something later, and priority cannot express it
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T21:06:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T21:58:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:50:00Z'}
 ---
 
 # ADR-0005: Rank is work order and workflow status dominates it
@@ -30,6 +30,39 @@ We will define **rank as work order**.
 - All records at a later workflow status rank ahead of all records at an earlier one.
 - Rank orders records **within** a status.
 - **Importance is `priority`**, a separate field, not yet implemented.
+
+### The verb is `rank`, and it is the only way in
+
+`spec.md` §9.2 calls this `move`. **It is renamed to `rank`.**
+
+In this specification "move" already means **relocating a record on disk**, and
+that is the operation the design most consistently forbids — §4.8.1 and §7.2.1
+(*"promotion copies; it never moves"*), §7.1 (moving changes what a record
+*is*), §9.2 and §9.10 (`archive` never moves anything), §10.4 (a status change
+never moves a file). Six places. Naming the board's most-used command after the
+one operation that never happens teaches the wrong word by repetition.
+
+`rank` also names the field it changes rather than a gesture, and survives if
+tasks are ever ranked.
+
+```
+work-item rank <ref> [--before <ref> | --after <ref> | --top | --bottom]
+```
+
+**`--at <n>` is deferred**
+([[backlog/work-items/WORK-0021-rank-by-position-rather-than-by-neighbor]]).
+
+**`set` refuses the rank field.** §9.6 says the caller never computes an
+ordering key; if `set rank=0010.500` works, that rule is decoration. `rank` is
+the only way in through the tool. Hand-editing the file stays available, as it
+does for everything.
+
+### Ascending order is the work order
+
+`0010.000` is worked before `0020.000`. **A higher number is a lower rank** —
+which is worth stating because "higher rank" is ambiguous in English, and
+because it means `--top` allocates a key *below* the current minimum rather
+than above it.
 
 ### How it is stored
 

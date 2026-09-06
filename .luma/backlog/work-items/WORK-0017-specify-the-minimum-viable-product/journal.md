@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-06
+
+swept the session for decisions living only in conversation — the completion model became ADR-0007, and ADR-0005 gained the rank verb rename, the sort direction, and the rule that set refuses the rank field
+
 ## ▶ 2026-09-05
 
 opened to hold the specification only — outcomes deliberately left unwritten until the interview settles what the specification has to answer, since the outcomes would otherwise presume the answers

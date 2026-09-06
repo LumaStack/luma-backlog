@@ -41,3 +41,71 @@ It is a specification and not an implementation. Nothing is built from it until 
 - **No command prompts unless a terminal is attached** (`spec.md` §9.8), which is what keeps the board's interactivity from leaking into the agent path.
 - **Flags first.** Anything clever is layered over something dull, and the dull thing ships first (`spec.md` §9.0.2).
 - **Nothing here may need a runtime installed** (`principles.md`). One compiled binary.
+
+## What is settled, and where
+
+Decisions made while shaping this specification. Each is a record; this is the
+index so nothing has to be reconstructed from a conversation.
+
+| Decision | Covers |
+| --- | --- |
+| [[records/decisions/ADR-0004-every-interface-is-an-adapter-over-one-application-layer]] | The seam. Adapters over `internal/app`; adapters own their vocabulary; one board gesture may resolve to two commands. |
+| [[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]] | Rank semantics, the `rank` verb, ordering key format, sparse status ordinals, re-enqueue on status change, drift detection. |
+| [[records/decisions/ADR-0006-the-command-line-is-designed-against-clig-dev]] | Noun-verb ordering, six exit codes, bare invocation, four departures from the guide, prompting recorded for later. |
+| [[records/decisions/ADR-0007-an-outcome-carries-the-doer-s-assertion-and-the-checker-s-verdict-separately]] | Assertion and verdict as separate axes, `assert` and `verify`, close gating, `--force`, four dispositions, self-verification observed. |
+
+**Deferred, each with what would bring it back:**
+[[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]] ·
+[[backlog/work-items/WORK-0020-reopen-a-work-item-that-was-closed]] ·
+[[backlog/work-items/WORK-0021-rank-by-position-rather-than-by-neighbor]]
+
+**Owed regardless:**
+[[backlog/work-items/WORK-0018-extract-the-application-layer]] ·
+[[backlog/work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]]
+
+## What is still open
+
+**None of the decisions above is in force.** Every record is `stage: draft`,
+and the adopted command-line policy is explicit that a draft outranks nothing.
+Until they are promoted, the specification rests on proposals.
+
+- **`new` takes its title positionally, as `--title`, or both.** `spec.md`
+  §9.0.1 rules out a command whose only path requires knowing field names, so
+  `--title` alone would need that section amended.
+- **Whether claims and leases ship.** `design-mvp.md` does not mention them.
+  Without them there is no halt detection and no failed tasks, so a dead agent
+  looks exactly like a working one. `open-questions.md` §8 carries a live
+  proposal to move claims out of records entirely.
+- **The board's scope.** The five screens in `design-interface.md` and the four
+  views in `spec.md` §11.2 do not line up — the mockups have no wave or health
+  view, and §11.2 hides drafts by default where the mockups make `captured` the
+  primary column. Which §11.2 interaction patterns are requirements rather than
+  directions is also undecided; formation-as-visual-sharpness and coalesced
+  updates are the expensive ones.
+- **Configuration format.** The estate's precedence model is adopted — six
+  layers, `[defaults]` and `[require]`, read per invocation, resolved at one
+  site. Whether the file is TOML is **not** this project's decision to make
+  alone: `.luma/config/` is shared, and `spec.md` §8.1 argues for YAML on the
+  grounds that a repository should carry one format, a premise already false
+  here. Format-independent either way.
+- **What this specification physically is** — a new document, amendments folded
+  into `spec.md`, or outcomes and tasks in `.luma/` so the tool specifies
+  itself. And what *approved* means.
+
+## Specification debt found while shaping this
+
+Recorded so it is fixed deliberately rather than discovered again:
+
+- **§9.1 says noun-then-verb; the binary does verb-then-noun.** Settled in
+  favor of the specification; the code changes inside WORK-0018.
+- **§8.1 says configuration lives at `.backlog/config.yml`.** It is at
+  `.luma/config/luma-backlog.yaml`. Stale in directory and filename.
+- **§9.2 names the reordering verb `move`.** Renamed to `rank` (ADR-0005).
+- **§4.4 says there is no separate pass or fail field.** Wrong, and the
+  reasoning in `close.go` already contradicts it (ADR-0007).
+- **§5.2's `work-item.complete` reads "every live outcome passes"**, which is
+  vacuously true of none — the condition that gates closing needs *at least
+  one*.
+- **§9.6 describes bisection but not exhaustion.** Precision extends rather
+  than failing, and the rebalance is already listed among the multi-record
+  operations; the connection is not drawn.
