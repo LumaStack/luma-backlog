@@ -182,9 +182,15 @@ A reader must be able to tell them apart without being told.
   glance that every task is `✓` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, unstarted first, finished last.** Not grouped under Open and
-  Closed headings: the mark already says which, and grouping buries the ordering
-  that matters within each.
+- **One list each, in a fixed order: `○`, `◐`, `●`, `✗`.** Never grouped under
+  headings --- the mark already says which, and a heading repeats it. Never
+  reordered by anything else: a view whose order changes between readings cannot
+  be scanned, which is the whole reason the layout is fixed.
+
+  **Within a state, keep the order the command gave you.** Do not re-sort. Today
+  that is name order for tasks, because only work items carry a rank; when tasks
+  are ranked it becomes work order and this rule needs no change. Re-sorting
+  would throw away an ordering somebody chose the moment one exists.
 - **Every task and outcome gets its own line, finished ones included.** They are
   not collapsed and not omitted: a finished task is how somebody finds out a
   thing was already tried, and a list that shows only what is left makes a work
