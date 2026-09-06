@@ -165,8 +165,8 @@ A reader must be able to tell them apart without being told.
   | `◐` | under way --- `in_progress` |
   | `✔` | delivered --- `closed`, or an outcome that is passing |
   | `↪` | superseded --- picked up elsewhere |
-  | `⊘` | cancelled --- decided against |
-  | `✘` | failed, unproven, or abandoned |
+  | `⊘` | cancelled or disabled --- switched off on purpose |
+  | `✘` | error, failed, or abandoned --- it did not come out |
 
   **Unfinished work shares the circle; finished work changes shape.** `○` and
   `◐` differ only by fill, which is right --- they are the same thing at two
@@ -183,24 +183,31 @@ A reader must be able to tell them apart without being told.
   **`✘` mirrors `✔` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
 
-  **Three endings, not one, and they are not interchangeable.**
+  **Three endings, and the line between them is who decided.**
 
-  - **`⊘` cancelled** is a decision --- somebody chose not to do this, which is a
-    healthy outcome and should not carry a mark that reads as failure.
-  - **`↪` superseded** is a hand-off. The work continues under another record.
-  - **`✘`** is the bad one: the work **failed**, could not be **proven**, or was
-    **abandoned** --- stopped with nobody deciding and nobody coming back.
+  - **`↪` superseded** --- a hand-off. The work continues under another record.
+  - **`⊘` cancelled or disabled** --- **switched off on purpose.** Somebody chose
+    not to do this, or turned it off. A healthy outcome, and it must not carry a
+    mark that reads as failure.
+  - **`✘` error, failed, or abandoned** --- **it did not come out.** The work
+    failed, the check errored, or it stopped with nobody deciding and nobody
+    coming back.
 
-  **`✘` is the only ending nobody chose.** Every other terminal state is
-  somebody's decision; this is the absence of one, which is why it gets the
-  hardest mark. Recording an abandonment as a cancellation invents a choice
-  nobody made.
+  **`⊘` is a decision; `✘` is the absence of one or the failure of one.** That is
+  the whole distinction, and recording an abandonment as a cancellation invents a
+  choice nobody made.
 
-  **Some of this the tool cannot yet say.** `abandoned` is a real disposition
-  today. *Failed* and *unproven* are not --- an outcome is `unverified` or
-  `passing`, with nothing between, and ADR-0007's verdicts are unbuilt. Use `✘`
-  where the record claims it; **do not infer a failure the record does not
-  make.**
+  **Most of this the tool cannot yet say.** `canceled` and `abandoned` are real
+  dispositions today. *Error*, *failed* and *disabled* are not --- an outcome is
+  `unverified` or `passing`, with nothing between, and ADR-0007's verdicts are
+  unbuilt. Use `✘` where the record claims it; **do not infer a failure the
+  record does not make.**
+
+  **`unverified` is `○`, not `✘`.** Nobody having looked is not a bad result ---
+  it is no result. The distinction that has nowhere to go today is the outcome
+  that *was* checked and could not be decided; it records as `unverified` and is
+  indistinguishable from untouched, which hides the outcomes that can never be
+  verified as written.
 
   **`↪` is not a verdict.** Superseded work did not fail --- it moved, and
   something else covers it now, which is often a good result. Marking it `✘`
