@@ -1,6 +1,6 @@
 # Design MVP
 
-See the [design-vision.md] first to understand where we will end up so we can have an expandable open ended MVP.
+See the [vision.md](vision.md) first to understand where we will end up so we can have an expandable open ended MVP.
 
 ## First features
 
@@ -236,7 +236,7 @@ may have nothing to attach to yet.
 
 ## The board
 
-`docs/design-sketches.md` draws these screens. It is concept art — where it and
+`docs/design/sketches.md` draws these screens. It is concept art — where it and
 this section disagree, this one is the scope.
 
 ### Must

@@ -70,7 +70,7 @@ derived from the field name.
 ### A work item is owned, and ownership is not modelled yet
 
 Durable, no expiry, transferred rather than lapsed. **No field is proposed** —
-nothing needs it in the first release, and `design-mvp.md` lists *Assign — who
+nothing needs it in the first release, and `docs/design/mvp.md` lists *Assign — who
 owns this?* as a use path outside the first cut.
 
 What this record fixes is that **the word stays free.** `owned` must never be
@@ -78,7 +78,7 @@ introduced later as a synonym for a temporary hold.
 
 ### Neither ships in the first release
 
-`design-mvp.md` does not mention taking, and the storage question underneath it
+`docs/design/mvp.md` does not mention taking, and the storage question underneath it
 is unsettled — `open-questions.md` §8 carries a live proposal to move this state
 out of record files into git refs, and calls the question *"the most
 structurally dangerous"* here.

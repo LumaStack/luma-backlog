@@ -158,7 +158,7 @@ work-item new --title "Fix the login timeout"     # precise
 
 **The positional is the documented path**, and it absorbs multiple words — no
 quoting, no field name, nothing to remember. That is not a nicety here: cheap
-capture is load-bearing (`design-mvp.md` — *"make capture extremely cheap"*),
+capture is load-bearing (`docs/design/mvp.md` — *"make capture extremely cheap"*),
 and `capture-is-one-command` is a **verified** outcome of WORK-0001, so a
 flag-only form would be giving back a property this project already proved.
 

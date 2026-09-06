@@ -12,7 +12,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T20:44:00Z'}
 
 ## The problem
 
-`rank` takes `--before`, `--after`, `--top` and `--bottom` — every one of which names *another record*. People think in ordinals: `docs/design-mvp.md` writes rank as *#1 → #2 → #3 → #4*, and "make this third" is the sentence somebody actually says.
+`rank` takes `--before`, `--after`, `--top` and `--bottom` — every one of which names *another record*. People think in ordinals: `docs/design/mvp.md` writes rank as *#1 → #2 → #3 → #4*, and "make this third" is the sentence somebody actually says.
 
 Expressing that today means first finding out what is currently third.
 

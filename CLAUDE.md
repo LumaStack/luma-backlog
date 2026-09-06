@@ -8,12 +8,27 @@ A git-native backlog worked by people and agents at the same time. Records are m
 
 ## Where things live
 
-- `docs/development.md` — setup, tests, conventions. **Start here to work on the code.**
-- `docs/principles.md` — the values decisions are argued against.
-- `docs/spec.md` — the design. Normative.
+**These bind. Argue with them; do not quietly depart from them.**
+
+- `docs/spec.md` — the specification. Normative.
 - `docs/workflow-status.md` — the status ladder and the model behind it. Normative, and the only place the default vocabulary is written down.
-- `docs/lifecycle.md` — the loop. Non-normative, expected to move to the workflow project.
+- `docs/principles.md` — the values decisions are argued against.
+- `.luma/records/decisions/` — **a decision at `provisional` or `stable` is in force. A `draft` outranks nothing.**
+
+**Working documents.**
+
+- `docs/development.md` — setup, tests, conventions. **Start here to work on the code.**
+- `docs/testing.md` — testing practice, and the survey behind it.
 - `docs/open-questions.md` — what is unsettled, and **why settled things were settled.** Read before reopening anything.
+- `docs/format-requests.md` — what this project asks of the knowledge format.
+- `docs/lifecycle.md` — the loop. Non-normative, expected to move to the workflow project.
+- `docs/upstream-analysis.md` — the systems this tool has to live beside. References, not rivals.
+
+**`docs/design/` — intent rather than mechanism. Nothing here binds, and it is held to a different standard: it churns, and much of it is written to be thrown away.**
+
+- `docs/design/vision.md` — the eventual end state. Should barely change.
+- `docs/design/mvp.md` — what the first release ships, and what it deliberately does not. Made of statements that expire, and deleted once they have.
+- `docs/design/sketches.md` — concept art for the interface. **Do not treat a sketch as a decision.**
 
 ## Using the tool on this project
 
