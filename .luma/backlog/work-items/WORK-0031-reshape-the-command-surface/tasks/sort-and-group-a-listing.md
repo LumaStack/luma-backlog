@@ -21,8 +21,14 @@ listing that does not follow it is not a backlog.
 - `--group status` renders under headings rather than as one run. The columns
   configuration already maps statuses to board columns, so grouping should use
   it rather than inventing a second grouping.
-- `--reverse`, for reading a long listing from the tail. **Explicit, never the
-  default** --- see below.
+- **`--reverse`**, for reading a long listing from the tail. **Explicit, never
+  the default** --- see below. Settled: `-r, --reverse` is the GNU convention
+  (`sort`, `ls`) and `git log` uses the long form.
+
+  **Not `--sort=-updated`.** `git branch` encodes direction by prefixing the
+  key with `-`, and takes the option repeatedly for multi-key sorts. That shape
+  earns its complexity where people build orderings; with three keys and one
+  direction it buys nothing and reads worse.
 
 ## Why reversing by default was rejected
 

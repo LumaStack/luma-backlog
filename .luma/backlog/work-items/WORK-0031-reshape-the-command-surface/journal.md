@@ -44,3 +44,4 @@ ranking against a record at another status is refused: rank orders within a stat
 reversing a listing by default was rejected: piping gives the wrong end silently, and the board and terminal would render one request in opposite orders — the pager ADR-0006 already adopted is the answer to the scrolling it was meant to fix
 rank is the default sort and stays it — a listing that does not follow work order is not a backlog; --sort covers created and updated, which are the other things people reorder by
 first shorthand collision: -r is the listing convention for reverse but close already holds it for --reason; recorded on ADR-0009 as input rather than assigned, since the letters are deferred until every flag exists
+settled on --reverse over git branch's --sort=-key: the sign-prefix form exists for multi-key orderings and we have three keys and one direction
