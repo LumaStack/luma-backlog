@@ -153,6 +153,30 @@ calls concatenated in ladder order. Say so when it shows --- it is a gap, not a
 technique. There is also no way to ask for *everything except closed*, and no
 way to pass more than one status.
 
+## Heading the result
+
+**The column and its count, then the command that produced it.**
+
+> **Closed (13)**
+> `luma-backlog work-item list --status closed`
+>
+> | key | title |
+> | --- | --- |
+> | WORK-0001 | First usable build |
+
+**`Closed (13)`, not "Closed --- 13 work items".** The parenthetical count is
+shorter, scans as a label, and does not repeat the noun that the rows below
+already are.
+
+**Show the command in full, every time**, including when the result is empty ---
+especially then. It says which filter ran, so an empty column is
+distinguishable from a wrong question; it can be re-run; and it can be edited
+into the next question, which is usually what somebody wants next.
+
+**A column spanning several statuses shows every call**, one per line. That the
+list is longer than it should be is the point --- see the missing `--column`
+below.
+
 **Order is rank**, so the top is what somebody chose to be next. Records nobody
 ranked sort last --- an absence of a decision, not neglect.
 
@@ -160,8 +184,9 @@ ranked sort last --- an absence of a decision, not neglect.
 progress and finding nine things has been told something useful. What to *do*
 about it is [[backlog-next]].
 
-**An empty result is an answer.** Say the filter that produced it, so they can
-tell an empty column from a wrong question.
+**An empty result is an answer**, and gets the same heading and command as a
+full one. *"Nothing is in progress"* under the command that looked is a fact;
+without it, it is indistinguishable from having asked the wrong thing.
 
 ---
 
