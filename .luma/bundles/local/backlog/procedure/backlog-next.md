@@ -55,7 +55,7 @@ stalled — [[backlog-show]].
 selected. The second gate is where attention is needed, not the work, and no
 amount of reading further changes that.
 
-## What might be worth preparing
+## Preparation candidates
 
 **Only when there is nothing to do**, or when what is queued is thin.
 

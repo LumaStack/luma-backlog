@@ -16,7 +16,7 @@ Listings inside it follow [[listing]].
 
 `luma-backlog work-item list --status todo`
 
-### Maybe worth preparing
+### Preparation candidates
 
 ○ WORK-0031 · Reshape the command surface
 ○ WORK-0039 · What closed work items cost as the corpus grows
@@ -52,8 +52,12 @@ means will not be helped by a sentence saying it.
 **Shown even when empty**, with their commands. Two empty listings *are* the
 finding, and deleting them hides it.
 
-**Maybe worth preparing** --- the hedge is in the name, so the list needs no
-defending. Rows only. **Up to three.**
+**Preparation candidates** --- a label, like the headings above it, rather than
+a sentence with a hedge in it. *Candidate* already carries *not chosen*, so the
+list needs no defending. Rows only. **Up to three.**
+
+**It is the last section above the rule**, because it is the one a reader with
+work in progress skips. Everything they came for is above it.
 
 **One sentence at the bottom if it is worth saying**, never in the middle: how
 close any of this is to producing work. *"Neither has outcomes, so both are
