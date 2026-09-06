@@ -47,3 +47,4 @@ first shorthand collision: -r is the listing convention for reverse but close al
 settled on --reverse over git branch's --sort=-key: the sign-prefix form exists for multi-key orderings and we have three keys and one direction
 direction goes in the sort key as --sort=-updated, not a separate --reverse: two flags for one ordering is the weaker model, and it extends to multi-key later without a second mechanism
 the parsing objection against --sort=-key was false and nearly decided it — pflag takes the next argument as a value whether or not it starts with a dash; checked rather than assumed, after asserting it the other way
+--reverse is not being built, so the -r collision recorded on ADR-0009 an hour ago dissolved; the note is corrected rather than left, since stale guidance in a record in force is worse than none
