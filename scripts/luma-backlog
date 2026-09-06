@@ -1,0 +1,28 @@
+#!/bin/sh
+# Run luma-backlog from current source, against the caller's working directory.
+#
+# Named for the binary, not the alias: `spec.md` §9a.2 keeps `luma-backlog`
+# canonical so a future `luma` dispatcher can find it, with `backlog` as a
+# symlink. Link both onto PATH to rehearse that arrangement --- see
+# `docs/development.md`.
+#
+# `go build -C` changes the directory for the *build* only, so the binary is
+# executed from wherever the caller stands and root discovery still sees it.
+# `go run -C` would follow the program into execution and make it always
+# resolve this repository, whichever one you are in.
+set -e
+
+# Resolve symlinks so the repository is found when this is linked onto PATH.
+self=$0
+while [ -L "$self" ]; do
+	link=$(readlink "$self")
+	case $link in
+	/*) self=$link ;;
+	*) self=$(dirname "$self")/$link ;;
+	esac
+done
+
+root=$(CDPATH= cd -- "$(dirname -- "$self")/.." && pwd)
+bin="${TMPDIR:-/tmp}/luma-backlog-dev"
+go build -C "$root" -o "$bin" ./cmd/luma-backlog
+exec "$bin" "$@"

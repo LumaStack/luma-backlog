@@ -16,12 +16,58 @@ go test ./...
 
 Nothing else to install. A development container is available for toolchain parity and is **optional** — it is not the safety story, and compiling in it is not worth the cost on macOS.
 
+## Running it
+
+`scripts/luma-backlog` compiles from current source and runs against **your
+working directory**, not the directory it lives in.
+
+```
+scripts/luma-backlog list work-item --status unprepared
+```
+
+Put it on your path under both names, as `spec.md` §9a.2 ships them --- the
+full name so a future `luma` dispatcher can find it, `backlog` as the name to
+type:
+
+```
+ln -sf "$PWD/scripts/luma-backlog" ~/.local/bin/luma-backlog
+ln -sf "$PWD/scripts/luma-backlog" ~/.local/bin/backlog
+```
+
+**It works on whichever repository you are standing in.** Inside another
+project it reads that project's backlog, which is how this tool gets used
+before there is a release:
+
+```
+cd ../luma-foreman && backlog list work-item
+```
+
+### What not to do, and why
+
+**Do not keep a built binary for daily use.** `go build -o ./luma-backlog
+./cmd/luma-backlog` produces a snapshot: edit any source file and it keeps
+answering from the old code, with no warning and no error. The symptom is
+indistinguishable from your change not working. Build one when you want an
+artifact to hand somebody.
+
+**Do not `go install`.** Same staleness with a longer fuse, and it applies to
+every repository you use the tool in at once.
+
+**Do not add `-C` to `go run` to escape the repository root.** `go run
+./cmd/luma-backlog` works, from the root only, because `./cmd/...` is resolved
+against the working directory. `-C` lifts that restriction and **follows the
+program into execution**, so root discovery and `new` --- which derives the work
+item from where you are --- resolve this repository whichever one you are in.
+`scripts/luma-backlog` uses `go build -C`, which changes the directory for the
+build alone.
+
 ## Layout
 
 ```
 cmd/luma-backlog/     entry point — holds no logic
 internal/             everything else
 docs/                 the design
+scripts/              run the tool, and check it
 .luma/             this project's own backlog, kept in the tool
 .claude/skills/       procedures that will become commands
 ```
@@ -33,14 +79,14 @@ docs/                 the design
 ## Working on it
 
 ```
-go build ./...
-go test ./...
-go vet ./...
-gofmt -l .            # must print nothing
-go run ./cmd/luma-backlog
+scripts/check
 ```
 
-Continuous integration runs exactly these, across both supported Go versions. If they pass locally they pass there.
+Builds, vets, tests, and fails on anything not `gofmt` clean.
+
+**Continuous integration runs this same file**, across both supported Go
+versions --- not its own copy of the commands. If it passes locally it passes
+there, and adding a check here adds it to CI.
 
 ### Where behavior comes from
 
