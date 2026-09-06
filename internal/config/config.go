@@ -37,9 +37,17 @@ func Default() Config {
 	return Config{
 		LKFVersion:    "0.0.2",
 		TypeNamespace: "luma/backlog",
+		// A status shared by two units carries the same ordinal in both, so a
+		// rank means the same thing whichever unit it is on. Deriving them per
+		// unit would give a task's `todo` a different ordinal from a work
+		// item's, and sorting raw ranks across units would interleave them
+		// wrongly --- which is the one thing the ordinal prefix exists to
+		// prevent (ADR-0005).
 		WorkflowStatus: map[string]Ladder{
-			"work-item": ladderOf("captured", "unprepared", "preparing", "prepared", "todo", "in_progress", "closed"),
-			"task":      ladderOf("todo", "in_progress", "closed"),
+			"work-item": ladderAt(
+				"captured", 10, "unprepared", 20, "preparing", 30, "prepared", 40,
+				"todo", 50, "in_progress", 60, "closed", 70),
+			"task": ladderAt("todo", 50, "in_progress", 60, "closed", 70),
 		},
 		Columns: columns,
 	}

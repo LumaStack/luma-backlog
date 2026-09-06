@@ -32,6 +32,18 @@ func (l Ladder) Ordinal(status string) (int, bool) {
 // existing ones without renumbering. Only used for the list form.
 const ordinalStep = 10
 
+// ladderAt builds a ladder from alternating status and ordinal, for the
+// built-in defaults where the numbers are chosen rather than derived.
+func ladderAt(pairs ...any) Ladder {
+	l := Ladder{Ordinals: map[string]int{}}
+	for i := 0; i+1 < len(pairs); i += 2 {
+		status, n := pairs[i].(string), pairs[i+1].(int)
+		l.Statuses = append(l.Statuses, status)
+		l.Ordinals[status] = n
+	}
+	return l
+}
+
 func ladderOf(statuses ...string) Ladder {
 	l := Ladder{Statuses: statuses, Ordinals: make(map[string]int, len(statuses))}
 	for i, s := range statuses {

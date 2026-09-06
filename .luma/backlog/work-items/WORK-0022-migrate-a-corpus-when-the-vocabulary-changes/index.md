@@ -47,3 +47,35 @@ A repair path for the ways a vocabulary can change out from under a corpus:
 
 - `[[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]]` — the prefix, and why repair joins on `workflow_status`.
 - `[[backlog/work-items/WORK-0017-specify-the-minimum-viable-product]]`
+
+
+## What ordinals add to this
+
+**A status now carries a number as well as a name** (ADR-0005,
+`.luma/config`). That widens this work item without changing its shape.
+
+- **Renaming a status orphans records exactly as before.** The ordinal does not
+  help: the record still declares a value the vocabulary no longer has, and now
+  its `rank` also carries a prefix pointing at a status that is gone.
+- **Inserting a status is the new case.** With explicit ordinals, spacing means
+  it costs nothing. With ordinals derived from list position, inserting shifts
+  every ordinal after it, and **every record at every later status has a rank
+  whose prefix is now wrong.** Nothing detects that either.
+- **Reordering a ladder is the same problem** and is easier to do by accident,
+  because it looks like editing a list.
+- **`workflow_status` and `rank` are written together, always** (ADR-0005).
+  A migration that repairs one and not the other breaks the invariant the whole
+  ranking design rests on.
+
+**What this needs from a repair, beyond renaming a value:** recomputing the
+ordinal prefix of every affected record's rank, and leaving the position
+component alone --- bisection operates on the position only, and rewriting it
+would silently reorder a queue somebody arranged by hand.
+
+## What is known about how often this happens
+
+No other repository uses this tool yet, so **the corpus needing migration today
+is this one**. That is what makes the timing favorable rather than the problem
+absent --- see
+[[work-items/WORK-0037-old-records-get-migrated-as-the-system-improves]], whose
+journal counts the instances so far.

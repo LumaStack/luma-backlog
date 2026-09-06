@@ -78,3 +78,48 @@ doing quietly.
 - `docs/spec.md` §9.9 — additions are free, shape changes are breaking.
 - `[[backlog/work-items/WORK-0031-reshape-the-command-surface]]` — the changes
   that will need this first.
+
+
+## The instances so far
+
+Kept here because the count is the argument. Each was solved by hand.
+
+1. **The unit rename** --- `unit` became `work item`
+   ([[records/decisions/ADR-0001-the-backlog-unit-is-a-work-item]]).
+2. **The username replacement** --- actor values written from the operating
+   system user
+   ([[work-items/WORK-0035-the-operating-system-username-must-never-be-an-actor]]).
+3. **Two package renames** --- `internal/backlog` to `internal/corpus`,
+   `internal/policy` to `internal/guards`. Left a closed work item's `verify_by`
+   naming paths that no longer run, and **nothing could report which records
+   referred to a shape that had moved.**
+4. **The command surface**
+   ([[work-items/WORK-0031-reshape-the-command-surface]]) --- `delivered`
+   becomes `completed`, `abandoned` is dropped, `rejected` is added. Every
+   closed record carries a disposition from the old vocabulary.
+5. **Workflow status ordinals** --- `workflow_status` grew from a list of names
+   to a mapping of name to ordinal. Converted by hand, one file, because there
+   was one file.
+
+**Instance 4 is the first that touches many records at once** and cannot be
+done with an editor and a steady hand.
+
+## What makes now the moment
+
+**No other repository uses this tool yet.** Every corpus that would need
+migrating is this one, so the machinery can be built and proven against a
+corpus whose every record is understood, before there is a stranger's data to
+be careful with. That window closes on first use elsewhere, not on a date.
+
+## What a repair has to be able to do
+
+Drawn from the instances above rather than imagined:
+
+- **Rename a field's value** across a corpus (1, 4).
+- **Rewrite an actor** (2).
+- **Find records referring to a shape that moved** --- paths, package names,
+  wikilinks --- and report them even when it cannot fix them (3).
+- **Recompute a derived field without disturbing a chosen one** --- a rank's
+  ordinal prefix, leaving its position alone
+  ([[work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]]).
+- **Report what it could not do**, in the shape `list` already uses for skips.
