@@ -72,7 +72,7 @@ One pattern is likely to be common enough to design against: **a person defines 
 
 Where a division like that does occur, it tends to fall along the same line that separates the units (§2.2): **work items and outcomes describe the world, and waves and tasks describe how we organize ourselves to change it.** Declaring what should be true for whoever needs it is a statement of intent, which a person is usually best placed to give. How the work is then divided and attempted is the part an agent can most usefully decide, and re-decide as it learns.
 
-That axis does three jobs: it is why completion is measured on outcomes and never on tasks, why this unit is named for delivery rather than release, and why authorship tends to divide where it does when it divides at all.
+That axis does three jobs: it is why completion is measured on outcomes and never on tasks, why this unit draws its boundary at delivery rather than release, and why authorship tends to divide where it does when it divides at all.
 
 > **A consequence worth designing for.** The interface, the board, and the defaults must not *require* a person to author tasks, and must not *assume* they never will. Both extremes are real: someone maintaining every task by hand should find the tool comfortable, and so should someone who never writes one.
 >
