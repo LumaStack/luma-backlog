@@ -108,7 +108,11 @@ A reader must be able to tell them apart without being told.
 
 > ## WORK-0031 · Reshape the command surface
 >
-> `prepared` · `change` · stage `draft`
+> | | |
+> | --- | --- |
+> | **Status** | prepared |
+> | **Kind** | change |
+> | **Stage** | draft |
 >
 > The specification and the binary disagree, and the specification won.
 >
@@ -122,8 +126,9 @@ A reader must be able to tell them apart without being told.
 > ○ Accept a positional title on work-item new
 > ○ Add outcome assert and outcome archive
 > ◐ Carry completion counts in the read path
-> ✓ Build the noun-verb command tree
-> ✓ Compute a rank by bisecting between neighbors
+>
+> ✓ Build the noun-verb command tree · Compute a rank by bisecting between
+> neighbors · Add the work-item rank command · Make set refuse the rank field
 >
 > ### Journal
 >
@@ -146,9 +151,10 @@ A reader must be able to tell them apart without being told.
 
 - **Key and title in the heading**, joined by `·`. The key so it can be typed,
   the title so it is recognisable.
-- **Status, kind and stage on one line**, in that order, status first because it
-  is the one anybody came for. `stage` is labelled because it is the field most
-  often confused with status.
+- **Status, kind and stage as a two-column table**, in that order --- status
+  first, because it is what anybody came for. A labelled list would read as well
+  and cannot align: markdown collapses the padding, so the values come out
+  ragged. The table is the only shape that holds.
 - **The description as prose**, on its own line, unquoted. It is the record's own
   sentence and should read as one.
 - **A mark carries the state, not a column.**
@@ -168,6 +174,11 @@ A reader must be able to tell them apart without being told.
 - **One list each, unstarted first, finished last.** Not grouped under Open and
   Closed headings: the mark already says which, and grouping buries the ordering
   that matters within each.
+- **Closed tasks collapse onto one line**, joined by `·` after a single `✓`. A
+  work item that has been worked has more finished tasks than open ones, and a
+  column of `✓` pushes the open work --- the reason somebody is reading --- off
+  the screen. The names stay, because a closed task is how you find out
+  something was already tried; only the vertical space goes.
 - **The heading carries the tally** --- *Tasks (22) --- 9 done, 13 open* --- so
   the counts are read once rather than by counting rows.
 - **The journal as a count and the newest entry's first line**, quoted. Never the
