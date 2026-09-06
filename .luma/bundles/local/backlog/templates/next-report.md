@@ -4,6 +4,8 @@
 Listings inside it follow [[listing]].
 
 ```
+## The big picture
+
 ### Last touched
 
 <prose: which record, roughly when, and what it was>
@@ -27,19 +29,15 @@ Listings inside it follow [[listing]].
 
 <what you noticed that nobody asked about --- or omit the section>
 
----
-
-### Next picks
+## Next picks
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
 3. **<the thing>** — <one clause of why>
 
----
+## Recommendation
 
-### Recommended
-
-**<the one>** — <why it is the one>. <what would change it>
+**<the one>** — <why it beat the others>. <what would change it>
 ```
 
 ## The rules the shape depends on
@@ -77,27 +75,31 @@ names has already got them.
 **Never offered as work.** It has not crossed the second gate, and offering it
 mistakes a pile for a queue.
 
-## Three divisions, two rules
+## Three divisions, named
 
-**The pulse, the menu, the pick.** They answer different questions and a reader
-usually wants one of them.
+**The big picture, next picks, a recommendation.** They answer different
+questions and a reader usually wants one of them, so each is named and a reader
+can stop at the one they came for.
 
-**Everything down to and including Risks is the pulse** --- where the work
-stands and what is worth worrying about. Somebody checking in reads this and
-stops. Risks belong here, not below: a concern is part of the picture, not part
-of the choice.
+**The big picture** is where the work stands and what is worth worrying about.
+Somebody checking in reads this and nothing else. **Risks belong here** --- a
+concern is part of the picture, not part of the choice.
 
-**Next picks is a menu.** Options, ranked, and the reader chooses. **Not
-"where to start"** --- nobody arriving at an existing backlog is starting, they
-are continuing, and a heading that says otherwise is written for a project that
+**Next picks is a menu.** Options, ranked, and the reader chooses. **Not "where
+to start"** --- nobody arriving at an existing backlog is starting, they are
+continuing, and a heading that says otherwise is written for a project that
 does not exist yet.
 
-**Recommended is one thing.** If the menu were enough there would be no need to
-pick, and handing somebody three ranked options without saying which is
+**Recommendation is one thing.** If the menu were enough there would be no need
+to pick, and handing somebody three ranked options without saying which is
 answering a question with a question.
 
-**The rules are what make the three legible.** Without them the sections run
-together and a reader looking only for the pulse reads the opinions too.
+**`##` for the divisions, `###` for what is inside them.** The hierarchy is real
+here --- the big picture contains four sections --- which is why the size
+difference is right where it would have been wrong between siblings.
+
+**No rules between them.** The named headings already divide; a rule as well is
+furniture.
 
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
@@ -105,7 +107,7 @@ the section is worth and teaches a reader to skip it.
 **Next picks is one to five, ranked, a clause each.** Not a plan --- a menu
 somebody can act on without reading twice.
 
-**Recommended is one of them, named again, with the reason it beat the others.**
+**The recommendation is one of them, named again, with the reason it beat the others.**
 Do not introduce something that was not on the menu. **Say what would change
 it** when something obvious would, usually a decision nobody has made.
 

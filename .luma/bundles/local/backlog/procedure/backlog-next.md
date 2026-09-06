@@ -6,12 +6,11 @@ description: Say where the work stands and what to pick up — what was last tou
 
 # Decide what to work on next
 
-**Three divisions: the pulse, the menu, the pick.**
+**Three divisions, each named so a reader can stop at the one they came for.**
 
-Everything down to and including risks is **the pulse** --- where the work
-stands. Then **next picks**, a ranked menu. Then **one recommendation**. A
-reader usually wants one of the three, and the rules between them are what let
-them stop.
+**The big picture** --- where the work stands and what is worth worrying about,
+risks included. **Next picks** --- a ranked menu. **A recommendation** --- one
+of them, with the reason it beat the rest.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
@@ -102,7 +101,7 @@ selection stops being a decision anybody makes.
 
 ## Risks and concerns
 
-**The last of the pulse, and honest.** What you noticed while reading that nobody
+**The last of the big picture, and honest.** What you noticed while reading that nobody
 asked about.
 
 - Work `in_progress` with a journal silent for weeks — the status is a claim
@@ -142,6 +141,8 @@ recommendation with a reason is worth more than a filled one without.
 Shape is [[next-report]]; this is the judgment, which is the part that does not
 come from a template.
 
+> ## The big picture
+>
 > ### Last touched
 >
 > **WORK-0031**, all session. Its stamp reads `16:51` and three `captured`
@@ -187,9 +188,7 @@ come from a template.
 > 3. **Split WORK-0031** --- the reshape is finished; the open tasks are a
 >    different work item wearing its name.
 >
-> ---
->
-> ### Recommended
+> ## Recommendation
 >
 > **Push and open both PRs.** Everything else on the list is work; this is the
 > only item that reduces risk rather than adding to it, and it is ten minutes.
