@@ -32,6 +32,20 @@ is a git question.
 about an hour ago — the help restyle."* Somebody returning after a break wants
 their place back before they want advice.
 
+**The stamp lies more often than you would think, and saying so is the answer.**
+A work item's `modified` moves only when the work item's own file is written.
+Adding a task, closing one, verifying an outcome, writing sixty journal lines ---
+none of it touches the parent, because membership lives on the member. So a work
+item somebody spent all day inside can look older than a record they created and
+never opened again.
+
+**Check the children before trusting the parent.** If the most recent stamps are
+all on records nobody has worked on, the ordering is telling you when things were
+*created*, not when they were *worked*. Say which you are reporting.
+
+**Two or three sentences when the simple answer is wrong.** The one-line form is
+for when it is right.
+
 **Say when nothing was touched recently**, and say how long. A cold backlog and
 a hot one call for different answers, and the reader can tell which they are in
 faster than you can.
@@ -116,3 +130,72 @@ decision nobody has made.
 
 **If the honest answer is "nothing, and here is why", give that.** An empty
 recommendation with a reason is worth more than a filled one without.
+
+---
+
+## What a good one reads like
+
+Shape is [[next-report]]; this is the judgment, which is the part that does not
+come from a template.
+
+> ### Last touched
+>
+> **WORK-0031**, all session. Its stamp reads `16:51` and three `captured`
+> records show as more recent, but that is an artefact --- adding tasks, closing
+> them and writing the journal never touches the parent's stamp. Since that
+> stamp: nine tasks closed, fourteen added, sixty-two journal lines.
+>
+> ### In Progress (0)
+>
+> `luma-backlog work-item list --status in_progress`
+>
+> ### To Do (0)
+>
+> `luma-backlog work-item list --status todo`
+>
+> ### Preparation candidates
+>
+> ○ WORK-0031 · Reshape the command surface
+> ○ WORK-0039 · What closed work items cost as the corpus grows
+>
+> WORK-0031 is already prepared; WORK-0039 has no outcomes and no scope, so it
+> is several conversations from producing work.
+>
+> ---
+>
+> ### Risks
+>
+> **Fifty-seven commits on two branches, none pushed.** Everything from today
+> exists in one working tree.
+>
+> **WORK-0031 grew from 9 tasks to 23 while remaining one work item.** The
+> reshape itself is done; what is left is a pile of commands it discovered.
+>
+> **The second gate has never been used.** Nothing has ever been `todo`, so this
+> report structurally cannot answer its own question here.
+>
+> ### Where to start
+>
+> 1. **Push and open both PRs** --- the work is done and the risk is that it is
+>    in one place.
+> 2. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
+>    the record understates itself until then.
+> 3. **Split WORK-0031** --- the reshape is finished; the open tasks are a
+>    different work item wearing its name.
+>
+> What would change the order: if you would rather keep building, 3 comes first
+> --- deciding what WORK-0031 *is* determines which task is next.
+
+**What that example is doing**, since the shape is easy to copy and the
+substance is not:
+
+- **The stamp is corrected rather than repeated.** The obvious answer was wrong
+  and saying why took two sentences.
+- **Every risk carries a number or a name.** Fifty-seven commits, 9 to 23, never
+  --- each one is checkable.
+- **One risk is not about the backlog at all.** Unpushed work is the kind of
+  thing a report that only reads records will always miss.
+- **The recommendations are ranked on consequence**, not on effort, and the last
+  line says what would reorder them.
+- **Nothing is offered as work that has not been selected.** WORK-0031 appears
+  as a preparation candidate and in the recommendations --- never as *next*.
