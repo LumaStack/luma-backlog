@@ -2,9 +2,10 @@
 type: task
 title: Build the noun-verb command tree
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:49:47Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T20:02:32Z'}
 ---
 
 # Build the noun-verb command tree

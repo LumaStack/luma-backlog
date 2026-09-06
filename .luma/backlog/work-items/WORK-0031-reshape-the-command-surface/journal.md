@@ -56,3 +56,5 @@ the proposed grouping put decision, exploration, outcome and task under MANAGE W
 cobra's IsAvailableCommand is false for the help command by design, so any custom listing must say or eq .Name help or lose it silently — cobra's own template does; dropping the clause is how help vanished
 InitDefaultHelpCmd declines to add help to a command with no subcommands yet, so calling it before registering them did nothing — it has to come last
 the stale-example check is built and earned its keep immediately: the first version used cobra Find, which returns the root with arguments unconsumed rather than erroring, so it passed a command that does not exist
+nine tasks were finished and none marked closed — the backlog said todo for everything while the work was in the commits; caught only by asking what was next
+there is no task close: close is registered on work-item only, so a task is closed with set workflow_status=closed — worth deciding whether that is right or a gap

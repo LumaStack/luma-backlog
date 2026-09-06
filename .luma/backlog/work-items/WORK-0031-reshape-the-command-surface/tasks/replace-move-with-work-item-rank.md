@@ -2,9 +2,10 @@
 type: task
 title: Replace move with work-item rank
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:49:47Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T20:02:33Z'}
 ---
 
 # Replace move with work-item rank
