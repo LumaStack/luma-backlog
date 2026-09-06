@@ -18,7 +18,7 @@ Listings inside it follow [[listing]].
 
 `luma-backlog work-item list --status todo`
 
-### Preparation candidates
+### Preparation considerations
 
 ○ WORK-0031 · Reshape the command surface
 ○ WORK-0039 · What closed work items cost as the corpus grows
@@ -29,7 +29,7 @@ Listings inside it follow [[listing]].
 
 <what you noticed that nobody asked about --- or omit the section>
 
-## Next picks
+## Next candidates
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
@@ -60,9 +60,10 @@ means will not be helped by a sentence saying it.
 **Shown even when empty**, with their commands. Two empty listings *are* the
 finding, and deleting them hides it.
 
-**Preparation candidates** --- a label, like the headings above it, rather than
-a sentence with a hedge in it. *Candidate* already carries *not chosen*, so the
-list needs no defending. Rows only. **Up to three.**
+**Preparation considerations** --- a label, like the headings above it, rather
+than a sentence with a hedge in it. *Consideration* carries *not chosen* and
+does not promise these are close, which *candidate* slightly does. Rows only.
+**Up to three.**
 
 **It is the last section above the rule**, because it is the one a reader with
 work in progress skips. Everything they came for is above it.
@@ -77,7 +78,7 @@ mistakes a pile for a queue.
 
 ## Three divisions, named
 
-**The big picture, next picks, a recommendation.** They answer different
+**The big picture, next candidates, a recommendation.** They answer different
 questions and a reader usually wants one of them, so each is named and a reader
 can stop at the one they came for.
 
@@ -85,7 +86,7 @@ can stop at the one they came for.
 Somebody checking in reads this and nothing else. **Risks belong here** --- a
 concern is part of the picture, not part of the choice.
 
-**Next picks is a menu.** Options, ranked, and the reader chooses. **Not "where
+**Next candidates is a menu.** Options, ranked, and the reader chooses. **Not "where
 to start"** --- nobody arriving at an existing backlog is starting, they are
 continuing, and a heading that says otherwise is written for a project that
 does not exist yet.
@@ -104,9 +105,13 @@ furniture.
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
 
-**Next picks is one to five alternatives, ranked, a clause each.** Not a plan
---- a menu somebody can act on without reading twice. **The recommendation is
-not among them.**
+**Next candidates is one to five alternatives, ranked, a clause each.** Not a
+plan --- a menu somebody can act on without reading twice. **The recommendation
+is not among them.**
+
+**Candidates in both names, deliberately.** One list is what might be worth
+working out, the other is what might be worth doing; both are things a reader
+chooses from rather than instructions. Only the recommendation asserts.
 
 **The recommendation is not repeated in the menu.** The menu holds what you
 would do *instead*; the recommendation holds what you would do. Listing the pick
