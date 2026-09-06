@@ -6,6 +6,7 @@ workflow_status: in_progress
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:30:56Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T06:20:00Z'}
 ---
 
 # Specify the minimum viable product
@@ -20,7 +21,13 @@ The tool today has `init`, `new`, `show`, `list`, `set`, `journal`, `verify` and
 
 ## What is being delivered
 
-**One document that the first release is built against**, settling for each stage of the loop which commands exist, which board views exist, and which command each board action calls.
+**What the first release is built against**, settling for each stage of the loop which commands exist, which board views exist, and which command each board action calls.
+
+**It turned out to be three things rather than one document**, and the split follows a rule settled while doing it — what stays true past the first release is durable, what is only true for it expires:
+
+- **Five decision records** (ADR-0004 … ADR-0008), carrying the reasoning and what was not taken.
+- **`spec.md` amendments**, so the normative document contradicts nothing in force.
+- **`docs/design/mvp.md`**, holding the cut line: the six stages, the command surface, and the board in three tiers.
 
 It is a specification and not an implementation. Nothing is built from it until it is approved.
 
@@ -32,7 +39,6 @@ It is a specification and not an implementation. Nothing is built from it until 
 
 **The web interface** (`spec.md` §11.7), which is a follow-up and not a co-equal surface.
 
-**`docs/competitive-analysis.md`**, which is unresolved on a separate axis and is not an input here.
 
 ## Constraints
 
@@ -64,35 +70,34 @@ index so nothing has to be reconstructed from a conversation.
 [[backlog/work-items/WORK-0018-extract-the-application-layer]] ·
 [[backlog/work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]]
 
-## What is still open
+## What was open, and how it settled
 
-- **`new` takes its title positionally, as `--title`, or both.** `spec.md`
-  §9.0.1 rules out a command whose only path requires knowing field names, so
-  `--title` alone would need that section amended.
-- **Configuration format.** The estate's precedence model is adopted — six
-  layers, `[defaults]` and `[require]`, read per invocation, resolved at one
-  site. Whether the file is TOML is **not** this project's decision to make
-  alone: `.luma/config/` is shared, and `spec.md` §8.1 argues for YAML on the
-  grounds that a repository should carry one format, a premise already false
-  here. Format-independent either way.
-- **What this specification physically is** — a new document, amendments folded
-  into `spec.md`, or outcomes and tasks in `.luma/` so the tool specifies
-  itself. And what *approved* means.
+Nothing remains open on this work item.
+
+| Question | Settled |
+| --- | --- |
+| Whether `new` takes its title positionally or as `--title` | **Both**, with an error if both are supplied. Flag-only would have cost the verified `capture-is-one-command` outcome (ADR-0006). |
+| The configuration format | **YAML for now**, and deferred rather than settled — `.luma/config/` is shared across tools and the format is the estate's call (ADR-0006). |
+| What this specification physically is | **`spec.md` plus `docs/design/mvp.md`**, sorted by what expires. Not a fourth document. |
+| What *approved* means | **The three outcomes verified.** The work item then closes on its own arithmetic rather than on anybody's say-so. |
+| Whether `--json` carries computed completion | **Yes, as counts rather than a ratio** (`spec.md` §9.3). `CompletionOf` existed with one caller — `close`, the path that refuses. |
+| Whether claims and leases ship | **No**, and taking is separated from owning ([[records/decisions/ADR-0008-taking-a-task-expires-and-owning-a-work-item-does-not]]). The blind spot is written down: a crashed agent leaves work looking exactly like work in progress. |
+| The board's scope | **Three tiers in `docs/design/mvp.md`**, re-tiered by what the design needs rather than where a first pass put them. |
 
 ## Specification debt found while shaping this
 
-Recorded so it is fixed deliberately rather than discovered again:
+**Five of six are fixed** — §8.1's dead configuration path, §9.2's `move`, §4.4's
+*"no separate pass or fail field"*, §5.2's vacuously-true `work-item.complete`,
+and §9.6's unconnected exhaustion. All landed in PR #57 and PR #61.
 
-- **§9.1 says noun-then-verb; the binary does verb-then-noun.** Settled in
-  favor of the specification; the code changes inside WORK-0018.
-- **§8.1 says configuration lives at `.backlog/config.yml`.** It is at
-  `.luma/config/luma-backlog.yaml`. Stale in directory and filename.
-- **§9.2 names the reordering verb `move`.** Renamed to `rank` (ADR-0005).
-- **§4.4 says there is no separate pass or fail field.** Wrong, and the
-  reasoning in `close.go` already contradicts it (ADR-0007).
-- **§5.2's `work-item.complete` reads "every live outcome passes"**, which is
-  vacuously true of none — the condition that gates closing needs *at least
-  one*.
-- **§9.6 describes bisection but not exhaustion.** Precision extends rather
-  than failing, and the rebalance is already listed among the multi-record
-  operations; the connection is not drawn.
+**One remains, and it is not debt in the document:**
+
+- **§9.1 says noun-then-verb; the binary does verb-then-noun.** Settled in favor
+  of the specification, so **the code is what changes** — inside
+  [[backlog/work-items/WORK-0018-extract-the-application-layer]], where the
+  command tree is being rewritten anyway.
+
+**And one found late, left untracked here:** §2.2 says the unit is *"named for
+delivery rather than release"*, which stopped being true at the rename to *work
+item*. Pre-existing, unrelated to this work, and worth its own record rather
+than widening this one.
