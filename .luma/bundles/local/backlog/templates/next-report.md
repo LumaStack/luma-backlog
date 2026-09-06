@@ -29,7 +29,7 @@ Listings inside it follow [[listing]].
 
 <what you noticed that nobody asked about --- or omit the section>
 
-## Next candidates
+## Next options
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
@@ -78,7 +78,7 @@ mistakes a pile for a queue.
 
 ## Three divisions, named
 
-**The big picture, next candidates, a recommendation.** They answer different
+**The big picture, next options, a recommendation.** They answer different
 questions and a reader usually wants one of them, so each is named and a reader
 can stop at the one they came for.
 
@@ -86,7 +86,7 @@ can stop at the one they came for.
 Somebody checking in reads this and nothing else. **Risks belong here** --- a
 concern is part of the picture, not part of the choice.
 
-**Next candidates is a menu.** Options, ranked, and the reader chooses. **Not "where
+**Next options is a menu.** Options, ranked, and the reader chooses. **Not "where
 to start"** --- nobody arriving at an existing backlog is starting, they are
 continuing, and a heading that says otherwise is written for a project that
 does not exist yet.
@@ -105,13 +105,17 @@ furniture.
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
 
-**Next candidates is one to five alternatives, ranked, a clause each.** Not a
+**Next options is one to five alternatives, ranked, a clause each.** Not a
 plan --- a menu somebody can act on without reading twice. **The recommendation
 is not among them.**
 
-**Candidates in both names, deliberately.** One list is what might be worth
-working out, the other is what might be worth doing; both are things a reader
-chooses from rather than instructions. Only the recommendation asserts.
+**Options, not candidates.** *Options* is the word somebody uses for a menu they
+are choosing from; *candidate* implies the things are being assessed for
+suitability, which is what the preparation list does and this one does not.
+
+**Neither list asserts. Only the recommendation does.** Considerations are what
+might be worth working out, options are what might be worth doing, and both are
+handed over rather than urged.
 
 **The recommendation is not repeated in the menu.** The menu holds what you
 would do *instead*; the recommendation holds what you would do. Listing the pick

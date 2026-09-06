@@ -9,7 +9,7 @@ description: Say where the work stands and what to pick up — what was last tou
 **Three divisions, each named so a reader can stop at the one they came for.**
 
 **The big picture** --- where the work stands and what is worth worrying about,
-risks included. **Next candidates** --- a ranked menu. **A recommendation** --- one
+risks included. **Next options** --- a ranked menu. **A recommendation** --- one
 of them, with the reason it beat the rest.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
@@ -114,7 +114,7 @@ asked about.
 **Say nothing if there is nothing.** A manufactured concern costs more than the
 section is worth, and it teaches a reader to skip it.
 
-## Next candidates, then one recommendation
+## Next options, then one recommendation
 
 **One to five, ranked, with a clause each.** Not a plan — a shortlist somebody
 can act on without reading twice.
@@ -179,7 +179,7 @@ come from a template.
 > **The second gate has never been used.** Nothing has ever been `todo`, so this
 > report structurally cannot answer its own question here.
 >
-> ### Next candidates, then one recommendation
+> ### Next options, then one recommendation
 >
 > 1. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
 >    the record understates itself until then.
