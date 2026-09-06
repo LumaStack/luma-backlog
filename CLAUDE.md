@@ -18,6 +18,7 @@ A git-native backlog worked by people and agents at the same time. Records are m
 **Working documents.**
 
 - `docs/development.md` — setup, tests, conventions. **Start here to work on the code.**
+- `docs/architecture.md` — how the packages are arranged, and the two rules that fail the build when they are not.
 - `docs/testing.md` — testing practice, and the survey behind it.
 - `docs/open-questions.md` — what is unsettled, and **why settled things were settled.** Read before reopening anything.
 - `docs/format-requests.md` — what this project asks of the knowledge format.
