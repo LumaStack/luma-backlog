@@ -36,8 +36,14 @@ luma-backlog work-item list --json
 > | In Progress | 0 |
 > | Closed | 13 |
 >
-> Ask for a record --- *show WORK-0031* --- a column --- *show To Do* --- or a
-> kind --- *show the defects*.
+> You can also ask to:
+> - show everything In Progress
+> - show <work item>
+> - show all Captured defects
+
+**Then the three examples, as a list.** One column on its own, one named record,
+and one that combines a column with a kind --- because compound filters are the
+thing nobody guesses is possible.
 
 **Say nothing else.** No diagnosis, no shape commentary, no observation about
 what the counts imply, no recommendation. Somebody who wanted an opinion will
