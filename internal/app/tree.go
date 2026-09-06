@@ -7,8 +7,13 @@ package app
 // carrying judgment (ADR-0004).
 type Node struct {
 	View
-	// Children are the records belonging to this work item, outcomes before
-	// tasks --- what must be true before how it is being attempted.
+	// Children are the records belonging to this work item, tasks before
+	// outcomes.
+	//
+	// Tasks are what you look at almost every time; outcomes are what you look
+	// at when closing. And an outcome reads `unverified` for nearly the whole
+	// life of a work item, so putting them first puts a block of constant text
+	// between the work item and the thing somebody came for.
 	Children []View
 }
 
@@ -33,7 +38,7 @@ func (s *Session) Tree(f Filter) (*TreeResult, error) {
 	out := &TreeResult{Observations: listed.Observations}
 	for _, wi := range listed.Items {
 		node := Node{View: wi}
-		for _, unit := range []string{Outcome, Task} {
+		for _, unit := range []string{Task, Outcome} {
 			kids, err := s.List(Filter{Unit: unit, WorkItem: wi.Name})
 			if err != nil {
 				return nil, err

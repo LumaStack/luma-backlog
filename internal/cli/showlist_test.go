@@ -336,3 +336,72 @@ func TestOnlyWorkItemsOfferATree(t *testing.T) {
 		t.Errorf("task list accepted --tree")
 	}
 }
+
+// A listing shows the key, the status and the title --- and not the type,
+// which repeats the command, nor the slug, which repeats the title.
+func TestAListingShowsKeyStatusAndTitle(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+
+	_, out, _ := run(t, app, "work-item", "list")
+	if !strings.Contains(out, "KEY") || !strings.Contains(out, "WORK-0001") {
+		t.Errorf("the listing did not show the key:\n%s", out)
+	}
+	for _, unwanted := range []string{"TYPE", "work-item", "payments-v2"} {
+		if strings.Contains(out, unwanted) {
+			t.Errorf("the listing still shows %q:\n%s", unwanted, out)
+		}
+	}
+}
+
+// A child is marked by what it is rather than named. Its slug is its title in
+// kebab case, so printing it would put the same sentence on the row twice.
+func TestATreeMarksChildrenByType(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+
+	_, out, _ := run(t, app, "work-item", "list", "--tree")
+	for _, want := range []string{"TASK", "OUT", "Add the queue", "The queue drains"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("tree missing %q:\n%s", want, out)
+		}
+	}
+	if strings.Contains(out, "add-the-queue") {
+		t.Errorf("tree printed a child's slug beside its own title:\n%s", out)
+	}
+}
+
+// Tasks come before outcomes. Tasks are what somebody looks at almost every
+// time; an outcome reads "unverified" for nearly the whole life of a work item,
+// so leading with them puts constant text where the useful rows belong.
+func TestTasksComeBeforeOutcomes(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+
+	_, out, _ := run(t, app, "work-item", "list", "--tree")
+	task, outcome := strings.Index(out, "TASK"), strings.Index(out, "OUT ")
+	if task < 0 || outcome < 0 {
+		t.Fatalf("tree did not contain both:\n%s", out)
+	}
+	if task > outcome {
+		t.Errorf("outcomes came before tasks:\n%s", out)
+	}
+}
+
+// The last child closes the branch, so the eye finds where one work item ends
+// without counting rows.
+func TestTheLastChildClosesTheBranch(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "task", "new", "Drain it", "-w", "payments-v2")
+
+	_, out, _ := run(t, app, "work-item", "list", "--tree")
+	if strings.Count(out, "└─") != 1 {
+		t.Errorf("expected exactly one closing branch:\n%s", out)
+	}
+}

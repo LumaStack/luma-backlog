@@ -61,10 +61,10 @@ func TestListFiltersByKind(t *testing.T) {
 	}
 
 	_, out, _ := run(t, app, "list", "--kind", "defect")
-	if !strings.Contains(out, "a-crash") {
+	if !strings.Contains(out, "A crash") {
 		t.Errorf("the defect was not listed:\n%s", out)
 	}
-	for _, unwanted := range []string{"please-add-exports", "ordinary-work"} {
+	for _, unwanted := range []string{"Please add exports", "Ordinary work"} {
 		if strings.Contains(out, unwanted) {
 			t.Errorf("--kind bug returned %s:\n%s", unwanted, out)
 		}
@@ -103,7 +103,7 @@ func TestFilteringByAliasFindsCanonicalRecords(t *testing.T) {
 		t.Fatalf("setup failed: %s", e)
 	}
 	_, out, _ := run(t, app, "list", "--kind", "bug")
-	if !strings.Contains(out, "a-crash") {
+	if !strings.Contains(out, "A crash") {
 		t.Errorf("--kind bug did not find a record stored as defect:\n%s", out)
 	}
 }
@@ -266,9 +266,9 @@ func TestInquiryInstancesAreStoredAsInquiry(t *testing.T) {
 
 	// And all four are findable as one, which is the point of aliasing them.
 	_, out, _ := run(t, app, "list", "--kind", "inquiry")
-	for _, slug := range []string{"read-the-code", "check-the-books", "what-broke-on-tuesday", "can-we-use-parquet"} {
-		if !strings.Contains(out, slug) {
-			t.Errorf("%s was not listed as an inquiry:\n%s", slug, out)
+	for _, title := range []string{"read the code", "check the books", "what broke on tuesday", "can we use parquet"} {
+		if !strings.Contains(out, title) {
+			t.Errorf("%s was not listed as an inquiry:\n%s", title, out)
 		}
 	}
 }

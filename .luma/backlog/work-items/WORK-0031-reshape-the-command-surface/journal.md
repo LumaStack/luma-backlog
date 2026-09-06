@@ -34,3 +34,7 @@ the tree filter narrows work items and never their children — asking for prepa
 tree assembly lives in internal/app, not the adapter: the board wants the same thing a terminal does, and an adapter building it would be carrying judgment
 --tree on list rather than a tree verb: a flag on a settled surface instead of a sixth verb needing ADR-0006 amended, and the single-item case was already served by task list -w X
 help examples went stale the moment the tree changed and nothing caught it — journal's said luma-backlog journal, a command that no longer exists; worth a check that every Example in the tree actually parses
+listings show key, status and title — TYPE repeated the command it was run under and the slug repeated the title, so both went; flat output went from 95 columns to 55
+children are marked OUT and TASK rather than named: they have no key and their slug is their title in kebab case, so printing it put the same sentence on the row twice
+tasks before outcomes — an outcome reads unverified for nearly the whole life of a work item, so leading with them puts constant text between the work item and what somebody came for; the argument that outcomes summarize status only holds at closing time
+child keys were considered and dropped: OUT-014 is not something anyone says out loud, which is the reason work items have keys at all — recorded rather than left as a gap somebody rediscovers

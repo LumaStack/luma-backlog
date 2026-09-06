@@ -64,7 +64,7 @@ func TestADuplicateKeyIsReportedAndNamesBoth(t *testing.T) {
 	if code != ExitOK {
 		t.Errorf("a duplicate key stopped the listing: exit %d", code)
 	}
-	if !strings.Contains(out, "payments-v2") || !strings.Contains(out, "search-relevance") {
+	if !strings.Contains(out, "Payments v2") || !strings.Contains(out, "Search relevance") {
 		t.Errorf("the listing dropped records:\n%s", out)
 	}
 	for _, want := range []string{"WORK-0001", "payments-v2", "search-relevance"} {

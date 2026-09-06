@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/lumastack/luma-backlog/internal/app"
@@ -68,9 +69,9 @@ func newListCommand(a *App, unit string) *cobra.Command {
 				return nil
 			}
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
-			fmt.Fprintln(w, "TYPE\tSTATUS\tID\tTITLE")
+			fmt.Fprintln(w, "KEY\tSTATUS\tTITLE")
 			for _, it := range res.Items {
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", it.Type, it.Status, it.Name, it.Title)
+				fmt.Fprintf(w, "%s\t%s\t%s\n", refOf(it), it.Status, it.Title)
 			}
 			return w.Flush()
 		},
@@ -129,18 +130,48 @@ func runTree(cmd *cobra.Command, s *app.Session, f app.Filter, asJSON bool) erro
 		return nil
 	}
 	w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(w, "TYPE\tSTATUS\tID\tTITLE")
+	fmt.Fprintln(w, "KEY\tSTATUS\tTITLE")
 	for _, n := range res.Nodes {
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", n.Type, n.Status, n.Name, n.Title)
+		fmt.Fprintf(w, "%s\t%s\t%s\n", refOf(n.View), n.Status, n.Title)
 		for i, c := range n.Children {
-			// The last child closes the branch, so the eye can tell where one
-			// work item ends and the next begins without counting indents.
+			// The last child closes the branch, so the eye finds where one
+			// work item ends without counting rows.
 			branch := "├─"
 			if i == len(n.Children)-1 {
 				branch = "└─"
 			}
-			fmt.Fprintf(w, "%s %s\t%s\t%s\t%s\n", branch, c.Type, c.Status, c.Name, c.Title)
+			fmt.Fprintf(w, "%s %s\t%s\t%s\n", branch, marker(c.Type), c.Status, c.Title)
 		}
 	}
 	return w.Flush()
+}
+
+// refOf is what a row is called. A work item shows its key --- the handle
+// somebody says out loud. Anything else shows its name, since that is the only
+// handle it has.
+func refOf(v app.View) string {
+	if v.Key != "" {
+		return v.Key
+	}
+	return v.Name
+}
+
+// marker labels a child by what it is rather than naming it.
+//
+// Outcomes and tasks have no key, and their slug is their title in kebab case
+// --- printing it puts the same sentence on the row twice and pushes every
+// other column right. The type is the useful thing at this width; to act on a
+// child, `task list -w <ref>` gives the handles.
+func marker(unit string) string {
+	switch unit {
+	case app.Outcome:
+		return "OUT"
+	case app.Task:
+		return "TASK"
+	case app.Decision:
+		return "DEC"
+	case app.Exploration:
+		return "EXP"
+	}
+	return strings.ToUpper(unit)
 }
