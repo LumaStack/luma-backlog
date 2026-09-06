@@ -21,6 +21,18 @@ It is a multi-layer approach:
 - **The backlog should scold you when you do it**, so a model can correct
   itself, and so it surfaces as a problem to a person when it happens anyway.
 
+**There is an ordering, worst to best:**
+
+1. Writing no outcomes.
+2. Writing outcomes after the fact, and still proving them.
+3. Writing outcomes ahead of execution.
+
+**All three are allowed. Users and agents should be steered toward the last.**
+
+**And we should surface when work is not yet something you can work on** — if no
+outcomes are present it is not startable, or workable, or whatever that ends up
+being called.
+
 **How it should work is not settled.** That is what this inquiry is for.
 
 ---
@@ -83,6 +95,34 @@ duplicate keys.
   is one that will not be.
 - **It must survive being ignored.** These fire rarely and matter once, which is
   the hardest kind of warning to write well.
+
+### The readiness signal has a name waiting for it
+
+`open-questions.md` §7 worked out this vocabulary during the unit rename and
+**shelved it deliberately**, naming the trigger that would bring it back:
+*"shelved until a formation bar is actually needed (a board with a pull column,
+a readiness check, an agent asking what it may start)."* **A readiness check is
+exactly what is being asked for here**, so §7 is answerable rather than open.
+
+Its lean is close to what was described: **`deliverable` as a derived
+condition — live outcomes exist and every one carries a check — "which can
+neither decay nor over-claim."** Derived rather than declared is the important
+half: a field somebody sets goes stale, and a computed one cannot.
+
+**But §7 separates two facts that are being merged here.** `actionable` means
+work can *start*; `deliverable` means done is *provable*. It records that
+*"the two facts arrive in either order"* — and having outcomes is the second,
+being used as a gate on the first.
+
+**That merge is forbidden as a gate and fine as a signal.**
+`workflow-status.md` is explicit: *"Preparation is still worth having for urgent
+work — an incident with no outcomes recorded is one nobody can prove is over. So
+help somebody fill it in afterwards, and **never make it a condition of
+starting**."*
+
+So *surface* is the right word and *block* would not be. Which also makes the
+ordering above enforceable in exactly one way: **the tool can say where a record
+sits in it, and never move it.**
 
 ## What this produces
 
