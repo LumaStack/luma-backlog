@@ -8,3 +8,4 @@
 ## ▶ 2026-09-06
 
 the principle is narrower than avoiding OS users — never introduce identity the repository does not already carry; git config is on every commit already, an OS username is not
+the work item quoted the operating system username twice while explaining why it must not be written down — the failure is that easy, and nothing catches it

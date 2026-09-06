@@ -42,10 +42,12 @@ username is information the repository would otherwise never have held — and
 `git-secrets`, which this project has adopted, covers exactly that category:
 names, home paths, machine names.
 
-**And a bare username is not an identity.** `warden` means nothing outside the
-machine it came from. Two people on two machines can be the same `warden`, and
-one person can be two — which makes it useless for the thing an actor field is
-for.
+**And a bare username is not an identity.** It means nothing outside the machine
+it came from: two people on two machines can hold the same one, and one person
+can hold two. That is what makes it useless for the thing an actor field is for.
+
+*This work item quoted the username twice while explaining why it should not be
+written down, and was corrected. The failure is that easy.*
 
 ### A candidate chain
 

@@ -48,7 +48,7 @@ The actor variable is not optional. Without it every record an agent writes is a
 ## ▶ 2026-08-10
 
 The tool is now keeping its own backlog: four outcomes verified with backlog verify, this line written with backlog journal.
-Found by dogfooding: verify attributed agent work to human:warden, because LUMA_BACKLOG_ACTOR was unset and detection falls back to the OS user.
+Found by dogfooding: verify attributed agent work to human:os_user, because LUMA_BACKLOG_ACTOR was unset and detection falls back to the OS user.
 Provenance is the whole point of the actor field, so a default that is wrong in the common case is worse than no default.
 
 ## ▶ 2026-08-09 — outcomes reworked, tasks written

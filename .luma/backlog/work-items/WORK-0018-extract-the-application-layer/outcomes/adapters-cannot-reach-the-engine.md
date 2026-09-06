@@ -10,10 +10,10 @@ stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T14:40:00Z'}
 verified:
   - at: "2026-09-06T14:14:02Z"
-    by: human:warden
+    by: human:luma-foundry
 evidence:
   - at: "2026-09-06T14:14:02Z"
-    by: human:warden
+    by: human:luma-foundry
     what: 'PR #66'
 ---
 
