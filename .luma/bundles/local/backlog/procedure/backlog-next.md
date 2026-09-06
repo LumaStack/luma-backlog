@@ -8,14 +8,15 @@ description: Say where the work stands and what to pick up — what was last tou
 
 **Three divisions, each named so a reader can stop at the one they came for.**
 
-**The big picture** --- where the work stands and what is worth worrying about,
-risks included. **Next options** --- a ranked menu. **A recommendation** --- the
-one thing, which is not repeated in the menu.
+**Overview** --- where the work stands and what is worth worrying about, risks
+included. **Options** --- a ranked menu. **Recommendation** --- the one thing,
+which is not repeated in the menu.
 
-**A division is uppercase with a `───` underline**, the way `luma-backlog show`
-prints a record's title --- heading level alone divides nothing in a terminal,
-and the underline is literal text rather than syntax, so it renders the same
-everywhere. Sections inside a division are ordinary `###` headings.
+**A division is a rule with its label inset**, `──[ Overview ]───…`, and a
+section inside one is bold text. No markdown headings anywhere: `##` and `###`
+render identically in a terminal so they cannot divide, and a `###` section
+outranks plain text, so mixing them puts sections above the divisions that
+contain them.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
@@ -106,7 +107,7 @@ selection stops being a decision anybody makes.
 
 ## Risks and concerns
 
-**The last of the big picture, and honest.** What you noticed while reading that nobody
+**The last of the overview, and honest.** What you noticed while reading that nobody
 asked about.
 
 - Work `in_progress` with a journal silent for weeks — the status is a claim
@@ -146,25 +147,24 @@ recommendation with a reason is worth more than a filled one without.
 Shape is [[next-report]]; this is the judgment, which is the part that does not
 come from a template.
 
-> THE BIG PICTURE
-> ───────────────
+> ──[ Overview ]──────────────────────────────────────────
 >
-> ### Last touched
+> **Last touched**
 >
-> **WORK-0031**, all session. Its stamp reads `16:51` and three `captured`
-> records show as more recent, but that is an artefact --- adding tasks, closing
-> them and writing the journal never touches the parent's stamp. Since that
-> stamp: nine tasks closed, fourteen added, sixty-two journal lines.
+> WORK-0031, all session. Its stamp reads `16:51` and two `captured` records
+> show as more recent, but that is an artefact --- adding a task, closing one or
+> writing a journal line never touches the parent's stamp. Since then: nine
+> tasks closed, fourteen added, and the seven procedures.
 >
-> ### In Progress (0)
+> **In Progress (0)**
 >
 > `luma-backlog work-item list --status in_progress`
 >
-> ### To Do (0)
+> **To Do (0)**
 >
 > `luma-backlog work-item list --status todo`
 >
-> ### Preparation considerations
+> **Preparation considerations**
 >
 > ○ WORK-0031 · Reshape the command surface
 > ○ WORK-0039 · What closed work items cost as the corpus grows
@@ -172,34 +172,32 @@ come from a template.
 > WORK-0031 is already prepared; WORK-0039 has no outcomes and no scope, so it
 > is several conversations from producing work.
 >
-> ### Risks
+> **Risks**
 >
-> **Fifty-four commits on two branches, none pushed.** Everything from today
-> exists in one working tree.
+> Fifty-six commits here and two in luma-catalog, none pushed. Everything from
+> today is in one working tree.
 >
-> **WORK-0031 grew from 9 tasks to 23 while remaining one work item.** The
-> reshape itself is done; what is left is a pile of commands it discovered.
+> WORK-0031 has 23 tasks and began the day with 9. The reshape is finished; what
+> remains is the pile of commands it turned up.
 >
-> **The second gate has never been used.** Nothing has ever been `todo`, so this
-> report structurally cannot answer its own question here.
+> The second gate has never been used --- nothing has ever been `todo`, so this
+> report can only ever show an empty queue.
 >
-> NEXT OPTIONS
-> ────────────
+> ──[ Options ]───────────────────────────────────────────
 >
 > 1. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
 >    the record understates itself until then.
-> 2. **Split WORK-0031** --- the reshape is finished; the open tasks are a
->    different work item wearing its name.
+> 2. **Split WORK-0031** --- the open tasks are a different work item wearing
+>    its name.
 > 3. **Move one thing to `todo`** --- so the second gate has been used once and
 >    this report has something to say.
 >
-> RECOMMENDATION
-> ──────────────
+> ──[ Recommendation ]────────────────────────────────────
 >
-> **Push and open both PRs.** Everything on the menu is more work; this is the
-> only thing that reduces risk rather than adding to it, and it is ten minutes.
+> **Push and open both PRs.** Everything above is more work; this is the only
+> thing that reduces risk rather than adding to it, and it takes ten minutes.
 > If you would rather keep building, take 2 --- deciding what WORK-0031 *is*
-> determines which task is next.
+> determines which task comes next.
 
 **What that example is doing**, since the shape is easy to copy and the
 substance is not:

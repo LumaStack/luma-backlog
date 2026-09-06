@@ -4,41 +4,38 @@
 Listings inside it follow [[listing]].
 
 ```
-THE BIG PICTURE
-───────────────
+──[ Overview ]──────────────────────────────────────────
 
-### Last touched
+**Last touched**
 
 <prose: which record, roughly when, and what it was>
 
-### In Progress (0)
+**In Progress (0)**
 
 `luma-backlog work-item list --status in_progress`
 
-### To Do (0)
+**To Do (0)**
 
 `luma-backlog work-item list --status todo`
 
-### Preparation considerations
+**Preparation considerations**
 
 ○ WORK-0031 · Reshape the command surface
 ○ WORK-0039 · What closed work items cost as the corpus grows
 
 <one sentence, at the bottom, on how close any of it is>
 
-### Risks
+**Risks**
 
-<what you noticed that nobody asked about --- or omit the section>
+<what you noticed that nobody asked about --- or omit it>
 
-NEXT OPTIONS
-────────────
+──[ Options ]───────────────────────────────────────────
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
 3. **<the thing>** — <one clause of why>
 
-RECOMMENDATION
-──────────────
+──[ Recommendation ]────────────────────────────────────
 
 **<the one>** — <why it beat the others>. <what would change it>
 ```
@@ -98,24 +95,30 @@ does not exist yet.
 to pick, and handing somebody three ranked options without saying which is
 answering a question with a question.
 
-**A division is uppercase with a `───` underline; a section is a `###` heading.**
+**A division is a rule with its label inset. A section is bold text.**
 
 ```
-THE BIG PICTURE
-───────────────
+──[ Overview ]──────────────────────────────────────────
 ```
 
-**Not a markdown heading, on purpose.** `##` and `###` render identically in a
-terminal, so heading level divides nothing where this is read. The underline is
-literal text --- box-drawing characters, not syntax --- so it renders the same
-everywhere, and it is exactly what `luma-backlog show` prints above a record.
-**The report and the tool then look like one system rather than two.**
+**No markdown headings anywhere in the report**, and that is the point. `##` and
+`###` render identically in a terminal, so heading level cannot divide anything
+--- but a `###` section *does* outrank plain text, so mixing the two put the
+sections above the divisions that contain them. Using none of it removes the
+possibility.
 
-**Match the underline to the text length.** A rule that runs past its heading
-reads as a divider that has slipped.
+**Everything here is literal text**, so what you write is what every reader
+sees, in a terminal, a browser, or a file.
 
-**No `---` rules.** The underline already breaks the page, and a rule as well is
-two separators doing one job.
+**Every rule ends at the same column.** Ragged ends read as a mistake. Sixty
+characters.
+
+**Short labels.** *Overview*, *Options*, *Recommendation* --- a long phrase
+inside brackets reads as a sentence somebody boxed. The bracket is doing the
+work of announcing a division; the label only has to name it.
+
+**Sections are bold, not headings, and carry no rule.** They are inside a
+division and should look it.
 
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
