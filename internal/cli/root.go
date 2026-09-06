@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/spf13/cobra"
@@ -76,12 +77,27 @@ func Run(app *App, args []string, stdin io.Reader, stdout, stderr io.Writer) int
 	return ExitOK
 }
 
+// defaultUsageLines is Cobra's own Usage: block, matched exactly so the
+// substitution below cannot silently do nothing when Cobra changes it.
+// TestUsageLineIsSingular fails loudly if this stops matching.
+const defaultUsageLines = "Usage:{{if .Runnable}}\n  {{.UseLine}}{{end}}" +
+	"{{if .HasAvailableSubCommands}}\n  {{.CommandPath}} [command]{{end}}"
+
+// singleUsageLine keys on subcommands rather than runnability, so a command
+// that has children shows one line and a leaf still shows its own arguments.
+const singleUsageLine = "Usage:{{if .HasAvailableSubCommands}}" +
+	"\n  {{.CommandPath}} [command] [flags]{{else}}\n  {{.UseLine}}{{end}}"
+
+// usageTemplate rewrites the Usage: block of Cobra's default template.
+func usageTemplate(def string) string {
+	return strings.Replace(def, defaultUsageLines, singleUsageLine, 1)
+}
+
 func newRootCommand(app *App) *cobra.Command {
 	root := &cobra.Command{
-		Use:   "luma-backlog",
-		Short: "A git-native backlog, worked by people and agents at the same time",
-		Long: "A backlog that lives inside your git repository as plain markdown.\n" +
-			"Records conform to the Luma Knowledge Format.",
+		Use:     "luma-backlog",
+		Short:   "A git-native backlog, worked by people and agents at the same time",
+		Long:    "A backlog that lives inside your git repository as plain markdown.",
 		Version: version,
 		// Without this, Cobra treats an unknown command as a positional
 		// argument and exits 0 — found by the test below on its first run.
@@ -90,13 +106,18 @@ func newRootCommand(app *App) *cobra.Command {
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// With no arguments this will open the board (docs/spec.md §11).
-			// Until that exists, say so rather than printing help and implying
-			// there is nothing here.
-			fmt.Fprintln(cmd.OutOrStdout(), "luma-backlog "+version+" — no commands are implemented yet.")
-			fmt.Fprintln(cmd.OutOrStdout(), "See docs/spec.md for the design, and .luma/backlog/ for what is being built.")
-			return nil
+			// Until the board exists, print help: the no-argument case is a
+			// person, and help is the honest thing to show one. The earlier
+			// placeholder said no commands were implemented, which stopped
+			// being true and nothing caught it.
+			return cmd.Help()
 		},
 	}
+	// Cobra prints two usage lines for a root that both runs and has
+	// subcommands --- `luma-backlog [flags]` above `luma-backlog [command]`.
+	// Neither is what a person types. Collapse them to one.
+	root.SetUsageTemplate(usageTemplate(root.UsageTemplate()))
+
 	root.AddCommand(newInitCommand(app))
 	root.AddCommand(newNewCommand(app))
 	root.AddCommand(newShowCommand(app))

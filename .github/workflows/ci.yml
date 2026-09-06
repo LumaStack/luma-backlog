@@ -19,8 +19,6 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
-      - run: go build ./...
-      - run: go vet ./...
-      - run: go test ./...
-      - name: gofmt
-        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      # Not a copy of the checks --- the same file a maintainer runs, so the
+      # two cannot drift. Add a check in scripts/check and CI gets it.
+      - run: ./scripts/check

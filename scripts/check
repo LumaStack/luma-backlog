@@ -1,0 +1,29 @@
+#!/bin/sh
+# Everything that must pass before a change lands.
+#
+# Continuous integration runs this file rather than its own copy of the
+# commands, so the two cannot drift. Adding a check here adds it to CI.
+set -e
+
+root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$root"
+
+run() {
+	printf '\n==> %s\n' "$*"
+	"$@"
+}
+
+run go build ./...
+run go vet ./...
+run go test ./...
+
+# gofmt reports rather than fails, so the exit status has to be built here.
+printf '\n==> gofmt -l .\n'
+unformatted=$(gofmt -l .)
+if [ -n "$unformatted" ]; then
+	echo "$unformatted"
+	echo "not gofmt-clean --- run: gofmt -w ." >&2
+	exit 1
+fi
+
+printf '\nall checks passed\n'
