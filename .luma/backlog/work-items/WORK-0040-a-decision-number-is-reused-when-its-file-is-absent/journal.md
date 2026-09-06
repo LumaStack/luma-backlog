@@ -1,0 +1,10 @@
+# Journal — A decision number is reused when its file is absent
+
+> The work item's memory. Newest entry first; everything below the top block is
+> historical. Append, never curate. Shape: `spec.md` §5.5.
+
+---
+
+## ▶ 2026-09-06
+
+observed rather than theorised — ADR-0004 was issued twice on one machine with no concurrency, because five files had gone missing from the working tree
