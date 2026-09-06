@@ -67,7 +67,7 @@ than above it.
 ### How it is stored
 
 ```yaml
-rank: "50.00010.500"     # <status ordinal>.<position>.<precision>
+rank: "50.00010.500"     # <workflow status ordinal>.<position>.<precision>
 workflow_status: todo
 ```
 

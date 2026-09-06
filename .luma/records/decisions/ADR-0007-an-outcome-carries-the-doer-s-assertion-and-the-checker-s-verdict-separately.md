@@ -5,7 +5,7 @@ decided: 2026-09-05
 stage: draft
 reopen_trigger: the two axes are found to always agree in real use, which would mean the split is recording a distinction nobody makes
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:40:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:20:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:40:00Z'}
 ---
 
 # ADR-0007: An outcome carries the doer's assertion and the checker's verdict separately
@@ -43,15 +43,32 @@ for them, which loses the claim rather than examining it.
 ### Two axes, both events
 
 ```yaml
-asserted: {by: 'agent:opus-5/luma-backlog', at: …, result: succeeded}
-verified: [{by: 'human:maintainer', at: …, verdict: proven}]
+asserted:
+  - {by: 'agent:opus-5/luma-backlog', at: …, result: failed}
+  - {by: 'agent:opus-5/luma-backlog', at: …, result: succeeded}
+verified:
+  - {by: 'human:maintainer', at: …, verdict: proven}
 ```
 
-- **`asserted`** — the doer, and `succeeded` or `failed`. One event; the
-  attempt ledger is deferred
-  ([[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]]),
-  and the field is shaped as an event so a list can subsume it without a
-  contract change.
+- **`asserted`** — the doer, and `succeeded` or `failed`. **A list, appended
+  never replaced.** Absent means never attempted; the current claim is the last
+  entry; the attempt count is the length.
+
+**Both axes append.** Overwriting `asserted` would be the one place in this
+design that destroys history — everywhere else the rule is create, never
+overwrite: `verified` accumulates (§4.7), promotion copies (§4.8.1), succession
+writes a new record (§4.6), and closing appends so a reopen cannot erase it
+([[backlog/work-items/WORK-0020-reopen-a-work-item-that-was-closed]]).
+
+It also costs nothing. `verified` is already an append-only list and the code
+that appends to it exists; a single field would have been a second shape for no
+gain, and would have made *failed once, then succeeded* indistinguishable from
+*succeeded first time*.
+
+**A second attempt is therefore visible**, which a single field could not
+represent. What is still not represented is an attempt **in flight** — during
+one, the last entry reads `failed`, which is stale rather than false. That
+belongs to waves (§2.3) or to a claim (§6.5), both outside the first release.
 - **`verified`** — the checker, and `proven`, `disproven`, or `inconclusive`.
   Already a list.
 
@@ -203,14 +220,16 @@ distrusted.
 | **`verify --disproven` / `--inconclusive`, success as default** | Backwards compatible and ergonomic. Set aside on the asymmetry above. *Reopened if requiring the verdict proves to cost more than the accidental-proof it prevents.* |
 | **A separate verb for a negative verdict** | Reads better in isolation; splits one evidence trail across two commands and grows a verb per verdict. `check` is unavailable — §9.2 assigns it to evaluating conditions. |
 | **Blocking agent self-verification** | What the maintainer first wanted, and it would be the first gate the tool ships — §5.0 and §5.4 both need amending for it. Deferred to configuration. *Reopened when somebody wants the strict posture enforced rather than reported.* |
+| **A single `asserted` field, replaced on each attempt** | Considered and reversed. It cannot represent a second attempt, it loses whether an outcome took one try or four, and it would be the only field in the model that overwrites. The list costs the same code. |
 | **Keeping `abandoned`** | Derivable. *Reopened if the distinction between stopped-before-starting and stopped-midway turns out to be one people make and the record cannot reconstruct.* |
 
 ## Revisit When
 
 - The two axes always agree in practice — the split would then be recording a
   distinction nobody makes.
-- Waves arrive, which is the likely trigger for the attempt ledger and would
-  turn `asserted` from a field into a list.
+- Waves arrive, which would bind each assertion to the attempt it belonged to —
+  the remaining half of
+  [[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]].
 - Somebody needs self-verification enforced rather than observed.
 
 ## References
