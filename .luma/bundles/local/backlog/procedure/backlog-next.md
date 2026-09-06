@@ -9,8 +9,12 @@ description: Say where the work stands and what to pick up — what was last tou
 **Three divisions, each named so a reader can stop at the one they came for.**
 
 **The big picture** --- where the work stands and what is worth worrying about,
-risks included. **Next options** --- a ranked menu. **A recommendation** --- one
-of them, with the reason it beat the rest.
+risks included. **Next options** --- a ranked menu. **A recommendation** --- the
+one thing, which is not repeated in the menu.
+
+**Divisions are uppercase with a `---` between them**, because heading level
+alone does not divide anything in a terminal. Sections inside a division stay in
+normal case.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
@@ -141,7 +145,7 @@ recommendation with a reason is worth more than a filled one without.
 Shape is [[next-report]]; this is the judgment, which is the part that does not
 come from a template.
 
-> ## The big picture
+> ## THE BIG PICTURE
 >
 > ### Last touched
 >
@@ -188,7 +192,9 @@ come from a template.
 > 3. **Move one thing to `todo`** --- so the second gate has been used once and
 >    this report has something to say.
 >
-> ## Recommendation
+> ---
+>
+> ## RECOMMENDATION
 >
 > **Push and open both PRs.** Everything on the menu is more work; this is the
 > only thing that reduces risk rather than adding to it, and it is ten minutes.

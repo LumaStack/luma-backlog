@@ -4,7 +4,7 @@
 Listings inside it follow [[listing]].
 
 ```
-## The big picture
+## THE BIG PICTURE
 
 ### Last touched
 
@@ -29,13 +29,17 @@ Listings inside it follow [[listing]].
 
 <what you noticed that nobody asked about --- or omit the section>
 
-## Next options
+---
+
+## NEXT OPTIONS
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
 3. **<the thing>** — <one clause of why>
 
-## Recommendation
+---
+
+## RECOMMENDATION
 
 **<the one>** — <why it beat the others>. <what would change it>
 ```
@@ -95,12 +99,18 @@ does not exist yet.
 to pick, and handing somebody three ranked options without saying which is
 answering a question with a question.
 
-**`##` for the divisions, `###` for what is inside them.** The hierarchy is real
-here --- the big picture contains four sections --- which is why the size
-difference is right where it would have been wrong between siblings.
+**Divisions are uppercase; sections inside them are not.** `##` and `###` render
+identically in a terminal, so heading level alone divides nothing there. Case is
+what survives --- and it is what the tool's own help already uses, so this is the
+existing convention rather than a second one.
 
-**No rules between them.** The named headings already divide; a rule as well is
-furniture.
+**A `---` between divisions.** Three signals, each doing different work: an
+uppercase heading says *new division*, a normal one says *section*, and the rule
+is the hard break. The rules were dropped once on the argument that named
+headings divide; they do not, in the place this is read.
+
+**Not between the sections inside a division.** Five rules under the big picture
+would be noise, and the case difference already separates them.
 
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
