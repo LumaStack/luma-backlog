@@ -4,6 +4,10 @@
 
 ---
 
+## ▶ 2026-09-06
+
+set writes a date as a quoted string — ADR-0003 got decided: "2026-09-05" where every other record has an unquoted date scalar, so the same field carries two YAML types across the corpus
+
 ## ▶ 2026-09-04 — the drift recurred, and the check for it already exists unconfigured
 
 **Frontmatter spelling drift is now observed twice, not once.** `local/backlog`'s two Type Definitions declared `obligation:` with `mandatory`, which the knowledge format renamed to `field_presence:` with `required` in `luma-types` 0.10.0. Both were written before the rename and nothing carried them across. Fixed today; the bundle went to 0.2.0.

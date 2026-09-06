@@ -9,6 +9,7 @@ Every container has an index. This is the project's: one entry per bundle, what 
 - `local/backlog` 0.11.0 — The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
 - `lumastack/luma-catalog/backlog-ideas` 0.14.1 — Ideas as individual files rather than one growing IDEAS.md — what earns a file, how capture stays fast, and how the list gets tended rather than accumulating.
 - `lumastack/luma-catalog/bundle-manager` 0.15.1 — Creating, updating, auditing, repairing, migrating and retiring bundles — the layout they use and which catalog they belong in.
+- `lumastack/luma-catalog/command-line-interface` 0.1.0 — Adopting this declares that a project designs its command line against clig.dev, and follows it unless a decision in force says otherwise.
 - `lumastack/luma-catalog/decision-records` 0.12.1 — Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
 - `lumastack/luma-catalog/git-secrets` 0.7.1 — Keeping credentials and private identity out of a repository — names, personal addresses, home paths, machine names, tokens and key files. Prevention first, then audit.
 - `lumastack/luma-catalog/git-workflow` 0.8.1 — How changes get integrated — merge commits rather than squash or rebase, the repository settings that make it true, and how to prove a change actually landed.

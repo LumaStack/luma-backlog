@@ -14,6 +14,10 @@
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
   - sha256: 45e46e295c216ef546da441c4b9ce8724d40451516c682ed78654e83fd0ffac9
+- `lumastack/luma-catalog/command-line-interface` 0.1.0
+  - catalog: lumastack/luma-catalog
+  - commit: 021f9b560ea82e47622ed023d8ca9b2093e520c3
+  - sha256: 32f36f7631840ae81c395ae86d4eafa66a4cca49de964670dbd011819780d460
 - `lumastack/luma-catalog/decision-records` 0.12.1
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73

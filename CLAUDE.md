@@ -30,7 +30,7 @@ Provenance is the point of that field. A record that says a person confirmed som
 ## Working rules
 
 - **Never name a competing project in committed output.** This is about rivals, not references — tools we depend on, borrow technique from, or interoperate with are named normally.
-- **Never abbreviate terminology to initials.** Spell every phrase out.
+- **Spell a phrase out before using its initials, once per document** — *Minimum Viable Product (MVP)*, then MVP. Lean towards avoiding initials when they could be confusing.
 - **American spelling.** *organization*, not *organisation*. Applies to prose, code comments, and field values alike.
 - **Discuss before writing.** On anything exploratory — naming, modeling, structure — reach agreement first. Do not draft the answer and present it as the discussion.
 - **Do not anchor on the maintainer's earlier research.** It contains ideas already abandoned. Reason from the problem instead.
