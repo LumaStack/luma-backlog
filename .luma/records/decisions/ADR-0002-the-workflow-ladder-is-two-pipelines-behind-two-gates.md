@@ -2,9 +2,10 @@
 type: decision
 title: The workflow ladder is two pipelines behind two gates
 decided: 2026-09-04
-stage: draft
+stage: provisional
 reopen_trigger: a team's real workflow does not fit three zones — work that is neither a candidate, nor being shaped, nor being done — or the two gates turn out to be one in practice
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:33:18Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0002: The workflow ladder is two pipelines behind two gates

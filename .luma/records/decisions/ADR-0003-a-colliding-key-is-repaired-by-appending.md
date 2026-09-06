@@ -1,10 +1,11 @@
 ---
 type: decision
 title: A colliding key is repaired by appending
-decided: ""
-stage: draft
+decided: 2026-09-05
+stage: provisional
 reopen_trigger: something needs keys in creation order, or collisions become frequent enough that repairing is routine rather than an event — either of which argues for uniqueness by construction instead of repair
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T00:27:27Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0003: A colliding key is repaired by appending

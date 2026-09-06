@@ -2,10 +2,10 @@
 type: decision
 title: Rank is work order and workflow status dominates it
 decided: 2026-09-05
-stage: draft
+stage: provisional
 reopen_trigger: a case appears where something earlier in the workflow genuinely needs to be worked before something later, and priority cannot express it
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T21:06:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:50:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0005: Rank is work order and workflow status dominates it

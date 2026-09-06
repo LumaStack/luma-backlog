@@ -2,10 +2,10 @@
 type: decision
 title: The backlog unit is a work item
 decided: 2026-09-02
-stage: draft
+stage: provisional
 reopen_trigger: one of the three naming tests — arc survival, kind-agnosticism, level-legibility — is refuted, either against `work item` or on behalf of a candidate it eliminated
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T19:51:24Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-03T21:47:37Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0001: The backlog unit is a work item

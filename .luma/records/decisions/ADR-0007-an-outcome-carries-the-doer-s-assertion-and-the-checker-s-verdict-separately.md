@@ -2,10 +2,10 @@
 type: decision
 title: An outcome carries the doer's assertion and the checker's verdict separately
 decided: 2026-09-05
-stage: draft
+stage: provisional
 reopen_trigger: the two axes are found to always agree in real use, which would mean the split is recording a distinction nobody makes
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:40:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:40:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0007: An outcome carries the doer's assertion and the checker's verdict separately

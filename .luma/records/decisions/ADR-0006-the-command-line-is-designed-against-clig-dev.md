@@ -2,9 +2,10 @@
 type: decision
 title: The command line is designed against clig.dev
 decided: 2026-09-05
-stage: draft
+stage: provisional
 reopen_trigger: a departure recorded here turns out to be an oversight rather than a choice, or clig.dev changes a rule this record relies on
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:10:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0006: The command line is designed against clig.dev

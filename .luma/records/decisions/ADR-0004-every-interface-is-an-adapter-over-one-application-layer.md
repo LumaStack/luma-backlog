@@ -2,10 +2,10 @@
 type: decision
 title: Every interface is an adapter over one application layer
 decided: 2026-09-05
-stage: draft
+stage: provisional
 reopen_trigger: an adapter needs a mutation the layer cannot express without knowing which surface is calling — which would mean the seam is in the wrong place rather than that the rule is wrong
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:46:08Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T21:58:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
 # ADR-0004: Every interface is an adapter over one application layer
