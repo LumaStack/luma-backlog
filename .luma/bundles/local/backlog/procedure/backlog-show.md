@@ -163,9 +163,10 @@ A reader must be able to tell them apart without being told.
   | --- | --- |
   | `○` | not started --- a `todo` task, an unverified outcome |
   | `◐` | under way --- `in_progress` |
-  | `✔` | finished well --- `closed`, or an outcome that is passing |
-  | `✘` | stopped --- closed as `canceled` or `abandoned` |
-  | `↪` | superseded --- something else covers it now |
+  | `✔` | delivered --- `closed`, or an outcome that is passing |
+  | `↪` | superseded --- picked up elsewhere |
+  | `⊘` | cancelled --- decided against |
+  | `✘` | failed, unproven, or abandoned |
 
   **Unfinished work shares the circle; finished work changes shape.** `○` and
   `◐` differ only by fill, which is right --- they are the same thing at two
@@ -181,6 +182,25 @@ A reader must be able to tell them apart without being told.
 
   **`✘` mirrors `✔` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
+
+  **Three endings, not one, and they are not interchangeable.**
+
+  - **`⊘` cancelled** is a decision --- somebody chose not to do this, which is a
+    healthy outcome and should not carry a mark that reads as failure.
+  - **`↪` superseded** is a hand-off. The work continues under another record.
+  - **`✘`** is the bad one: the work **failed**, could not be **proven**, or was
+    **abandoned** --- stopped with nobody deciding and nobody coming back.
+
+  **`✘` is the only ending nobody chose.** Every other terminal state is
+  somebody's decision; this is the absence of one, which is why it gets the
+  hardest mark. Recording an abandonment as a cancellation invents a choice
+  nobody made.
+
+  **Some of this the tool cannot yet say.** `abandoned` is a real disposition
+  today. *Failed* and *unproven* are not --- an outcome is `unverified` or
+  `passing`, with nothing between, and ADR-0007's verdicts are unbuilt. Use `✘`
+  where the record claims it; **do not infer a failure the record does not
+  make.**
 
   **`↪` is not a verdict.** Superseded work did not fail --- it moved, and
   something else covers it now, which is often a good result. Marking it `✘`
@@ -201,8 +221,9 @@ A reader must be able to tell them apart without being told.
   glance that every task is `✔` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, in a fixed order: `○`, `◐`, `✔`, `↪`, `✘`.** Endings last,
-  and the bad one last of all --- it is the one worth arriving at deliberately. Never grouped under
+- **One list each, in a fixed order: `○`, `◐`, `✔`, `↪`, `⊘`, `✘`.** Endings
+  last, best first, and `✘` last of all --- it is the one worth arriving at
+  deliberately rather than meeting halfway down. Never grouped under
   headings --- the mark already says which, and a heading repeats it. Never
   reordered by anything else: a view whose order changes between readings cannot
   be scanned, which is the whole reason the layout is fixed.
