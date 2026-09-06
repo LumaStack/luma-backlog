@@ -41,3 +41,5 @@ child keys were considered and dropped: OUT-014 is not something anyone says out
 rank without sorting is invisible — the command wrote a field nothing read, so listings now sort by it: ranked records in rank order, unranked last because a rank is a position somebody chose and an unplaced record should not outrank a considered one
 records with no rank are skipped as neighbors rather than seeded — seeding a whole status on first rank would make a reorder a multi-record write, which is the thing decimal ordering keys exist to avoid
 ranking against a record at another status is refused: rank orders within a status, so there is no position between them to compute
+reversing a listing by default was rejected: piping gives the wrong end silently, and the board and terminal would render one request in opposite orders — the pager ADR-0006 already adopted is the answer to the scrolling it was meant to fix
+rank is the default sort and stays it — a listing that does not follow work order is not a backlog; --sort covers created and updated, which are the other things people reorder by
