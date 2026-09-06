@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 	"gopkg.in/yaml.v3"
 )
 
@@ -28,11 +28,11 @@ type VerifyResult struct {
 // normal case, and a human entry raises the derived trust tier with no special
 // handling (docs/spec.md §4.7).
 func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
-	it, err := backlog.Resolve(s.Backlog, req.Ref)
+	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
 		return nil, &Error{Kind: NotFound, Err: err}
 	}
-	if it.Type() != backlog.Outcome {
+	if it.Type() != corpus.Outcome {
 		return nil, UsageError("%s is a %s — only an outcome is verified", it.Slug(), it.Type())
 	}
 

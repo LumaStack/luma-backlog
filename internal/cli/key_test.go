@@ -7,7 +7,7 @@ import (
 )
 
 func TestWorkItemsGetSequentialKeys(t *testing.T) {
-	// One sequence for the whole backlog. The number is what somebody says out
+	// One sequence for the whole corpus. The number is what somebody says out
 	// loud or writes in a commit, so it has to mean one record.
 	app, project := initialized(t)
 	for _, title := range []string{"Payments v2", "Search relevance", "Exports"} {

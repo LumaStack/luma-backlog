@@ -1,4 +1,4 @@
-package backlog
+package corpus
 
 import (
 	"fmt"
@@ -52,7 +52,7 @@ func NormalizeKey(ref string) string {
 
 // highestKey reports the largest key number in use across the project.
 //
-// One sequence for the whole backlog. The number is what somebody says out loud
+// One sequence for the whole corpus. The number is what somebody says out loud
 // or writes in a commit, so it has to mean one record — which is the same
 // reason decision numbers are allocated project-wide rather than per directory.
 func highestKey(b *root.Backlog) (int, error) {

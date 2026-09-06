@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // Observations are things noticed while doing something else. They are
@@ -18,7 +18,7 @@ type Observations struct {
 	Duplicates []Duplicate
 }
 
-func skips(in []backlog.Skip) []Skip {
+func skips(in []corpus.Skip) []Skip {
 	if len(in) == 0 {
 		return nil
 	}
@@ -34,11 +34,11 @@ func skips(in []backlog.Skip) []Skip {
 // filter, and a check that only fires when you were already looking in the
 // right place is not a check.
 func (s *Session) duplicateKeys() []Duplicate {
-	items, _, err := backlog.List(s.Backlog, backlog.Filter{Unit: backlog.WorkItem})
+	items, _, err := corpus.List(s.Backlog, corpus.Filter{Unit: corpus.WorkItem})
 	if err != nil {
 		return nil
 	}
-	found := backlog.Duplicates(items)
+	found := corpus.Duplicates(items)
 	if len(found) == 0 {
 		return nil
 	}

@@ -3,7 +3,7 @@ package app
 import (
 	"path/filepath"
 
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // CreateRequest asks for a record.
@@ -49,7 +49,7 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	//
 	// The cost of being wrong is asymmetric. A decision filed at the wrong
 	// level is not visibly broken; it is simply somewhere nobody looks.
-	if req.Unit == backlog.Decision {
+	if req.Unit == corpus.Decision {
 		if req.Project && req.WorkItemGiven {
 			return nil, UsageError("--project and --work-item say different levels: pass one")
 		}
@@ -66,11 +66,11 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 		}
 	}
 
-	if req.Kind != "" && req.Unit != backlog.WorkItem {
+	if req.Kind != "" && req.Unit != corpus.WorkItem {
 		return nil, UsageError("--kind classifies a work item; %s does not take one", req.Unit)
 	}
 
-	res, err := backlog.Create(s.Backlog, s.Config, s.Env, backlog.Spec{
+	res, err := corpus.Create(s.Backlog, s.Config, s.Env, corpus.Spec{
 		Unit:     req.Unit,
 		Title:    req.Title,
 		WorkItem: workItem,
@@ -87,7 +87,7 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	// of least resistance and the field stops meaning anything.
 	//
 	// So: say so and continue (docs/spec.md §5.0). Nothing is refused.
-	unclassified := res.Created && req.Unit == backlog.WorkItem && req.Kind == ""
+	unclassified := res.Created && req.Unit == corpus.WorkItem && req.Kind == ""
 
 	return &CreateResult{Path: res.Path, Created: res.Created, Unclassified: unclassified}, nil
 }
@@ -99,5 +99,5 @@ func (s *Session) workItemFromWorkingDir() string {
 	if err != nil {
 		return ""
 	}
-	return backlog.WorkItemFromPath(filepath.ToSlash(rel))
+	return corpus.WorkItemFromPath(filepath.ToSlash(rel))
 }

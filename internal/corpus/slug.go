@@ -1,6 +1,11 @@
-// Package backlog owns the layout and the creation of records: which file a
-// unit lives in, and what it contains when it is first written.
-package backlog
+// Package corpus is the body of records and what they mean: which file a unit
+// lives in, what it contains when first written, how one is found, and what can
+// be counted across them.
+//
+// It is the plural of internal/record, which knows one record's bytes and
+// nothing about the others. Named for the corpus rather than for the backlog
+// because everything here is the backlog — the word said nothing.
+package corpus
 
 import (
 	"strings"

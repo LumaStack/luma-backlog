@@ -1,4 +1,4 @@
-package policy
+package guards
 
 import (
 	"go/parser"
@@ -31,9 +31,9 @@ var adapterPackages = []string{
 // refusal sat in a Cobra command until this layer existed, protected by nothing
 // except there being one caller.
 var enginePackages = map[string]string{
-	"internal/backlog": "the record engine",
-	"internal/root":    "the filesystem handle",
-	"internal/config":  "configuration loading",
+	"internal/corpus": "the record engine",
+	"internal/root":   "the filesystem handle",
+	"internal/config": "configuration loading",
 }
 
 // TestAdaptersDoNotReachPastTheApplicationLayer fails when a surface imports

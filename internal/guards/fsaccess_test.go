@@ -1,9 +1,15 @@
-// Package policy holds checks that are rules rather than behavior.
+// Package guards holds the checks that stand at a seam.
+//
+// They assert shape rather than behavior — who may reach the filesystem, and
+// which packages a surface may import — by reading the source of other
+// packages. Nothing imports this one; it exists so those checks have a neutral
+// home.
 //
 // They live as tests so they run on every `go test`, not only in continuous
-// integration. A guardrail you have to push to discover is one people learn
-// to work around.
-package policy
+// integration. A guardrail you have to push to discover is one people learn to
+// work around. The conventional Go answer is a linter rule, which runs only
+// when somebody runs the linter — which is the same failure.
+package guards
 
 import (
 	"go/ast"

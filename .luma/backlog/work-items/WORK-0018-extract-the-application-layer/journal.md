@@ -12,6 +12,7 @@ the seven-eighths estimate for close.go was wrong — it lost two-thirds, 145 li
 view types were not planned and turned out to be forced — without them an adapter must hold a record, and the containment test cannot be written, so the test that IS the mechanism made the boundary real rather than nominal
 the containment test was checked by breaking it deliberately, which found that the failure message needed to name the file and say where to go instead; a guard nobody has seen fail is a guard nobody knows works
 system learning: splitting the reshape out was what made the golden files able to prove anything — a behaviour-preserving change and a behaviour-changing one in the same commit leave nothing able to attest to either
+internal/backlog became internal/corpus and internal/policy became internal/guards after this closed — the outcome's verify_by names the old paths and is left as written, since it records what was checked at the time
 
 ## ▶ 2026-09-05
 

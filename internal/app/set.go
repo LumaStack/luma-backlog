@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/lumastack/luma-backlog/internal/backlog"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // Assignment is one field being written.
@@ -36,7 +36,7 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 		return nil, UsageError("nothing to change: pass field=value, or --unset field")
 	}
 
-	it, err := backlog.Resolve(s.Backlog, req.Ref)
+	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
 		return nil, &Error{Kind: NotFound, Err: err}
 	}
