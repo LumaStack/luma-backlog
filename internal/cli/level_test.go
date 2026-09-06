@@ -12,7 +12,7 @@ func TestADecisionNeedsItsLevelStated(t *testing.T) {
 	// wrong level is not visibly broken, it is simply somewhere nobody looks.
 	// So it is stated rather than defaulted.
 	app, _ := initialized(t)
-	code, _, errOut := run(t, app, "new", "decision", "Use the new queue")
+	code, _, errOut := run(t, app, "decision", "new", "Use the new queue")
 	if code == ExitOK {
 		t.Fatal("a decision was created with no level stated")
 	}
@@ -25,12 +25,12 @@ func TestADecisionNeedsItsLevelStated(t *testing.T) {
 
 func TestEachLevelLandsWhereItBelongs(t *testing.T) {
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, args := range [][]string{
-		{"new", "decision", "Use the new queue", "--project"},
-		{"new", "decision", "Retry inside the worker", "-w", "payments-v2"},
+		{"decision", "new", "Use the new queue", "--project"},
+		{"decision", "new", "Retry inside the worker", "-w", "payments-v2"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -50,10 +50,10 @@ func TestEachLevelLandsWhereItBelongs(t *testing.T) {
 
 func TestBothLevelsAtOnceIsRefused(t *testing.T) {
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	code, _, errOut := run(t, app, "new", "decision", "Contradiction", "--project", "-w", "payments-v2")
+	code, _, errOut := run(t, app, "decision", "new", "Contradiction", "--project", "-w", "payments-v2")
 	if code == ExitOK {
 		t.Fatal("a decision was created with two levels")
 	}
@@ -68,12 +68,12 @@ func TestStandingInAWorkItemDoesNotDecideTheLevel(t *testing.T) {
 	// doing. Letting the working directory answer produced a repository where
 	// every decision is project-level and none was placed on purpose.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	app.WorkingDir = filepath.Join(project, ".luma", "backlog", "work-items", "payments-v2")
 
-	code, _, errOut := run(t, app, "new", "decision", "Retry inside the worker")
+	code, _, errOut := run(t, app, "decision", "new", "Retry inside the worker")
 	if code == ExitOK {
 		t.Fatal("standing inside a work item decided the level")
 	}
@@ -83,7 +83,7 @@ func TestStandingInAWorkItemDoesNotDecideTheLevel(t *testing.T) {
 
 	// And the working directory still answers WHICH work item, which is the
 	// job it is good at — only the level is withheld from it.
-	if code, _, e := run(t, app, "new", "task", "Route jobs"); code != ExitOK {
+	if code, _, e := run(t, app, "task", "new", "Route jobs"); code != ExitOK {
 		t.Fatalf("a task lost its work item from the working directory: %s", e)
 	}
 	if _, err := os.Stat(filepath.Join(project, ".luma",

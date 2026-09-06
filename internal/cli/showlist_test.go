@@ -18,10 +18,10 @@ func populated(t *testing.T) *App {
 func seed(t *testing.T, app *App) {
 	t.Helper()
 	for _, args := range [][]string{
-		{"new", "work-item", "Payments v2"},
-		{"new", "outcome", "The retry queue drains", "-w", "payments-v2"},
-		{"new", "task", "Add the retry queue", "-w", "payments-v2"},
-		{"new", "work-item", "Search relevance"},
+		{"work-item", "new", "Payments v2"},
+		{"outcome", "new", "The retry queue drains", "-w", "payments-v2"},
+		{"task", "new", "Add the retry queue", "-w", "payments-v2"},
+		{"work-item", "new", "Search relevance"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -148,8 +148,8 @@ func TestShowResolvesByPrefix(t *testing.T) {
 
 func TestShowRefusesAnAmbiguousReference(t *testing.T) {
 	app, _ := initialized(t)
-	run(t, app, "new", "work-item", "Payments alpha")
-	run(t, app, "new", "work-item", "Payments beta")
+	run(t, app, "work-item", "new", "Payments alpha")
+	run(t, app, "work-item", "new", "Payments beta")
 
 	code, _, errOut := run(t, app, "show", "payments")
 	if code == ExitOK {

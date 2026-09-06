@@ -91,6 +91,17 @@ func (s *Session) record(it corpus.Item) (Record, error) {
 // Units are the record types a caller may name.
 var Units = corpus.Units
 
+// The unit names, re-exported so an adapter can say which record type it means
+// without importing the engine to do it (ADR-0004). Units above gives the set;
+// these give the members.
+const (
+	WorkItem    = corpus.WorkItem
+	Outcome     = corpus.Outcome
+	Task        = corpus.Task
+	Decision    = corpus.Decision
+	Exploration = corpus.Exploration
+)
+
 // Skip is a record that could not be read.
 type Skip struct {
 	Path string

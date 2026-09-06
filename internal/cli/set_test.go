@@ -11,7 +11,7 @@ import (
 func withWorkItem(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	return app, project

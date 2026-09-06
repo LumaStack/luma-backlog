@@ -14,14 +14,14 @@ func TestKindIsWrittenOnlyWhenGiven(t *testing.T) {
 	// old `idea` default made one field over.
 	app, project := initialized(t)
 
-	if code, _, e := run(t, app, "new", "work-item", "Ordinary work"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Ordinary work"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	if got := readFile(t, project, wiPath(t, project, "ordinary-work", "index.md")); strings.Contains(got, "kind:") {
 		t.Errorf("a kind was written when none was given:\n%s", got)
 	}
 
-	if code, _, e := run(t, app, "new", "work-item", "A crash", "--kind", "defect"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "A crash", "--kind", "defect"); code != ExitOK {
 		t.Fatalf("new --kind failed: %s", e)
 	}
 	if got := readFile(t, project, wiPath(t, project, "a-crash", "index.md")); !strings.Contains(got, "kind: defect") {
@@ -34,10 +34,10 @@ func TestKindClassifiesWorkItemsOnly(t *testing.T) {
 	// thing somebody requested or a thing that broke. Accepting the flag
 	// there would store a field nothing can read.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	code, _, errOut := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2", "--kind", "bug")
+	code, _, errOut := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2", "--kind", "bug")
 	if code == ExitOK {
 		t.Fatal("--kind was accepted on an outcome")
 	}
@@ -51,9 +51,9 @@ func TestListFiltersByKind(t *testing.T) {
 	// label, and labels attract categories that fit language rather than use.
 	app, _ := initialized(t)
 	for _, args := range [][]string{
-		{"new", "work-item", "A crash", "--kind", "defect"},
-		{"new", "work-item", "Please add exports", "--kind", "request"},
-		{"new", "work-item", "Ordinary work", "--kind", "change"},
+		{"work-item", "new", "A crash", "--kind", "defect"},
+		{"work-item", "new", "Please add exports", "--kind", "request"},
+		{"work-item", "new", "Ordinary work", "--kind", "change"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -78,8 +78,8 @@ func TestAliasesAreAcceptedAndCanonicalIsStored(t *testing.T) {
 	// of which word the caller reached for.
 	app, project := initialized(t)
 	for _, args := range [][]string{
-		{"new", "work-item", "A crash", "--kind", "bug"},
-		{"new", "work-item", "Please add exports", "--kind", "ask"},
+		{"work-item", "new", "A crash", "--kind", "bug"},
+		{"work-item", "new", "Please add exports", "--kind", "ask"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -99,7 +99,7 @@ func TestFilteringByAliasFindsCanonicalRecords(t *testing.T) {
 	// Somebody who types the familiar word must find the record, or the alias
 	// is only half implemented and the second half is the confusing half.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "A crash", "--kind", "defect"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "A crash", "--kind", "defect"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	_, out, _ := run(t, app, "list", "--kind", "bug")
@@ -111,7 +111,7 @@ func TestFilteringByAliasFindsCanonicalRecords(t *testing.T) {
 func TestAnUnknownKindIsKeptAsWritten(t *testing.T) {
 	// Values are opaque and somebody else's vocabulary is not an error.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Something", "--kind", "chore"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Something", "--kind", "chore"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	if got := readFile(t, project, wiPath(t, project, "something", "index.md")); !strings.Contains(got, "kind: chore") {
@@ -125,7 +125,7 @@ func TestBlankKindIsNudgedNotRefused(t *testing.T) {
 	// frictionless becomes the path of least resistance, and then every idea
 	// arrives blank and the field means nothing.
 	app, _ := initialized(t)
-	code, out, errOut := run(t, app, "new", "work-item", "Something arrived")
+	code, out, errOut := run(t, app, "work-item", "new", "Something arrived")
 	if code != ExitOK {
 		t.Fatalf("capture was refused: exit %d, %s", code, errOut)
 	}
@@ -145,7 +145,7 @@ func TestBlankKindIsNudgedNotRefused(t *testing.T) {
 func TestNoNudgeWhenAKindIsGiven(t *testing.T) {
 	// A warning that fires on correct use is one people learn to ignore.
 	app, _ := initialized(t)
-	_, _, errOut := run(t, app, "new", "work-item", "A crash", "--kind", "defect")
+	_, _, errOut := run(t, app, "work-item", "new", "A crash", "--kind", "defect")
 	if strings.Contains(errOut, "no kind") {
 		t.Errorf("a classified record was nudged anyway:\n%q", errOut)
 	}
@@ -154,10 +154,10 @@ func TestNoNudgeWhenAKindIsGiven(t *testing.T) {
 func TestOtherUnitsAreNotNudged(t *testing.T) {
 	// Only a work item takes a kind, so only a work item can be missing one.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	_, _, errOut := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2")
+	_, _, errOut := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2")
 	if strings.Contains(errOut, "no kind") {
 		t.Errorf("an outcome was nudged about kind:\n%q", errOut)
 	}
@@ -169,13 +169,13 @@ func TestDecisionsAreNumberedFromOneSequence(t *testing.T) {
 	// ADR-0001, because the number is what somebody cites in a commit message
 	// or says out loud, and it has to mean one record.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, args := range [][]string{
-		{"new", "decision", "Catalogs do not inherit", "--project"},
-		{"new", "decision", "Retry inside the worker", "-w", "payments-v2"},
-		{"new", "decision", "Store evidence as events", "--project"},
+		{"decision", "new", "Catalogs do not inherit", "--project"},
+		{"decision", "new", "Retry inside the worker", "-w", "payments-v2"},
+		{"decision", "new", "Store evidence as events", "--project"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -198,17 +198,17 @@ func TestAskingTwiceForADecisionDoesNotBurnANumber(t *testing.T) {
 	// cannot be a path lookup — asking twice has to find the first record
 	// rather than allocate a second number for the same title.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit", "--project"); code != ExitOK {
+	if code, _, e := run(t, app, "decision", "new", "Catalogs do not inherit", "--project"); code != ExitOK {
 		t.Fatalf("first create failed: %s", e)
 	}
-	code, out, _ := run(t, app, "new", "decision", "Catalogs do not inherit", "--project")
+	code, out, _ := run(t, app, "decision", "new", "Catalogs do not inherit", "--project")
 	if code != ExitOK {
 		t.Fatalf("second create exited %d", code)
 	}
 	if !strings.Contains(out, "exists") || !strings.Contains(out, "ADR-0001") {
 		t.Errorf("the second ask did not find the first record:\n%s", out)
 	}
-	if code, _, _ := run(t, app, "new", "decision", "Something else", "--project"); code != ExitOK {
+	if code, _, _ := run(t, app, "decision", "new", "Something else", "--project"); code != ExitOK {
 		t.Fatal("third create failed")
 	}
 	_, out, _ = run(t, app, "list", "decision")
@@ -223,7 +223,7 @@ func TestANewDecisionCarriesTheContractsFields(t *testing.T) {
 	// is NOT stamped with today, because it records when the position became
 	// binding, which is not when the file appeared.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "decision", "Catalogs do not inherit", "--project"); code != ExitOK {
+	if code, _, e := run(t, app, "decision", "new", "Catalogs do not inherit", "--project"); code != ExitOK {
 		t.Fatalf("new failed: %s", e)
 	}
 	got := readFile(t, project, "records/decisions/ADR-0001-catalogs-do-not-inherit.md")
@@ -255,7 +255,7 @@ func TestInquiryInstancesAreStoredAsInquiry(t *testing.T) {
 		{"investigation", "what-broke-on-tuesday"},
 		{"spike", "can-we-use-parquet"},
 	} {
-		if code, _, e := run(t, app, "new", "work-item", strings.ReplaceAll(tc.slug, "-", " "), "--kind", tc.typed); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "new", strings.ReplaceAll(tc.slug, "-", " "), "--kind", tc.typed); code != ExitOK {
 			t.Fatalf("--kind %s failed: %s", tc.typed, e)
 		}
 		got := readFile(t, project, wiPath(t, project, tc.slug, "index.md"))

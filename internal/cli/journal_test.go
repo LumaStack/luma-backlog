@@ -10,7 +10,7 @@ import (
 func TestJournalCapturesInOneInvocation(t *testing.T) {
 	app, project := withWorkItem(t)
 
-	code, out, errOut := run(t, app, "journal", "--", "--use-hold pins the source snapshot")
+	code, out, errOut := run(t, app, "work-item", "journal", "--", "--use-hold pins the source snapshot")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -30,8 +30,8 @@ func TestJournalCapturesInOneInvocation(t *testing.T) {
 
 func TestJournalKeepsAddingToTheSameDay(t *testing.T) {
 	app, project := withWorkItem(t)
-	run(t, app, "journal", "First.")
-	run(t, app, "journal", "Second.")
+	run(t, app, "work-item", "journal", "First.")
+	run(t, app, "work-item", "journal", "Second.")
 
 	body := readFile(t, project, wiPath(t, project, "payments-v2", "journal.md"))
 	if strings.Count(body, "2026-08-09") != 1 {
@@ -44,9 +44,9 @@ func TestJournalKeepsAddingToTheSameDay(t *testing.T) {
 
 func TestJournalWithNoArgumentReadsIt(t *testing.T) {
 	app, _ := withWorkItem(t)
-	run(t, app, "journal", "Something worth keeping.")
+	run(t, app, "work-item", "journal", "Something worth keeping.")
 
-	code, out, _ := run(t, app, "journal")
+	code, out, _ := run(t, app, "work-item", "journal")
 	if code != ExitOK {
 		t.Fatalf("exit = %d", code)
 	}
@@ -59,16 +59,16 @@ func TestJournalDerivesTheWorkItemFromOneBeingTheOnlyOne(t *testing.T) {
 	// Capture has to cost one invocation. Requiring -d every time is the
 	// friction that stops it happening at all.
 	app, _ := withWorkItem(t)
-	if code, _, e := run(t, app, "journal", "No flag needed."); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "journal", "No flag needed."); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
 }
 
 func TestJournalNamesTheCandidatesWhenAmbiguous(t *testing.T) {
 	app, _ := withWorkItem(t)
-	run(t, app, "new", "work-item", "Search relevance")
+	run(t, app, "work-item", "new", "Search relevance")
 
-	code, _, errOut := run(t, app, "journal", "Which one?")
+	code, _, errOut := run(t, app, "work-item", "journal", "Which one?")
 	if code != ExitUsage {
 		t.Fatalf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -81,11 +81,11 @@ func TestJournalNamesTheCandidatesWhenAmbiguous(t *testing.T) {
 
 func TestJournalPrefersTheWorkingDirectory(t *testing.T) {
 	app, project := withWorkItem(t)
-	run(t, app, "new", "work-item", "Search relevance")
+	run(t, app, "work-item", "new", "Search relevance")
 
 	// Two work items, so it would be ambiguous — except we are inside one.
 	app.WorkingDir = filepath.Join(project, ".luma", "backlog", "work-items", wiDir(t, project, "search-relevance"))
-	if code, _, e := run(t, app, "journal", "Context wins."); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "journal", "Context wins."); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
 	body := readFile(t, project, wiPath(t, project, "search-relevance", "journal.md"))
@@ -96,11 +96,11 @@ func TestJournalPrefersTheWorkingDirectory(t *testing.T) {
 
 func TestJournalNeverRewritesWhatIsBelow(t *testing.T) {
 	app, project := withWorkItem(t)
-	run(t, app, "journal", "Day one.")
+	run(t, app, "work-item", "journal", "Day one.")
 
 	before := readFile(t, project, wiPath(t, project, "payments-v2", "journal.md"))
 	app.Env.Clock = fixedAt(t, "2026-08-10T09:00:00Z")
-	run(t, app, "journal", "Day two.")
+	run(t, app, "work-item", "journal", "Day two.")
 
 	after := readFile(t, project, wiPath(t, project, "payments-v2", "journal.md"))
 	// Newest first, and the earlier day survives byte for byte.
@@ -117,7 +117,7 @@ func TestJournalSuggestsTheEscapeForTextThatLooksLikeAFlag(t *testing.T) {
 	// Text beginning with -- is common in a journal, and being told it is an
 	// unknown flag helps nobody unless the fix comes with it.
 	app, _ := withWorkItem(t)
-	code, _, errOut := run(t, app, "journal", "--use-hold pins the source snapshot")
+	code, _, errOut := run(t, app, "work-item", "journal", "--use-hold pins the source snapshot")
 	if code != ExitUsage {
 		t.Fatalf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -128,7 +128,7 @@ func TestJournalSuggestsTheEscapeForTextThatLooksLikeAFlag(t *testing.T) {
 
 func TestJournalRejectsEmptyText(t *testing.T) {
 	app, _ := withWorkItem(t)
-	if code, _, _ := run(t, app, "journal", "   "); code != ExitUsage {
+	if code, _, _ := run(t, app, "work-item", "journal", "   "); code != ExitUsage {
 		t.Error("empty text was accepted")
 	}
 }
@@ -139,12 +139,12 @@ func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
 	// has to reach the one journal, and a name that matches nothing has to be
 	// an error rather than a new directory.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	dir := wiDir(t, project, "payments-v2")
 	for _, ref := range []string{"WORK-0001", "payments-v2", dir} {
-		if code, _, e := run(t, app, "journal", "-w", ref, "via "+ref); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "journal", "-w", ref, "via "+ref); code != ExitOK {
 			t.Fatalf("journal -w %s failed: %s", ref, e)
 		}
 	}
@@ -167,7 +167,7 @@ func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
 		t.Errorf("journal created stray directories: %v", names)
 	}
 
-	code, _, errOut := run(t, app, "journal", "-w", "WORK-9999", "nope")
+	code, _, errOut := run(t, app, "work-item", "journal", "-w", "WORK-9999", "nope")
 	if code == ExitOK {
 		t.Error("journalling to a work item that does not exist succeeded")
 	}

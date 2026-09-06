@@ -119,12 +119,14 @@ func newRootCommand(app *App) *cobra.Command {
 	root.SetUsageTemplate(usageTemplate(root.UsageTemplate()))
 
 	root.AddCommand(newInitCommand(app))
-	root.AddCommand(newNewCommand(app))
+	addNouns(root, app)
+
+	// Top-level while the cross-type question is unsettled --- see nouns.go.
+	// These three reach records that are not creatable units, so they have no
+	// noun to sit under yet.
 	root.AddCommand(newShowCommand(app))
-	root.AddCommand(newListCommand(app))
 	root.AddCommand(newSetCommand(app))
-	root.AddCommand(newJournalCommand(app))
-	root.AddCommand(newVerifyCommand(app))
-	root.AddCommand(newCloseCommand(app))
+	root.AddCommand(newListCommand(app))
+
 	return root
 }

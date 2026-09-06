@@ -33,7 +33,7 @@ func twoWorkItems(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := initialized(t)
 	for _, title := range []string{"Payments v2", "Search relevance"} {
-		if code, _, e := run(t, app, "new", "work-item", title, "--kind", "change"); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "new", title, "--kind", "change"); code != ExitOK {
 			t.Fatalf("new %q failed: %s", title, e)
 		}
 	}
@@ -91,15 +91,15 @@ func TestClosingReportsADuplicateKey(t *testing.T) {
 	// Closing writes a terminal state, so it is where acting on the wrong
 	// record costs most — and a citation of this close could land on either.
 	app, project := twoWorkItems(t)
-	if code, _, e := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "verify", "it-drains", "-e", "measured"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "verify", "it-drains", "-e", "measured"); code != ExitOK {
 		t.Fatalf("verify failed: %s", e)
 	}
 	collide(t, project, "search-relevance", "WORK-0001")
 
-	code, out, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "delivered")
 	if code != ExitOK {
 		t.Fatalf("a duplicate key blocked a close: exit %d, %s", code, errOut)
 	}
