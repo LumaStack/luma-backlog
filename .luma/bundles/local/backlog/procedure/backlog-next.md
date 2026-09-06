@@ -6,8 +6,12 @@ description: Say where the work stands and what to pick up — what was last tou
 
 # Decide what to work on next
 
-**Four readings, a rule, then an opinion.** Everything above the rule is what
-the corpus says; everything below it is yours.
+**Three divisions: the pulse, the menu, the pick.**
+
+Everything down to and including risks is **the pulse** --- where the work
+stands. Then **next picks**, a ranked menu. Then **one recommendation**. A
+reader usually wants one of the three, and the rules between them are what let
+them stop.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
@@ -98,7 +102,7 @@ selection stops being a decision anybody makes.
 
 ## Risks and concerns
 
-**Below the rule, and honest.** What you noticed while reading that nobody
+**The last of the pulse, and honest.** What you noticed while reading that nobody
 asked about.
 
 - Work `in_progress` with a journal silent for weeks — the status is a claim
@@ -111,7 +115,7 @@ asked about.
 **Say nothing if there is nothing.** A manufactured concern costs more than the
 section is worth, and it teaches a reader to skip it.
 
-## Where to start
+## Next picks, then one recommendation
 
 **One to five, ranked, with a clause each.** Not a plan — a shortlist somebody
 can act on without reading twice.
@@ -174,7 +178,7 @@ come from a template.
 > **The second gate has never been used.** Nothing has ever been `todo`, so this
 > report structurally cannot answer its own question here.
 >
-> ### Where to start
+> ### Next picks, then one recommendation
 >
 > 1. **Push and open both PRs** --- the work is done and the risk is that it is
 >    in one place.
@@ -183,8 +187,14 @@ come from a template.
 > 3. **Split WORK-0031** --- the reshape is finished; the open tasks are a
 >    different work item wearing its name.
 >
-> What would change the order: if you would rather keep building, 3 comes first
-> --- deciding what WORK-0031 *is* determines which task is next.
+> ---
+>
+> ### Recommended
+>
+> **Push and open both PRs.** Everything else on the list is work; this is the
+> only item that reduces risk rather than adding to it, and it is ten minutes.
+> If you would rather keep building, 3 comes first --- deciding what WORK-0031
+> *is* determines which task is next.
 
 **What that example is doing**, since the shape is easy to copy and the
 substance is not:
@@ -195,7 +205,7 @@ substance is not:
   --- each one is checkable.
 - **One risk is not about the backlog at all.** Unpushed work is the kind of
   thing a report that only reads records will always miss.
-- **The recommendations are ranked on consequence**, not on effort, and the last
-  line says what would reorder them.
+- **The menu is ranked on consequence**, not on effort, and the pick names the
+  reason it beat the rest rather than restating its clause.
 - **Nothing is offered as work that has not been selected.** WORK-0031 appears
   as a preparation candidate and in the recommendations --- never as *next*.

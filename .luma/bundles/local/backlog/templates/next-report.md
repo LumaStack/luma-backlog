@@ -23,16 +23,23 @@ Listings inside it follow [[listing]].
 
 <one sentence, at the bottom, on how close any of it is>
 
----
-
 ### Risks
 
 <what you noticed that nobody asked about --- or omit the section>
 
-### Where to start
+---
+
+### Next picks
 
 1. **<the thing>** — <one clause of why>
 2. **<the thing>** — <one clause of why>
+3. **<the thing>** — <one clause of why>
+
+---
+
+### Recommended
+
+**<the one>** — <why it is the one>. <what would change it>
 ```
 
 ## The rules the shape depends on
@@ -70,12 +77,37 @@ names has already got them.
 **Never offered as work.** It has not crossed the second gate, and offering it
 mistakes a pile for a queue.
 
-**The rule separates reading from opinion.** Above it, what the corpus says.
-Below it, yours. Same division as [[record-view]], for the same reason.
+## Three divisions, two rules
+
+**The pulse, the menu, the pick.** They answer different questions and a reader
+usually wants one of them.
+
+**Everything down to and including Risks is the pulse** --- where the work
+stands and what is worth worrying about. Somebody checking in reads this and
+stops. Risks belong here, not below: a concern is part of the picture, not part
+of the choice.
+
+**Next picks is a menu.** Options, ranked, and the reader chooses. **Not
+"where to start"** --- nobody arriving at an existing backlog is starting, they
+are continuing, and a heading that says otherwise is written for a project that
+does not exist yet.
+
+**Recommended is one thing.** If the menu were enough there would be no need to
+pick, and handing somebody three ranked options without saying which is
+answering a question with a question.
+
+**The rules are what make the three legible.** Without them the sections run
+together and a reader looking only for the pulse reads the opinions too.
 
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
 
-**Where to start is one to five, ranked, a clause each.** Not a plan --- a
-shortlist somebody can act on without reading twice. Say what would change the
-order when something obvious would, usually a decision nobody has made.
+**Next picks is one to five, ranked, a clause each.** Not a plan --- a menu
+somebody can act on without reading twice.
+
+**Recommended is one of them, named again, with the reason it beat the others.**
+Do not introduce something that was not on the menu. **Say what would change
+it** when something obvious would, usually a decision nobody has made.
+
+**Recommend nothing when nothing is right**, and say why. An empty
+recommendation with a reason is worth more than a filled one without.
