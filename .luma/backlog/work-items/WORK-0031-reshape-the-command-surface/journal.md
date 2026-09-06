@@ -58,3 +58,6 @@ InitDefaultHelpCmd declines to add help to a command with no subcommands yet, so
 the stale-example check is built and earned its keep immediately: the first version used cobra Find, which returns the root with arguments unconsumed rather than erroring, so it passed a command that does not exist
 nine tasks were finished and none marked closed — the backlog said todo for everything while the work was in the commits; caught only by asking what was next
 there is no task close: close is registered on work-item only, so a task is closed with set workflow_status=closed — worth deciding whether that is right or a gap
+writing the procedures found four things the commands cannot do — new takes no --description, show gives fields but not outcomes or tasks, there is no --column though the config defines them, and nothing asks for everything except closed; that is the bootstrap order working rather than a detour
+the two procedures that existed predated the binary and neither called it — backlog-journal still said there is no binary yet, and backlog-new carried a frontmatter copy telling people to write workflow_status: idea, a value the ladder lost at ADR-0002
+backlog-journal's fixed entry template contradicted the spec it cited: 5.5 says headings are named after what they settle, not drawn from a template, and the command writes a bare date heading on purpose
