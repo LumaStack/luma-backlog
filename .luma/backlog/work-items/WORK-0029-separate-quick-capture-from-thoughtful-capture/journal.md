@@ -8,3 +8,4 @@
 ## ▶ 2026-09-06
 
 raised from this session — every record written today was a thoughtful capture whether or not one was wanted, and none of them was discussed before being written
+first draft put the agent's framing and evidence above the maintainer's requirements — the record broke the rule it was asking for, and was restructured so the maintainer's intent stands alone and everything added sits below a marked line
