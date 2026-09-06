@@ -7,6 +7,7 @@
 ## ▶ 2026-09-06
 
 set writes a date as a quoted string — ADR-0003 got decided: "2026-09-05" where every other record has an unquoted date scalar, so the same field carries two YAML types across the corpus
+show prints key twice, once in its own row and once in the fields block — found while closing WORK-0018, and filed here rather than there because it is a fact about the corpus and not about that work
 
 ## ▶ 2026-09-04 — the drift recurred, and the check for it already exists unconfigured
 

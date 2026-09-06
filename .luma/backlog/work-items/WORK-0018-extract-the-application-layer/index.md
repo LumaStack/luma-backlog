@@ -2,11 +2,12 @@
 type: work-item
 key: WORK-0018
 title: Extract the application layer
-workflow_status: in_progress
+workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:52:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T13:16:41Z'}
+modified: {by: 'human:luma-foundry', at: '2026-09-06T14:14:02Z'}
+closed: {on: 2026-09-06, reason: delivered, by: 'human:luma-foundry'}
 ---
 
 # Extract the application layer

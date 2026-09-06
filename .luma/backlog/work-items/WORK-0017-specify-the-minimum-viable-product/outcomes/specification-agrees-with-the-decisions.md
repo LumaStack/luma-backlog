@@ -13,10 +13,10 @@ stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T01:34:02Z'}
 verified:
   - at: "2026-09-06T13:16:22Z"
-    by: human:warden
+    by: human:luma-foundry
 evidence:
   - at: "2026-09-06T13:16:22Z"
-    by: human:warden
+    by: human:luma-foundry
     what: 'PR #57, #61'
 ---
 
