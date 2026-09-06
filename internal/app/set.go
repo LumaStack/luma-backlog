@@ -60,6 +60,14 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 		if a.Field == "modified" {
 			assignedModified = true
 		}
+		// §9.6 says the caller never computes an ordering key. If `set
+		// rank=0010.500` works, that rule is decoration --- so rank is the only
+		// way in through the tool (ADR-0005). Editing the file by hand stays
+		// available, as it does for everything.
+		if a.Field == "rank" {
+			return nil, UsageError(
+				"rank is not set directly --- use: work-item rank <ref> --top | --bottom | --before <ref> | --after <ref>")
+		}
 		if a.Raw {
 			if err := it.Record.SetRaw(a.Field, a.Value); err != nil {
 				return nil, UsageError("%w", err)

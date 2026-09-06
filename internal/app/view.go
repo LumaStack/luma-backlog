@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/lumastack/luma-backlog/internal/corpus"
+	"sort"
 )
 
 // View is one record as a surface needs to show it.
@@ -24,6 +25,10 @@ type View struct {
 	// Status is empty when the record's type declares no workflow status.
 	Status   string
 	WorkItem string
+	// Rank is work order --- <status ordinal>.<position>, ADR-0005. Empty on a
+	// record nobody has placed, which is most of them: ranking one record
+	// writes one file, so a status is not seeded just because it was read.
+	Rank string
 }
 
 // Record is a view with everything a single-record read needs.
@@ -57,6 +62,7 @@ func (s *Session) view(it corpus.Item) View {
 		Title:    it.Title(),
 		Status:   it.Status(s.Config.DefaultStatusFor(it.Type())),
 		WorkItem: it.WorkItem,
+		Rank:     rankOf(it),
 	}
 }
 
@@ -112,4 +118,37 @@ type Skip struct {
 type Duplicate struct {
 	Key   string
 	Paths []string
+}
+
+// rankOf reads a record's rank, or empty where it has none.
+func rankOf(it corpus.Item) string {
+	r, _ := it.Record.Get("rank")
+	return r
+}
+
+// byWorkOrder sorts a listing the way the work is meant to be done: ranked
+// records first, in rank order, then everything nobody has placed.
+//
+// The rank is compared as text, which is the whole reason it is zero-padded on
+// both halves (ADR-0005, spec.md §9.6) --- text order and numeric order are the
+// same order, so this needs no comparator and cannot disagree with anything
+// else that sorts the field.
+//
+// Unranked records come last rather than first. A rank is a position somebody
+// chose; a record without one has not been placed, and putting it above the
+// records that have been would let an unconsidered record outrank a considered
+// one.
+func byWorkOrder(views []View) {
+	sort.SliceStable(views, func(i, j int) bool {
+		a, b := views[i].Rank, views[j].Rank
+		switch {
+		case a != "" && b != "":
+			return a < b
+		case a != "":
+			return true
+		case b != "":
+			return false
+		}
+		return views[i].Name < views[j].Name
+	})
 }

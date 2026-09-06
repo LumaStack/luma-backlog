@@ -53,6 +53,7 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 	for _, it := range items {
 		views = append(views, s.view(it))
 	}
+	byWorkOrder(views)
 	return &ListResult{
 		Items: views,
 		Observations: Observations{

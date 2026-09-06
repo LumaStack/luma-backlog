@@ -38,3 +38,6 @@ listings show key, status and title — TYPE repeated the command it was run und
 children are marked OUT and TASK rather than named: they have no key and their slug is their title in kebab case, so printing it put the same sentence on the row twice
 tasks before outcomes — an outcome reads unverified for nearly the whole life of a work item, so leading with them puts constant text between the work item and what somebody came for; the argument that outcomes summarize status only holds at closing time
 child keys were considered and dropped: OUT-014 is not something anyone says out loud, which is the reason work items have keys at all — recorded rather than left as a gap somebody rediscovers
+rank without sorting is invisible — the command wrote a field nothing read, so listings now sort by it: ranked records in rank order, unranked last because a rank is a position somebody chose and an unplaced record should not outrank a considered one
+records with no rank are skipped as neighbors rather than seeded — seeding a whole status on first rank would make a reorder a multi-record write, which is the thing decimal ordering keys exist to avoid
+ranking against a record at another status is refused: rank orders within a status, so there is no position between them to compute
