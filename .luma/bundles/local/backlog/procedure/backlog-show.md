@@ -39,7 +39,7 @@ luma-backlog work-item list --json
 > You can also ask to:
 > - show everything In Progress
 > - show <work item>
-> - show all Captured defects
+> - show me Captured defects
 
 **Then the three examples, as a list.** One column on its own, one named record,
 and one that combines a column with a kind --- because compound filters are the
