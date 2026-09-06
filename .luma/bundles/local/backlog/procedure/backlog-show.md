@@ -126,9 +126,9 @@ A reader must be able to tell them apart without being told.
 > ○ Accept a positional title on work-item new
 > ○ Add outcome assert and outcome archive
 > ◐ Carry completion counts in the read path
->
-> ✓ Build the noun-verb command tree · Compute a rank by bisecting between
-> neighbors · Add the work-item rank command · Make set refuse the rank field
+> ● Build the noun-verb command tree
+> ● Compute a rank by bisecting between neighbors
+> ● Add the work-item rank command
 >
 > ### Journal
 >
@@ -161,9 +161,20 @@ A reader must be able to tell them apart without being told.
 
   | | means |
   | --- | --- |
-  | `✓` | closed, or an outcome that is passing |
-  | `◐` | in progress |
-  | `○` | not started, or an outcome nobody has verified |
+  | `○` | not started --- a `todo` task, an unverified outcome |
+  | `◐` | under way --- `in_progress` |
+  | `●` | finished well --- `closed`, or an outcome that is passing |
+  | `✗` | finished badly --- closed as `canceled`, `abandoned` or `superseded` |
+
+  **The circle fills as the work proceeds** --- empty, half, full --- so a column
+  of them reads as progress without anything being counted. `✗` breaks the shape
+  on purpose: an ending that did not go well should not look like one that did.
+
+  **`✗` has little to attach to yet.** A task has no failure state --- it closes
+  or it does not --- and an outcome is `unverified` or `passing` with nothing in
+  between. It applies today to a work item closed as `canceled`, `abandoned` or
+  `superseded`, and it is waiting on ADR-0007's verdicts for outcomes. Do not
+  invent a failure the record does not claim.
 
   The mark replaces a status column: three symbols in a fixed first position
   scan in one pass, where a word per row has to be read. It also puts outcomes
@@ -174,11 +185,11 @@ A reader must be able to tell them apart without being told.
 - **One list each, unstarted first, finished last.** Not grouped under Open and
   Closed headings: the mark already says which, and grouping buries the ordering
   that matters within each.
-- **Closed tasks collapse onto one line**, joined by `·` after a single `✓`. A
-  work item that has been worked has more finished tasks than open ones, and a
-  column of `✓` pushes the open work --- the reason somebody is reading --- off
-  the screen. The names stay, because a closed task is how you find out
-  something was already tried; only the vertical space goes.
+- **Every task and outcome gets its own line, finished ones included.** They are
+  not collapsed and not omitted: a finished task is how somebody finds out a
+  thing was already tried, and a list that shows only what is left makes a work
+  item look like it began this morning. The marks are what keep a long list
+  readable --- a filled circle is skipped by the eye in a way a word is not.
 - **The heading carries the tally** --- *Tasks (22) --- 9 done, 13 open* --- so
   the counts are read once rather than by counting rows.
 - **The journal as a count and the newest entry's first line**, quoted. Never the
