@@ -21,7 +21,7 @@ luma-backlog work-item list --status prepared
 luma-backlog work-item list --status captured
 ```
 
-## 1. What you last touched
+## What you last touched
 
 **Git, not the records.** `--json` does not carry `modified`, and reading every
 record to find out costs more than the answer is worth. `spec.md` §5.5 is
@@ -36,7 +36,7 @@ their place back before they want advice.
 a hot one call for different answers, and the reader can tell which they are in
 faster than you can.
 
-## 2. What is under way, and what is queued
+## What is under way, and what is queued
 
 **Both lists in full, in the shared format, in-progress first.**
 
@@ -55,7 +55,7 @@ stalled — [[backlog-show]].
 selected. The second gate is where attention is needed, not the work, and no
 amount of reading further changes that.
 
-## 3. What is worth preparing
+## What might be worth preparing
 
 **Only when there is nothing to do**, or when what is queued is thin.
 
@@ -82,7 +82,7 @@ selection stops being a decision anybody makes.
 
 ---
 
-## 4. Risks and concerns
+## Risks and concerns
 
 **Below the rule, and honest.** What you noticed while reading that nobody
 asked about.
@@ -97,7 +97,7 @@ asked about.
 **Say nothing if there is nothing.** A manufactured concern costs more than the
 section is worth, and it teaches a reader to skip it.
 
-## 5. Where to start
+## Where to start
 
 **One to five, ranked, with a clause each.** Not a plan — a shortlist somebody
 can act on without reading twice.

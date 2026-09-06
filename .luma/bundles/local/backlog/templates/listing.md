@@ -14,7 +14,8 @@ the ordering are [[showing-records]]; this is what the block looks like.
 ```
 
 **The heading is the label and a count in parentheses** --- *Closed (13)*, not
-*Closed — 13 work items*. The parenthetical scans as a label and does not repeat
+*Closed — 13 work items*. Bold when the listing stands alone; a `###` heading
+when it is a section of a larger report. The parenthetical scans as a label and does not repeat
 the noun the rows already are.
 
 **Add a tally after the count where the states differ** --- *Tasks (23) — 9
