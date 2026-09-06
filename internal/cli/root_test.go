@@ -28,7 +28,7 @@ func TestBareInvocationPrintsHelp(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("exit code = %d, want %d; stderr: %s", code, ExitOK, errOut.String())
 	}
-	for _, want := range []string{"Available Commands:", "Usage:", "Flags:"} {
+	for _, want := range []string{"CORE COMMANDS", "USAGE", "FLAGS"} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("bare invocation did not print %q:\n%s", want, out.String())
 		}
@@ -36,9 +36,7 @@ func TestBareInvocationPrintsHelp(t *testing.T) {
 }
 
 // Cobra emits two usage lines for a root that both runs and has subcommands.
-// root.go rewrites its template to emit one. The rewrite matches Cobra's
-// default text exactly, so it would silently do nothing if that text changed
-// --- this is what turns that into a failure.
+// The template in help.go emits one. This holds that, and the shape of it.
 func TestUsageLineIsSingular(t *testing.T) {
 	var out, errOut bytes.Buffer
 	if code := Main(nil, strings.NewReader(""), &out, &errOut); code != ExitOK {
@@ -48,7 +46,7 @@ func TestUsageLineIsSingular(t *testing.T) {
 	var usage []string
 	lines := strings.Split(out.String(), "\n")
 	for i, line := range lines {
-		if strings.TrimSpace(line) != "Usage:" {
+		if strings.TrimSpace(line) != "USAGE" {
 			continue
 		}
 		for _, next := range lines[i+1:] {
@@ -60,9 +58,9 @@ func TestUsageLineIsSingular(t *testing.T) {
 		break
 	}
 
-	want := []string{"luma-backlog [command] [flags]"}
-	if len(usage) != 1 || usage[0] != want[0] {
-		t.Errorf("usage block = %q, want %q\n(if Cobra's default template changed, usageTemplate in root.go no longer matches it)", usage, want)
+	want := "luma-backlog <command> <subcommand> [flags]"
+	if len(usage) != 1 || usage[0] != want {
+		t.Errorf("usage block = %q, want exactly [%q]", usage, want)
 	}
 }
 

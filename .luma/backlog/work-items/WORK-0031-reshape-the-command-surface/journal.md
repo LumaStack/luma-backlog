@@ -52,3 +52,7 @@ status and rank are written by one operation in internal/app that no caller can 
 drift from a hand-edited vocabulary is observed and never refused, in the shape list already uses for skips: it names the record, the ordinal the status carries now, and the rank that says otherwise
 ascending ordinals give ladder order, so a flat listing leads with captured and trails with closed — right for a board with columns, wrong for a terminal where the least actionable work ends up on top; belongs with --group rather than here
 rank repair is not built — ADR-0005 names it as the third mechanism and the message tells you to re-set the status instead, which does the same thing one record at a time
+the proposed grouping put decision, exploration, outcome and task under MANAGE WORK ITEMS while work-item sat in CORE — they are sibling record types, so the split is by what a reader wants: a verb, a record type, or the machinery
+cobra's IsAvailableCommand is false for the help command by design, so any custom listing must say or eq .Name help or lose it silently — cobra's own template does; dropping the clause is how help vanished
+InitDefaultHelpCmd declines to add help to a command with no subcommands yet, so calling it before registering them did nothing — it has to come last
+the stale-example check is built and earned its keep immediately: the first version used cobra Find, which returns the root with arguments unconsumed rather than erroring, so it passed a command that does not exist

@@ -66,6 +66,12 @@ func addNouns(root *cobra.Command, a *App) {
 			noun.AddCommand(newVerifyCommand(a))
 		}
 
-		root.AddCommand(noun)
+		root.AddCommand(inGroup(noun, groupRecords))
 	}
+}
+
+// inGroup files a command under a section of the root listing.
+func inGroup(c *cobra.Command, id string) *cobra.Command {
+	c.GroupID = id
+	return c
 }
