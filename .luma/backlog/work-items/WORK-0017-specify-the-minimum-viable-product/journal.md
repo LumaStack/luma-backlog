@@ -14,6 +14,7 @@ asserted appends rather than replaces, matching verified and the create-never-ov
 new takes a title either way — positional words joined as the documented path, --title for the precise case, an error if both; flag-only would have cost the verified capture-is-one-command outcome and needed section 9.0.1 amended
 taking and owning separated — taken {by, at, expires} on a task, ownership left unmodelled so the word stays free; taken beat claimed because this repository already spends claim on assertions about truth
 design-interface.md renamed to design-sketches.md and its header rewritten — the file is concept art with a short life, and a future session reasoning from a drawing as though it were settled is the specific failure the new header exists to prevent
+board scope set in three tiers — must is a navigable multi-column board plus creating work items, outcomes and tasks; ranking, detail, assert and verify are should; filters and menus are nice to have
 
 ## ▶ 2026-09-05
 

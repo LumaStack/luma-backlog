@@ -69,12 +69,10 @@ index so nothing has to be reconstructed from a conversation.
 - **`new` takes its title positionally, as `--title`, or both.** `spec.md`
   §9.0.1 rules out a command whose only path requires knowing field names, so
   `--title` alone would need that section amended.
-- **The board's scope.** The five screens in `design-sketches.md` and the four
-  views in `spec.md` §11.2 do not line up — the mockups have no wave or health
-  view, and §11.2 hides drafts by default where the mockups make `captured` the
-  primary column. Which §11.2 interaction patterns are requirements rather than
-  directions is also undecided; formation-as-visual-sharpness and coalesced
-  updates are the expensive ones.
+- **Whether a board card shows computed completion.** Settled everywhere else —
+  the board's scope is now in `design-mvp.md` in three tiers — but this one is
+  open, and it decides whether the first board shows anything a directory
+  listing does not (`spec.md` §11.1).
 - **Configuration format.** The estate's precedence model is adopted — six
   layers, `[defaults]` and `[require]`, read per invocation, resolved at one
   site. Whether the file is TOML is **not** this project's decision to make
