@@ -108,11 +108,9 @@ A reader must be able to tell them apart without being told.
 
 > ## WORK-0031 · Reshape the command surface
 >
-> | | |
-> | --- | --- |
-> | **Status** | prepared |
-> | **Kind** | change |
-> | **Stage** | draft |
+> **Status** prepared
+> **Kind** change
+> **Stage** draft
 >
 > The specification and the binary disagree, and the specification won.
 >
@@ -151,10 +149,14 @@ A reader must be able to tell them apart without being told.
 
 - **Key and title in the heading**, joined by `·`. The key so it can be typed,
   the title so it is recognisable.
-- **Status, kind and stage as a two-column table**, in that order --- status
-  first, because it is what anybody came for. A labelled list would read as well
-  and cannot align: markdown collapses the padding, so the values come out
-  ragged. The table is the only shape that holds.
+- **Status, kind and stage as three bold-labelled lines**, in that order ---
+  status first, because it is what anybody came for.
+
+  **Not a table.** Markdown has no headerless table, so a two-column one prints
+  an empty band above three rows, which is more furniture than the content.
+  Alignment was the argument for it and does not survive contact: the labels are
+  within two characters of each other, so a ragged edge nobody can see is not
+  worth a header nobody wants.
 - **The description as prose**, on its own line, unquoted. It is the record's own
   sentence and should read as one.
 - **A mark carries the state, not a column.**
