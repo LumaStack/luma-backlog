@@ -2,10 +2,11 @@
 type: work-item
 key: WORK-0031
 title: Reshape the command surface
-workflow_status: unprepared
+workflow_status: prepared
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T14:00:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:51:08Z'}
 ---
 
 # Reshape the command surface
