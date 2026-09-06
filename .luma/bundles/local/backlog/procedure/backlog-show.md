@@ -77,11 +77,13 @@ luma-backlog work-item journal -w <ref> # what was learned
 has nothing hanging off it --- `show <ref>` is the whole answer, and running the
 other three returns nothing while looking thorough.
 
-**Show the commands you ran**, as a block above the answer. Same reason as a
-listing: `-w <ref>` on `task list` and `outcome list` is the least guessable
-thing in the tool, and somebody who sees it once stops needing to ask.
+**Show the commands you ran, as a block at the end** --- after the reading, the
+way a listing puts them under its table. Same reason: `-w <ref>` on `task list`
+and `outcome list` is the least guessable thing in the tool, and somebody who
+sees it once stops needing to ask.
 
-> **WORK-0031** · Reshape the command surface
+> …where it stands, and what would move it along.
+>
 > ```
 > luma-backlog show WORK-0031
 > luma-backlog task list -w WORK-0031-reshape-the-command-surface
@@ -171,14 +173,21 @@ way to pass more than one status.
 
 ## Heading the result
 
-**The column and its count, then the command that produced it.**
+**The column and its count above, the command that produced it directly below
+the table.**
 
 > **Closed (13)**
-> `luma-backlog work-item list --status closed`
 >
 > | key | title |
 > | --- | --- |
 > | WORK-0001 | First usable build |
+> | WORK-0004 | Rename the unit to work item |
+>
+> `luma-backlog work-item list --status closed`
+
+**Below, not above.** The answer comes first; the command is provenance and a
+starting point for the next question, and neither belongs in front of what was
+asked for.
 
 **`Closed (13)`, not "Closed --- 13 work items".** The parenthetical count is
 shorter, scans as a label, and does not repeat the noun that the rows below
