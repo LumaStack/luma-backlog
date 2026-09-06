@@ -12,7 +12,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:30:56Z'}
 
 ## The problem
 
-`docs/design-mvp.md` names a six-stage loop — capture, triage, rank, advance, execute, resolve — and `docs/design-interface.md` sketches what working it looks like. Neither is buildable. They are the right shape and the wrong altitude: the first says which stages exist without saying which commands ship, the second draws screens without saying what each keystroke calls.
+`docs/design-mvp.md` names a six-stage loop — capture, triage, rank, advance, execute, resolve — and `docs/design-sketches.md` sketches what working it looks like. Neither is buildable. They are the right shape and the wrong altitude: the first says which stages exist without saying which commands ship, the second draws screens without saying what each keystroke calls.
 
 Meanwhile `spec.md` §9.10 and §11.6 already forbid the failure this work exists to prevent — *a capability that exists only on the board is a bug in the interface* — and say nothing about how that is held true once somebody is building two surfaces at once. A rule with no mechanism behind it is a rule that gets broken by the second person to touch the code, and measured compliance with prose-only rules runs far below what a guarantee requires (`CLAUDE.md`).
 
@@ -69,7 +69,7 @@ index so nothing has to be reconstructed from a conversation.
 - **`new` takes its title positionally, as `--title`, or both.** `spec.md`
   §9.0.1 rules out a command whose only path requires knowing field names, so
   `--title` alone would need that section amended.
-- **The board's scope.** The five screens in `design-interface.md` and the four
+- **The board's scope.** The five screens in `design-sketches.md` and the four
   views in `spec.md` §11.2 do not line up — the mockups have no wave or health
   view, and §11.2 hides drafts by default where the mockups make `captured` the
   primary column. Which §11.2 interaction patterns are requirements rather than

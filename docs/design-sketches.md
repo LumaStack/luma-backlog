@@ -1,11 +1,31 @@
-# Rough interface design (MVP)
+# Interface sketches
 
-## How to interperate this document
+**Concept art, not a specification.** These are a starting point for arguing
+about the interface — drawn to be thrown away, and expected to be short-lived.
+Nothing here is decided.
 
-These are loose designs.  For the purposes of maintaining this document, we have 
-over simplified interface design.  We are not expecting to follow this document 
-exactly where use of ASCII can produce a more readable, functional, intuative, 
-visually appealing UX.
+## How to read this
+
+**Do not treat a sketch as a decision.** `CLAUDE.md` states this as a rule for
+the whole project, and this document is where it matters most: sample names,
+values, labels and layouts show **shape only**. If you need a settled answer,
+it is in `.luma/records/decisions/` or `docs/spec.md` — and if it is in neither,
+ask rather than reasoning from a drawing.
+
+**A decision in force outranks anything here**, without exception. These screens
+were drawn before the decisions that now govern the interface and have not been
+revised against them.
+
+**Some of this is more durable than the rest.** The reserved hotkeys, the
+box-drawing characters and the color guidance are conventions that may well
+outlive the mockups; as each is settled it moves into `docs/spec.md` and stops
+being provisional. **The screens themselves are not expected to survive contact
+with a working board** — they exist so that disagreement has something concrete
+to point at.
+
+The simplification is deliberate. ASCII is a rough medium here, and a real
+implementation should use whatever renders more readable, functional and
+intuitive than what is drawn below.
 
 We want the interface to be navigated by Arrow keys but also clickable when it is pragmatic to do so:
 
