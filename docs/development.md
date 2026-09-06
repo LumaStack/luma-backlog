@@ -99,6 +99,93 @@ The tool finds its root by walking *up* to the nearest `.git`. When that walk le
 - **Never abbreviate terminology to initials.** Spell every phrase out.
 - **Examples are illustrative** unless the surrounding text says otherwise. Reasoning from an illustration invents settled facts nobody agreed to.
 
+## What we design against
+
+Three layers, and they do not overlap. The first two have a canonical source.
+The third does not, and that is worth knowing rather than papering over.
+
+### Universal Go
+
+1. **[Effective Go](https://go.dev/doc/effective_go)** — the foundation.
+2. **[Go Code Review Comments](https://go.dev/wiki/CodeReviewComments)** — the
+   review checklist, and the most practically used of the three.
+3. **[Google's Go Style Guide](https://google.github.io/styleguide/go/)** — for
+   anything the first two leave open. Longer, and reasoned rather than asserted.
+
+**[Package names](https://go.dev/blog/package-names)** is worth naming
+separately because it is short and settles an argument this project has already
+had: avoid names that say nothing (`util`, `common`, `misc`, and by extension
+`shared`), do not name a package for its architectural layer, and read the call
+site, because the package name is part of every identifier. That is what moved
+`internal/backlog` to `corpus` and `internal/policy` to `guards`.
+
+### The command line
+
+**[clig.dev](https://clig.dev)**, adopted as a bundle
+(`.luma/bundles/lumastack/luma-catalog/command-line-interface`) — which means it
+is followed unless a decision in force says otherwise, and a departure is
+recorded rather than merely taken. It settled noun-verb ordering, the exit
+codes, what a bare invocation does, and that commands do not prompt
+(`ADR-0006`).
+
+It covers **what a user types and reads back**. It says nothing about how the
+Go is written, and nothing about a full-screen program — it excludes those
+explicitly.
+
+### Writing Go for a program like this one
+
+**No canonical source exists**, for either half. clig.dev rules full-screen
+programs out of scope and says nothing about Go; Go's own guides say nothing
+about terminals or command trees. This layer is largely **derived here** rather
+than inherited, and the derivations live in `spec.md` §9a.4 and §9a.5 — which
+means those sections are the reference, and the list below is what informed
+them.
+
+**Bound by dependency choice.** Picking a library picks its conventions:
+
+- **[Cobra](https://github.com/spf13/cobra)** — the command tree, and where
+  shell completions and man pages come from. `spec.md` §9a.3 records the cost:
+  its help text and error formatting become part of the human-facing surface.
+- **[Bubble Tea](https://github.com/charmbracelet/bubbletea)** and **Lipgloss**
+  for the board, also §9a.3. Its patterns are what the board will follow whether
+  or not anybody decides to.
+- **[The Elm Architecture](https://guide.elm-lang.org/architecture/)**, which
+  Bubble Tea implements and assumes rather than teaches. Model, update, view —
+  worth reading directly before writing the board.
+
+**Worked examples rather than guides.** Go's own `cmd/go` is the most
+carefully-built command-line program in the ecosystem, and reading it answers
+questions no document does.
+
+**Testing a command line** has one near-standard: `testscript`, from
+`rogpeppe/go-internal`. `spec.md` §9a.5 already records why it is not enough
+here — it asserts success or failure, not a *specific* exit status, and §9.4's
+codes are the most machine-facing part of the contract.
+
+**The patterns this project settled for itself**, and would look for in any
+guide that claimed to cover this:
+
+- **Streams are passed in, never reached for.** `cli.Main(args, stdin, stdout,
+  stderr) int` — so tests drive the whole program without touching the process.
+- **The exit code is returned, not exited.** One `os.Exit` at the entry point.
+- **The clock and the actor are injected**, so output is byte-stable and golden
+  files are possible at all (§9a.4).
+- **A golden file for every output shape**, which makes a diff in one a breaking
+  change rather than a test to update (§9a.5).
+
+**The gap is real.** If building the board turns up patterns worth holding —
+how a modal move mode behaves, how a redraw coalesces, what survives a narrow
+terminal — that is a candidate for a bundle of this project's own rather than a
+reference to somebody else's.
+
+### None of these are vendored
+
+They live where their authors maintain them, for the same reason the
+command-line bundle points at clig.dev rather than summarising it: a summary is
+a derivative work, and it drifts. If any of them ever needs the bundle treatment
+— cached locally, departures recorded — that belongs in the catalog rather than
+here.
+
 ## The backlog is in the repository
 
 **Agents must set `LUMA_BACKLOG_ACTOR`** — `agent:<model>/luma-backlog` — before any command that writes. Actor detection falls back to the operating system user, so without it an agent's work is recorded as the machine owner's. Found by dogfooding, after four outcomes were verified under the wrong name.
