@@ -5,7 +5,7 @@ decided: 2026-09-05
 stage: provisional
 reopen_trigger: a departure recorded here turns out to be an oversight rather than a choice, or clig.dev changes a rule this record relies on
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T23:10:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T01:00:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T02:00:00Z'}
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 ---
 
@@ -177,13 +177,18 @@ is a named attribute (`--kind`, `--work-item`), and under noun-verb ordering
 there is no plausible second positional. The failure it warns about mostly
 cannot occur.
 
-## Still open
+### Configuration stays YAML for now
 
-**The configuration file format.** The estate's precedence model is adopted —
-six layers, `[defaults]` and `[require]`, read per invocation, resolved at one
-site. Whether the file is TOML is not this project's decision to make alone;
-`.luma/config/` is shared across tools, and `spec.md` §8.1 argues for YAML on a
-premise — that a repository should carry one format — already false here.
+The estate's precedence model is adopted — six layers, `[defaults]` and
+`[require]`, read per invocation, resolved at one site. **The file stays YAML**,
+which is what `init` already writes at `.luma/config/luma-backlog.yaml`.
+
+`spec.md` §8.1's argument for YAML rests on a premise already false here — the
+repository carries TOML in `.luma/config/luma-foreman.toml` and
+`.luma/bundles/routing.toml` — so this is continuity rather than that argument
+holding. **Deferred rather than settled:** the format of `.luma/config/` is
+shared across tools and is not this project's decision to make alone.
+*Reopened when the estate settles it, at which point this follows.*
 
 ## Alternatives
 
