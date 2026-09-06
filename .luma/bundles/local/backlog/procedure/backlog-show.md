@@ -126,9 +126,9 @@ A reader must be able to tell them apart without being told.
 > ○ Accept a positional title on work-item new
 > ○ Add outcome assert and outcome archive
 > ◐ Carry completion counts in the read path
-> ✓ Build the noun-verb command tree
-> ✓ Compute a rank by bisecting between neighbors
-> ✓ Add the work-item rank command
+> ✔ Build the noun-verb command tree
+> ✔ Compute a rank by bisecting between neighbors
+> ✔ Add the work-item rank command
 >
 > ### Journal
 >
@@ -163,28 +163,33 @@ A reader must be able to tell them apart without being told.
   | --- | --- |
   | `○` | not started --- a `todo` task, an unverified outcome |
   | `◐` | under way --- `in_progress` |
-  | `✓` | finished well --- `closed`, or an outcome that is passing |
-  | `✗` | stopped --- closed as `canceled` or `abandoned` |
+  | `✔` | finished well --- `closed`, or an outcome that is passing |
+  | `✘` | stopped --- closed as `canceled` or `abandoned` |
   | `↪` | superseded --- something else covers it now |
 
   **Unfinished work shares the circle; finished work changes shape.** `○` and
   `◐` differ only by fill, which is right --- they are the same thing at two
   points. A filled circle would join that family and be confused with an empty
-  one in a column; `✓` is a different mark entirely, so *done* separates from
+  one in a column; `✔` is a different mark entirely, so *done* separates from
   *not done* before anything is read, and the fill only has to distinguish the
   two unfinished states from each other.
 
-  **`✗` mirrors `✓` for the same reason.** An ending that did not go well should
+  **Use the heavy marks --- `✔` (U+2714) and `✘` (U+2718), not `✓` and `✗`.**
+  The light pair is visibly thinner than the circles beside it, so a finished
+  row reads as fainter than an unfinished one --- backwards, since finished work
+  is what a scan is trying to skip past.
+
+  **`✘` mirrors `✔` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
 
   **`↪` is not a verdict.** Superseded work did not fail --- it moved, and
-  something else covers it now, which is often a good result. Marking it `✗`
+  something else covers it now, which is often a good result. Marking it `✘`
   would report a loss where there was a hand-off. The hooked arrow says *picked up
   over there*, which is also the prompt: **name what superseded it, on the same
   line.** A supersession with no successor named is the one shape of this that
   is genuinely lost work.
 
-  **`✗` has little to attach to yet.** A task has no failure state --- it closes
+  **`✘` has little to attach to yet.** A task has no failure state --- it closes
   or it does not --- and an outcome is `unverified` or `passing` with nothing in
   between. It applies today to a work item closed as `canceled`, `abandoned` or
   `superseded`, and it is waiting on ADR-0007's verdicts for outcomes. Do not
@@ -193,10 +198,10 @@ A reader must be able to tell them apart without being told.
   The mark replaces a status column: three symbols in a fixed first position
   scan in one pass, where a word per row has to be read. It also puts outcomes
   and tasks in the same visual language, which is what lets somebody see at a
-  glance that every task is `✓` and every outcome is `○` --- the state worth
+  glance that every task is `✔` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, in a fixed order: `○`, `◐`, `✓`, `↪`, `✗`.** Endings last,
+- **One list each, in a fixed order: `○`, `◐`, `✔`, `↪`, `✘`.** Endings last,
   and the bad one last of all --- it is the one worth arriving at deliberately. Never grouped under
   headings --- the mark already says which, and a heading repeats it. Never
   reordered by anything else: a view whose order changes between readings cannot
