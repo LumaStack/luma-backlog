@@ -24,6 +24,10 @@ luma-backlog work-item list --json
 
 **Print the count and the columns. Then say how else to ask. Then stop.**
 
+**No command here.** The summary is a count per column assembled from one listing
+--- there is nothing a person could usefully re-run, and printing the raw call
+would teach a command that does not answer the question they asked.
+
 > 42 work items
 >
 > | column | count |
@@ -72,6 +76,18 @@ luma-backlog work-item journal -w <ref> # what was learned
 **Anything else takes one.** An outcome, a task, a decision or an exploration
 has nothing hanging off it --- `show <ref>` is the whole answer, and running the
 other three returns nothing while looking thorough.
+
+**Show the commands you ran**, as a block above the answer. Same reason as a
+listing: `-w <ref>` on `task list` and `outcome list` is the least guessable
+thing in the tool, and somebody who sees it once stops needing to ask.
+
+> **WORK-0031** · Reshape the command surface
+> ```
+> luma-backlog show WORK-0031
+> luma-backlog task list -w WORK-0031-reshape-the-command-surface
+> luma-backlog outcome list -w WORK-0031-reshape-the-command-surface
+> luma-backlog work-item journal -w WORK-0031-reshape-the-command-surface
+> ```
 
 **Read all four before saying anything.** Each answers a different question and
 any one alone is misleading --- a work item with every task closed and an
@@ -172,6 +188,11 @@ already are.
 especially then. It says which filter ran, so an empty column is
 distinguishable from a wrong question; it can be re-run; and it can be edited
 into the next question, which is usually what somebody wants next.
+
+**And it teaches the command line.** Somebody who asks in English and is shown
+`--status closed` learns the flag without being taught it, and next time may not
+need to ask. **A procedure that answers questions forever has failed**; this one
+should make itself less necessary, and printing the command is how.
 
 **A column spanning several statuses shows every call**, one per line. That the
 list is longer than it should be is the point --- see the missing `--column`
