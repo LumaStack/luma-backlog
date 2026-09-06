@@ -55,7 +55,9 @@ func Default() Config {
 
 const defaultColumns = `
 Captured:    [captured]
-Preparing:   [unprepared, preparing, prepared]
+Unprepared:  [unprepared]
+Preparing:   [preparing]
+Prepared:    [prepared]
 To Do:       [todo]
 In Progress: [in_progress]
 Closed:      [closed]

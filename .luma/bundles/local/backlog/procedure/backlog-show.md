@@ -29,7 +29,9 @@ luma-backlog work-item list --json
 > | column | count |
 > | --- | --- |
 > | Captured | 18 |
-> | Preparing | 11 --- ten unprepared, one prepared |
+> | Unprepared | 10 |
+> | Preparing | 0 |
+> | Prepared | 1 |
 > | To Do | 0 |
 > | In Progress | 0 |
 > | Closed | 13 |
@@ -41,12 +43,12 @@ luma-backlog work-item list --json
 what the counts imply, no recommendation. Somebody who wanted an opinion will
 ask for one, and the summary exists so they can see what to ask about.
 
-**Split a column's count only where the statuses inside it differ** --- *"11 ---
-ten unprepared, one prepared"* --- because a column that groups three statuses
-otherwise hides which of them the work is sitting at. One status, one number.
+**One row per column, in ladder order, including the empty ones.** A zero is
+information --- an empty To Do says the second gate is where nothing is
+happening, and dropping the row hides that.
 
-**Columns come from `.luma/config`**, not from this file. Read them there; a
-project may rename or regroup them.
+**Columns come from `.luma/config`**, not from this file. Read them there: a
+project may rename or regroup them, and a column may hold more than one status.
 
 ---
 
@@ -138,7 +140,7 @@ luma-backlog work-item list --kind <kind>
 | "what's in progress" | `--status in_progress` |
 | "what have we captured" | `--status captured` |
 | "show me the defects" | `--kind defect` |
-| "what's in To Do" | the statuses that column groups |
+| "what's in To Do" | the status or statuses that column holds |
 
 **There is no `--column` flag**, so a column spanning three statuses costs three
 calls concatenated in ladder order. Say so when it shows --- it is a gap, not a
