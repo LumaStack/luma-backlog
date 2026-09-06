@@ -4,7 +4,7 @@
 Listings inside it follow [[listing]].
 
 ```
-## Last touched
+### Last touched
 
 <prose: which record, roughly when, and what it was>
 
@@ -40,10 +40,13 @@ Listings inside it follow [[listing]].
 **No numbers on headings.** They are sections, not steps, and a reader who
 arrives at *3.* wonders what they missed.
 
-**Last touched is `##`; everything else is `###`.** It is the orienting line and
-the only one somebody returning after a break reads first, so it gets the size.
-Prose, not a listing --- what happened is usually more than a record and a
-timestamp.
+**Every heading is `###`.** One level, so the four sections above the rule read
+as four sections rather than a hierarchy --- there is no containment between
+them and a size difference would imply one.
+
+**Last touched is prose, not a listing.** That is what sets it apart, and it is
+enough: what happened is usually more than a record and a timestamp, and it is
+first, which is the only prominence it needs.
 
 **In Progress and To Do carry no prose.** Heading, rows, command. Nothing
 explaining what the section is: a reader who cannot tell what *In Progress*
