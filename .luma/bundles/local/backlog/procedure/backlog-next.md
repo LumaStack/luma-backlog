@@ -55,6 +55,19 @@ all on records nobody has worked on, the ordering is telling you when things wer
 **Two or three sentences when the simple answer is wrong.** The one-line form is
 for when it is right.
 
+**Carry its state, and say which situation the reader is in.** The last record
+touched is often a closed one --- somebody finished something and stopped --- and
+that is a completely different position from having left mid-flight.
+
+| what it is | what to say |
+| --- | --- |
+| open | **you were mid-something**, and it is where you resume. It outranks everything below. |
+| closed | **you finished and stopped.** There is nothing to resume, so the rest of this report is the answer rather than the context. |
+
+**A closed last-touched is good news, not a gap.** Stopping at a clean edge is
+the best way to leave a session, and saying so is more useful than reporting a
+record and letting somebody work out its state from the mark.
+
 **Say when nothing was touched recently**, and say how long. A cold backlog and
 a hot one call for different answers, and the reader can tell which they are in
 faster than you can.

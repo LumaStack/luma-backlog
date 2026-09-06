@@ -49,9 +49,13 @@ arrives at *3.* wonders what they missed.
 as four sections rather than a hierarchy --- there is no containment between
 them and a size difference would imply one.
 
-**Last touched is prose, not a listing.** That is what sets it apart, and it is
-enough: what happened is usually more than a record and a timestamp, and it is
-first, which is the only prominence it needs.
+**Last touched is prose, not a listing.** What happened is usually more than a
+record and a timestamp.
+
+**It says whether the reader left mid-flight or at a clean stop**, because the
+last record touched is often a closed one. Those are different positions ---
+resume here, or nothing to resume --- and the reader should not have to infer
+which from a mark.
 
 **In Progress and To Do carry no prose.** Heading, rows, command. Nothing
 explaining what the section is: a reader who cannot tell what *In Progress*
