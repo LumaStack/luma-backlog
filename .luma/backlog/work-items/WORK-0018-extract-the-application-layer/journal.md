@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-06
+
+reshape split out to WORK-0031 — this change moves no golden file and that is its proof, where every item in the reshape moves them
+
 ## ▶ 2026-09-05
 
 split out of WORK-0017 because the refactor is a prerequisite for the board rather than part of the specification, and can start while the specification is still argued
