@@ -53,6 +53,7 @@ index so nothing has to be reconstructed from a conversation.
 | [[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]] | Rank semantics, the `rank` verb, ordering key format, sparse status ordinals, re-enqueue on status change, drift detection. |
 | [[records/decisions/ADR-0006-the-command-line-is-designed-against-clig-dev]] | Noun-verb ordering, six exit codes, bare invocation, four departures from the guide, prompting recorded for later. |
 | [[records/decisions/ADR-0007-an-outcome-carries-the-doer-s-assertion-and-the-checker-s-verdict-separately]] | Assertion and verdict as separate axes, `assert` and `verify`, close gating, `--force`, four dispositions, self-verification observed. |
+| [[records/decisions/ADR-0008-taking-a-task-expires-and-owning-a-work-item-does-not]] | Taking versus owning, `taken: {by, at, expires}`, the `take`/`release`/`steal` verbs, and why neither ships first. |
 
 **Deferred, each with what would bring it back:**
 [[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]] ·
@@ -65,17 +66,9 @@ index so nothing has to be reconstructed from a conversation.
 
 ## What is still open
 
-**None of the decisions above is in force.** Every record is `stage: draft`,
-and the adopted command-line policy is explicit that a draft outranks nothing.
-Until they are promoted, the specification rests on proposals.
-
 - **`new` takes its title positionally, as `--title`, or both.** `spec.md`
   §9.0.1 rules out a command whose only path requires knowing field names, so
   `--title` alone would need that section amended.
-- **Whether claims and leases ship.** `design-mvp.md` does not mention them.
-  Without them there is no halt detection and no failed tasks, so a dead agent
-  looks exactly like a working one. `open-questions.md` §8 carries a live
-  proposal to move claims out of records entirely.
 - **The board's scope.** The five screens in `design-interface.md` and the four
   views in `spec.md` §11.2 do not line up — the mockups have no wave or health
   view, and §11.2 hides drafts by default where the mockups make `captured` the

@@ -12,6 +12,7 @@ verification verdicts are proven, disproven, unmeasurable — failed was ambiguo
 verdicts settled as proven, disproven, inconclusive — unmeasurable pointed at the outcome's verify_by specifically, and inconclusive covers a broken check too without the enum claiming whose problem it is
 asserted appends rather than replaces, matching verified and the create-never-overwrite rule the model uses everywhere else; a second attempt is now visible, an attempt in flight still is not
 new takes a title either way — positional words joined as the documented path, --title for the precise case, an error if both; flag-only would have cost the verified capture-is-one-command outcome and needed section 9.0.1 amended
+taking and owning separated — taken {by, at, expires} on a task, ownership left unmodelled so the word stays free; taken beat claimed because this repository already spends claim on assertions about truth
 
 ## ▶ 2026-09-05
 
