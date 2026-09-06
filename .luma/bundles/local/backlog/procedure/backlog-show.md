@@ -126,9 +126,9 @@ A reader must be able to tell them apart without being told.
 > ○ Accept a positional title on work-item new
 > ○ Add outcome assert and outcome archive
 > ◐ Carry completion counts in the read path
-> ● Build the noun-verb command tree
-> ● Compute a rank by bisecting between neighbors
-> ● Add the work-item rank command
+> ✓ Build the noun-verb command tree
+> ✓ Compute a rank by bisecting between neighbors
+> ✓ Add the work-item rank command
 >
 > ### Journal
 >
@@ -163,12 +163,18 @@ A reader must be able to tell them apart without being told.
   | --- | --- |
   | `○` | not started --- a `todo` task, an unverified outcome |
   | `◐` | under way --- `in_progress` |
-  | `●` | finished well --- `closed`, or an outcome that is passing |
+  | `✓` | finished well --- `closed`, or an outcome that is passing |
   | `✗` | finished badly --- closed as `canceled`, `abandoned` or `superseded` |
 
-  **The circle fills as the work proceeds** --- empty, half, full --- so a column
-  of them reads as progress without anything being counted. `✗` breaks the shape
-  on purpose: an ending that did not go well should not look like one that did.
+  **Unfinished work shares the circle; finished work changes shape.** `○` and
+  `◐` differ only by fill, which is right --- they are the same thing at two
+  points. A filled circle would join that family and be confused with an empty
+  one in a column; `✓` is a different mark entirely, so *done* separates from
+  *not done* before anything is read, and the fill only has to distinguish the
+  two unfinished states from each other.
+
+  **`✗` mirrors `✓` for the same reason.** An ending that did not go well should
+  not look like one that did, and it should still read as an ending.
 
   **`✗` has little to attach to yet.** A task has no failure state --- it closes
   or it does not --- and an outcome is `unverified` or `passing` with nothing in
@@ -182,7 +188,7 @@ A reader must be able to tell them apart without being told.
   glance that every task is `✓` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, in a fixed order: `○`, `◐`, `●`, `✗`.** Never grouped under
+- **One list each, in a fixed order: `○`, `◐`, `✓`, `✗`.** Never grouped under
   headings --- the mark already says which, and a heading repeats it. Never
   reordered by anything else: a view whose order changes between readings cannot
   be scanned, which is the whole reason the layout is fixed.
@@ -195,7 +201,7 @@ A reader must be able to tell them apart without being told.
   not collapsed and not omitted: a finished task is how somebody finds out a
   thing was already tried, and a list that shows only what is left makes a work
   item look like it began this morning. The marks are what keep a long list
-  readable --- a filled circle is skipped by the eye in a way a word is not.
+  readable --- a checkmark is skipped by the eye in a way a word is not.
 - **The heading carries the tally** --- *Tasks (22) --- 9 done, 13 open* --- so
   the counts are read once rather than by counting rows.
 - **The journal as a count and the newest entry's first line**, quoted. Never the
