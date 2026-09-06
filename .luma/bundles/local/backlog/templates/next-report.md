@@ -6,28 +6,28 @@ Listings inside it follow [[listing]].
 ```
 ──[ Overview ]──────────────────────────────────────────
 
-**Last touched**
+**Preparation considerations**
 
-<prose: which record, roughly when, and what it was>
+○ WORK-0039 · What closed work items cost as the corpus grows
+○ WORK-0038 · Where a work item stands is hard to see in the file
 
-**In Progress (0)**
-
-`luma-backlog work-item list --status in_progress`
+<one sentence, at the bottom, on how close any of it is>
 
 **To Do (0)**
 
 `luma-backlog work-item list --status todo`
 
-**Preparation considerations**
+**In Progress (0)**
 
-○ WORK-0031 · Reshape the command surface
-○ WORK-0039 · What closed work items cost as the corpus grows
-
-<one sentence, at the bottom, on how close any of it is>
+`luma-backlog work-item list --status in_progress`
 
 **Risks**
 
 <what you noticed that nobody asked about --- or omit it>
+
+**Last touched**
+
+<prose: which record, whether it is open or closed, and what it was>
 
 ──[ Options ]───────────────────────────────────────────
 
@@ -48,6 +48,25 @@ arrives at *3.* wonders what they missed.
 **Every heading is `###`.** One level, so the four sections above the rule read
 as four sections rather than a hierarchy --- there is no containment between
 them and a size difference would imply one.
+
+**The order runs from least to most immediate, because a terminal is read from
+the bottom.** The last line printed sits at the cursor and costs nothing;
+everything above it costs a scroll. So the speculative end goes first ---
+preparation, then the queue, then what is live --- and the two things somebody
+actually came for, the risks and where they left off, sit nearest the prompt.
+
+**This is the opposite of how a document is ordered**, and deliberately. A page
+is read top-down and leads with the most important thing. A terminal is read
+bottom-up, and leading with the most important thing means burying it.
+
+> It is also the opposite of what a **command** should do: `list` must not
+> reverse, because its output gets piped and `| head` would silently take the
+> wrong end. Nothing pipes a report, so the constraint does not carry across.
+
+**Risks stays above Last touched and below the listings.** It refers to the
+records above it --- *"WORK-0031 has 23 tasks"* means nothing before WORK-0031
+has appeared --- so it cannot lead, and it is the second thing worth reading, so
+it sits second from the bottom.
 
 **Last touched is prose, not a listing.** What happened is usually more than a
 record and a timestamp.

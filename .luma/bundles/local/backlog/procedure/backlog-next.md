@@ -12,6 +12,11 @@ description: Say where the work stands and what to pick up — what was last tou
 included. **Options** --- a ranked menu. **Recommendation** --- the one thing,
 which is not repeated in the menu.
 
+**Inside the overview, order runs least to most immediate**, because a terminal
+is read from the bottom: the last line printed sits at the cursor and costs
+nothing, and everything above it costs a scroll. Preparation, then the queue,
+then what is live, then risks, then where you left off.
+
 **A division is a rule with its label inset**, `──[ Overview ]───…`, and a
 section inside one is bold text. No markdown headings anywhere: `##` and `###`
 render identically in a terminal so they cannot divide, and a `###` section
@@ -29,6 +34,67 @@ luma-backlog work-item list --status preparing
 luma-backlog work-item list --status prepared
 luma-backlog work-item list --status captured
 ```
+
+## Preparation considerations
+
+**Only when there is nothing to do**, or when what is queued is thin.
+
+Look at `preparing`, then `prepared`, then `captured`. **Three candidates at
+most.**
+
+- **Anything already `preparing`** — somebody started and stopped, which is the
+  cheapest thing to finish.
+- **Anything that blocks work already queued**, and say what it blocks. This one
+  goes in whether or not it looks interesting: a blocker discovered late is the
+  expensive kind.
+- **Then whatever from `captured` looks like it will be wanted soon**, and say
+  why you think so.
+
+**Do not force it.** If nothing in the pile looks ready to work out, say that
+and name the top one or two anyway — **not as recommendations but as a gauge**,
+so somebody can see how far preparation actually is from producing anything.
+*"Nothing here is close; the nearest is WORK-0022, and it needs a decision
+first."*
+
+**Never offer `captured` or `prepared` work as something to do.** It has not
+crossed the second gate. Offering it mistakes a pile for a queue, and it is how
+selection stops being a decision anybody makes.
+
+---
+
+## What is under way, and what is queued
+
+**Both lists in full, in the shared format, in-progress first.**
+
+Started work outranks queued work — not because it matters more, but because
+**work in flight costs something every day it stays in flight and returns
+nothing until it lands.**
+
+**Several things `in_progress` is itself the finding.** More was started than
+gets finished. Say it plainly; recommending a sixth thing to start answers the
+question asked rather than the one that matters.
+
+**Blocked is not the same as slow.** Check the journal before calling something
+stalled — [[backlog-show]].
+
+**If both are empty, that is the answer and it is a strong one.** Nothing is
+selected. The second gate is where attention is needed, not the work, and no
+amount of reading further changes that.
+
+## Risks and concerns
+
+**The last of the overview, and honest.** What you noticed while reading that nobody
+asked about.
+
+- Work `in_progress` with a journal silent for weeks — the status is a claim
+  about the present and has stopped being true.
+- A queue that has not moved while the pile grew.
+- Work items that will collide, or one about to undo another.
+- Anything queued whose blocker is not queued.
+- A work item whose outcomes cannot be checked as written.
+
+**Say nothing if there is nothing.** A manufactured concern costs more than the
+section is worth, and it teaches a reader to skip it.
 
 ## What you last touched
 
@@ -72,67 +138,6 @@ record and letting somebody work out its state from the mark.
 a hot one call for different answers, and the reader can tell which they are in
 faster than you can.
 
-## What is under way, and what is queued
-
-**Both lists in full, in the shared format, in-progress first.**
-
-Started work outranks queued work — not because it matters more, but because
-**work in flight costs something every day it stays in flight and returns
-nothing until it lands.**
-
-**Several things `in_progress` is itself the finding.** More was started than
-gets finished. Say it plainly; recommending a sixth thing to start answers the
-question asked rather than the one that matters.
-
-**Blocked is not the same as slow.** Check the journal before calling something
-stalled — [[backlog-show]].
-
-**If both are empty, that is the answer and it is a strong one.** Nothing is
-selected. The second gate is where attention is needed, not the work, and no
-amount of reading further changes that.
-
-## Preparation considerations
-
-**Only when there is nothing to do**, or when what is queued is thin.
-
-Look at `preparing`, then `prepared`, then `captured`. **Three candidates at
-most.**
-
-- **Anything already `preparing`** — somebody started and stopped, which is the
-  cheapest thing to finish.
-- **Anything that blocks work already queued**, and say what it blocks. This one
-  goes in whether or not it looks interesting: a blocker discovered late is the
-  expensive kind.
-- **Then whatever from `captured` looks like it will be wanted soon**, and say
-  why you think so.
-
-**Do not force it.** If nothing in the pile looks ready to work out, say that
-and name the top one or two anyway — **not as recommendations but as a gauge**,
-so somebody can see how far preparation actually is from producing anything.
-*"Nothing here is close; the nearest is WORK-0022, and it needs a decision
-first."*
-
-**Never offer `captured` or `prepared` work as something to do.** It has not
-crossed the second gate. Offering it mistakes a pile for a queue, and it is how
-selection stops being a decision anybody makes.
-
----
-
-## Risks and concerns
-
-**The last of the overview, and honest.** What you noticed while reading that nobody
-asked about.
-
-- Work `in_progress` with a journal silent for weeks — the status is a claim
-  about the present and has stopped being true.
-- A queue that has not moved while the pile grew.
-- Work items that will collide, or one about to undo another.
-- Anything queued whose blocker is not queued.
-- A work item whose outcomes cannot be checked as written.
-
-**Say nothing if there is nothing.** A manufactured concern costs more than the
-section is worth, and it teaches a reader to skip it.
-
 ## Next options, then one recommendation
 
 **One to five, ranked, with a clause each.** Not a plan — a shortlist somebody
@@ -162,28 +167,20 @@ come from a template.
 
 > ──[ Overview ]──────────────────────────────────────────
 >
-> **Last touched**
+> **Preparation considerations**
 >
-> WORK-0031, all session. Its stamp reads `16:51` and two `captured` records
-> show as more recent, but that is an artefact --- adding a task, closing one or
-> writing a journal line never touches the parent's stamp. Since then: nine
-> tasks closed, fourteen added, and the seven procedures.
+> ○ WORK-0039 · What closed work items cost as the corpus grows
+> ○ WORK-0038 · Where a work item stands is hard to see in the file
 >
-> **In Progress (0)**
->
-> `luma-backlog work-item list --status in_progress`
+> Neither has outcomes or a scope, so neither is close.
 >
 > **To Do (0)**
 >
 > `luma-backlog work-item list --status todo`
 >
-> **Preparation considerations**
+> **In Progress (0)**
 >
-> ○ WORK-0031 · Reshape the command surface
-> ○ WORK-0039 · What closed work items cost as the corpus grows
->
-> WORK-0031 is already prepared; WORK-0039 has no outcomes and no scope, so it
-> is several conversations from producing work.
+> `luma-backlog work-item list --status in_progress`
 >
 > **Risks**
 >
@@ -195,6 +192,13 @@ come from a template.
 >
 > The second gate has never been used --- nothing has ever been `todo`, so this
 > report can only ever show an empty queue.
+>
+> **Last touched**
+>
+> WORK-0031, still open, all session. Its stamp reads `16:51` and two `captured`
+> records show as more recent, but that is an artefact --- adding a task or
+> writing a journal line never touches the parent's stamp. You were mid-flight;
+> this is where you resume.
 >
 > ──[ Options ]───────────────────────────────────────────
 >
