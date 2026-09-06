@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Show where a work item stands
-description: Assemble the picture of one work item — its details, outcomes, tasks, journal and what would move it along — or of one board column, everything sitting at those statuses and whether the column is healthy. Use when asked about a work item by name or key, when picking work back up, when handing over, or when somebody asks "where is X", "what's left on X", "what's in progress", "what's up next", or "what's in To Do". Do NOT use to change anything.
+description: Show a work item and everything about it — details, outcomes, tasks, journal and what would move it along — or show whichever work items were asked for, by status, by column, by kind, or all of them. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see work items. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-next), or to change anything.
 ---
 
 # Show where a work item stands

@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Move a work item along the workflow
-description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready". Do NOT use to write outcomes or tasks (backlog-define), or to reorder work at the same status (that is the rank command).
+description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready". Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
 ---
 
 # Move a work item along the workflow
@@ -55,7 +55,7 @@ fills with work nobody chose, which is indistinguishable from a backlog nobody
 prunes.
 
 **Check the outcomes first.** A work item crossing this gate without outcomes is
-one nobody can tell is finished — see [[backlog-define]].
+one nobody can tell is finished — see [[backlog-refine]].
 
 ## Starting
 
