@@ -220,7 +220,7 @@ It is also the **stopping condition**. Without one, an agent has no principled r
 
 **How it earns its place.** It is the only unit at which **what must come first, and what may overlap,** can be expressed — whether two pieces of work may proceed at once, or whether one must wait. That is a property of what the work touches, so it cannot be stated anywhere else. A task therefore declares this itself rather than inheriting it from a container (§4.5.1).
 
-This also makes the task the natural unit of ownership: it is the smallest thing an actor claims, and the ordering graph is what keeps concurrent actors out of each other's way.
+This also makes the task **the smallest thing an actor takes** — the ordering graph is what keeps concurrent actors out of each other's way. It is not the unit of *ownership*: taking expires and ownership does not, and a work item is owned by whoever is accountable even while somebody else does the work (ADR-0008).
 
 > **Tasks are coordination, not specification.** What *should be true* is stated by an outcome (§2.4). A task is how the work of getting there is divided, ordered, and owned — it exists because actors work concurrently, not because anybody needs a plan. Where an agent generates its own tasks from an outcome, tasks become derived and possibly disposable while the outcome remains durable. See [`open-questions.md`](open-questions.md) §18.
 
@@ -487,7 +487,16 @@ The defining record type of this specification.
 | `wave` | optional | wikilink | The attempt currently targeting it, if any. |
 | `verified` | — | list of actor_event | Core format field. Each entry is one independent check (§4.7). |
 
-An outcome with no `verified` entries has not passed. There is no separate pass or fail field, because there is nothing to store that the verification record does not already say (§2.4).
+An outcome carries **two independent records**, and they are allowed to disagree (ADR-0007):
+
+- **`asserted`** — the doer, appending `{by, at, as}` where `as` is `succeeded` or `failed`.
+- **`verified`** — the checker, appending `{by, at, as}` where `as` is `proven`, `disproven`, or `inconclusive`.
+
+**One key across every event that carries a value.** Each of these field names is a past participle, and `as` is the word that completes it — *asserted as succeeded, verified as proven, closed as completed* (§5.3.1). The values stay distinct per axis, so a value alone still says which one it belongs to; the key never carried that.
+
+**An outcome with no `verified` entries has not been checked, which is not the same as failing** — absence of a verdict and a negative verdict are different facts, and §5.3.1 refuses delivery over the first precisely because nothing can tell them apart. `disproven` is a finding about the condition; `inconclusive` is the case where nothing was established at all.
+
+Both fields append and are never replaced, so a second attempt is visible and a correction supersedes rather than erasing (§4.6, §4.8.1).
 
 A retired outcome is archived via `stage`, never deleted, and is excluded from completion arithmetic.
 
@@ -543,8 +552,7 @@ Because `desired_state` already states what you should see, `verify_by` never ha
 | `depends_on` | optional | list of wikilink | Tasks that must finish first, when the ordering crosses a wave or work item boundary (§4.5.1). |
 | `blocked` | optional | map, or list of map | Present means blocked (§4.2.1). |
 | `paused` | optional | map | Present means deliberately paused (§4.2.1). |
-| `claimed_by` | optional | actor_event | Who holds this task, and since when (§6). |
-| `lease_expires` | optional | datetime | When an unrefreshed claim lapses. |
+| `taken` | optional | actor_event | Who holds this task, since when, and when it lapses — `{by, at, expires}`. One mapping rather than two fields, so a taking cannot exist without an expiry and releasing is deleting one key (ADR-0008, §6.5). |
 | `follows` | optional | wikilink | The task this one succeeds after a failed or unfinished attempt (§4.6). |
 | `follows_reason` | optional | enum | Why a successor exists — `retry`, `defect`, `unfinished`, or a team's own value. |
 
@@ -672,7 +680,7 @@ What makes the one refusal defensible is the rule that bounds it:
 
 > **The tool may refuse only what the caller's own record contradicts.**
 
-Closing as *delivered* while an outcome is failing is refused because **the team wrote that outcome** — not because the tool holds a view about what finished means. It holds a caller to their own words, never to its opinion. That is also why canceling is not gated (§5.3.1): nothing in the record claims the work succeeded, so there is nothing to contradict.
+Closing as *completed* while an outcome is unproven is refused because **the team wrote that outcome** — not because the tool holds a view about what finished means. It holds a caller to their own words, never to its opinion. That is also why canceling is not gated (§5.3.1): nothing in the record claims the work succeeded, so there is nothing to contradict.
 
 #### What this permits, and what it does not
 
@@ -699,10 +707,11 @@ The set is principled rather than arbitrary: **each condition either drives the 
 | Condition | Purpose |
 |---|---|
 | `outcome.passing` / `outcome.unverified` | Drives completion arithmetic. |
-| `work-item.complete` | Every live outcome passes. Gates closing (§5.3). |
+| `work-item.complete` | **At least one** live outcome, and every one proven. Gates closing (§5.3). Vacuous truth is the failure this guards: *every* outcome passing is trivially true of none. |
 | `wave.open` / `wave.closed` | Locates the current attempt. |
-| `task.claimable` | No live claim. |
-| `task.claim-stale` | A lease has expired. Reported, never auto-released (§6.5). |
+| `task.available` | Not taken, or the taking has lapsed. |
+| `task.expired` | A taking is past its expiry. Reported, never auto-released (§6.5). |
+| `outcome.self-verified` | The actor who asserted this outcome is its only verifier (§4.4). Reported, never refused. |
 | `outcome.unmeasured` | An outcome with no `verify_by` — the *Measure* phase was skipped. |
 | `task.advances-nothing` | A task attached to no outcome. |
 | `work-item.unarticulated` | A work item with no outcomes at all. |
@@ -738,18 +747,37 @@ The two closings differ, and the difference matters:
 
 Whether a caller may override that refusal is open (`open-questions.md` §6). If it can, the override must be recorded — an unrecorded override is indistinguishable from the check having passed.
 
-#### 5.3.1 Closed is not the same as delivered
+#### 5.3.1 Closed is not the same as completed
 
-Work ends for more reasons than success, and a terminal state called *done* cannot express that. Nor should the reasons become separate statuses — a record is closed *and* canceled, not one or the other, which is the test in §4.1.1. **So the terminal state is `closed`, and every closing records why:**
+Work ends for more reasons than success, and a terminal state called *done* cannot express that. Nor should the reasons become separate statuses — a record is closed *and* canceled, not one or the other, which is the test in §4.1.1. **So the terminal state is `closed`, and every closing records how it ended:**
 
-| Reason | Gated on completion? |
+```yaml
+closed:
+  - {by: 'human:maintainer', at: '2026-09-06T02:00:00Z', as: completed}
+```
+
+**A list, appended never replaced** — the same shape as `asserted` and
+`verified` (§4.4). A single mapping is one a reopening would have to delete, and
+*this was closed and then was not* is exactly the history worth keeping.
+`as` rather than `reason`, which now carries the prose a caller passes — and the same key every other event uses (§4.4).
+
+| Closed as | Gated on completion? |
 |---|---|
-| **delivered** | **Yes.** Every live outcome passes. |
+| **completed** | **Yes.** At least one live outcome, and every one proven. |
+| **rejected** | No. It was never a consideration. |
 | **canceled** | No. The work is no longer wanted. |
 | **superseded** | No. Another work item replaced it. |
-| **abandoned** | No. It was attempted and given up on. |
 
-This distinction matters more than vocabulary. **Gating cancellation on completion would be absurd** — you would be unable to stop work precisely because it was unfinished, which is the only reason anyone ever cancels anything. So the gate belongs to *delivered* alone, and the other reasons close freely.
+**`completed` rather than `delivered`**, because the tool cannot observe a
+handover and can compute a count. A word in a record should never claim more
+than the tool can defend (ADR-0007).
+
+**`abandoned` was dropped.** The enum carries what the record cannot derive, and
+whether work had started is derivable — from whether it reached `in_progress`,
+whether tasks exist, whether any outcome was asserted. *Never a consideration*
+is a statement of intent and cannot be derived, so `rejected` earns its place.
+
+This distinction matters more than vocabulary. **Gating cancellation on completion would be absurd** — you would be unable to stop work precisely because it was unfinished, which is the only reason anyone ever cancels anything. So the gate belongs to *completed* alone, and the others close freely.
 
 What they cost instead is **a reason, always recorded**. Closing something incomplete is legitimate and ordinary; closing it *silently* is how a backlog loses its own history. A canceled work item with unmet outcomes is an honest record — the outcomes stay, unpassed, and the reason says the work stopped rather than that the bar was lowered.
 
@@ -963,7 +991,7 @@ Concurrent access is the normal condition, not an edge case (`principles.md`). M
 
 **A write that would clobber an unseen change is refused, not silently applied** (§6.3).
 
-**A claim is exclusive within its storage scope** (§6.5), and the scope depends on the topology chosen in `open-questions.md` §8 — see §6.7 for what that means in practice.
+**A taking is exclusive within its storage scope** (§6.5), and the scope depends on the topology chosen in `open-questions.md` §8 — see §6.7 for what that means in practice.
 
 ### 6.2 Atomic writes
 
@@ -1174,7 +1202,7 @@ Configuration is where opinions live so the binary can stay free of them. Every 
 
 ### 8.1 Where it lives
 
-**One file, `.backlog/config.yml`, committed with the repository.** YAML, because records already carry YAML frontmatter and one format in a repository is worth more than a marginally better second one.
+**One file per tool under `.luma/config/`, committed with the repository** — `luma-backlog.yaml` for this one. YAML, which is what `init` writes; the format is shared across the estate's tools rather than settled here (ADR-0006).
 
 It is committed because it **defines what records mean**. A workflow status vocabulary that differed between two people would make the same record say different things to each of them.
 
@@ -1337,8 +1365,8 @@ Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
-| `move` | work item | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6). |
-| `claim` / `release` / `steal` | task | Take, give up, or take over a lease (§6.5). Stealing is explicit and recorded. |
+| `rank` | work item | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Not `move`, which this document uses throughout for relocating a record on disk — the one operation it forbids (ADR-0005). |
+| `take` / `release` / `steal` | task | Take, give up, or take over a task (§6.5). Stealing is explicit and recorded. Not `claim`, which this design spends on assertions about truth (ADR-0008). |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
 | `journal` | any | With an argument, append one line to the journal, opening today's entry if needed. With none, show it (§5.5). |
 | `close` | wave, work item | The explicit act, validated against the arithmetic (§5.3). |
@@ -1376,7 +1404,7 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 | `3` | Not found | Stop; the target does not exist. |
 | `4` | **Conflict** — the record changed underneath (§6.3) | **Re-read and retry.** |
 | `5` | **Refused** — a validated act did not pass its check (§5.3) | Do not retry; satisfy the condition first. |
-| `6` | **Already claimed** | Choose different work. |
+| `6` | **Already taken** | Choose different work. Reserved; taking is not in the first release (ADR-0008), and adding a code is additive (§9.9). |
 
 ### 9.5 Idempotency
 
@@ -1415,7 +1443,9 @@ Two details that matter:
 
 Storing it as a string rather than a number is deliberate: floating-point values round-trip badly, and a parser returning `10.250000000000001` for `10.25` would produce spurious diffs in a format built on clean diffs and byte-preserving rewrites. A string holds exactly what was written, and the padding survives — which is what keeps the two orderings agreeing.
 
-**There is a precision limit, and it is acceptable.** Repeated subdivision *at the same position* eventually exhausts precision — roughly fifty consecutive insertions between the identical pair. The remedy is renumbering that local span, which is a bounded, rare, recoverable multi-record write rather than the routine one that integer positions would force on every insertion.
+**There is a precision limit, and it is acceptable.** Repeated subdivision *at the same position* eventually exhausts precision — roughly fifty consecutive insertions between the identical pair. The remedy is renumbering that local span: **the rebalance listed among the multi-record operations below**, carrying the guarantees stated there. It is bounded, rare and recoverable, rather than the routine multi-record write that integer positions would force on every insertion.
+
+**A rebalance is never mandatory**, because the width is a normal form rather than a hard limit — which is what keeps a multi-record write from arriving in the middle of a drag.
 
 The caller never sees the key. `move --before`, `--after`, `--top`, `--bottom` express intent; the tool chooses the value.
 
@@ -1459,7 +1489,7 @@ Unrecognized fields in output are to be ignored by consumers rather than treated
 - **Prompting in a non-interactive context.**
 - **A conflict reported as a generic failure.** The distinction between `4` and `5` is what makes correct retry behavior possible.
 - **`archive` deleting or moving anything** (§7.1).
-- **Commands the board can do that the interface cannot.** The board is a client, not a privileged surface.
+- **A mutation reachable from the board that no command produces.** Every surface resolves to the same request (ADR-0004); none is privileged.
 
 ## 9a. Repository and build
 
@@ -1595,7 +1625,7 @@ Mapping must be **explicit, never inferred from names**, because the names colli
 | **task** | sub-task, task | Good. |
 | **dimension** | project, epic, initiative, component, fix version, label | Good — these are member-side references on both sides (§3.2). |
 | workflow status, priority | status, priority | Good, once vocabularies are mapped value by value. |
-| claim | assignee | Partial. An assignee has no lease and does not expire (§6.5). |
+| taking | assignee | Partial, and in both directions. An assignee does not expire, so it is closer to ownership than to a taking (§6.5, ADR-0008). |
 | **wave** | — | Poor. Sprints are time-boxed and orthogonal; nothing means *attempt number*. |
 | **outcome** | acceptance criteria | **Poor, and this is the important one.** |
 | **decision** | — | Poor. Usually a wiki page elsewhere, if it exists at all. |
@@ -1661,7 +1691,7 @@ Both are therefore held to the same standard, and neither is a convenience layer
 Opening a record in an editor tells you **what it says**. The board tells you **what is true** — and the difference is everything this design computes rather than stores:
 
 - **Completion**, derived by counting outcomes with evidence (§2.4). It appears nowhere on disk, because storing it would let it drift.
-- **Whether a claim is live or stale** (§6.5), which is a function of a lease and the current time.
+- **Whether a taking is live or lapsed** (§6.5), which is a function of its expiry and the current time.
 - **Which conditions are firing** (§5.2) — drift, non-convergence, churn, an outcome with no check. Those are the failures nobody notices by reading records one at a time, and they are exactly what a board is for.
 
 That is the board's reason to exist. Anything a file already says plainly is a secondary feature.
@@ -1705,7 +1735,11 @@ Records change constantly underneath a board, because agents are writing while a
 
 ### 11.4 Editing
 
-The board edits through the same interface as everything else — **every action maps to a command** (§9). The board can therefore *show* the command it is about to run, which makes it a way to learn the interface rather than an alternative to it, and guarantees parity by construction rather than by discipline.
+The board edits through the same layer as everything else — **every mutation resolves to the same request a command produces** (ADR-0004). The board and the command line are siblings over `internal/app`, not client and server: a surface that reached past it would skip the checks that live there, which is the defect that layer exists to prevent.
+
+The board can still *show* the command it is about to run, which makes it a way to learn the interface rather than an alternative to it. That becomes a feature rather than the mechanism.
+
+**Each surface owns its own wording.** The board may label something `Move` that the command line calls `set workflow_status` — one gesture may even resolve to two commands, since moving a card horizontally changes status and moving it vertically changes rank. What is shared is the request, never the vocabulary. Lean toward the same word where it costs nothing.
 
 **Conflicts surface here as everywhere.** A person editing a description while an agent changes the same record gets told (§6.3), not silently overruled and not silently overruling.
 
@@ -1720,7 +1754,7 @@ The board must remain usable **without color** and **in a narrow terminal**. Col
 ### 11.6 What the board must never do
 
 - **Show completion as anything other than computed.** There is no field to display and none to set (§2.4).
-- **Do something the command interface cannot.** The board is a client (§9.10); a capability that exists only here is a bug in the interface.
+- **Mutate anything no command can.** A *mutation* reachable only here is a bug in the interface (§9.10). **Ephemeral view state is exempt and always was** — a cursor position, a scroll offset, which columns are visible, or skipping an item during triage belong to the board and must never acquire a command.
 - **Hold a lock, or block a writer**, to keep a display consistent.
 - **Discard an edit it did not see**, in either direction.
 - **Require a mouse.**

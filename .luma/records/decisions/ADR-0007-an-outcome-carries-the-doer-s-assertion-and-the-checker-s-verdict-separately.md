@@ -14,7 +14,7 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
 
 An outcome holds **two independent records**: what the doer claims, and what a
 checker found. They may disagree, and the disagreement is the point. Closing a
-work item as *delivered* gates on the **verdict only**.
+work item as *completed* gates on the **verdict only**.
 
 ## Problem
 
@@ -44,13 +44,13 @@ for them, which loses the claim rather than examining it.
 
 ```yaml
 asserted:
-  - {by: 'agent:opus-5/luma-backlog', at: …, result: failed}
-  - {by: 'agent:opus-5/luma-backlog', at: …, result: succeeded}
+  - {by: 'agent:opus-5/luma-backlog', at: …, as: failed}
+  - {by: 'agent:opus-5/luma-backlog', at: …, as: succeeded}
 verified:
-  - {by: 'human:maintainer', at: …, verdict: proven}
+  - {by: 'human:maintainer', at: …, as: proven}
 ```
 
-- **`asserted`** — the doer, and `succeeded` or `failed`. **A list, appended
+- **`asserted`** — the doer, `as: succeeded` or `as: failed`. **A list, appended
   never replaced.** Absent means never attempted; the current claim is the last
   entry; the attempt count is the length.
 
@@ -69,8 +69,13 @@ gain, and would have made *failed once, then succeeded* indistinguishable from
 represent. What is still not represented is an attempt **in flight** — during
 one, the last entry reads `failed`, which is stale rather than false. That
 belongs to waves (§2.3) or to a claim (§6.5), both outside the first release.
-- **`verified`** — the checker, and `proven`, `disproven`, or `inconclusive`.
-  Already a list.
+- **`verified`** — the checker, `as: proven`, `as: disproven`, or
+  `as: inconclusive`. Already a list.
+
+**One key for all three events.** Every field here is a past participle and `as`
+is what English puts after it — *asserted as succeeded, verified as proven,
+closed as completed*. The values remain distinct per axis, so a value alone
+still identifies which axis it belongs to; that was never the key's job.
 
 **An outcome is a proposition, not a process** (§2.4 — *"a statement of a
 condition that must hold"*), so a checker does not succeed or fail. They
@@ -90,8 +95,10 @@ check that errored are all *no verdict yet*, and which one it was belongs in
 absence.
 
 `failed` was considered for this slot and rejected: the doer's axis already
-uses it, so one record would carry `result: failed` and `verdict: failed`
-meaning different things on adjacent lines.
+uses it. Since both events carry the same `as` key, one record would hold
+`as: failed` and `as: failed` on adjacent lines meaning different things —
+identical in key *and* value, distinguishable only by which field they sat
+under.
 
 **The two axes use deliberately different words.** A doer says `succeeded` or
 `failed`; a checker says `proven`, `disproven` or `inconclusive`. The doer is
@@ -109,7 +116,7 @@ outcome verify <ref> <proven|disproven|inconclusive> [--evidence …]
 **The verdict is required, not defaulted.** Recording proof must be said out
 loud. The mistakes are asymmetric: a wrongly recorded failure is noise somebody
 corrects, while a wrongly recorded success is the exact claim this design
-exists to distrust — and `close … delivered` trusts it without asking. A tool
+exists to distrust — and `close … completed` trusts it without asking. A tool
 whose thesis is that unbacked assertions are untrustworthy should not have
 *asserts proof* as its zero-argument behavior.
 
@@ -118,13 +125,13 @@ whose thesis is that unbacked assertions are untrustworthy should not have
 **Never on the assertion.** Gating on the doer's claim would gate on the thing
 the design distrusts, and would let a doer close their own work.
 
-`work-item close <ref> delivered` is refused unless **at least one live outcome
+`work-item close <ref> completed` is refused unless **at least one live outcome
 exists and every one is proven.** Unreadable, unverified, disproven and
 inconclusive are all the same answer: not proven. This collapses the three
 refusal paths in `close.go` into one.
 
 **Zero outcomes stays an explicit clause**, not a consequence — "every outcome
-is proven" is vacuously true of none. `delivered` is itself a declaration, and
+is proven" is vacuously true of none. `completed` is itself a declaration, and
 claiming delivery of something never defined is a record contradicting itself
 in one word, which is what keeps this refusal inside `spec.md` §5.0 rather than
 carving an exception to it.
@@ -138,7 +145,7 @@ which outcome is unreadable and which are unverified.
 The tempting implementation marks outcomes verified so the arithmetic comes out
 clean. That destroys the record. Instead the outcomes are left exactly as they
 are, completion still computes *two of five*, and the **work item** carries the
-forced close. A reader afterwards sees a delivered work item whose own
+forced close. A reader afterwards sees a completed work item whose own
 arithmetic disagrees with it — which is the truth, and is what should be
 visible.
 
@@ -148,14 +155,24 @@ nobody feels like typing.
 
 ### Four dispositions
 
-`delivered` · `rejected` · `canceled` · `superseded`
+`completed` · `rejected` · `canceled` · `superseded`
+
+```yaml
+closed:
+  - {by: 'human:maintainer', at: …, as: completed}
+```
+
+**A list, appended never replaced**, matching `asserted` and `verified`. `as`
+rather than `reason`, which carries the prose. **`completed` rather than
+`delivered`** — the tool cannot observe a handover and can compute a count, and
+a record should never carry a word claiming more than the tool can defend.
 
 | | accepted? | work started? |
 | --- | --- | --- |
 | `rejected` | no — never a consideration | no |
 | `canceled` | yes, then changed our minds | no |
 | `superseded` | either — replaced by another record | either |
-| `delivered` | yes | yes, and proven |
+| `completed` | yes | yes, and proven |
 
 **`abandoned` is dropped.** The rule: *the enum carries what the record cannot
 derive.* Whether work started is derivable — from whether it reached
@@ -199,8 +216,8 @@ coherent:
 
 | Level | The assertion | The evidence |
 | --- | --- | --- |
-| Outcome | `asserted: succeeded` | `verified: proven` |
-| Work item | closed as delivered, forced | the completion arithmetic |
+| Outcome | `asserted: [{as: succeeded}]` | `verified: [{as: proven}]` |
+| Work item | closed as completed, forced | the completion arithmetic |
 
 Claim and proof are recorded separately and allowed to disagree, at both.
 
