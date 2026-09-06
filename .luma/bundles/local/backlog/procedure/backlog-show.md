@@ -163,7 +163,7 @@ A reader must be able to tell them apart without being told.
   | --- | --- |
   | `○` | not started --- a `todo` task, an unverified outcome |
   | `◐` | under way --- `in_progress` |
-  | `✔` | delivered --- `closed`, or an outcome that is passing |
+  | `✔` | delivered, success, or proven --- it came out |
   | `↪` | superseded --- picked up elsewhere |
   | `⊘` | cancelled or disabled --- switched off on purpose |
   | `✘` | error, failed, or abandoned --- it did not come out |
@@ -183,8 +183,10 @@ A reader must be able to tell them apart without being told.
   **`✘` mirrors `✔` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
 
-  **Three endings, and the line between them is who decided.**
+  **Four endings, and the line between them is who decided and how it went.**
 
+  - **`✔` delivered, success, proven** --- **it came out.** The work landed, the
+    check passed, the outcome holds.
   - **`↪` superseded** --- a hand-off. The work continues under another record.
   - **`⊘` cancelled or disabled** --- **switched off on purpose.** Somebody chose
     not to do this, or turned it off. A healthy outcome, and it must not carry a
