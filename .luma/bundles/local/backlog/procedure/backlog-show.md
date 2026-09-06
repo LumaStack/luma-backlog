@@ -108,9 +108,11 @@ A reader must be able to tell them apart without being told.
 
 > ## WORK-0031 · Reshape the command surface
 >
-> **Status** prepared
-> **Kind** change
-> **Stage** draft
+> | | |
+> | --- | --- |
+> | **Status** | prepared |
+> | **Kind** | change |
+> | **Stage** | draft |
 >
 > The specification and the binary disagree, and the specification won.
 >
@@ -149,14 +151,10 @@ A reader must be able to tell them apart without being told.
 
 - **Key and title in the heading**, joined by `·`. The key so it can be typed,
   the title so it is recognisable.
-- **Status, kind and stage as three bold-labelled lines**, in that order ---
-  status first, because it is what anybody came for.
-
-  **Not a table.** Markdown has no headerless table, so a two-column one prints
-  an empty band above three rows, which is more furniture than the content.
-  Alignment was the argument for it and does not survive contact: the labels are
-  within two characters of each other, so a ragged edge nobody can see is not
-  worth a header nobody wants.
+- **Status, kind and stage as a two-column table**, in that order --- status
+  first, because it is what anybody came for. Markdown has no headerless table,
+  so it carries an empty band above the rows; that is accepted, because the
+  alignment is worth more than the band costs.
 - **The description as prose**, on its own line, unquoted. It is the record's own
   sentence and should read as one.
 - **A mark carries the state, not a column.**
@@ -166,7 +164,8 @@ A reader must be able to tell them apart without being told.
   | `○` | not started --- a `todo` task, an unverified outcome |
   | `◐` | under way --- `in_progress` |
   | `✓` | finished well --- `closed`, or an outcome that is passing |
-  | `✗` | finished badly --- closed as `canceled`, `abandoned` or `superseded` |
+  | `✗` | stopped --- closed as `canceled` or `abandoned` |
+  | `→` | superseded --- something else covers it now |
 
   **Unfinished work shares the circle; finished work changes shape.** `○` and
   `◐` differ only by fill, which is right --- they are the same thing at two
@@ -177,6 +176,13 @@ A reader must be able to tell them apart without being told.
 
   **`✗` mirrors `✓` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
+
+  **`→` is not a verdict.** Superseded work did not fail --- it moved, and
+  something else covers it now, which is often a good result. Marking it `✗`
+  would report a loss where there was a hand-off. The arrow says *continues over
+  there*, which is also the prompt: **name what superseded it, on the same
+  line.** A supersession with no successor named is the one shape of this that
+  is genuinely lost work.
 
   **`✗` has little to attach to yet.** A task has no failure state --- it closes
   or it does not --- and an outcome is `unverified` or `passing` with nothing in
@@ -190,7 +196,8 @@ A reader must be able to tell them apart without being told.
   glance that every task is `✓` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, in a fixed order: `○`, `◐`, `✓`, `✗`.** Never grouped under
+- **One list each, in a fixed order: `○`, `◐`, `✓`, `→`, `✗`.** Endings last,
+  and the bad one last of all --- it is the one worth arriving at deliberately. Never grouped under
   headings --- the mark already says which, and a heading repeats it. Never
   reordered by anything else: a view whose order changes between readings cannot
   be scanned, which is the whole reason the layout is fixed.
