@@ -9,7 +9,8 @@ description: Say where the work stands and what to pick up — what was last tou
 **Four readings, a rule, then an opinion.** Everything above the rule is what
 the corpus says; everything below it is yours.
 
-Records are rendered as [[showing-records]] says. Do not invent a second format.
+**The shape is [[next-report]]**, its listings are [[listing]], and the marks
+are [[showing-records]]. Do not invent a second format.
 
 ```
 luma-backlog work-item list --json          # carries created and modified

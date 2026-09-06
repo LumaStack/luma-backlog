@@ -98,97 +98,13 @@ perfectly healthy.
 
 ## The layout
 
-**Use this shape every time.** A view that is arranged differently on each
-reading cannot be scanned --- the value of a fixed layout is that the eye learns
-where things are and stops reading the parts it does not need.
+**[[record-view]] for one record, [[listing]] for several.** The shapes live
+there so this procedure and [[backlog-next]] cannot drift apart; the marks and
+the ordering are [[showing-records]].
 
-Two halves, separated by a rule: **the record**, then **what you noticed**.
-Everything above the rule is what the corpus says; everything below it is yours.
-A reader must be able to tell them apart without being told.
-
-> ## WORK-0031 · Reshape the command surface
->
-> | | |
-> | --- | --- |
-> | **Status** | prepared |
-> | **Kind** | change |
-> | **Stage** | draft |
->
-> The specification and the binary disagree, and the specification won.
->
-> ### Outcomes (4) --- none verified
->
-> ○ Every command is noun then verb
-> ○ A record is addressed by the path a person would type
->
-> ### Tasks (22) --- 9 done, 13 open
->
-> ○ Accept a positional title on work-item new
-> ○ Add outcome assert and outcome archive
-> ◐ Carry completion counts in the read path
-> ✔ Build the noun-verb command tree
-> ✔ Compute a rank by bisecting between neighbors
-> ✔ Add the work-item rank command
->
-> ### Journal
->
-> 59 lines. Newest entry 2026-09-06:
-> > help presentation follows gh, recorded on ADR-0006 rather than as a new
-> > decision
->
-> ---
->
-> ### What I notice
->
-> Still `prepared` while nine tasks are closed…
->
-> ```
-> luma-backlog show WORK-0031
-> luma-backlog task list -w WORK-0031-reshape-the-command-surface
-> ```
-
-**The rules the shape depends on:**
-
-- **Key and title in the heading**, joined by `·`. The key so it can be typed,
-  the title so it is recognisable.
-- **Status, kind and stage as a two-column table**, in that order --- status
-  first, because it is what anybody came for. Markdown has no headerless table,
-  so it carries an empty band above the rows; that is accepted, because the
-  alignment is worth more than the band costs.
-- **The description as prose**, on its own line, unquoted. It is the record's own
-  sentence and should read as one.
-- **A mark carries the state, not a column.**
-
-  **The marks, the list shape, and the rule about showing the command are
-  [[showing-records]].** Read it there; it is shared with [[backlog-next]] and a
-  copy here would drift from it.
-
-- **One list each, in a fixed order: `○`, `◐`, `✔`, `↪`, `⊘`, `✘`.** Endings
-  last, best first, and `✘` last of all --- it is the one worth arriving at
-  deliberately rather than meeting halfway down. Never grouped under
-  headings --- the mark already says which, and a heading repeats it. Never
-  reordered by anything else: a view whose order changes between readings cannot
-  be scanned, which is the whole reason the layout is fixed.
-
-  **Within a state, keep the order the command gave you.** Do not re-sort. Today
-  that is name order for tasks, because only work items carry a rank; when tasks
-  are ranked it becomes work order and this rule needs no change. Re-sorting
-  would throw away an ordering somebody chose the moment one exists.
-- **Every task and outcome gets its own line, finished ones included.** They are
-  not collapsed and not omitted: a finished task is how somebody finds out a
-  thing was already tried, and a list that shows only what is left makes a work
-  item look like it began this morning. The marks are what keep a long list
-  readable --- a checkmark is skipped by the eye in a way a word is not.
-- **The heading carries the tally** --- *Tasks (22) --- 9 done, 13 open* --- so
-  the counts are read once rather than by counting rows.
-- **The journal as a count and the newest entry's first line**, quoted. Never the
-  whole file; it is the longest thing here and the least often wanted whole.
-- **A `---` rule before anything you thought.** Above it is the corpus; below it
-  is you.
-- **The commands last**, after everything.
-
-**A section with nothing in it is omitted, not printed empty** --- except the
-counts in a heading, where a zero is information.
+**Use them every time.** A view arranged differently on each reading cannot be
+scanned --- the value of a fixed shape is that the eye learns where things are
+and stops reading the parts it does not need.
 
 ## What each one tells you
 

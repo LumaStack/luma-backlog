@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.13.0
+version: 0.14.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -41,6 +41,8 @@ they need.
   shape of a list, and showing the command that produced it. Shared, so two
   procedures cannot drift apart.
 
+**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
+
 **Procedures** — one per thing somebody does to a backlog. Each holds the
 judgment and calls the command for everything else.
 
@@ -60,6 +62,18 @@ judgment and calls the command for everything else.
 - [[backlog-next]] — picks the next thing to work on, and says why.
 
 ## Version
+
+`0.14.0` — **the output shapes are templates.**
+
+`backlog-show` carried a forty-line layout block that `backlog-next` needed half
+of, so the two were one edit away from rendering the same thing differently.
+The shapes are now three templates and the procedures point at them.
+
+The split follows the rest of the catalog: **a policy is a rule, a template is a
+thing you copy, a procedure is judgment.** [[showing-records]] says what the
+marks mean and why; [[listing]], [[record-view]] and [[next-report]] say what
+the output looks like; the procedures say when to produce it and what to
+notice.
 
 `0.13.0` — **one place says how a record is rendered.**
 
