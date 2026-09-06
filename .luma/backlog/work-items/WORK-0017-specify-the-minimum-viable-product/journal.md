@@ -9,6 +9,7 @@
 
 swept the session for decisions living only in conversation — the completion model became ADR-0007, and ADR-0005 gained the rank verb rename, the sort direction, and the rule that set refuses the rank field
 verification verdicts are proven, disproven, unmeasurable — failed was ambiguous between the state not holding and the check breaking, and under the second reading it was unmeasurable by another name
+verdicts settled as proven, disproven, inconclusive — unmeasurable pointed at the outcome's verify_by specifically, and inconclusive covers a broken check too without the enum claiming whose problem it is
 
 ## ▶ 2026-09-05
 
