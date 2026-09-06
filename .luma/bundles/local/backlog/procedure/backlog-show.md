@@ -165,7 +165,7 @@ A reader must be able to tell them apart without being told.
   | `◐` | under way --- `in_progress` |
   | `✓` | finished well --- `closed`, or an outcome that is passing |
   | `✗` | stopped --- closed as `canceled` or `abandoned` |
-  | `→` | superseded --- something else covers it now |
+  | `↪` | superseded --- something else covers it now |
 
   **Unfinished work shares the circle; finished work changes shape.** `○` and
   `◐` differ only by fill, which is right --- they are the same thing at two
@@ -177,10 +177,10 @@ A reader must be able to tell them apart without being told.
   **`✗` mirrors `✓` for the same reason.** An ending that did not go well should
   not look like one that did, and it should still read as an ending.
 
-  **`→` is not a verdict.** Superseded work did not fail --- it moved, and
+  **`↪` is not a verdict.** Superseded work did not fail --- it moved, and
   something else covers it now, which is often a good result. Marking it `✗`
-  would report a loss where there was a hand-off. The arrow says *continues over
-  there*, which is also the prompt: **name what superseded it, on the same
+  would report a loss where there was a hand-off. The hooked arrow says *picked up
+  over there*, which is also the prompt: **name what superseded it, on the same
   line.** A supersession with no successor named is the one shape of this that
   is genuinely lost work.
 
@@ -196,7 +196,7 @@ A reader must be able to tell them apart without being told.
   glance that every task is `✓` and every outcome is `○` --- the state worth
   noticing most, and the one a grouped list hides.
 
-- **One list each, in a fixed order: `○`, `◐`, `✓`, `→`, `✗`.** Endings last,
+- **One list each, in a fixed order: `○`, `◐`, `✓`, `↪`, `✗`.** Endings last,
   and the bad one last of all --- it is the one worth arriving at deliberately. Never grouped under
   headings --- the mark already says which, and a heading repeats it. Never
   reordered by anything else: a view whose order changes between readings cannot
