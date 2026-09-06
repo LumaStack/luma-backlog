@@ -12,9 +12,10 @@ description: Say where the work stands and what to pick up — what was last tou
 risks included. **Next options** --- a ranked menu. **A recommendation** --- the
 one thing, which is not repeated in the menu.
 
-**Divisions are uppercase with a `---` between them**, because heading level
-alone does not divide anything in a terminal. Sections inside a division stay in
-normal case.
+**A division is uppercase with a `───` underline**, the way `luma-backlog show`
+prints a record's title --- heading level alone divides nothing in a terminal,
+and the underline is literal text rather than syntax, so it renders the same
+everywhere. Sections inside a division are ordinary `###` headings.
 
 **The shape is [[next-report]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
@@ -145,7 +146,8 @@ recommendation with a reason is worth more than a filled one without.
 Shape is [[next-report]]; this is the judgment, which is the part that does not
 come from a template.
 
-> ## THE BIG PICTURE
+> THE BIG PICTURE
+> ───────────────
 >
 > ### Last touched
 >
@@ -170,11 +172,9 @@ come from a template.
 > WORK-0031 is already prepared; WORK-0039 has no outcomes and no scope, so it
 > is several conversations from producing work.
 >
-> ---
->
 > ### Risks
 >
-> **Fifty-seven commits on two branches, none pushed.** Everything from today
+> **Fifty-four commits on two branches, none pushed.** Everything from today
 > exists in one working tree.
 >
 > **WORK-0031 grew from 9 tasks to 23 while remaining one work item.** The
@@ -183,7 +183,8 @@ come from a template.
 > **The second gate has never been used.** Nothing has ever been `todo`, so this
 > report structurally cannot answer its own question here.
 >
-> ### Next options, then one recommendation
+> NEXT OPTIONS
+> ────────────
 >
 > 1. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
 >    the record understates itself until then.
@@ -192,9 +193,8 @@ come from a template.
 > 3. **Move one thing to `todo`** --- so the second gate has been used once and
 >    this report has something to say.
 >
-> ---
->
-> ## RECOMMENDATION
+> RECOMMENDATION
+> ──────────────
 >
 > **Push and open both PRs.** Everything on the menu is more work; this is the
 > only thing that reduces risk rather than adding to it, and it is ten minutes.
