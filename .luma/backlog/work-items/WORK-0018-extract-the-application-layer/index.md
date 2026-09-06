@@ -33,6 +33,12 @@ Any caller that is not a Cobra command therefore gets the arithmetic without the
 
 ## Out of scope
 
+**The command reshape.** Noun-verb ordering, the changed command shapes,
+reference resolution and completion in the read path all move the golden files,
+where this work moves none of them. Split into
+[[backlog/work-items/WORK-0031-reshape-the-command-surface]] so an unchanged
+golden suite can prove this extraction was clean.
+
 **The board.** This work item exists so the board has something correct to be built on, and delivers no interface of its own.
 
 **The action registry.** One table both surfaces generate from is the mechanism that makes a board-only capability hard to express, and it should be shaped by a real second consumer rather than a predicted one. Deferred until the board is being built.
