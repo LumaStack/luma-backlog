@@ -1378,7 +1378,7 @@ Top-level:
 |---|---|
 | `init` | Create `.backlog/` and a default configuration. |
 | `board` | Open the terminal board (§11). Also the behavior with no arguments. |
-| `serve` | Start the web interface. |
+| `serve` | Start the browser interface (§11.7). |
 | `check` | Evaluate the named conditions (§5.2). |
 | `log` | Read history, including as a portable export. |
 | `contract` | Emit the full interface description (§9.6). |
@@ -1767,13 +1767,15 @@ The board must remain usable **without color** and **in a narrow terminal**. Col
 - **Discard an edit it did not see**, in either direction.
 - **Require a mouse.**
 
-### 11.7 Why a web interface exists
+### 11.7 Why a browser interface exists
 
-A web application is a **nice-to-have follow-up**, not a co-equal surface. It exists for two specific reasons, and they determine what it has to be:
+A browser interface is a **nice-to-have follow-up**, not a co-equal surface. It exists for two specific reasons, and they determine what it has to be:
 
 - **Reach.** Some people do not want to work in a terminal, and the backlog should not be closed to them.
 - **Anywhere.** It should work properly **on a phone**, so that work can be checked and agents directed from away from a desk.
 
-Two consequences follow. It must be **genuinely web-native and responsive** — a terminal streamed into a browser satisfies neither reason, being neither approachable for people avoiding terminals nor comfortable on a phone. And its priority is **observing and steering rather than authoring**: the common actions away from a desk are seeing where things stand, unblocking, and redirecting — not composing records.
+**The surface is the browser; the web is a deployment question.** Only the second reason needs a network — the first is served by a local process nobody reaches over the internet, and calling the surface *web* would smuggle a hosting decision into the name of a rendering. Serving it beyond the machine is possible and is not what makes it exist.
 
-**It is a client, not a privileged view.** The web application consumes the same documented contract as any external integration (§9), which is what keeps that contract honest — exercised by first-party code rather than merely published.
+Two consequences follow. It must be **genuinely browser-native and responsive** — a terminal streamed into a browser satisfies neither reason, being neither approachable for people avoiding terminals nor comfortable on a phone. And its priority is **observing and steering rather than authoring**: the common actions away from a desk are seeing where things stand, unblocking, and redirecting — not composing records.
+
+**It is a client, not a privileged view.** It consumes the same documented contract as any external integration (§9), which is what keeps that contract honest — exercised by first-party code rather than merely published.

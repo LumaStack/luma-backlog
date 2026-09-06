@@ -20,7 +20,7 @@ import (
 var adapterPackages = []string{
 	"internal/cli",
 	"internal/board",
-	"internal/web",
+	"internal/browser",
 }
 
 // enginePackages are what an adapter must not reach.
