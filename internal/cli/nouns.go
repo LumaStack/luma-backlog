@@ -22,6 +22,10 @@ import (
 // `git log`. What went is the redundant path --- `list <unit>` as a positional
 // argument, which said the same thing twice.
 
+// backlogUnit is what a bare `list` lists. Named rather than spelled inline
+// because root.go shadows the app package with its parameter.
+const backlogUnit = app.WorkItem
+
 // nounHelp is what each noun is for, shown in the root command's listing.
 var nounHelp = map[string]string{
 	app.WorkItem:    "A piece of work, and everything hanging off it",

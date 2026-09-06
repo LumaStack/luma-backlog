@@ -75,3 +75,11 @@ func writeJSON(w io.Writer, v any) error {
 	enc.SetIndent("", "  ")
 	return enc.Encode(v)
 }
+
+// nodeJSON is a work item with what hangs off it. Children are added rather
+// than the shape being changed, so a consumer reading a flat listing is
+// unaffected (docs/spec.md §9.9).
+type nodeJSON struct {
+	itemJSON
+	Children []itemJSON `json:"children,omitempty"`
+}

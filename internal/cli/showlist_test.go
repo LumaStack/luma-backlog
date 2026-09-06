@@ -54,13 +54,17 @@ description: A project record, which has no workflow status.
 	return app
 }
 
-func TestListTableReportsNoStatusForATypeThatDeclaresNone(t *testing.T) {
+// A record type that declares no workflow status must render without one
+// rather than inventing a blank-looking value. The project record is the case,
+// and `show` is what reaches it --- no listing does, since a listing is scoped
+// to one unit and the project record is not one.
+func TestShowTableReportsNoStatusForATypeThatDeclaresNone(t *testing.T) {
 	app := withProject(t)
-	code, out, errOut := run(t, app, "list")
+	code, out, errOut := run(t, app, "show", "PROJECT")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
-	checkGolden(t, "list-with-project-table", out)
+	checkGolden(t, "show-project-table", out)
 }
 
 func TestShowProjectJSONOmitsStatus(t *testing.T) {
@@ -74,7 +78,7 @@ func TestShowProjectJSONOmitsStatus(t *testing.T) {
 
 func TestListJSONShape(t *testing.T) {
 	app := populated(t)
-	code, out, errOut := run(t, app, "list", "--json")
+	code, out, errOut := run(t, app, "work-item", "list", "--json")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -256,8 +260,9 @@ func TestANounListsItsOwnRecords(t *testing.T) {
 	}
 }
 
-// The top-level listing spans types; a noun's listing does not.
-func TestTheTopLevelListingSpansTypes(t *testing.T) {
+// `list` is `work-item list`. The tool is called backlog; listing the backlog
+// means listing work items, not a run of every record type interleaved.
+func TestBareListIsWorkItemList(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
 	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
@@ -266,10 +271,11 @@ func TestTheTopLevelListingSpansTypes(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("exit = %d: %s", code, errOut)
 	}
-	for _, want := range []string{"Payments v2", "The queue drains"} {
-		if !strings.Contains(out, want) {
-			t.Errorf("the top-level listing missed %q:\n%s", want, out)
-		}
+	if !strings.Contains(out, "Payments v2") {
+		t.Errorf("list did not list the work item:\n%s", out)
+	}
+	if strings.Contains(out, "The queue drains") {
+		t.Errorf("list included an outcome:\n%s", out)
 	}
 }
 
@@ -278,5 +284,55 @@ func TestListDoesNotTakeAUnitPositionally(t *testing.T) {
 	app, _ := initialized(t)
 	if code, _, _ := run(t, app, "list", "work-item"); code != ExitUsage {
 		t.Errorf("exit = %d, want %d --- `list work-item` said the same thing twice", code, ExitUsage)
+	}
+}
+
+// The tree is what replaced listing every type interleaved: a work item with
+// what actually hangs off it, rather than a run of unrelated records.
+func TestListTreeShowsChildrenBeneathTheirWorkItem(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+
+	code, out, errOut := run(t, app, "list", "--tree")
+	if code != ExitOK {
+		t.Fatalf("exit = %d: %s", code, errOut)
+	}
+	for _, want := range []string{"Payments v2", "The queue drains", "Add the queue"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("tree missed %q:\n%s", want, out)
+		}
+	}
+	// Without --tree the same command shows work items only.
+	_, flat, _ := run(t, app, "list")
+	if strings.Contains(flat, "Add the queue") {
+		t.Errorf("a flat listing included a task:\n%s", flat)
+	}
+}
+
+// The filter narrows the work items, never their children. Asking for
+// prepared work items and being shown only their prepared tasks would hide the
+// ones nobody has started, which is usually the reason for looking.
+func TestATreeFilterNarrowsWorkItemsNotChildren(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "set", "payments-v2", "workflow_status=todo")
+
+	code, out, errOut := run(t, app, "list", "--tree", "--status", "todo")
+	if code != ExitOK {
+		t.Fatalf("exit = %d: %s", code, errOut)
+	}
+	if !strings.Contains(out, "Add the queue") {
+		t.Errorf("filtering the work items also filtered their children:\n%s", out)
+	}
+}
+
+// Only work items have anything hanging off them.
+func TestOnlyWorkItemsOfferATree(t *testing.T) {
+	app, _ := initialized(t)
+	if code, _, _ := run(t, app, "task", "list", "--tree"); code != ExitUsage {
+		t.Errorf("task list accepted --tree")
 	}
 }

@@ -121,12 +121,15 @@ func newRootCommand(app *App) *cobra.Command {
 	root.AddCommand(newInitCommand(app))
 	addNouns(root, app)
 
-	// show and set are top-level while the cross-type question is unsettled;
-	// list is top-level permanently, for the records no noun can reach.
+	// show and set are top-level while the cross-type question is unsettled.
 	// See nouns.go.
 	root.AddCommand(newShowCommand(app))
 	root.AddCommand(newSetCommand(app))
-	root.AddCommand(newListCommand(app, ""))
+
+	// `list` is `work-item list`. The tool is called backlog; listing the
+	// backlog means listing work items, which is the reading of the command
+	// name and the overwhelmingly common case.
+	root.AddCommand(newListCommand(app, backlogUnit))
 
 	return root
 }

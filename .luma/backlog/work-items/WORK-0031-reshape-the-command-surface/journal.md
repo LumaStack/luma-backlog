@@ -29,3 +29,6 @@ ordinals must ascend with the ladder and are refused at load if they do not — 
 the ordinal prefix has to be zero-padded like the position, which neither ADR-0005 nor spec 9.6 says — without it ordinal 100 sorts before 20 as text and the prefix that exists to make sorting work is the thing breaking it
 positions use big.Rat rather than float — bisection halves, halving a finite decimal stays finite, so every value is representable exactly and precision extends by one digit at a time instead of rounding
 spec 9.6's worked table is now a test, so the document and the code cannot drift; the squeezed row was the one worth having, since it is where precision extends past three decimals
+listing every record type interleaved was never wanted — it was what the code did when the type was an argument; list is now work-item list, because the tool is called backlog and listing the backlog means listing work items
+the tree filter narrows work items and never their children — asking for prepared work items and seeing only their prepared tasks would hide the ones nobody has started, which is usually why you looked
+tree assembly lives in internal/app, not the adapter: the board wants the same thing a terminal does, and an adapter building it would be carrying judgment

@@ -10,24 +10,6 @@
     "work_item": "WORK-0001-payments-v2"
   },
   {
-    "path": "backlog/work-items/WORK-0001-payments-v2/outcomes/the-retry-queue-drains.md",
-    "type": "outcome",
-    "name": "the-retry-queue-drains",
-    "slug": "the-retry-queue-drains",
-    "title": "The retry queue drains",
-    "status": "unverified",
-    "work_item": "WORK-0001-payments-v2"
-  },
-  {
-    "path": "backlog/work-items/WORK-0001-payments-v2/tasks/add-the-retry-queue.md",
-    "type": "task",
-    "name": "add-the-retry-queue",
-    "slug": "add-the-retry-queue",
-    "title": "Add the retry queue",
-    "status": "todo",
-    "work_item": "WORK-0001-payments-v2"
-  },
-  {
     "path": "backlog/work-items/WORK-0002-search-relevance/index.md",
     "type": "work-item",
     "key": "WORK-0002",
