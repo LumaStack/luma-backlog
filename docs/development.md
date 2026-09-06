@@ -26,6 +26,8 @@ docs/                 the design
 .claude/skills/       procedures that will become commands
 ```
 
+**The package map is in [architecture.md](architecture.md)** — what each one is for, and the two rules that keep them apart.
+
 **Everything outside `cmd/` is `internal/`, deliberately.** The contract is the command line — its verbs, output shapes, and exit codes. Exporting Go packages would create a second public surface with a second compatibility obligation, taken on by accident. Promotion later is available; the reverse is not.
 
 ## Working on it
