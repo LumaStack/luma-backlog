@@ -23,7 +23,7 @@ It is a multi-layer approach:
 
 **There is an ordering, worst to best:**
 
-1. Writing no outcomes.
+1. Writing no outcomes. **Barely allowed** — closing needs `--force`.
 2. Writing outcomes after the fact, and still proving them.
 3. Writing outcomes ahead of execution.
 
@@ -95,6 +95,27 @@ duplicate keys.
   is one that will not be.
 - **It must survive being ignored.** These fire rarely and matter once, which is
   the hardest kind of warning to write well.
+
+### Each tier already has a different cost, and two of the three mechanisms exist
+
+The ordering is not only a preference — it can be made to cost something,
+increasing downward, without any tier being closed off:
+
+| Tier | What it costs | Built? |
+| --- | --- | --- |
+| **No outcomes** | `close … delivered` is refused; `--force` overrides and leaves a permanent mark on the record ([[records/decisions/ADR-0007-an-outcome-carries-the-doer-s-assertion-and-the-checker-s-verdict-separately]]) | **The refusal, yes. `--force`, no** — it is specified and unbuilt ([[backlog/work-items/WORK-0031-reshape-the-command-surface]]) |
+| **Outcomes after the fact** | Closes normally, and the lateness is observable | No — that is this inquiry |
+| **Outcomes ahead** | Closes normally, nothing to observe | Nothing to build |
+
+**So today the first tier is stricter than intended**, not looser: without
+`--force` there is no override at all, and a work item with no outcomes cannot
+be closed as delivered by any means.
+[[backlog/work-items/WORK-0018-extract-the-application-layer]] hit exactly that.
+
+**And forcing must leave the outcomes alone.** ADR-0007 is explicit: the
+tempting implementation marks them verified so the arithmetic comes out clean,
+and that destroys the record. The count keeps disagreeing with the closure,
+which is the mark.
 
 ### The readiness signal has a name waiting for it
 
