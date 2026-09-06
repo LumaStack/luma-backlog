@@ -119,7 +119,7 @@ Prose cannot hold that (`CLAUDE.md`), so it is held three ways:
 
 ## Why
 
-**The project's own vocabulary already separates them.** `docs/design-mvp.md`: *"Don't confuse priority with rank. Eventually we will want both priority and rank, let's start with rank."* Loading importance onto rank collapses a distinction that was drawn on purpose.
+**The project's own vocabulary already separates them.** `docs/design/mvp.md`: *"Don't confuse priority with rank. Eventually we will want both priority and rank, let's start with rank."* Loading importance onto rank collapses a distinction that was drawn on purpose.
 
 **Moving something forward is how a project says it matters.** If the most important thing is sitting in `captured`, the response is to select it into the pipeline, not to rank it above work already under way. `docs/workflow-status.md` describes the first gate as exactly that act — *"Above it, a pile that may or may not become work. Below it, work the project has committed to shaping."* Stage dominance is not a limitation on the ordering; it is the ordering agreeing with what a stage change already means.
 
@@ -162,7 +162,7 @@ Prose cannot hold that (`CLAUDE.md`), so it is held three ways:
 
 ## References
 
-- `docs/design-mvp.md` — the priority/rank distinction this rests on.
+- `docs/design/mvp.md` — the priority/rank distinction this rests on.
 - `docs/workflow-status.md` — the two gates, and selection as the act that says work matters.
 - `docs/spec.md` §9.6 — the ordering key, bisection, and extensible precision.
 - `docs/open-questions.md` §14 — priority and whether ranking exists; this closes the ranking half.
