@@ -32,3 +32,5 @@ spec 9.6's worked table is now a test, so the document and the code cannot drift
 listing every record type interleaved was never wanted — it was what the code did when the type was an argument; list is now work-item list, because the tool is called backlog and listing the backlog means listing work items
 the tree filter narrows work items and never their children — asking for prepared work items and seeing only their prepared tasks would hide the ones nobody has started, which is usually why you looked
 tree assembly lives in internal/app, not the adapter: the board wants the same thing a terminal does, and an adapter building it would be carrying judgment
+--tree on list rather than a tree verb: a flag on a settled surface instead of a sixth verb needing ADR-0006 amended, and the single-item case was already served by task list -w X
+help examples went stale the moment the tree changed and nothing caught it — journal's said luma-backlog journal, a command that no longer exists; worth a check that every Example in the tree actually parses
