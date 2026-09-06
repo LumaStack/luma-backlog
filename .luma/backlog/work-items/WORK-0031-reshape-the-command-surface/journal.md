@@ -20,3 +20,5 @@ the containment guard caught the first attempt — naming a record type in the a
 a noun command needs Args NoArgs or cobra takes an unregistered verb as a positional, prints help and exits 0 — task close looked like it worked; the same trap root.go already documents, one level down
 cobra honors --help before validating arguments, so a negative test must probe without it: task close --help exits 0 whether or not close exists
 show and set stay top-level with list, not for tidiness but because they reach records that are not creatable units — PROJECT.md is type luma/project and corpus.Units is what can be created; scoping them to a noun would strand it
+key-scoped references resolve — WORK-0031/tasks/<slug>, the name form, the slug half, and with or without .md; scoping is tried only after exact matches and before prefix matches, so it adds a form without loosening any existing one
+emission is the half still outstanding: the outcome asks for key-scoped paths to be emitted as well as accepted, and changing the path field in --json is a breaking contract change where adding a ref field is additive — not decided yet

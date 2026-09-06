@@ -183,3 +183,57 @@ func TestListIgnoresNonRecords(t *testing.T) {
 		}
 	}
 }
+
+// A path read out of a listing should be typeable back in. Before this, only
+// the full on-disk path resolved --- WORK-0031/tasks/<slug>, the form a person
+// actually sees and repeats, returned "nothing matches".
+func TestShowResolvesAKeyScopedPath(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+
+	for _, ref := range []string{
+		"WORK-0001/tasks/add-the-queue",
+		"work-0001/tasks/add-the-queue",             // keys match case-insensitively
+		"WORK-0001-payments-v2/tasks/add-the-queue", // the joined name
+		"payments-v2/tasks/add-the-queue",           // the slug half
+		"WORK-0001/tasks/add-the-queue.md",          // extension is not wrong to type
+	} {
+		code, out, errOut := run(t, app, "show", ref)
+		if code != ExitOK {
+			t.Errorf("%s: exit = %d, want %d\n%s", ref, code, ExitOK, errOut)
+			continue
+		}
+		if !strings.Contains(out, "Add the queue") {
+			t.Errorf("%s: resolved to the wrong record:\n%s", ref, out)
+		}
+	}
+}
+
+// Scoping must not become a second way to guess. An unknown work item is not
+// found rather than falling back to a loose match on the tail.
+func TestAKeyScopedPathWithAnUnknownScopeIsNotFound(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+
+	if code, _, _ := run(t, app, "show", "WORK-9999/tasks/add-the-queue"); code != ExitNotFound {
+		t.Errorf("exit = %d, want %d (not found)", code, ExitNotFound)
+	}
+}
+
+// The bare slug is what people typed before scoping existed and must keep
+// working --- scoping is an addition, not a replacement.
+func TestABareSlugStillResolves(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+
+	code, out, errOut := run(t, app, "show", "add-the-queue")
+	if code != ExitOK {
+		t.Fatalf("exit = %d: %s", code, errOut)
+	}
+	if !strings.Contains(out, "Add the queue") {
+		t.Errorf("resolved to the wrong record:\n%s", out)
+	}
+}
