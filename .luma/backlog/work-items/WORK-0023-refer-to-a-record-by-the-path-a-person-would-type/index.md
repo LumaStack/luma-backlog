@@ -44,12 +44,42 @@ telling them.
 
 ## What is being delivered
 
-Resolution that accepts the forms somebody actually types:
+**The canonical reference is scoped by the work item's key:**
 
-- **A key in any path position** — `WORK-0017/outcomes/<slug>`.
-- **A full slug in any path position** — the form a directory listing gives.
-- **A bare name**, as today, when it is unambiguous.
-- **An unambiguous prefix** of any segment (`spec.md` §9.1, §7.4).
+```
+WORK-0017/outcomes/specification-agrees-with-the-decisions
+```
+
+Resolution accepts, in descending order of safety:
+
+- **A key-scoped path** — `WORK-0017/outcomes/<slug>`. **Canonical, and what the
+  tool emits.**
+- **A slug-scoped path** — what a directory listing gives.
+- **An unambiguous prefix** of any segment (`spec.md` §9.1, §7.4), so
+  `WORK-0017/outcomes/spec-agrees` resolves.
+- **A bare name**, as today, only while unambiguous — accepted, never emitted.
+
+**`list` must stop emitting bare names.** It prints the unsafe form today, which
+is the tool teaching the reference that breaks first.
+
+### No new keys
+
+Work items have keys and decisions have them (`ADR-NNNN`). **Outcomes and tasks
+get none**, and do not need any:
+
+- **A task's every relationship is already a wikilink** — `depends_on`,
+  `follows` and `advances` are paths, and `parallel_group` is plain labels
+  (§4.5). Sequencing needs references, and the format has them. A key would
+  shorten what agents mostly write and people mostly read.
+- **An outcome's handle is already stable.** §4.4 separates `title` — *"a short,
+  stable handle"* — from `desired_state`, which carries the content expected to
+  be rewritten. That is a key's main job, done by a different mechanism.
+- **A second allocation sequence doubles a known failure.** ADR-0003 exists
+  because one sequence already collides across workstations.
+
+*Deferred rather than rejected — reopened if outcomes or tasks turn out to be
+quoted often enough, outside their work item, that the containment in the path
+becomes noise rather than information.*
 
 ## Constraints
 

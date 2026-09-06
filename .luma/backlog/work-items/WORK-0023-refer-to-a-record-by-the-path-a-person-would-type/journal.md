@@ -8,3 +8,4 @@
 ## ▶ 2026-09-06
 
 found by handing the maintainer four verify commands that would all have failed — only bare names resolve, and a bare name is not unique
+canonical form is WORK-NNNN/outcomes/<slug> and no new key sequences — a task's relationships are already wikilinks and an outcome's title is already a stable handle, so a key would duplicate mechanisms that exist
