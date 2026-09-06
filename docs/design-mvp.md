@@ -108,6 +108,132 @@ Minimum capabilities:
 - Basic validation 
 - Ensure no duplicate work items exist upon completion
   
+## The command surface
+
+Everything the first release ships. **This is the scope; `spec.md` §9 is what
+each verb means.** A command absent here is not absent from the design — it is
+absent from the first cut.
+
+**Noun then verb**, and verb only where no noun applies
+([[records/decisions/ADR-0006-the-command-line-is-designed-against-clig-dev]]).
+Marked **new** where nothing exists yet, **changed** where a shipped command's
+shape moves.
+
+### On every command
+
+| Flag | Does |
+|---|---|
+| `-h`, `--help` | Help. Examples first. |
+| `--version` | Version. Never `-v`, which is ambiguous. |
+| `--json` | The machine contract (`spec.md` §9.3). Formatted. |
+| `--plain` | One record per line, for `grep` and `awk`. **new** |
+| `--no-color` | Also honors `NO_COLOR`, `TERM=dumb`, and a non-terminal. **new** |
+| `-q`, `--quiet` | Suppress non-essential output. **new** |
+
+**No command prompts.** Missing input is a usage error naming what was needed.
+There is no `--prompt` and no `--no-input` in the first release; the design for
+adding them is on ADR-0006.
+
+### Work items
+
+| Command | Does | Arguments | Flags |
+|---|---|---|---|
+| `work-item new` | Create | title, positionally or `--title` | `-k/--kind`, `--title` **new** |
+| `work-item show` | Read one | reference | |
+| `work-item list` | Read many | | `-s/--status`, `-k/--kind`, `--open` |
+| `work-item set` | Change fields | reference, `field=value` | `--unset`, `--if-unchanged` |
+| `work-item edit` | Open in an editor | reference | **new** |
+| `work-item rank` | Reorder | reference | `--before`, `--after`, `--top`, `--bottom` **new** |
+| `work-item close` | End it | reference, `completed\|rejected\|canceled\|superseded` | `--reason` (prose), `--force` **changed** |
+
+**`rank` replaces `move`**, and `set` refuses the rank field — the caller never
+computes an ordering key
+([[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]]).
+
+**`close` changes shape.** The disposition becomes a positional and `--reason`
+becomes the prose; `delivered` becomes `completed` and `abandoned` is dropped.
+Only `completed` is gated.
+
+**Advancing is `set`, not a verb of its own.** Workflow status is a field, `set`
+is the field verb, and `--if-unchanged` handles the stale-read race — which is
+the real hazard, not skipping a rung.
+
+**`--open`** — everything not closed. WORK-0016 records why: it is the first
+question anybody asks and cannot be expressed today.
+
+### Outcomes
+
+| Command | Does | Arguments | Flags |
+|---|---|---|---|
+| `outcome new` | Create | title | `-w/--work-item` |
+| `outcome show` / `list` | Read | reference | |
+| `outcome set` | Change fields | reference, `field=value` | `--unset`, `--if-unchanged` |
+| `outcome assert` | The doer's claim | reference, `succeeded\|failed` | **new** |
+| `outcome verify` | The checker's finding | reference, `proven\|disproven\|inconclusive` | `-e/--evidence` **changed** |
+| `outcome archive` | Retire it | reference | **new** |
+
+**`verify` changes shape** — the verdict becomes a required positional. Recording
+proof has to be said out loud
+([[records/decisions/ADR-0007-an-outcome-carries-the-doer-s-assertion-and-the-checker-s-verdict-separately]]).
+
+**`archive` is why `close` can refuse and still be usable** — its message says
+*"retire the ones that no longer apply,"* which needs a command to name.
+
+### Tasks
+
+| Command | Does | Arguments | Flags |
+|---|---|---|---|
+| `task new` | Create | title | `-w/--work-item`, `--advances` |
+| `task show` / `list` | Read | reference | |
+| `task set` | Change fields | reference, `field=value` | `--unset`, `--if-unchanged` |
+
+**Taking is not in the first release**
+([[records/decisions/ADR-0008-taking-a-task-expires-and-owning-a-work-item-does-not]]),
+so `take`, `release` and `steal` do not ship, and exit code `6` stays reserved.
+
+### Decisions
+
+| Command | Does | Arguments | Flags |
+|---|---|---|---|
+| `decision new` | Create, numbered | title | `-w/--work-item`, `--project` |
+| `decision show` / `list` | Read | reference | |
+| `decision set` | Change fields | reference, `field=value` | `--unset` |
+
+### Anything, and no noun
+
+| Command | Does | Arguments | Flags |
+|---|---|---|---|
+| `journal` | Append a line, or show it | reference, text | `-w/--work-item` |
+| `init` | Create `.luma/` and a configuration | | |
+| `board` | Open the board. Also the no-argument behavior **when a terminal is attached**; concise help otherwise | | |
+| `contract` | Emit the whole interface | | `--json` |
+
+**`contract` earns its place in the first release** even though no stage needs
+it: `spec.md` §9.7 exists so an actor arriving in an unfamiliar repository
+bootstraps from the binary rather than from documentation somebody forgot to
+update. That matters most while the interface is moving.
+
+### Deliberately absent
+
+`serve` — the web interface (§11.7) is a follow-up.
+`check` — conditions are reported where records are read rather than asked for
+separately.
+`config` — configuration is a file people edit; a command for it is not owed yet.
+`log` — history is git's, until something needs it portable.
+`wave` — waves are not in the first release, so every verb on them is moot.
+`promote` — decision promotion (§4.8.1) has no first-release trigger.
+
+### Still open
+
+**Whether `--json` output carries computed completion.** It does not today —
+`show --json` returns no completion key — and the board must show it on every
+card. Either the structured output gains it or the board computes it
+independently, and the second is the divergence ADR-0004 exists to prevent.
+
+**Whether `--dry-run` ships**, and on what. `spec.md` §9.6's multi-record
+operations are the case for it; none of them is a first-release command, so it
+may have nothing to attach to yet.
+
 ## The board
 
 `docs/design-sketches.md` draws these screens. It is concept art — where it and
@@ -146,6 +272,45 @@ this section disagree, this one is the scope.
 - **Saying which person is present**, for attribution. Until then this is
   uncommitted per-machine configuration.
 - **Basic support for people working at the same time.**
+
+### What each capability calls
+
+Every mutation resolves to the same request a command produces
+([[records/decisions/ADR-0004-every-interface-is-an-adapter-over-one-application-layer]]).
+A line here either names a command or says it is view state; what it may not do
+is neither.
+
+| Capability | Calls |
+|---|---|
+| Board view of two or three columns | `work-item list --json` |
+| Navigating between and within columns | **view state** |
+| Navigating to offscreen columns | **view state** |
+| Computed completion on the card | derived from the listing — see *Still open* under the command surface |
+| Detail view of one work item | `work-item show`, plus `outcome list` and `task list` scoped to it |
+| Creating a work item | `work-item new` |
+| Creating an outcome | `outcome new --work-item <ref>` |
+| Creating a task | `task new --work-item <ref>` |
+| Moving between columns | `work-item set <ref> workflow_status=<value> --if-unchanged <hash>` |
+| Ranking within a column | `work-item rank <ref> --before <ref>` |
+| One visible column beside the detail | **view state** — an arrangement, not a capability |
+| Loading screen | **view state** |
+| Asserting an outcome | `outcome assert <ref> <succeeded\|failed>` |
+| Verifying an outcome | `outcome verify <ref> <verdict> --evidence …` |
+| Opening in an editor | `work-item edit <ref>` |
+
+**Moving a card always passes `--if-unchanged`.** The hazard is not skipping a
+rung — nothing forbids that — it is the stale read: the board renders
+`preparing`, computes that the next column is `prepared`, and between those
+moments an agent moves the record to `todo`. Without the hash the card silently
+moves backwards.
+
+**"Move to the top of this column" is not `--top`.** `--top` is global; the
+board wants `--before <the first card in this column>`, which it knows because
+it rendered the column. Two different operations wearing the same word, so the
+board's label and the command's flag deliberately differ.
+
+**Every view-state line is one the board must never acquire a command for**
+(`spec.md` §11.6). A cursor position is not a fact about the work.
 
 ### Three things moved out of the tier they were first given
 
