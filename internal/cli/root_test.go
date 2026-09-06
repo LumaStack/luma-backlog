@@ -70,13 +70,13 @@ func TestUsageLineIsSingular(t *testing.T) {
 // still show the arguments it takes rather than "[command]".
 func TestLeafCommandKeepsItsOwnUsageLine(t *testing.T) {
 	var out, errOut bytes.Buffer
-	if code := Main([]string{"list", "--help"}, strings.NewReader(""), &out, &errOut); code != ExitOK {
+	if code := Main([]string{"show", "--help"}, strings.NewReader(""), &out, &errOut); code != ExitOK {
 		t.Fatalf("exit code = %d; stderr: %s", code, errOut.String())
 	}
-	if strings.Contains(out.String(), "luma-backlog list [command]") {
+	if strings.Contains(out.String(), "luma-backlog show [command]") {
 		t.Errorf("leaf command advertised subcommands it does not have:\n%s", out.String())
 	}
-	if !strings.Contains(out.String(), "luma-backlog list [work-item") {
+	if !strings.Contains(out.String(), "luma-backlog show <record>") {
 		t.Errorf("leaf command lost its own argument list:\n%s", out.String())
 	}
 }

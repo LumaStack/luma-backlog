@@ -2,14 +2,17 @@ package cli
 
 import (
 	"fmt"
-	"strings"
 	"text/tabwriter"
 
 	"github.com/lumastack/luma-backlog/internal/app"
 	"github.com/spf13/cobra"
 )
 
-func newListCommand(a *App) *cobra.Command {
+// newListCommand builds a listing. An empty unit builds the top-level `list`,
+// which reads every record type --- including ones no noun can reach, such as
+// the project record. A named unit builds `<noun> list`, which is the same
+// command narrowed, the way `git log <path>` narrows `git log`.
+func newListCommand(a *App, unit string) *cobra.Command {
 	var (
 		asJSON   bool
 		workItem string
@@ -18,10 +21,10 @@ func newListCommand(a *App) *cobra.Command {
 	)
 
 	cmd := &cobra.Command{
-		Use:   "list [" + strings.Join(app.Units, "|") + "]",
-		Short: "Read many records",
-		Long:  "Lists records, optionally narrowed by unit, work item, status, or kind.",
-		Args:  cobra.MaximumNArgs(1),
+		Use:   "list",
+		Short: listShort(unit),
+		Long:  listLong(unit),
+		Args:  cobra.NoArgs,
 		// Deliberately not an error when nothing matches: an empty backlog and
 		// an over-narrow filter are both ordinary, and exiting non-zero would
 		// make a caller treat "none yet" as a failure.
@@ -33,10 +36,7 @@ func newListCommand(a *App) *cobra.Command {
 			}
 			defer s.Close()
 
-			f := app.Filter{WorkItem: workItem, Status: status, Kind: kind}
-			if len(args) == 1 {
-				f.Unit = args[0]
-			}
+			f := app.Filter{Unit: unit, WorkItem: workItem, Status: status, Kind: kind}
 
 			res, err := s.List(f)
 			if err != nil {
@@ -69,8 +69,31 @@ func newListCommand(a *App) *cobra.Command {
 		},
 	}
 	cmd.Flags().BoolVar(&asJSON, "json", false, "emit the listing as JSON")
-	cmd.Flags().StringVarP(&workItem, "work-item", "w", "", "only records in this work item")
 	cmd.Flags().StringVarP(&status, "status", "s", "", "only records with this workflow status")
-	cmd.Flags().StringVarP(&kind, "kind", "k", "", "only work items of this kind")
+
+	// A work item does not belong to a work item, so the filter has nothing to
+	// narrow there. --kind classifies work items and means nothing elsewhere.
+	if unit != app.WorkItem {
+		cmd.Flags().StringVarP(&workItem, "work-item", "w", "", "only records in this work item")
+	}
+	if unit == "" || unit == app.WorkItem {
+		cmd.Flags().StringVarP(&kind, "kind", "k", "", "only work items of this kind")
+	}
 	return cmd
+}
+
+func listShort(unit string) string {
+	if unit == "" {
+		return "Read many records, of every type"
+	}
+	return "Read many " + unit + " records"
+}
+
+func listLong(unit string) string {
+	if unit == "" {
+		return "Lists every record, whatever its type --- including records that belong to\n" +
+			"no unit and so cannot be reached through a noun.\n\n" +
+			"To list one type, use its noun: `luma-backlog work-item list`."
+	}
+	return "Lists " + unit + " records, optionally narrowed by work item, status, or kind."
 }

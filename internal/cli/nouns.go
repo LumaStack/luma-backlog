@@ -10,15 +10,17 @@ import (
 // its constructor, so each verb has one implementation rather than one per
 // noun-verb pair --- copying a verb five times is how the nouns drift apart.
 //
-// `show`, `set` and `list` are deliberately absent, and for one reason: they
-// read and write records that are not creatable units. `.luma/PROJECT.md` is
-// type `luma/project`, and `corpus.Units` is what can be *created*. Scoping
-// those verbs to a noun would strand every such record.
+// `show` and `set` are deliberately absent. They reach records that are not
+// creatable units --- `.luma/PROJECT.md` is type `luma/project`, and
+// `corpus.Units` is what can be *created* --- so scoping them to a noun would
+// strand every such record. They keep their top-level form until that is
+// settled. See the work item's task, "Decide where cross-type listing lives".
 //
-// That is the same open question as cross-type listing, so all three keep
-// their top-level form until it is settled --- two ways to reach one record is
-// a worse state than one inconsistency. See the work item's task, "Decide
-// where cross-type listing lives".
+// `list` is here as well as at the top level, and the two are not duplicates.
+// The top-level one reads every type, including those same unreachable
+// records; this one is that command narrowed, the way `git log <path>` narrows
+// `git log`. What went is the redundant path --- `list <unit>` as a positional
+// argument, which said the same thing twice.
 
 // nounHelp is what each noun is for, shown in the root command's listing.
 var nounHelp = map[string]string{
@@ -49,6 +51,7 @@ func addNouns(root *cobra.Command, a *App) {
 			},
 		}
 		noun.AddCommand(newNewCommand(a, unit))
+		noun.AddCommand(newListCommand(a, unit))
 
 		switch unit {
 		case app.WorkItem:

@@ -83,7 +83,7 @@ func TestListJSONShape(t *testing.T) {
 
 func TestListFilteredJSONShape(t *testing.T) {
 	app := populated(t)
-	code, out, _ := run(t, app, "list", "outcome", "--json")
+	code, out, _ := run(t, app, "outcome", "list", "--json")
 	if code != ExitOK {
 		t.Fatalf("exit = %d", code)
 	}
@@ -235,5 +235,48 @@ func TestABareSlugStillResolves(t *testing.T) {
 	}
 	if !strings.Contains(out, "Add the queue") {
 		t.Errorf("resolved to the wrong record:\n%s", out)
+	}
+}
+
+// The most-used read command, and the one the noun-verb shape exists for.
+func TestANounListsItsOwnRecords(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+
+	code, out, errOut := run(t, app, "work-item", "list")
+	if code != ExitOK {
+		t.Fatalf("exit = %d: %s", code, errOut)
+	}
+	if !strings.Contains(out, "Payments v2") {
+		t.Errorf("work-item list did not list the work item:\n%s", out)
+	}
+	if strings.Contains(out, "The queue drains") {
+		t.Errorf("work-item list included an outcome:\n%s", out)
+	}
+}
+
+// The top-level listing spans types; a noun's listing does not.
+func TestTheTopLevelListingSpansTypes(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+
+	code, out, errOut := run(t, app, "list")
+	if code != ExitOK {
+		t.Fatalf("exit = %d: %s", code, errOut)
+	}
+	for _, want := range []string{"Payments v2", "The queue drains"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("the top-level listing missed %q:\n%s", want, out)
+		}
+	}
+}
+
+// The redundant path is gone: a record type is never a positional argument.
+func TestListDoesNotTakeAUnitPositionally(t *testing.T) {
+	app, _ := initialized(t)
+	if code, _, _ := run(t, app, "list", "work-item"); code != ExitUsage {
+		t.Errorf("exit = %d, want %d --- `list work-item` said the same thing twice", code, ExitUsage)
 	}
 }

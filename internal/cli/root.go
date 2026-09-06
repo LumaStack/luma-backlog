@@ -121,12 +121,12 @@ func newRootCommand(app *App) *cobra.Command {
 	root.AddCommand(newInitCommand(app))
 	addNouns(root, app)
 
-	// Top-level while the cross-type question is unsettled --- see nouns.go.
-	// These three reach records that are not creatable units, so they have no
-	// noun to sit under yet.
+	// show and set are top-level while the cross-type question is unsettled;
+	// list is top-level permanently, for the records no noun can reach.
+	// See nouns.go.
 	root.AddCommand(newShowCommand(app))
 	root.AddCommand(newSetCommand(app))
-	root.AddCommand(newListCommand(app))
+	root.AddCommand(newListCommand(app, ""))
 
 	return root
 }

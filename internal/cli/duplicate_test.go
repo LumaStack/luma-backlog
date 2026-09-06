@@ -81,7 +81,7 @@ func TestAFilteredListingStillSeesADuplicate(t *testing.T) {
 	app, project := twoWorkItems(t)
 	collide(t, project, "search-relevance", "WORK-0001")
 
-	_, _, errOut := run(t, app, "list", "outcome")
+	_, _, errOut := run(t, app, "outcome", "list")
 	if !strings.Contains(errOut, "WORK-0001") {
 		t.Errorf("a listing that excludes work items missed the duplicate:\n%q", errOut)
 	}

@@ -211,7 +211,7 @@ func TestAskingTwiceForADecisionDoesNotBurnANumber(t *testing.T) {
 	if code, _, _ := run(t, app, "decision", "new", "Something else", "--project"); code != ExitOK {
 		t.Fatal("third create failed")
 	}
-	_, out, _ = run(t, app, "list", "decision")
+	_, out, _ = run(t, app, "decision", "list")
 	if strings.Contains(out, "ADR-0003") {
 		t.Errorf("a number was burned by the repeated ask:\n%s", out)
 	}
