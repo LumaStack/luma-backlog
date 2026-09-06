@@ -104,12 +104,21 @@ furniture.
 **Risks is omitted when there are none.** A manufactured concern costs more than
 the section is worth and teaches a reader to skip it.
 
-**Next picks is one to five, ranked, a clause each.** Not a plan --- a menu
-somebody can act on without reading twice.
+**Next picks is one to five alternatives, ranked, a clause each.** Not a plan
+--- a menu somebody can act on without reading twice. **The recommendation is
+not among them.**
 
-**The recommendation is one of them, named again, with the reason it beat the others.**
-Do not introduce something that was not on the menu. **Say what would change
-it** when something obvious would, usually a decision nobody has made.
+**The recommendation is not repeated in the menu.** The menu holds what you
+would do *instead*; the recommendation holds what you would do. Listing the pick
+twice spends a line saying nothing --- a reader who has read one has read the
+other.
+
+**It does not have to come from the menu at all.** Sometimes the right answer is
+none of the options, and forcing it into the list first, so it can be pulled out
+again, is ceremony.
+
+**Say what would change it** when something obvious would, usually a decision
+nobody has made.
 
 **Recommend nothing when nothing is right**, and say why. An empty
 recommendation with a reason is worth more than a filled one without.

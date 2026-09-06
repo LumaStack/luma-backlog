@@ -181,19 +181,19 @@ come from a template.
 >
 > ### Next picks, then one recommendation
 >
-> 1. **Push and open both PRs** --- the work is done and the risk is that it is
->    in one place.
-> 2. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
+> 1. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
 >    the record understates itself until then.
-> 3. **Split WORK-0031** --- the reshape is finished; the open tasks are a
+> 2. **Split WORK-0031** --- the reshape is finished; the open tasks are a
 >    different work item wearing its name.
+> 3. **Move one thing to `todo`** --- so the second gate has been used once and
+>    this report has something to say.
 >
 > ## Recommendation
 >
-> **Push and open both PRs.** Everything else on the list is work; this is the
-> only item that reduces risk rather than adding to it, and it is ten minutes.
-> If you would rather keep building, 3 comes first --- deciding what WORK-0031
-> *is* determines which task is next.
+> **Push and open both PRs.** Everything on the menu is more work; this is the
+> only thing that reduces risk rather than adding to it, and it is ten minutes.
+> If you would rather keep building, take 2 --- deciding what WORK-0031 *is*
+> determines which task is next.
 
 **What that example is doing**, since the shape is easy to copy and the
 substance is not:
@@ -204,7 +204,9 @@ substance is not:
   --- each one is checkable.
 - **One risk is not about the backlog at all.** Unpushed work is the kind of
   thing a report that only reads records will always miss.
-- **The menu is ranked on consequence**, not on effort, and the pick names the
-  reason it beat the rest rather than restating its clause.
+- **The menu is ranked on consequence**, not on effort.
+- **The pick is not on the menu.** It is a different kind of thing from the
+  three below it --- they are all more work, it is the one that reduces risk ---
+  and repeating it would have cost a line to say nothing.
 - **Nothing is offered as work that has not been selected.** WORK-0031 appears
   as a preparation candidate and in the recommendations --- never as *next*.
