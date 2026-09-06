@@ -96,6 +96,89 @@ any one alone is misleading --- a work item with every task closed and an
 unverified outcome is **not done**, and a work item with no tasks may be
 perfectly healthy.
 
+## The layout
+
+**Use this shape every time.** A view that is arranged differently on each
+reading cannot be scanned --- the value of a fixed layout is that the eye learns
+where things are and stops reading the parts it does not need.
+
+Two halves, separated by a rule: **the record**, then **what you noticed**.
+Everything above the rule is what the corpus says; everything below it is yours.
+A reader must be able to tell them apart without being told.
+
+> ## WORK-0031 · Reshape the command surface
+>
+> `prepared` · `change` · stage `draft`
+>
+> The specification and the binary disagree, and the specification won.
+>
+> ### Outcomes (4) --- none verified
+>
+> ○ Every command is noun then verb
+> ○ A record is addressed by the path a person would type
+>
+> ### Tasks (22) --- 9 done, 13 open
+>
+> ○ Accept a positional title on work-item new
+> ○ Add outcome assert and outcome archive
+> ◐ Carry completion counts in the read path
+> ✓ Build the noun-verb command tree
+> ✓ Compute a rank by bisecting between neighbors
+>
+> ### Journal
+>
+> 59 lines. Newest entry 2026-09-06:
+> > help presentation follows gh, recorded on ADR-0006 rather than as a new
+> > decision
+>
+> ---
+>
+> ### What I notice
+>
+> Still `prepared` while nine tasks are closed…
+>
+> ```
+> luma-backlog show WORK-0031
+> luma-backlog task list -w WORK-0031-reshape-the-command-surface
+> ```
+
+**The rules the shape depends on:**
+
+- **Key and title in the heading**, joined by `·`. The key so it can be typed,
+  the title so it is recognisable.
+- **Status, kind and stage on one line**, in that order, status first because it
+  is the one anybody came for. `stage` is labelled because it is the field most
+  often confused with status.
+- **The description as prose**, on its own line, unquoted. It is the record's own
+  sentence and should read as one.
+- **A mark carries the state, not a column.**
+
+  | | means |
+  | --- | --- |
+  | `✓` | closed, or an outcome that is passing |
+  | `◐` | in progress |
+  | `○` | not started, or an outcome nobody has verified |
+
+  The mark replaces a status column: three symbols in a fixed first position
+  scan in one pass, where a word per row has to be read. It also puts outcomes
+  and tasks in the same visual language, which is what lets somebody see at a
+  glance that every task is `✓` and every outcome is `○` --- the state worth
+  noticing most, and the one a grouped list hides.
+
+- **One list each, unstarted first, finished last.** Not grouped under Open and
+  Closed headings: the mark already says which, and grouping buries the ordering
+  that matters within each.
+- **The heading carries the tally** --- *Tasks (22) --- 9 done, 13 open* --- so
+  the counts are read once rather than by counting rows.
+- **The journal as a count and the newest entry's first line**, quoted. Never the
+  whole file; it is the longest thing here and the least often wanted whole.
+- **A `---` rule before anything you thought.** Above it is the corpus; below it
+  is you.
+- **The commands last**, after everything.
+
+**A section with nothing in it is omitted, not printed empty** --- except the
+counts in a heading, where a zero is information.
+
 ## What each one tells you
 
 **The record** — `workflow_status` says where it sits on the ladder; `kind` says
@@ -116,7 +199,12 @@ suspicion.
 what surprised somebody. **Everything below the newest entry is historical.**
 Read the top block properly and skim the rest; the file is built so you can.
 
-## Saying where it stands
+## Below the rule: what you noticed
+
+**This is the half that earns the reading.** The record above is transcription;
+this is the part a person could not get by running the commands themselves.
+
+### Saying where it stands
 
 **Lead with the honest state, not the field.** *"Prepared, but three of four
 outcomes have no `verify_by`"* is the answer. `workflow_status: prepared` is the
@@ -134,7 +222,7 @@ catching:
 - `prepared` with no outcomes — nothing can tell when this is finished.
 - Tasks that assume a decision nobody wrote down.
 
-## Saying what would move it along
+### Saying what would move it along
 
 **One next step, not a plan.** The question behind the question is almost always
 *what do I do now*, and a list of five things is an answer nobody acts on.
