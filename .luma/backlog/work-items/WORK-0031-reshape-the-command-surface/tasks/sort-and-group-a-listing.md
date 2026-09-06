@@ -21,14 +21,25 @@ listing that does not follow it is not a backlog.
 - `--group status` renders under headings rather than as one run. The columns
   configuration already maps statuses to board columns, so grouping should use
   it rather than inventing a second grouping.
-- **`--reverse`**, for reading a long listing from the tail. **Explicit, never
-  the default** --- see below. Settled: `-r, --reverse` is the GNU convention
-  (`sort`, `ls`) and `git log` uses the long form.
+- **Direction is part of the sort key**, prefixed with `-`, as `git branch`
+  and `git for-each-ref` do it: `--sort=-updated`. **Never a default** --- a
+  terminal listing is not reversed unless asked.
 
-  **Not `--sort=-updated`.** `git branch` encodes direction by prefixing the
-  key with `-`, and takes the option repeatedly for multi-key sorts. That shape
-  earns its complexity where people build orderings; with three keys and one
-  direction it buys nothing and reads worse.
+  **Not a separate `--reverse`.** Two flags to express one ordering is the
+  weaker model: `--sort=updated --reverse` says in two places what
+  `--sort=-updated` says in one, and direction is a property of the sort rather
+  than a thing of its own. It also extends to multi-key ordering later without
+  a second mechanism.
+
+  Costs, accepted: reversing the default means naming it (`--sort=-rank`)
+  rather than saying `--reverse`; and the convention has to be taught in the
+  help text, where `--reverse` would explain itself.
+
+  **A parsing objection was raised and is false.** `--sort -updated` was
+  expected to be read as flags rather than a value. It is not --- pflag takes
+  the next argument as the value whether or not it starts with a dash, and both
+  spellings work. Recorded because it was nearly the reason to choose
+  differently.
 
 ## Why reversing by default was rejected
 
