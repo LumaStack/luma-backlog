@@ -8,3 +8,4 @@
 ## ▶ 2026-09-06
 
 two learnings with different readers — one about the work, found by reading its journal, and one about the system, which nobody finds by reading thirty journals
+ships as a procedure step and nothing in the binary — the bootstrap order says lead with the skill, and running it as prose first is what shows whether it is an invariant prose cannot hold

@@ -17,12 +17,25 @@ leave a paper trail** — so it can be evaluated later, so we can work out what
 went wrong, and so we can see how the system needs to improve. Among other
 things.
 
+**For now the command does nothing.** The model should do its best, and tool
+support comes later.
+
 ---
 
 *Everything above is the maintainer's, with wording improved and intent
 unchanged. Everything below was added by the agent while capturing it.*
 
 ## Added while capturing
+
+**That sequencing is this project's stated bootstrap order.** `CLAUDE.md`: *lead
+with a skill, backfill the command, then rewrite the skill to call it* — the
+skill ends up holding *when and why*, and the command holds *how*. So the first
+delivery here is a procedure step and nothing in the binary.
+
+**It also names what would promote it.** Not friction alone, since a lone
+maintainer produces none, but **divergence** (the same instruction to two agents,
+diffed) or **an invariant prose cannot hold**. Whether journalling at close is
+the second is exactly what running it as prose first will show.
 
 **This is the *Learn* step, and the first release cut it.**
 `docs/design/vision.md` lists it among the Execute use paths — *"What did we
@@ -53,13 +66,19 @@ condition may already half-cover it.
 
 | | |
 | --- | --- |
-| **A procedure step** | Cheapest, and prose-only — which `CLAUDE.md` says measures far below what a guarantee needs. |
+| **A procedure step** | **What ships first.** Prose-only, which `CLAUDE.md` says measures far below a guarantee — and the whole point of leading with it is finding out whether that matters here. |
 | **A condition** — closed with nothing journalled since work began | Fits §5.2 exactly, reports rather than refuses, and needs no new field. |
 | **A flag on close** — `--learned "…"` writing a journal line as part of closing | One invocation. §5.5's own argument applies: *friction at the moment of writing is what loses the learning.* |
 | **A record type** | Heaviest. Probably where a systemic learning wants to live, and probably not where a per-work-item one does. |
 
 The flag and the condition are complementary rather than alternatives: one makes
 it cheap, the other makes its absence visible.
+
+## Related
+
+[[backlog/work-items/WORK-0029-separate-quick-capture-from-thoughtful-capture]]
+scopes the rest of the skill updates out of itself and says they should be
+captured separately. This is one of them.
 
 ## Constraints
 
