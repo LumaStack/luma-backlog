@@ -8,6 +8,13 @@ verify_by:
 work_item: '[[work-items/WORK-0018-extract-the-application-layer]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T14:40:00Z'}
+verified:
+  - at: "2026-09-06T14:14:02Z"
+    by: human:warden
+evidence:
+  - at: "2026-09-06T14:14:02Z"
+    by: human:warden
+    what: 'PR #66; testdata unchanged'
 ---
 
 # Behavior did not change
