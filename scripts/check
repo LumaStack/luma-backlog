@@ -5,7 +5,7 @@
 # commands, so the two cannot drift. Adding a check here adds it to CI.
 set -e
 
-root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root"
 
 run() {

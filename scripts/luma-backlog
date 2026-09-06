@@ -22,7 +22,7 @@ while [ -L "$self" ]; do
 	esac
 done
 
-root=$(CDPATH= cd -- "$(dirname -- "$self")/.." && pwd)
+root=$(CDPATH='' cd -- "$(dirname -- "$self")/.." && pwd)
 bin="${TMPDIR:-/tmp}/luma-backlog-dev"
 go build -C "$root" -o "$bin" ./cmd/luma-backlog
 exec "$bin" "$@"
