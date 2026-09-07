@@ -137,6 +137,16 @@ this is the part a person could not get by running the commands themselves.
 outcomes have no `verify_by`"* is the answer. `workflow_status: prepared` is the
 field, and repeating it back is not a reading.
 
+**Never say an outcome is provable without running its `verify_by`.** Saying
+*"two of these could be verified now"* is itself a claim about the world, and it
+needs the same evidence the verification would. Read the checks; a work item
+with every task closed routinely has outcomes that fail on a check nobody
+opened.
+
+**Do not report progress from task counts.** Nine of twenty-three closed says
+what was worked on. It says nothing about whether anything is done, and
+substituting one for the other is exactly what outcomes exist to prevent.
+
 **Name the gap between the record and reality.** These are the ones worth
 catching:
 
