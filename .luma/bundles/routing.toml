@@ -14,6 +14,14 @@ on_violation = "allow"
 matches = ["eager"]
 
 [[rule]]
+bundle = "local/backlog"
+document = "policy/when-a-work-item-splits"
+title = "When a work item splits"
+path = ".luma/bundles/local/backlog/policy/when-a-work-item-splits.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/backlog-ideas"
 document = "policy/capturing-ideas"
 title = "What is worth capturing"

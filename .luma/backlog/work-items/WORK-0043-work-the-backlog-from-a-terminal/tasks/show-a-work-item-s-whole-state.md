@@ -1,7 +1,7 @@
 ---
 type: task
 title: Show a work item's whole state
-work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
+work_item: '[[work-items/WORK-0043-work-the-backlog-from-a-terminal]]'
 workflow_status: todo
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T22:00:00Z'}

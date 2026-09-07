@@ -5,6 +5,14 @@
 
 ---
 
+## ▶ 2026-09-07
+
+split at 23 tasks — five reading tasks went to WORK-0043 and rank repair to WORK-0022; what stays is shapes a decision already settled, what left was found by writing the procedures
+the test that separated them: does a record say what this should look like? the reshape tasks all cite an ADR or this index; the five that left cite nothing because nobody had tried reading a backlog from a terminal before the procedures did
+the rule for splitting is mostly not about splitting — three of the four reasons tasks keep arriving are defects in the outcomes, each already a condition in spec 5.2, and each fixed by editing one outcome
+revising an outcome is not a smell: lifecycle 2.8 has a Redefine phase and work-item.drifted fires when work happens and no outcome is verified or revised — what is a smell is expansion at every boundary without governance
+an outcome that can never be finally true is a standing condition in the wrong place, not a bad outcome — spec 5.2 is where those belong, and moving it beats splitting the work item around it
+
 ## ▶ 2026-09-06
 
 help presentation follows gh, recorded on ADR-0006 rather than as a new decision — the record already holds the choices clig.dev leaves open, and this is one

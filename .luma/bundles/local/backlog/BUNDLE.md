@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.14.0
+version: 0.15.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -40,6 +40,9 @@ they need.
 - [[showing-records]] — how a record is rendered anywhere: the state marks, the
   shape of a list, and showing the command that produced it. Shared, so two
   procedures cannot drift apart.
+- [[when-a-work-item-splits]] — what to do when tasks keep arriving. Growth is
+  the measurement that says look; three of the four things it can mean are fixed
+  by editing an outcome.
 
 **Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
 
@@ -62,6 +65,27 @@ judgment and calls the command for everything else.
 - [[backlog-next]] — picks the next thing to work on, and says why.
 
 ## Version
+
+`0.15.0` — **adds [[when-a-work-item-splits]].**
+
+A work item grew from nine tasks to twenty-three and got split, and nothing said
+when that was the right call. The obvious rule — *split when a task advances no
+outcome* — turns out to be naive: an outcome can be unbounded, in which case
+tasks arrive forever and splitting produces two work items that also never
+close; and adding an outcome can *narrow* the work rather than expand it.
+
+Sustained growth is a failure of something — a work item that keeps gaining
+tasks will never close, which is arithmetic. What growth does not say is which
+failure, and that is the whole content.
+
+So the policy is mostly not about splitting. Three of the four reasons tasks
+keep arriving are defects in the outcomes, each already named as a condition in
+`spec.md` §5.2, and each fixed by editing one outcome. Splitting is what is left.
+
+It also corrects a thing worth having straight: **the model expects outcomes to
+change.** `lifecycle.md` §2.8 has a phase for it, and `work-item.drifted` fires
+when work happens and no outcome is verified or revised. Revising an outcome is
+not a smell; never revising one while tasks pile up is.
 
 `0.14.0` — **the output shapes are templates.**
 

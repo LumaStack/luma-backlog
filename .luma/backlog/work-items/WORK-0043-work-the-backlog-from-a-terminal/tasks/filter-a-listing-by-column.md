@@ -1,7 +1,7 @@
 ---
 type: task
 title: Filter a listing by column
-work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
+work_item: '[[work-items/WORK-0043-work-the-backlog-from-a-terminal]]'
 workflow_status: todo
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T22:00:00Z'}
