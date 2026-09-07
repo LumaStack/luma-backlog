@@ -5,6 +5,11 @@
 
 ---
 
+## ▶ 2026-09-07
+
+split at 23 tasks — five reading tasks went to WORK-0043 and rank repair to WORK-0022; what stays is shapes a decision already settled, what left was found by writing the procedures
+the test that separated them: does a record say what this should look like? the reshape tasks all cite an ADR or this index; the five that left cite nothing because nobody had tried reading a backlog from a terminal before the procedures did
+
 ## ▶ 2026-09-06
 
 help presentation follows gh, recorded on ADR-0006 rather than as a new decision — the record already holds the choices clig.dev leaves open, and this is one

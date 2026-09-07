@@ -51,6 +51,28 @@ one that refuses; `show` and `list` carry it as counts (`spec.md` §9.3).
 
 **Six exit codes, not seven.** `6` stays reserved until taking ships (ADR-0006).
 
+## Split out, and why
+
+**[[work-items/WORK-0043-work-the-backlog-from-a-terminal]]** took five tasks:
+showing a work item's whole state, filtering by column, sorting and grouping,
+paging, and colouring the marks.
+
+**None of them was settled anywhere.** This work item reshapes commands whose
+shape a decision already fixed; those five were found by writing the procedures
+and discovering the reading commands were too thin to write against. They are
+`spec.md` §11.2's views arriving in the terminal, which is a different piece of
+work with a different argument.
+
+**[[work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]]** took
+`rank repair`. It is ADR-0005's third mechanism, and what it repairs is drift
+caused by editing the status vocabulary --- which is that work item's subject
+rather than this one's.
+
+**This work item began with nine tasks and reached twenty-three**, eleven of
+them discovered by doing it. That is the reshape working as intended and also
+the reason to split: a work item that absorbs everything found while doing it
+never closes.
+
 ## Out of scope
 
 **The board.** This is the surface it will be built against, not the board
