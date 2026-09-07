@@ -5,6 +5,11 @@ description: What to do when tasks keep arriving — how to tell growth from spr
 matches: eager
 ---
 
+> This document started as when and how to split work items and it grew
+> into something larger, we should review it later and figure out how
+> to move the policy that's specific to splitting from the policy that's
+> general and universal.
+
 # When a work item splits
 
 **Sustained task growth is a failure of something.** A work item that keeps 
