@@ -1,7 +1,7 @@
 ---
 type: task
 title: Report a task that advances nothing
-work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
+work_item: '[[work-items/WORK-0046-evaluate-the-conditions-the-tool-names]]'
 workflow_status: todo
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T00:30:00Z'}
@@ -36,10 +36,12 @@ currently done by reading.
   choice rather than assumed.
 - Nothing here changes a record. Detection only; repair is a person's.
 
-## Why it is on this work item
+## Why it moved here
 
-It is a command reading the corpus, which is this surface. The policy it serves
-belongs to how the backlog is worked, but the condition belongs to the tool.
+Written on the reshape because it is a command reading the corpus. It belongs to
+`check` --- these four are a subset of the ten conditions §5.2 names, and
+implementing four of ten as a side effect of a different work item would leave
+six with no home and no consistent shape.
 
 ## Verified by
 
