@@ -17,6 +17,9 @@ every-command-is-noun-then-verb fails on two checks, both for the same reason: s
 a-record-is-addressed-by-the-path fails on emission, which is known, and on placement — scoped() went into internal/corpus because Resolve was already there, but the outcome says internal/app so every surface gets the same forms; that was decided by convenience and never noticed
 this is work-item.drifted in the flesh — work happened, no outcome was verified or revised, and progress was reported from task counts; the condition that would have caught it is the one written as a task in the same session
 the lesson is narrow and mechanical: an outcome is not provable until its verify_by has been run, and saying it is provable is itself a claim that needs the same evidence — read verify_by before reporting on an outcome, not after
+redefined every-command-is-noun-then-verb: the old check asserted over every universal verb, a set nobody had settled, so no amount of building could satisfy it — a whitelist of required pairs is closed and cannot grow silently as verbs are added
+six of ADR-0006's seven verb-only commands do not exist, so the old check demanded work this item never owed; each now has its own work item and three of them are inquiries because whether they should exist is genuinely open
+the procedures were written during this work item's session and are not its work — they are WORK-0050's, and having no work item of their own for a whole session is why nobody noticed most were never reviewed
 
 ## ▶ 2026-09-06
 
