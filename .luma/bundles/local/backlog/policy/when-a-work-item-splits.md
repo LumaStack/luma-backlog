@@ -100,9 +100,9 @@ anything.
 ## Check when the task is written, not in a review
 
 **Ask at creation: which outcome does this advance?** It costs one question, and
-the answer is the whole diagnosis above. Finding it in a review three weeks
-later means archaeology --- reconstructing why each task exists from records
-written by somebody who already knew.
+the answer is the whole diagnosis above. Finding it sessions later means
+archaeology --- reconstructing why each task exists from records written by
+somebody who already knew.
 
 ## The cost nobody counts
 
@@ -125,14 +125,25 @@ not say *split*. Twenty tasks spanning three definitions of done is a
 split. Twenty tasks against one unbounded outcome is a bounding problem
 and splitting it produces two work items that also never close.
 
-**Rate is the sharper number.** Nine to twenty in a day is a strong signal
-where nine to twenty over a quarter is a work item being worked. Ask what
-arrived since the last outcome moved --- if the answer is *everything*, that is
-`work-item.drifted` and not a scoping question at all.
+**Rate is the sharper number, and the unit is the session.** Not the calendar
+--- a work item here may be created, worked and closed inside one session, and
+several may be. **Count sessions, not elapsed time**, and every threshold below
+holds whether a session ran twenty minutes or all evening.
 
-**Age on its own is weak.** A long-lived work item may be large and healthy. Age
-*with* no outcome ever verified is the same drift signal wearing a different
-face.
+| | reads as |
+| --- | --- |
+| doubling **early in a session** | discovery. Expected, and the work being understood. |
+| still arriving **late in the same session**, after the work is understood | one of the four causes. Diagnose it. |
+| still arriving **in a third session** | not discovery any more. Something is unbounded or undefined. |
+
+**Ask what arrived since the last outcome moved.** It is clock-free, it is the
+sharpest form of the question, and it stays right whoever is working --- if the
+answer is *everything*, that is `work-item.drifted` and not a scoping question
+at all.
+
+**Untouched across sessions is a signal here**, where in a human backlog it
+would be noise. Sessions are frequent; a work item nobody has opened in several
+is either finished and unclosed, or blocked on something nobody wrote down.
 
 **Discomfort is worth investigating and is never the reason.** Run the
 diagnosis. The feeling is usually one of the first three causes, and none of
@@ -145,13 +156,35 @@ severed journal. Early costs a work item that cannot say what done means, which
 never recovers --- and every later reader inherits the confusion about what the
 thing was for.
 
-## Reminders when splitting
+## Journal the split, so it can be judged later
 
-- Remember to journal information that will help retro the split later
-  - What happened that made us notice or fail to notice?
-  - What actions did we take? 
-  - What got split or fixed? 
-  - What actions made things better or worse?
-  - What shouls we have done differently?
-  - How did that work out and what can we learn from this going forward?
-  
+**A split is a decision made under uncertainty, and nothing else records it.**
+Git says which files moved; only the journal can say why, and whether it was
+right. Write it on **both** work items --- the one that stayed and the one that
+was created --- because a reader arriving at either should not have to find the
+other to understand what happened.
+
+Answer what a retro would ask:
+
+- **What made us notice, and why not sooner?** The lag is the useful part. If a
+  work item was sprawling for two sessions before anybody looked, the signal
+  existed and nothing surfaced it.
+- **Which of the four causes was it?** Name it. A split recorded as *it got big*
+  teaches nothing; *the outcome had no edge* teaches the next diagnosis.
+- **What actually moved**, and what stayed, and the test that separated them.
+- **What we tried first.** A bounding outcome that did not hold, a rewritten
+  `verify_by` that did not stop the flow --- the attempts that failed are the
+  half that is otherwise lost.
+- **What we would do differently**, and **what would tell us sooner.** These are
+  the two that pay: one improves the next split, the other means there may not
+  need to be one.
+
+**Come back to it.** A split is a prediction --- that these are two things ---
+and it is falsifiable. If both halves closed cleanly, say so on the next visit.
+If one absorbed the other's work anyway, that is worth more than the original
+entry, and it is the only way this policy improves.
+
+**Journal lines do not move with the tasks.** Copy the ones the new work item
+needs and link back; `spec.md` §4.8.1 --- *promotion copies, it never moves*.
+Measured on the split that produced this policy: the parent kept sixty-eight
+lines and the new work item began with six, all of them the file's own header.
