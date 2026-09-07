@@ -40,8 +40,9 @@ they need.
 - [[showing-records]] — how a record is rendered anywhere: the state marks, the
   shape of a list, and showing the command that produced it. Shared, so two
   procedures cannot drift apart.
-- [[when-a-work-item-splits]] — what to do when tasks keep arriving. Mostly
-  about fixing the outcomes; splitting is the last move.
+- [[when-a-work-item-splits]] — what to do when tasks keep arriving. Growth is
+  the measurement that says look; three of the four things it can mean are fixed
+  by editing an outcome.
 
 **Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
 
@@ -70,8 +71,12 @@ judgment and calls the command for everything else.
 A work item grew from nine tasks to twenty-three and got split, and nothing said
 when that was the right call. The obvious rule — *split when a task advances no
 outcome* — turns out to be naive: an outcome can be unbounded, in which case
-tasks arrive forever and nothing is wrong with the scope; and adding an outcome
-can *narrow* the work rather than expand it.
+tasks arrive forever and splitting produces two work items that also never
+close; and adding an outcome can *narrow* the work rather than expand it.
+
+Sustained growth is a failure of something — a work item that keeps gaining
+tasks will never close, which is arithmetic. What growth does not say is which
+failure, and that is the whole content.
 
 So the policy is mostly not about splitting. Three of the four reasons tasks
 keep arriving are defects in the outcomes, each already named as a condition in

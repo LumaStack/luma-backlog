@@ -7,17 +7,29 @@ matches: eager
 
 # When a work item splits
 
-**Tasks arriving is the work being understood.** A work item that never grows
-was either trivially scoped or nobody learned anything doing it. **Growth is not
-the problem and size is not the test.**
+**Sustained growth is a failure of something.** A work item that keeps gaining
+tasks will never close --- that is arithmetic, not judgment --- so growth is a
+measurement and it is the one that tells you to look.
 
-The test is what the tasks are *for*.
+**What it does not tell you is which failure.** Reaching straight for a split
+gets it wrong three times in four, because three of the four causes are defects
+in the outcomes and are fixed by editing one of them.
 
-## First, diagnose. Splitting is the last move, not the first
+**One burst of tasks is not growth.** Discovery is what doing the work is for,
+and a work item that never gains a task was trivially scoped or nobody learned
+anything. The signal is the *trend*: tasks still arriving after the work is
+understood, and no outcome closer than when it started.
 
-Sprawl reads like a scoping failure and usually is not. **Three of the four
-causes are fixed by editing one outcome**, and `spec.md` §5.2 already names all
-four as conditions.
+**Two different things grow, and they mean different things.**
+
+- **A work item gaining tasks** --- diagnose it, below.
+- **A task growing in size** --- that task failed. It was one task too big, and
+  splitting it is not a scoping decision, it is a correction. A task nobody
+  could start without asking a question was never worked out.
+
+## Diagnose before splitting
+
+`spec.md` §5.2 already names all four causes as conditions.
 
 ### The outcome has no edge
 
@@ -94,16 +106,25 @@ header.
 copies, it never moves* --- and link back. Losing the reasoning is a worse
 outcome than a work item that was slightly too big.
 
-## What are not tests
+## What size tells you, and what it does not
 
-**Size.** Twenty-three tasks is not wrong. Twenty-three tasks spanning three
-definitions of done is.
+**Count is a trigger, not a diagnosis.** Twenty-three tasks says *look*; it does
+not say *split*. Twenty-three tasks spanning three definitions of done is a
+split. Twenty-three tasks against one unbounded outcome is a bounding problem
+and splitting it produces two work items that also never close.
 
-**Age.** A long-lived work item may simply be large.
+**Rate is the sharper number.** Nine to twenty-three in a day is a strong signal
+where nine to twenty-three over a quarter is a work item being worked. Ask what
+arrived since the last outcome moved --- if the answer is *everything*, that is
+`work-item.drifted` and not a scoping question at all.
 
-**Discomfort.** *This feels sprawling* is worth investigating and is never
-itself the reason. Run the diagnosis; the feeling is usually one of the first
-three causes and none of them is a split.
+**Age on its own is weak.** A long-lived work item may be large and healthy. Age
+*with* no outcome ever verified is the same drift signal wearing a different
+face.
+
+**Discomfort is worth investigating and is never the reason.** Run the
+diagnosis. The feeling is usually one of the first three causes, and none of
+those is a split.
 
 ## The bias
 
