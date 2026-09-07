@@ -7,29 +7,41 @@ matches: eager
 
 # When a work item splits
 
-**Sustained growth is a failure of something.** A work item that keeps gaining
-tasks will never close --- that is arithmetic, not judgment --- so growth is a
-measurement and it is the one that tells you to look.
+**Sustained task growth is a failure of something.** A work item that keeps 
+gaining tasks will never close - that is arithmetic, not judgment - so task
+growth is a measurement and it is the one that tells you to look.
 
 **What it does not tell you is which failure.** Reaching straight for a split
 gets it wrong three times in four, because three of the four causes are defects
-in the outcomes and are fixed by editing one of them.
+in the outcomes and are fixed by editing outcome(s).
 
 **One burst of tasks is not growth.** Discovery is what doing the work is for,
 and a work item that never gains a task was trivially scoped or nobody learned
 anything. The signal is the *trend*: tasks still arriving after the work is
-understood, and no outcome closer than when it started.
+understood, or outcomes that are not advancing.
 
 **Two different things grow, and they mean different things.**
 
-- **A work item gaining tasks** --- diagnose it, below.
-- **A task growing in size** --- that task failed. It was one task too big, and
+- **A work item gaining tasks** - diagnose it, below.
+- **A task growing in size** - that task failed. It was one task too big, and
   splitting it is not a scoping decision, it is a correction. A task nobody
   could start without asking a question was never worked out.
 
 ## Diagnose before splitting
 
 `spec.md` §5.2 already names all four causes as conditions.
+
+┌──────────────────────────────────────┬───────────────────────┬──────────────────────────────────────────────────────┐
+│           what's wrong               │       condition       │                              fix                     │
+├──────────────────────────────────────┼───────────────────────┼──────────────────────────────────────────────────────┤
+│ outcome has no edge — "walk forever" │ —                     │ bound it, otherwise it's a standing condition (§5.2) │
+├──────────────────────────────────────┼───────────────────────┼──────────────────────────────────────────────────────┤
+│ nobody can tell what's left          │ outcome.unmeasured    │ improve verify_by; the task flow usually stops       │
+├──────────────────────────────────────┼───────────────────────┼──────────────────────────────────────────────────────┤
+│ work happened, outcomes untouche     │ work-item.drifted     │ Redefine — the definition has fallen behind          │
+├──────────────────────────────────────┼───────────────────────┼──────────────────────────────────────────────────────┤
+│ the task serves nothing here         │ task.advances-nothing │ write the missing outcome, or it belongs elsewhere   │
+└──────────────────────────────────────┴───────────────────────┴──────────────────────────────────────────────────────┘
 
 ### The outcome has no edge
 
@@ -108,13 +120,13 @@ outcome than a work item that was slightly too big.
 
 ## What size tells you, and what it does not
 
-**Count is a trigger, not a diagnosis.** Twenty-three tasks says *look*; it does
-not say *split*. Twenty-three tasks spanning three definitions of done is a
-split. Twenty-three tasks against one unbounded outcome is a bounding problem
+**Count is a trigger, not a diagnosis.** Twenty tasks says *look*; it does
+not say *split*. Twenty tasks spanning three definitions of done is a
+split. Twenty tasks against one unbounded outcome is a bounding problem
 and splitting it produces two work items that also never close.
 
-**Rate is the sharper number.** Nine to twenty-three in a day is a strong signal
-where nine to twenty-three over a quarter is a work item being worked. Ask what
+**Rate is the sharper number.** Nine to twenty in a day is a strong signal
+where nine to twenty over a quarter is a work item being worked. Ask what
 arrived since the last outcome moved --- if the answer is *everything*, that is
 `work-item.drifted` and not a scoping question at all.
 
@@ -132,3 +144,14 @@ those is a split.
 severed journal. Early costs a work item that cannot say what done means, which
 never recovers --- and every later reader inherits the confusion about what the
 thing was for.
+
+## Reminders when splitting
+
+- Remember to journal information that will help retro the split later
+  - What happened that made us notice or fail to notice?
+  - What actions did we take? 
+  - What got split or fixed? 
+  - What actions made things better or worse?
+  - What shouls we have done differently?
+  - How did that work out and what can we learn from this going forward?
+  
