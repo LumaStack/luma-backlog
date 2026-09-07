@@ -20,6 +20,8 @@ the lesson is narrow and mechanical: an outcome is not provable until its verify
 redefined every-command-is-noun-then-verb: the old check asserted over every universal verb, a set nobody had settled, so no amount of building could satisfy it — a whitelist of required pairs is closed and cannot grow silently as verbs are added
 six of ADR-0006's seven verb-only commands do not exist, so the old check demanded work this item never owed; each now has its own work item and three of them are inquiries because whether they should exist is genuinely open
 the procedures were written during this work item's session and are not its work — they are WORK-0050's, and having no work item of their own for a whole session is why nobody noticed most were never reviewed
+markdown facts that shaped every output design here and are easy to rediscover the hard way: ## and ### render identically in a terminal so heading level divides nothing; leading spaces collapse and four become a code block, so indentation needs a list or literal box-drawing; emoji are double-width and break every column beside them
+the session ended with four findings noticed and never captured until asked — the config filename bug, show printing key twice, a record with two modified stamps, and the vendored bundle being three versions behind; noticing is not capturing, and the gap was invisible until somebody asked what would be lost
 
 ## ▶ 2026-09-06
 
