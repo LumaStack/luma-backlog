@@ -6,25 +6,11 @@
     "name": "WORK-0001-payments-v2",
     "slug": "WORK-0001-payments-v2",
     "title": "Payments v2",
+    "created": {
+      "by": "agent:test",
+      "at": "2026-08-09T12:00:00Z"
+    },
     "status": "captured",
-    "work_item": "WORK-0001-payments-v2"
-  },
-  {
-    "path": "backlog/work-items/WORK-0001-payments-v2/outcomes/the-retry-queue-drains.md",
-    "type": "outcome",
-    "name": "the-retry-queue-drains",
-    "slug": "the-retry-queue-drains",
-    "title": "The retry queue drains",
-    "status": "unverified",
-    "work_item": "WORK-0001-payments-v2"
-  },
-  {
-    "path": "backlog/work-items/WORK-0001-payments-v2/tasks/add-the-retry-queue.md",
-    "type": "task",
-    "name": "add-the-retry-queue",
-    "slug": "add-the-retry-queue",
-    "title": "Add the retry queue",
-    "status": "todo",
     "work_item": "WORK-0001-payments-v2"
   },
   {
@@ -34,6 +20,10 @@
     "name": "WORK-0002-search-relevance",
     "slug": "WORK-0002-search-relevance",
     "title": "Search relevance",
+    "created": {
+      "by": "agent:test",
+      "at": "2026-08-09T12:00:00Z"
+    },
     "status": "captured",
     "work_item": "WORK-0002-search-relevance"
   }

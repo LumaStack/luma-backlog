@@ -54,7 +54,7 @@ func readRecord(t *testing.T, project, rel string) *record.Record {
 func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 	app, project := initialized(t)
 
-	code, out, errOut := run(t, app, "new", "work-item", "Payments v2")
+	code, out, errOut := run(t, app, "work-item", "new", "Payments v2")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -88,14 +88,14 @@ func TestNewWorkItemDerivesEverythingFromTheTitle(t *testing.T) {
 
 func TestNewIsIdempotentByName(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "work-item", "Payments v2")
+	run(t, app, "work-item", "new", "Payments v2")
 
 	path := filepath.Join(project, ".luma", wiPath(t, project, "payments-v2", "index.md"))
 	if err := os.WriteFile(path, []byte("---\ntype: work item\ntitle: Edited\n---\n\nmine\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
-	code, out, _ := run(t, app, "new", "work-item", "Payments v2")
+	code, out, _ := run(t, app, "work-item", "new", "Payments v2")
 	if code != ExitOK {
 		t.Fatalf("second create failed with %d", code)
 	}
@@ -112,9 +112,9 @@ func TestNewIsIdempotentByName(t *testing.T) {
 
 func TestNewOutcomeTakesItsWorkItemFromAFlag(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "work-item", "Payments v2")
+	run(t, app, "work-item", "new", "Payments v2")
 
-	code, _, errOut := run(t, app, "new", "outcome", "The queue drains", "-w", "payments-v2")
+	code, _, errOut := run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -136,14 +136,14 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	// of them would sit beside the real state and could disagree with it
 	// (docs/spec.md §4.4).
 	app, project := initialized(t)
-	run(t, app, "new", "work-item", "Payments v2")
+	run(t, app, "work-item", "new", "Payments v2")
 
 	for _, tc := range []struct{ unit, path string }{
 		{"outcome", wiPath(t, project, "payments-v2", "outcomes", "a-thing.md")},
 		{"decision", wiPath(t, project, "payments-v2", "decisions", "ADR-0001-a-thing.md")},
 		{"exploration", wiPath(t, project, "payments-v2", "explorations", "a-thing.md")},
 	} {
-		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, tc.unit, "new", "A thing", "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
 		}
 		if r := readRecord(t, project, tc.path); r.Has("workflow_status") {
@@ -152,7 +152,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	}
 
 	// A task is worked, so it does carry one.
-	run(t, app, "new", "task", "Do it", "-w", "payments-v2")
+	run(t, app, "task", "new", "Do it", "-w", "payments-v2")
 	if r := readRecord(t, project, wiPath(t, project, "payments-v2", "tasks", "do-it.md")); !r.Has("workflow_status") {
 		t.Error("a new task has no workflow_status")
 	}
@@ -160,12 +160,12 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 
 func TestNewTakesItsWorkItemFromTheWorkingDirectory(t *testing.T) {
 	app, project := initialized(t)
-	run(t, app, "new", "work-item", "Payments v2")
+	run(t, app, "work-item", "new", "Payments v2")
 
 	// Working inside a work item should not require naming it.
 	app.WorkingDir = filepath.Join(project, ".luma", "backlog/work-items", "payments-v2")
 
-	if code, _, e := run(t, app, "new", "task", "Add the queue"); code != ExitOK {
+	if code, _, e := run(t, app, "task", "new", "Add the queue"); code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, e)
 	}
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "tasks", "add-the-queue.md"))
@@ -176,7 +176,7 @@ func TestNewTakesItsWorkItemFromTheWorkingDirectory(t *testing.T) {
 
 func TestNewRefusesAFloatingOutcome(t *testing.T) {
 	app, _ := initialized(t)
-	code, _, errOut := run(t, app, "new", "outcome", "Floating")
+	code, _, errOut := run(t, app, "outcome", "new", "Floating")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -185,20 +185,92 @@ func TestNewRefusesAFloatingOutcome(t *testing.T) {
 	}
 }
 
-func TestNewRejectsAnUnknownUnit(t *testing.T) {
+// The record type used to be an argument, so an unknown one was a validation
+// error. It is now the command, so an unknown one is an unknown command ---
+// still exit 2, still naming what was typed, but refused before any argument
+// is parsed.
+func TestAnUnknownNounIsAnUnknownCommand(t *testing.T) {
 	app, _ := initialized(t)
-	code, _, errOut := run(t, app, "new", "sprint", "Something")
+	code, _, errOut := run(t, app, "sprint", "new", "Something")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
 	if !strings.Contains(errOut, "sprint") {
-		t.Errorf("error did not name the unit given:\n%s", errOut)
+		t.Errorf("error did not name what was typed:\n%s", errOut)
+	}
+}
+
+// Every noun carries the verbs the tree gives it, and nothing carries a verb
+// it has no business with. §9.2 divides these into universal and domain verbs;
+// this holds the division the tree actually builds.
+func TestEachNounCarriesItsOwnVerbs(t *testing.T) {
+	app, _ := initialized(t)
+	for _, tc := range []struct {
+		noun, verb string
+		want       int
+	}{
+		{"work-item", "new", ExitOK},
+		{"outcome", "new", ExitOK},
+		{"task", "new", ExitOK},
+		{"decision", "new", ExitOK},
+		{"exploration", "new", ExitOK},
+		{"work-item", "close", ExitOK},
+		{"outcome", "verify", ExitOK},
+		{"work-item", "journal", ExitOK},
+		// Domain verbs do not leak onto nouns they mean nothing for.
+		{"task", "close", ExitUsage},
+		{"task", "verify", ExitUsage},
+		{"decision", "close", ExitUsage},
+		{"outcome", "close", ExitUsage},
+		{"work-item", "verify", ExitUsage},
+	} {
+		// Asymmetric on purpose. A verb that exists needs --help, because
+		// invoking it bare fails on its missing arguments. A verb that does
+		// not exist must be probed *without* --help, since Cobra honors the
+		// help flag before it validates arguments --- `task close --help`
+		// prints task's help and exits 0 whether or not close is real.
+		args := []string{tc.noun, tc.verb}
+		if tc.want == ExitOK {
+			args = append(args, "--help")
+		}
+		code, _, errOut := run(t, app, args...)
+		if code != tc.want {
+			t.Errorf("%v: exit = %d, want %d\n%s", args, code, tc.want, errOut)
+		}
+	}
+}
+
+// --kind classifies a work item and --project states a decision's level.
+// Registering them only where they apply makes a wrong one a usage error at
+// the door rather than a validation error after parsing.
+func TestFlagsAreRegisteredOnlyOnTheNounsThatTakeThem(t *testing.T) {
+	app, _ := initialized(t)
+	for _, tc := range []struct {
+		noun, flag string
+		want       int
+	}{
+		{"work-item", "--kind", ExitOK},
+		{"decision", "--project", ExitOK},
+		{"task", "--kind", ExitUsage},
+		{"outcome", "--kind", ExitUsage},
+		{"work-item", "--project", ExitUsage},
+		{"task", "--project", ExitUsage},
+	} {
+		code, _, _ := run(t, app, tc.noun, "new", "--help")
+		if code != ExitOK {
+			t.Fatalf("%s new --help failed", tc.noun)
+		}
+		_, out, _ := run(t, app, tc.noun, "new", "--help")
+		has := strings.Contains(out, tc.flag)
+		if has != (tc.want == ExitOK) {
+			t.Errorf("%s new: %s present = %v, want %v", tc.noun, tc.flag, has, tc.want == ExitOK)
+		}
 	}
 }
 
 func TestNewNeedsABacklog(t *testing.T) {
 	app, _ := newApp(t) // no init
-	code, _, errOut := run(t, app, "new", "work-item", "Thing")
+	code, _, errOut := run(t, app, "work-item", "new", "Thing")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -211,8 +283,8 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 	app, project := initialized(t)
 	before := snapshot(t, project)
 
-	run(t, app, "new", "work-item", "Payments v2")
-	run(t, app, "new", "outcome", "The queue drains", "-w", "payments-v2")
+	run(t, app, "work-item", "new", "Payments v2")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
 
 	for path := range snapshot(t, project) {
 		if _, existed := before[path]; existed {

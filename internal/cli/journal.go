@@ -20,8 +20,8 @@ func newJournalCommand(a *App) *cobra.Command {
 			"friction at the moment of writing is what loses the learning.",
 		Args:         cobra.MaximumNArgs(1),
 		SilenceUsage: true,
-		Example: "  luma-backlog journal \"the ceiling must be symlink-resolved\"\n" +
-			"  luma-backlog journal -- \"--use-hold pins the source snapshot\"",
+		Example: "  luma-backlog work-item journal \"the ceiling must be symlink-resolved\"\n" +
+			"  luma-backlog work-item journal -- \"--use-hold pins the source snapshot\"",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			s, err := open(a)
 			if err != nil {
@@ -60,7 +60,7 @@ func newJournalCommand(a *App) *cobra.Command {
 	cmd.SetFlagErrorFunc(func(c *cobra.Command, err error) error {
 		if strings.HasPrefix(err.Error(), "unknown flag") {
 			return usageErr("%w\n\nIf that was the text and not a flag, put -- in front of it:\n"+
-				"  luma-backlog journal -- \"--your text here\"", err)
+				"  luma-backlog work-item journal -- \"--your text here\"", err)
 		}
 		return err
 	})

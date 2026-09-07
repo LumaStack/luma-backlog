@@ -5,6 +5,10 @@
     "name": "the-retry-queue-drains",
     "slug": "the-retry-queue-drains",
     "title": "The retry queue drains",
+    "created": {
+      "by": "agent:test",
+      "at": "2026-08-09T12:00:00Z"
+    },
     "status": "unverified",
     "work_item": "WORK-0001-payments-v2"
   }

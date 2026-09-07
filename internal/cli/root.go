@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/spf13/cobra"
@@ -77,22 +76,6 @@ func Run(app *App, args []string, stdin io.Reader, stdout, stderr io.Writer) int
 	return ExitOK
 }
 
-// defaultUsageLines is Cobra's own Usage: block, matched exactly so the
-// substitution below cannot silently do nothing when Cobra changes it.
-// TestUsageLineIsSingular fails loudly if this stops matching.
-const defaultUsageLines = "Usage:{{if .Runnable}}\n  {{.UseLine}}{{end}}" +
-	"{{if .HasAvailableSubCommands}}\n  {{.CommandPath}} [command]{{end}}"
-
-// singleUsageLine keys on subcommands rather than runnability, so a command
-// that has children shows one line and a leaf still shows its own arguments.
-const singleUsageLine = "Usage:{{if .HasAvailableSubCommands}}" +
-	"\n  {{.CommandPath}} [command] [flags]{{else}}\n  {{.UseLine}}{{end}}"
-
-// usageTemplate rewrites the Usage: block of Cobra's default template.
-func usageTemplate(def string) string {
-	return strings.Replace(def, defaultUsageLines, singleUsageLine, 1)
-}
-
 func newRootCommand(app *App) *cobra.Command {
 	root := &cobra.Command{
 		Use:     "luma-backlog",
@@ -113,18 +96,21 @@ func newRootCommand(app *App) *cobra.Command {
 			return cmd.Help()
 		},
 	}
-	// Cobra prints two usage lines for a root that both runs and has
-	// subcommands --- `luma-backlog [flags]` above `luma-backlog [command]`.
-	// Neither is what a person types. Collapse them to one.
-	root.SetUsageTemplate(usageTemplate(root.UsageTemplate()))
+	addGroups(root)
 
-	root.AddCommand(newInitCommand(app))
-	root.AddCommand(newNewCommand(app))
-	root.AddCommand(newShowCommand(app))
-	root.AddCommand(newListCommand(app))
-	root.AddCommand(newSetCommand(app))
-	root.AddCommand(newJournalCommand(app))
-	root.AddCommand(newVerifyCommand(app))
-	root.AddCommand(newCloseCommand(app))
+	root.AddCommand(inGroup(newInitCommand(app), groupExtra))
+	addNouns(root, app)
+
+	// show and set are top-level while the cross-type question is unsettled.
+	// See nouns.go.
+	root.AddCommand(inGroup(newShowCommand(app), groupCore))
+	root.AddCommand(inGroup(newSetCommand(app), groupCore))
+
+	// `list` is `work-item list`. The tool is called backlog; listing the
+	// backlog means listing work items, which is the reading of the command
+	// name and the overwhelmingly common case.
+	root.AddCommand(inGroup(newListCommand(app, backlogUnit), groupCore))
+
+	applyHelp(root)
 	return root
 }

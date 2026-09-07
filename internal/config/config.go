@@ -17,10 +17,10 @@ const FileName = "config/luma-corpus.yaml"
 
 // Config is the settings a repository declares.
 type Config struct {
-	LKFVersion     string              `yaml:"lkf_version"`
-	TypeNamespace  string              `yaml:"type_namespace"`
-	WorkflowStatus map[string][]string `yaml:"workflow_status"`
-	Columns        yaml.Node           `yaml:"columns"`
+	LKFVersion     string            `yaml:"lkf_version"`
+	TypeNamespace  string            `yaml:"type_namespace"`
+	WorkflowStatus map[string]Ladder `yaml:"workflow_status"`
+	Columns        yaml.Node         `yaml:"columns"`
 }
 
 // Default returns the built-in fallbacks.
@@ -37,9 +37,17 @@ func Default() Config {
 	return Config{
 		LKFVersion:    "0.0.2",
 		TypeNamespace: "luma/backlog",
-		WorkflowStatus: map[string][]string{
-			"work-item": {"captured", "unprepared", "preparing", "prepared", "todo", "in_progress", "closed"},
-			"task":      {"todo", "in_progress", "closed"},
+		// A status shared by two units carries the same ordinal in both, so a
+		// rank means the same thing whichever unit it is on. Deriving them per
+		// unit would give a task's `todo` a different ordinal from a work
+		// item's, and sorting raw ranks across units would interleave them
+		// wrongly --- which is the one thing the ordinal prefix exists to
+		// prevent (ADR-0005).
+		WorkflowStatus: map[string]Ladder{
+			"work-item": ladderAt(
+				"captured", 10, "unprepared", 20, "preparing", 30, "prepared", 40,
+				"todo", 50, "in_progress", 60, "closed", 70),
+			"task": ladderAt("todo", 50, "in_progress", 60, "closed", 70),
 		},
 		Columns: columns,
 	}
@@ -47,7 +55,9 @@ func Default() Config {
 
 const defaultColumns = `
 Captured:    [captured]
-Preparing:   [unprepared, preparing, prepared]
+Unprepared:  [unprepared]
+Preparing:   [preparing]
+Prepared:    [prepared]
 To Do:       [todo]
 In Progress: [in_progress]
 Closed:      [closed]
@@ -81,11 +91,17 @@ func Parse(data []byte) (Config, error) {
 // "captured", which is not merely odd — it would file it above the first
 // selection gate, among the things nobody has decided to do.
 func (c Config) StatusesFor(unit string) []string {
-	if s, ok := c.WorkflowStatus[unit]; ok && len(s) > 0 {
-		return s
+	return c.LadderFor(unit).Statuses
+}
+
+// LadderFor is StatusesFor with the ordinals kept, for callers that need to
+// order across statuses rather than only name them.
+func (c Config) LadderFor(unit string) Ladder {
+	if l, ok := c.WorkflowStatus[unit]; ok && len(l.Statuses) > 0 {
+		return l
 	}
-	if s, ok := c.WorkflowStatus["task"]; ok && len(s) > 0 {
-		return s
+	if l, ok := c.WorkflowStatus["task"]; ok && len(l.Statuses) > 0 {
+		return l
 	}
 	return c.WorkflowStatus["work-item"]
 }

@@ -19,15 +19,34 @@ type_namespace: luma/backlog   # records write short type names; this resolves t
 # Where the work is. A selection gate sits between captured and unprepared, and
 # another between prepared and todo — everything between them is preparation.
 # An absent status means the first value here.
+# The number is the status's ordinal, and it prefixes every rank at that
+# status, so sorting the rank field alone gives board order (ADR-0005). They
+# are spaced so a status can be inserted between two others without renumbering
+# --- renumbering rewrites the rank of every record at every status after it.
+#
+# A status shared by two units carries the same ordinal in both, so a rank
+# means the same thing whichever unit it is on.
 workflow_status:
-  work-item:   [captured, unprepared, preparing, prepared, todo, in_progress, closed]
-  task:        [todo, in_progress, closed]
+  work-item:
+    captured:    10
+    unprepared:  20
+    preparing:   30
+    prepared:    40
+    todo:        50
+    in_progress: 60
+    closed:      70
+  task:
+    todo:        50
+    in_progress: 60
+    closed:      70
 
 # Statuses grouped into board columns, so a precise vocabulary still renders as
 # a legible board.
 columns:
   Captured:    [captured]
-  Preparing:   [unprepared, preparing, prepared]
+  Unprepared:  [unprepared]
+  Preparing:   [preparing]
+  Prepared:    [prepared]
   To Do:       [todo]
   In Progress: [in_progress]
   Closed:      [closed]

@@ -9,3 +9,5 @@
 
 already needed three times and solved by hand each time — the unit rename, the username replacement, and everything WORK-0031 will change
 first live instance — two package renames left a closed work item's verify_by naming paths that no longer run, and there was no way to tell which records refer to a shape that moved
+no other repository uses the tool yet, so every corpus needing migration is this one — the machinery can be built and proven against records whose every value is understood, and that window closes on first use elsewhere rather than on a date
+the command surface rename is the first instance touching many records at once: delivered becomes completed, abandoned is dropped, rejected is added, and every closed record carries the old vocabulary

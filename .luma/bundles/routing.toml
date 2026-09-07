@@ -6,6 +6,14 @@
 # writes here.
 
 [[rule]]
+bundle = "local/backlog"
+document = "policy/showing-records"
+title = "Showing records"
+path = ".luma/bundles/local/backlog/policy/showing-records.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/backlog-ideas"
 document = "policy/capturing-ideas"
 title = "What is worth capturing"

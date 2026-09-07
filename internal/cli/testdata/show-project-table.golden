@@ -1,0 +1,7 @@
+Example
+───────
+
+path              PROJECT.md
+type              luma/project
+disclosure_level  public
+description       A project record, which has no workflow status.

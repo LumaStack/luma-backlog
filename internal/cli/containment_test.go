@@ -22,15 +22,15 @@ func TestNoCommandWritesOutsideTheBacklog(t *testing.T) {
 
 	for _, args := range [][]string{
 		{"init"},
-		{"new", "work-item", "Payments v2"},
-		{"new", "outcome", "The queue drains", "-w", "payments-v2"},
-		{"new", "task", "Add the queue", "-w", "payments-v2"},
-		{"new", "decision", "Use a queue", "-w", "payments-v2"},
-		{"new", "exploration", "Queue options", "-w", "payments-v2"},
+		{"work-item", "new", "Payments v2"},
+		{"outcome", "new", "The queue drains", "-w", "payments-v2"},
+		{"task", "new", "Add the queue", "-w", "payments-v2"},
+		{"decision", "new", "Use a queue", "-w", "payments-v2"},
+		{"exploration", "new", "Queue options", "-w", "payments-v2"},
 		{"set", "payments-v2", "workflow_status=in_progress"},
-		{"journal", "a line worth keeping"},
-		{"verify", "the-queue-drains", "-e", "ran it"},
-		{"close", "payments-v2", "-r", "delivered"},
+		{"work-item", "journal", "a line worth keeping"},
+		{"outcome", "verify", "the-queue-drains", "-e", "ran it"},
+		{"work-item", "close", "payments-v2", "-r", "delivered"},
 		{"list"},
 		{"show", "payments-v2"},
 	} {

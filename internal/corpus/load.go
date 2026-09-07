@@ -229,6 +229,9 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 	}
 	candidates := exact
 	if len(candidates) == 0 {
+		candidates = scoped(items, ref)
+	}
+	if len(candidates) == 0 {
 		candidates = prefix
 	}
 
@@ -245,4 +248,47 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		return Item{}, fmt.Errorf("%q matches more than one record:\n  %s",
 			ref, strings.Join(paths, "\n  "))
 	}
+}
+
+// scoped resolves a reference written the way a listing prints one ---
+// WORK-0031/tasks/add-the-queue --- where the leading segment names the work
+// item and the rest is the path beneath it. A person reading a path out of
+// output should be able to type it back in, and before this they could not:
+// the full on-disk path worked and nothing shorter did.
+//
+// The leading segment resolves by the same rules as any work item reference,
+// so a key, a name, or the slug half all work. The remainder is matched
+// against the path with and without the extension, since neither form is
+// wrong to type.
+func scoped(items []Item, ref string) []Item {
+	head, tail, ok := strings.Cut(ref, "/")
+	if !ok || head == "" || tail == "" {
+		return nil
+	}
+
+	var dir string
+	normalized := NormalizeKey(head)
+	normalizedName := NormalizeName(head)
+	for _, it := range items {
+		if it.Type() != WorkItem {
+			continue
+		}
+		if it.Key() == normalized || it.Name() == normalizedName ||
+			it.Slug() == head || SlugOf(it.Slug()) == head {
+			dir = path.Dir(it.Path)
+			break
+		}
+	}
+	if dir == "" {
+		return nil
+	}
+
+	want := path.Join(dir, tail)
+	var found []Item
+	for _, it := range items {
+		if it.Path == want || it.Path == want+".md" {
+			found = append(found, it)
+		}
+	}
+	return found
 }

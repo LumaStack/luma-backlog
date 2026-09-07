@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.11.0
+version: 0.14.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -35,14 +35,90 @@ they need.
 - `_types/outcome` — the condition that must hold for a work item to be done.
   True or false, never a task in disguise.
 
-**Procedures**
+**Policies**
 
-- [[backlog-new]] — scaffolds a record so every one is shaped the same way
-  regardless of which agent wrote it.
+- [[showing-records]] — how a record is rendered anywhere: the state marks, the
+  shape of a list, and showing the command that produced it. Shared, so two
+  procedures cannot drift apart.
+
+**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
+
+**Procedures** — one per thing somebody does to a backlog. Each holds the
+judgment and calls the command for everything else.
+
+- [[backlog-capture]] — writes something down as a work item, thoughtfully by
+  default or mechanically when speed is asked for. Also appends to an existing
+  record, which is never the quick path.
+- [[backlog-refine]] — works out what a work item is: what done means, what kind
+  of thing it is, and whether it needs stored tasks at all.
+- [[backlog-move]] — moves a work item along the ladder, in either direction,
+  including closing it. The two selection gates are where its judgment sits.
+- [[backlog-verify]] — records evidence that an outcome holds, and what does not
+  count as evidence.
 - [[backlog-journal]] — writes to a work item's journal, which is the only
   memory a session leaves behind.
+- [[backlog-show]] — assembles one work item's whole state, or lists whichever
+  work items were asked for. The way into both `show` and `list`.
+- [[backlog-next]] — picks the next thing to work on, and says why.
 
 ## Version
+
+`0.14.0` — **the output shapes are templates.**
+
+`backlog-show` carried a forty-line layout block that `backlog-next` needed half
+of, so the two were one edit away from rendering the same thing differently.
+The shapes are now three templates and the procedures point at them.
+
+The split follows the rest of the catalog: **a policy is a rule, a template is a
+thing you copy, a procedure is judgment.** [[showing-records]] says what the
+marks mean and why; [[listing]], [[record-view]] and [[next-report]] say what
+the output looks like; the procedures say when to produce it and what to
+notice.
+
+`0.13.0` — **one place says how a record is rendered.**
+
+`backlog-show` and `backlog-next` both print lists of records, and each carried
+its own copy of the marks and the list shape. Two procedures rendering the same
+thing differently teach a reader to look in two places, and the difference is
+never deliberate — it is one of them having been edited. [[showing-records]] is
+now the source and both point at it.
+
+`backlog-next` is rewritten around what somebody actually wants on arrival:
+what they last touched, what is under way and queued, what is worth preparing
+if nothing is, then a rule, then risks and a ranked shortlist. It said one
+useful thing before — that an empty queue is the answer — and buried it.
+
+The marks mirror `command-line-interface` `policy/ascii-styleguide`, which is
+the real source. The vendored copy of that bundle here is 0.1.0 and predates it,
+so the section carries a note to replace itself with a pointer once this project
+adopts 0.3.0 or later.
+
+`0.12.0` — **the procedures call the commands.**
+
+Seven procedures, covering each thing somebody does to a backlog: capture,
+refine, move, verify, journal, show, next. `backlog-new` is gone — its judgment
+split between `backlog-capture` (which record, what kind) and `backlog-refine`
+(outcomes, tasks, classification), leaving nothing behind.
+
+**The two that existed were written before the binary did**, and it showed.
+`backlog-journal` still said *"there is no binary yet — entries are written by
+hand"*; the command had arrived and nobody came back. `backlog-new` carried its
+own copy of the frontmatter, which had drifted: it told people to write
+`workflow_status: idea`, a value the ladder had not held since ADR-0002, and a
+fully-qualified `type` the tool does not write. **A procedure holding a copy of
+what the command does is a copy that goes wrong quietly.**
+
+So each of these leads with the invocation and keeps only what the command
+cannot decide. `backlog-journal` lost its fixed entry template, which `spec.md`
+§5.5 explicitly argues against — *"headings are named after what they settle,
+not drawn from a fixed template"* — and had been contradicting the spec it cited.
+
+**Writing them found four things the commands cannot do**, which is the point of
+writing them first: `new` takes no `--description`, so capturing a sentence
+costs two calls; `show` gives a record's fields but not its outcomes, tasks or
+journal; there is no `--column`, though the config defines columns; and nothing
+asks for *everything except closed*. Each is now a task on
+`WORK-0031-reshape-the-command-surface`.
 
 `0.11.0` — **a key held by two records is reported.**
 

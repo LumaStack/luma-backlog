@@ -10,7 +10,7 @@ func withOutcomes(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := withWorkItem(t)
 	for _, title := range []string{"The queue drains", "Retries are durable"} {
-		if code, _, e := run(t, app, "new", "outcome", title, "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, "outcome", "new", title, "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new outcome failed: %s", e)
 		}
 	}
@@ -19,9 +19,9 @@ func withOutcomes(t *testing.T) (*App, string) {
 
 func TestDeliveredIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 	app, _ := withOutcomes(t)
-	run(t, app, "verify", "the-queue-drains", "-e", "ran the drain test")
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
 
-	code, _, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
 	if code != ExitRefused {
 		t.Fatalf("exit = %d, want %d (refused)", code, ExitRefused)
 	}
@@ -36,10 +36,10 @@ func TestDeliveredIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 
 func TestDeliveredSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
 	app, project := withOutcomes(t)
-	run(t, app, "verify", "the-queue-drains", "-e", "ran the drain test")
-	run(t, app, "verify", "retries-are-durable", "-e", "killed the worker mid-flight")
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
+	run(t, app, "outcome", "verify", "retries-are-durable", "-e", "killed the worker mid-flight")
 
-	code, out, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -62,7 +62,7 @@ func TestCancellingIsNeverGated(t *testing.T) {
 	// unfinished, which is the only reason anyone ever cancels anything.
 	app, project := withOutcomes(t)
 
-	code, _, errOut := run(t, app, "close", "payments-v2", "-r", "canceled")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "canceled")
 	if code != ExitOK {
 		t.Fatalf("cancelling unfinished work was refused: exit %d, %s", code, errOut)
 	}
@@ -75,7 +75,7 @@ func TestCancellingIsNeverGated(t *testing.T) {
 func TestSupersededAndAbandonedAreAlsoUngated(t *testing.T) {
 	for _, reason := range []string{"superseded", "abandoned"} {
 		app, _ := withOutcomes(t)
-		if code, _, e := run(t, app, "close", "payments-v2", "-r", reason); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "close", "payments-v2", "-r", reason); code != ExitOK {
 			t.Errorf("%s was refused: exit %d, %s", reason, code, e)
 		}
 	}
@@ -85,10 +85,10 @@ func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
 	// Otherwise retiring an outcome could never let a work item close,
 	// which is the point of retiring it.
 	app, _ := withOutcomes(t)
-	run(t, app, "verify", "the-queue-drains", "-e", "ran it")
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran it")
 	run(t, app, "set", "retries-are-durable", "stage=archived")
 
-	code, out, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
 	if code != ExitOK {
 		t.Fatalf("a retired outcome still blocked delivery: exit %d, %s", code, errOut)
 	}
@@ -101,7 +101,7 @@ func TestDeliveredIsRefusedWithNoOutcomesAtAll(t *testing.T) {
 	// Nothing says it was delivered, so the claim has no basis. Vacuous
 	// truth is the wrong answer here.
 	app, _ := withWorkItem(t)
-	code, _, errOut := run(t, app, "close", "payments-v2", "-r", "delivered")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
 	if code != ExitRefused {
 		t.Fatalf("exit = %d, want %d", code, ExitRefused)
 	}
@@ -112,7 +112,7 @@ func TestDeliveredIsRefusedWithNoOutcomesAtAll(t *testing.T) {
 
 func TestCloseRequiresAReason(t *testing.T) {
 	app, _ := withOutcomes(t)
-	code, _, errOut := run(t, app, "close", "payments-v2")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2")
 	if code != ExitUsage {
 		t.Fatalf("exit = %d, want %d", code, ExitUsage)
 	}
@@ -123,7 +123,7 @@ func TestCloseRequiresAReason(t *testing.T) {
 
 func TestCloseRejectsAnUnknownReason(t *testing.T) {
 	app, _ := withOutcomes(t)
-	if code, _, _ := run(t, app, "close", "payments-v2", "-r", "done"); code != ExitUsage {
+	if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "-r", "done"); code != ExitUsage {
 		t.Error("an unknown reason was accepted")
 	}
 }
@@ -131,8 +131,8 @@ func TestCloseRejectsAnUnknownReason(t *testing.T) {
 func TestVerifyAccumulates(t *testing.T) {
 	// Several actors confirming the same outcome is the normal case.
 	app, project := withOutcomes(t)
-	run(t, app, "verify", "the-queue-drains", "-e", "first check")
-	run(t, app, "verify", "the-queue-drains", "-e", "second check")
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "first check")
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "second check")
 
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-queue-drains.md"))
 	var entries []map[string]any
@@ -153,7 +153,7 @@ func TestVerifyAccumulates(t *testing.T) {
 
 func TestVerifyWithoutEvidenceSaysSo(t *testing.T) {
 	app, _ := withOutcomes(t)
-	code, out, _ := run(t, app, "verify", "the-queue-drains")
+	code, out, _ := run(t, app, "outcome", "verify", "the-queue-drains")
 	if code != ExitOK {
 		t.Fatalf("exit = %d", code)
 	}
@@ -167,7 +167,7 @@ func TestVerifyWithoutEvidenceSaysSo(t *testing.T) {
 
 func TestVerifyRefusesANonOutcome(t *testing.T) {
 	app, _ := withOutcomes(t)
-	if code, _, _ := run(t, app, "verify", "payments-v2"); code != ExitUsage {
+	if code, _, _ := run(t, app, "outcome", "verify", "payments-v2"); code != ExitUsage {
 		t.Error("a work item was accepted for verification")
 	}
 }

@@ -60,6 +60,23 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 		if a.Field == "modified" {
 			assignedModified = true
 		}
+		// §9.6 says the caller never computes an ordering key. If `set
+		// rank=0010.500` works, that rule is decoration --- so rank is the only
+		// way in through the tool (ADR-0005). Editing the file by hand stays
+		// available, as it does for everything.
+		if a.Field == "rank" {
+			return nil, UsageError(
+				"rank is not set directly --- use: work-item rank <ref> --top | --bottom | --before <ref> | --after <ref>")
+		}
+		// A status change is one operation that writes rank too (ADR-0005).
+		// Routing it here rather than letting the assignment through is what
+		// stops a caller producing a record whose two fields disagree.
+		if a.Field == "workflow_status" {
+			if err := s.applyStatus(it, a.Value); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if a.Raw {
 			if err := it.Record.SetRaw(a.Field, a.Value); err != nil {
 				return nil, UsageError("%w", err)

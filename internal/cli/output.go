@@ -26,6 +26,11 @@ type itemJSON struct {
 	Name  string `json:"name"`
 	Slug  string `json:"slug"`
 	Title string `json:"title"`
+	// Created and Modified are omitted where a record carries no stamp, rather
+	// than emitted empty --- absent says "this record has none", where
+	// {"by":"","at":""} says the tool read one and found nothing in it.
+	Created  *stampJSON `json:"created,omitempty"`
+	Modified *stampJSON `json:"modified,omitempty"`
 	// Status is omitted rather than emptied when the record's type declares
 	// no workflow status. A consumer can then tell "no lifecycle" from a
 	// lifecycle whose value happens to be blank.
@@ -56,6 +61,8 @@ func toItemJSON(v app.View) itemJSON {
 		Title:    v.Title,
 		Status:   v.Status,
 		WorkItem: v.WorkItem,
+		Created:  toStampJSON(v.Created),
+		Modified: toStampJSON(v.Modified),
 	}
 }
 
@@ -74,4 +81,25 @@ func writeJSON(w io.Writer, v any) error {
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")
 	return enc.Encode(v)
+}
+
+// nodeJSON is a work item with what hangs off it. Children are added rather
+// than the shape being changed, so a consumer reading a flat listing is
+// unaffected (docs/spec.md §9.9).
+type nodeJSON struct {
+	itemJSON
+	Children []itemJSON `json:"children,omitempty"`
+}
+
+// stampJSON is who did something and when.
+type stampJSON struct {
+	By string `json:"by"`
+	At string `json:"at"`
+}
+
+func toStampJSON(s app.Stamp) *stampJSON {
+	if s.By == "" && s.At == "" {
+		return nil
+	}
+	return &stampJSON{By: s.By, At: s.At}
 }

@@ -14,11 +14,11 @@ func withTwoOutcomes(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := initialized(t)
 	for _, args := range [][]string{
-		{"new", "work-item", "Payments v2", "--kind", "change"},
-		{"new", "outcome", "Latency holds", "-w", "payments-v2"},
-		{"new", "outcome", "The retry queue drains", "-w", "payments-v2"},
-		{"verify", "latency-holds", "-e", "measured"},
-		{"verify", "the-retry-queue-drains", "-e", "measured"},
+		{"work-item", "new", "Payments v2", "--kind", "change"},
+		{"outcome", "new", "Latency holds", "-w", "payments-v2"},
+		{"outcome", "new", "The retry queue drains", "-w", "payments-v2"},
+		{"outcome", "verify", "latency-holds", "-e", "measured"},
+		{"outcome", "verify", "the-retry-queue-drains", "-e", "measured"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -42,7 +42,7 @@ func TestDeliveredIsRefusedWhenAnOutcomeCannotBeRead(t *testing.T) {
 	app, project := withTwoOutcomes(t)
 	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
-	code, _, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "delivered")
 	if code == ExitOK {
 		t.Fatalf("delivered was allowed over an unreadable outcome:\n%s", errOut)
 	}
@@ -61,7 +61,7 @@ func TestOtherReasonsCloseOverAnUnreadableOutcome(t *testing.T) {
 	app, project := withTwoOutcomes(t)
 	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
-	code, out, errOut := run(t, app, "close", "payments-v2", "--reason", "canceled")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "canceled")
 	if code != ExitOK {
 		t.Fatalf("canceling was blocked by an unreadable outcome: exit %d, %s", code, errOut)
 	}
@@ -75,15 +75,15 @@ func TestASkipElsewhereDoesNotBlockThisWorkItem(t *testing.T) {
 	// caller's. Blocking every close in the repository on it would be a
 	// refusal nobody could act on from where they are standing.
 	app, project := withTwoOutcomes(t)
-	if code, _, e := run(t, app, "new", "work-item", "Search relevance", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Search relevance", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "new", "outcome", "Results rank well", "-w", "search-relevance"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "Results rank well", "-w", "search-relevance"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	breakOutcome(t, project, wiPath(t, project, "search-relevance", "outcomes", "results-rank-well.md"))
 
-	code, out, errOut := run(t, app, "close", "payments-v2", "--reason", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "delivered")
 	if code != ExitOK {
 		t.Fatalf("a skip in another work item blocked this one: exit %d, %s", code, errOut)
 	}
@@ -98,7 +98,7 @@ func TestAnUnreadableOutcomeIsStillReported(t *testing.T) {
 	app, project := withTwoOutcomes(t)
 	breakOutcome(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
-	_, _, errOut := run(t, app, "close", "payments-v2", "--reason", "canceled")
+	_, _, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "canceled")
 	if !strings.Contains(errOut, "skipped") {
 		t.Errorf("the skip went unreported on a reason that closes freely:\n%q", errOut)
 	}

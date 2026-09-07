@@ -16,6 +16,10 @@ type Observations struct {
 	Skipped []Skip
 	// Duplicates is every key held by more than one record.
 	Duplicates []Duplicate
+	// Drifted is every record whose rank prefix disagrees with its status,
+	// which a hand edit to the status vocabulary causes. Reported, never
+	// refused (ADR-0005).
+	Drifted []StatusDrift
 }
 
 func skips(in []corpus.Skip) []Skip {

@@ -79,6 +79,19 @@ partial flag set means redoing it. **Re-open when the last command in
 [[work-items/WORK-0031-reshape-the-command-surface]] lands** and the full set
 can be seen at once.
 
+*Input for that decision, recorded as it turns up:*
+
+- **`-r` stays with `--reason`.** It was briefly contested: `-r` is the listing
+  convention for reversing (`sort -r`, `ls -r`), and a `--reverse` flag was
+  proposed. That flag does not exist --- direction is part of the sort key
+  instead, `--sort=-updated` --- so nothing competes for the letter.
+- **The episode is kept because the shape of it will recur.** `-r` belonged to
+  `--reason` because `close` was written before anything wanted to reverse a
+  listing, not because `--reason` had the better claim. Had the letters been
+  settled then, a later command with a stronger claim would have found the
+  conventional one taken. That is the argument for assigning them once, at the
+  end, rather than as each command arrives.
+
 **Hotkeys entirely.** The board does not exist. Re-open with it.
 
 ## References

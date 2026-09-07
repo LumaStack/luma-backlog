@@ -65,7 +65,7 @@ func TestExitCodes(t *testing.T) {
 
 	t.Run("5 refused — satisfy the condition first", func(t *testing.T) {
 		app, _ := withOutcomes(t)
-		if code, _, _ := run(t, app, "close", "payments-v2", "-r", "delivered"); code != ExitRefused {
+		if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered"); code != ExitRefused {
 			t.Errorf("exit = %d, want %d", code, ExitRefused)
 		}
 	})

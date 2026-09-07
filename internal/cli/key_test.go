@@ -11,7 +11,7 @@ func TestWorkItemsGetSequentialKeys(t *testing.T) {
 	// loud or writes in a commit, so it has to mean one record.
 	app, project := initialized(t)
 	for _, title := range []string{"Payments v2", "Search relevance", "Exports"} {
-		if code, _, e := run(t, app, "new", "work-item", title, "--kind", "change"); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "new", title, "--kind", "change"); code != ExitOK {
 			t.Fatalf("new %q failed: %s", title, e)
 		}
 	}
@@ -30,14 +30,14 @@ func TestOnlyWorkItemsCarryAKey(t *testing.T) {
 	// A key identifies a unit of work. An outcome is a condition and a task is
 	// coordination; neither is a thing somebody cites by handle.
 	app, project := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, tc := range []struct{ unit, path string }{
 		{"outcome", wiPath(t, project, "payments-v2", "outcomes", "a-thing.md")},
 		{"task", wiPath(t, project, "payments-v2", "tasks", "a-thing.md")},
 	} {
-		if code, _, e := run(t, app, "new", tc.unit, "A thing", "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, tc.unit, "new", "A thing", "-w", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
 		}
 		if got := readFile(t, project, tc.path); strings.Contains(got, "key:") {
@@ -50,7 +50,7 @@ func TestAKeyResolvesLikeASlug(t *testing.T) {
 	// The point of a handle is that you can use it. Case-insensitively too,
 	// because somebody typing one from memory should not have to hold shift.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, ref := range []string{"WORK-0001", "work-0001"} {
@@ -79,11 +79,11 @@ func TestAskingTwiceDoesNotBurnAKey(t *testing.T) {
 	// is what stops it being reintroduced.
 	app, project := initialized(t)
 	for i := 0; i < 3; i++ {
-		if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 			t.Fatalf("attempt %d failed: %s", i, e)
 		}
 	}
-	if code, _, e := run(t, app, "new", "work-item", "Search relevance", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Search relevance", "--kind", "change"); code != ExitOK {
 		t.Fatalf("second item failed: %s", e)
 	}
 	if got := readFile(t, project, wiPath(t, project, "search-relevance", "index.md")); !strings.Contains(got, "key: WORK-0002") {
@@ -97,7 +97,7 @@ func TestTheJoinedFormResolves(t *testing.T) {
 	// have to reach the same record, or the one people actually type is the
 	// one that fails.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Lint the corpus", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Lint the corpus", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	for _, ref := range []string{
@@ -124,10 +124,10 @@ func TestARecordWithoutAKeyRefsAsItsSlug(t *testing.T) {
 	// Only a work item carries a key, so an outcome's nameerence is its slug
 	// and the identifier column is never empty.
 	app, _ := initialized(t)
-	if code, _, e := run(t, app, "new", "work-item", "Payments v2", "--kind", "change"); code != ExitOK {
+	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "new", "outcome", "It drains", "-w", "payments-v2"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	_, out, _ := run(t, app, "show", "it-drains", "--json")
