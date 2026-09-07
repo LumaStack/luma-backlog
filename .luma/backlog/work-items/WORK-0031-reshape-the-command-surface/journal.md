@@ -12,6 +12,11 @@ the test that separated them: does a record say what this should look like? the 
 the rule for splitting is mostly not about splitting — three of the four reasons tasks keep arriving are defects in the outcomes, each already a condition in spec 5.2, and each fixed by editing one outcome
 revising an outcome is not a smell: lifecycle 2.8 has a Redefine phase and work-item.drifted fires when work happens and no outcome is verified or revised — what is a smell is expansion at every boundary without governance
 an outcome that can never be finally true is a standing condition in the wrong place, not a bad outcome — spec 5.2 is where those belong, and moving it beats splitting the work item around it
+claimed across four reports that two outcomes were provable and never ran their checks — running them showed none of the four passes; the claim came from counting closed tasks, which is the substitution the outcome model exists to prevent
+every-command-is-noun-then-verb fails on two checks, both for the same reason: show, set and list are top-level and none is in ADR-0006's verb-only list, and show and set are not parameterized by noun — the deferred cross-type decision is blocking an outcome, not just a task
+a-record-is-addressed-by-the-path fails on emission, which is known, and on placement — scoped() went into internal/corpus because Resolve was already there, but the outcome says internal/app so every surface gets the same forms; that was decided by convenience and never noticed
+this is work-item.drifted in the flesh — work happened, no outcome was verified or revised, and progress was reported from task counts; the condition that would have caught it is the one written as a task in the same session
+the lesson is narrow and mechanical: an outcome is not provable until its verify_by has been run, and saying it is provable is itself a claim that needs the same evidence — read verify_by before reporting on an outcome, not after
 
 ## ▶ 2026-09-06
 

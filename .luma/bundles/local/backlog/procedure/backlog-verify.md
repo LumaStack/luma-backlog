@@ -25,6 +25,12 @@ are the weakest confirmation available — they assert what the author already
 believed. Say which test, what it exercises, and why it would fail if the outcome
 did not hold.
 
+**Read every check, not the first one.** An outcome with four checks passes
+when four pass. Two passing and two unread is not *nearly verified*, and the
+two nobody opened are where the surprises are --- a check about *where the code
+lives* or *whether the same form is emitted* fails silently while the obvious
+behavioural check passes.
+
 **Read `verify_by` first and do what it says.** The outcome states how it is to
 be checked. Checking something else and recording that is how an outcome comes to
 be marked passing on the strength of a different question being answered.
