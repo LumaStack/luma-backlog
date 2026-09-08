@@ -31,7 +31,7 @@ func TestClosingRewritesTheRank(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 	run(t, app, "work-item", "rank", "WORK-0001", "--bottom")
-	run(t, app, "work-item", "close", "WORK-0001", "--reason", "canceled")
+	run(t, app, "work-item", "close", "WORK-0001", "canceled")
 
 	_, out, _ := run(t, app, "show", "WORK-0001", "--json")
 	if !strings.Contains(out, "070.") {

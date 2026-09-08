@@ -99,7 +99,7 @@ func TestClosingReportsADuplicateKey(t *testing.T) {
 	}
 	collide(t, project, "search-relevance", "WORK-0001")
 
-	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitOK {
 		t.Fatalf("a duplicate key blocked a close: exit %d, %s", code, errOut)
 	}

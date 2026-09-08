@@ -220,7 +220,7 @@ apart.
 ## Closing
 
 ```
-luma-backlog work-item close <ref> --reason <disposition>
+luma-backlog work-item close <ref> <completed|rejected|canceled|superseded>
 ```
 
 **Write the journal entry first.** What was learned, what was tried that did not
@@ -280,13 +280,15 @@ destroys the record. Instead completion still computes *two of five* and the
 work item carries the forced close, so a reader sees a completed record whose own
 arithmetic disagrees with it — which is the truth.
 
-> **Two things are settled and unbuilt.** The disposition becomes **positional**
-> and `--reason` becomes prose (ADR-0007) — the binary still spells `--reason
-> delivered|abandoned`, so translate at the command line and use the vocabulary
-> above. And **a cancellation or a rejection should record why**: those two are
-> the only dispositions with no structural evidence behind them, since
-> `completed` has the outcomes and `superseded` has its link. A forced close
-> needs a reason most of all, and nothing records one.
+**`--reason` is prose now, not the disposition.** Why, in your words —
+optional, and free text. The disposition says which ending; this says anything
+the enum cannot.
+
+> **Settled and unbuilt: a cancellation or a rejection should be made to record
+> why.** Those two are the only dispositions with no structural evidence behind
+> them — `completed` has the outcomes and `superseded` has its link — so the
+> prose is the only place their reason can live, and nothing requires it. A
+> forced close needs one most of all.
 
 ## Sending work back
 

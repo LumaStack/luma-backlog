@@ -11,7 +11,10 @@ import (
 type CloseRequest struct {
 	// Ref names the work item.
 	Ref string
-	// Reason is why the work ended — one of corpus.CloseReasons.
+	// As is how the work ended — one of corpus.CloseReasons.
+	As string
+	// Reason is prose: why, in the closer's words. Optional, and free text —
+	// the enum says which ending, this says anything the enum cannot.
 	Reason string
 }
 
@@ -31,13 +34,13 @@ type CloseResult struct {
 // This carries the tool's only refusal, and it holds a caller to their OWN
 // declarations rather than to an opinion of its own (docs/spec.md §5.0).
 func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
-	if req.Reason == "" {
-		return nil, UsageError("--reason is required: %s\n\n"+
+	if req.As == "" {
+		return nil, UsageError("a disposition is required: %s\n\n"+
 			"Closing silently is how a backlog loses its own history — cancelled work\n"+
-			"and delivered work look identical afterwards.", reasonList())
+			"and completed work look identical afterwards.", reasonList())
 	}
-	if !corpus.IsCloseReason(req.Reason) {
-		return nil, UsageError("unknown reason %q: expected %s", req.Reason, reasonList())
+	if !corpus.IsCloseReason(req.As) {
+		return nil, UsageError("unknown disposition %q: expected %s", req.As, reasonList())
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
@@ -53,10 +56,10 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		return nil, FailureError("%w", err)
 	}
 
-	if corpus.CloseReason(req.Reason).GatedOnCompletion() {
+	if corpus.CloseReason(req.As).GatedOnCompletion() {
 		// Refused for want of an answer rather than on an opinion. An outcome
 		// that cannot be read is missing from the count, so it can never be
-		// counted as failing, and "delivered" would come out clean on evidence
+		// counted as failing, and "completed" would come out clean on evidence
 		// nobody has seen. That is the one thing this design cannot allow: a
 		// wrong answer that looks exactly like a right one.
 		//
@@ -65,7 +68,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		// when a file is beyond repair.
 		if len(c.Skipped) > 0 {
 			var b strings.Builder
-			fmt.Fprintf(&b, "%s cannot be delivered: %d outcome(s) could not be read, so there is no count.\n",
+			fmt.Fprintf(&b, "%s cannot be completed: %d outcome(s) could not be read, so there is no count.\n",
 				it.Slug(), len(c.Skipped))
 			for _, sk := range c.Skipped {
 				fmt.Fprintf(&b, "  %s: %v\n", sk.Path, sk.Err)
@@ -77,8 +80,8 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 
 		if !c.Complete() && len(c.Live) == 0 {
 			return nil, RefusedError(
-				"%s has no outcomes, so there is nothing that says it was delivered.\n"+
-					"Declare what done means, or close with a different reason.", it.Slug())
+				"%s has no outcomes, so there is nothing that says it was completed.\n"+
+					"Declare what done means, or close with a different disposition.", it.Slug())
 		}
 		if len(c.Unpassing) > 0 {
 			var names []string
@@ -86,9 +89,9 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 				names = append(names, "  "+o.Slug())
 			}
 			return nil, RefusedError(
-				"%s cannot be delivered: %d of %d outcomes have no evidence.\n%s\n\n"+
+				"%s cannot be completed: %d of %d outcomes have no evidence.\n%s\n\n"+
 					"Verify them, retire the ones that no longer apply, or close with a\n"+
-					"different reason.",
+					"different disposition.",
 				it.Slug(), len(c.Unpassing), len(c.Live), strings.Join(names, "\n"))
 		}
 	}
@@ -99,8 +102,16 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 	if err := s.applyStatus(it, "closed"); err != nil {
 		return nil, err
 	}
-	if err := it.Record.SetRaw("closed", fmt.Sprintf("{on: %s, reason: %s, by: %s}",
-		s.Env.Today(), req.Reason, s.Env.Actor.String())); err != nil {
+	// `as` rather than `reason`, because the field holds the disposition and
+	// the prose is a separate thing somebody may or may not have said
+	// (ADR-0007). Every record closed before this carries the old spelling;
+	// migrating them is work-items/WORK-0037.
+	closed := fmt.Sprintf("{on: %s, as: %s, by: %s}", s.Env.Today(), req.As, s.Env.Actor.String())
+	if req.Reason != "" {
+		closed = fmt.Sprintf("{on: %s, as: %s, by: %s, reason: %s}",
+			s.Env.Today(), req.As, s.Env.Actor.String(), yamlQuote(req.Reason))
+	}
+	if err := it.Record.SetRaw("closed", closed); err != nil {
 		return nil, FailureError("%w", err)
 	}
 	if err := it.Record.SetRaw("modified",
@@ -118,7 +129,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 
 	return &CloseResult{
 		Path:    it.Path,
-		Reason:  req.Reason,
+		Reason:  req.As,
 		Retired: len(c.Retired),
 		Observations: Observations{
 			// Only on a path that did not refuse. A refusal already names the
@@ -139,4 +150,12 @@ func reasonList() string {
 		s = append(s, string(r))
 	}
 	return strings.Join(s, ", ")
+}
+
+// yamlQuote makes free prose safe inside an inline mapping. A colon or a hash
+// in somebody's sentence would otherwise end the value early or start a
+// comment, and the sentence most likely to contain one is the sentence
+// explaining a refusal.
+func yamlQuote(s string) string {
+	return "'" + strings.ReplaceAll(s, "'", "''") + "'"
 }

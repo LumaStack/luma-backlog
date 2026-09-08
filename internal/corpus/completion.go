@@ -74,14 +74,22 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 type CloseReason string
 
 const (
-	Delivered  CloseReason = "delivered"
+	Completed  CloseReason = "completed"
+	Rejected   CloseReason = "rejected"
 	Canceled   CloseReason = "canceled"
 	Superseded CloseReason = "superseded"
-	Abandoned  CloseReason = "abandoned"
 )
 
-// CloseReasons lists them in the order they are offered.
-var CloseReasons = []CloseReason{Delivered, Canceled, Superseded, Abandoned}
+// CloseReasons lists them in the order ADR-0007 sets them out.
+//
+// `completed` rather than `delivered`: the tool cannot observe a handover and
+// can compute a count.
+//
+// `abandoned` is gone. The enum carries what the record cannot derive, and
+// stopping without a decision is derivable — from a record that has one and a
+// journal that stops. `rejected` earns its place by the same test: never
+// crossed the first gate is a statement of intent nothing else holds.
+var CloseReasons = []CloseReason{Completed, Rejected, Canceled, Superseded}
 
 // IsCloseReason reports whether a value is one.
 func IsCloseReason(s string) bool {
@@ -95,10 +103,10 @@ func IsCloseReason(s string) bool {
 
 // GatedOnCompletion reports whether a reason requires every outcome to pass.
 //
-// Only delivery is gated. Gating cancellation would make it impossible to stop
+// Only completion is gated. Gating cancellation would make it impossible to stop
 // work precisely because it was unfinished — which is the only reason anyone
 // ever cancels anything.
-func (r CloseReason) GatedOnCompletion() bool { return r == Delivered }
+func (r CloseReason) GatedOnCompletion() bool { return r == Completed }
 
 // couldBeOutcomeOf reports whether an unreadable file sits where an outcome of
 // this work item would.

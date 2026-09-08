@@ -17,11 +17,11 @@ func withOutcomes(t *testing.T) (*App, string) {
 	return app, project
 }
 
-func TestDeliveredIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
+func TestCompletedIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 	app, _ := withOutcomes(t)
 	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
 
-	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitRefused {
 		t.Fatalf("exit = %d, want %d (refused)", code, ExitRefused)
 	}
@@ -34,17 +34,17 @@ func TestDeliveredIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 	}
 }
 
-func TestDeliveredSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
+func TestCompletedSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
 	app, project := withOutcomes(t)
 	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
 	run(t, app, "outcome", "verify", "retries-are-durable", "-e", "killed the worker mid-flight")
 
-	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
-	if !strings.Contains(out, "delivered") {
-		t.Errorf("output did not record the reason:\n%s", out)
+	if !strings.Contains(out, "completed") {
+		t.Errorf("output did not record the disposition:\n%s", out)
 	}
 
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
@@ -62,7 +62,7 @@ func TestCancellingIsNeverGated(t *testing.T) {
 	// unfinished, which is the only reason anyone ever cancels anything.
 	app, project := withOutcomes(t)
 
-	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "canceled")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "canceled")
 	if code != ExitOK {
 		t.Fatalf("cancelling unfinished work was refused: exit %d, %s", code, errOut)
 	}
@@ -72,10 +72,10 @@ func TestCancellingIsNeverGated(t *testing.T) {
 	}
 }
 
-func TestSupersededAndAbandonedAreAlsoUngated(t *testing.T) {
-	for _, reason := range []string{"superseded", "abandoned"} {
+func TestSupersededAndRejectedAreAlsoUngated(t *testing.T) {
+	for _, reason := range []string{"superseded", "rejected"} {
 		app, _ := withOutcomes(t)
-		if code, _, e := run(t, app, "work-item", "close", "payments-v2", "-r", reason); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "close", "payments-v2", reason); code != ExitOK {
 			t.Errorf("%s was refused: exit %d, %s", reason, code, e)
 		}
 	}
@@ -88,20 +88,20 @@ func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
 	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran it")
 	run(t, app, "set", "retries-are-durable", "stage=archived")
 
-	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
+	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitOK {
-		t.Fatalf("a retired outcome still blocked delivery: exit %d, %s", code, errOut)
+		t.Fatalf("a retired outcome still blocked completion: exit %d, %s", code, errOut)
 	}
 	if !strings.Contains(out, "retired") {
 		t.Errorf("the exclusion was not reported:\n%s", out)
 	}
 }
 
-func TestDeliveredIsRefusedWithNoOutcomesAtAll(t *testing.T) {
-	// Nothing says it was delivered, so the claim has no basis. Vacuous
+func TestCompletedIsRefusedWithNoOutcomesAtAll(t *testing.T) {
+	// Nothing says it was completed, so the claim has no basis. Vacuous
 	// truth is the wrong answer here.
 	app, _ := withWorkItem(t)
-	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "-r", "delivered")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitRefused {
 		t.Fatalf("exit = %d, want %d", code, ExitRefused)
 	}
@@ -110,20 +110,33 @@ func TestDeliveredIsRefusedWithNoOutcomesAtAll(t *testing.T) {
 	}
 }
 
-func TestCloseRequiresAReason(t *testing.T) {
+func TestCloseRequiresADisposition(t *testing.T) {
 	app, _ := withOutcomes(t)
 	code, _, errOut := run(t, app, "work-item", "close", "payments-v2")
 	if code != ExitUsage {
 		t.Fatalf("exit = %d, want %d", code, ExitUsage)
 	}
-	if !strings.Contains(errOut, "delivered") {
-		t.Errorf("the error did not list the reasons:\n%s", errOut)
+	// Every one of them, because a caller who omitted it does not know which
+	// they wanted, and naming one would read as the default.
+	for _, want := range []string{"completed", "rejected", "canceled", "superseded"} {
+		if !strings.Contains(errOut, want) {
+			t.Errorf("the error did not offer %q:\n%s", want, errOut)
+		}
 	}
 }
 
-func TestCloseRejectsAnUnknownReason(t *testing.T) {
+// `abandoned` was a disposition until ADR-0007 dropped it. A caller reaching
+// for it should be told it is unknown, not have it quietly accepted.
+func TestAbandonedIsNoLongerADisposition(t *testing.T) {
 	app, _ := withOutcomes(t)
-	if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "-r", "done"); code != ExitUsage {
+	if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "abandoned"); code != ExitUsage {
+		t.Error("abandoned was accepted after being dropped")
+	}
+}
+
+func TestCloseRejectsAnUnknownDisposition(t *testing.T) {
+	app, _ := withOutcomes(t)
+	if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "done"); code != ExitUsage {
 		t.Error("an unknown reason was accepted")
 	}
 }

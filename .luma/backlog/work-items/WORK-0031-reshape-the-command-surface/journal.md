@@ -33,6 +33,12 @@ placed beside title in the frontmatter, since those are the two fields written f
 both title forms accepted and supplying both REFUSED rather than one silently winning — a caller that passed two titles believes something untrue about the record it is about to get, and picking one for them leaves that belief in place; exit 2 naming both values
 verified in a scratch corpus: positional creates, --title creates, both exits 2 naming the conflict, neither exits 2 naming what is needed, --description lands with no modified stamp, idempotency by name survives, and -d works on every noun not just work-item
 no golden file moved, which is correct — adding flags is additive and changes no existing output; the golden-files outcome is about the breaking changes, and this was not one
+make-close-take-its-disposition-positionally done — vocabulary is completed, rejected, canceled, superseded; delivered became completed, abandoned is gone, rejected is added, and the disposition is a positional while --reason carries prose
+the record field changed too: closed is {on, as, by} rather than {on, reason, by}, because the field holds the disposition and prose is a separate thing somebody may not have said — every record closed before this carries the old spelling, and that is WORK-0037's fourth instance
+prose is yaml-quoted on the way in, since the sentence most likely to contain a colon is the sentence explaining a refusal — verified with 'budget went away: no owner'
+ADR-0007's list shape is NOT done: closed is still a single mapping rather than an append-only list of {by, at, as}; out of this task's stated checks and left for whoever does the reopen work, which is where a second entry first becomes possible
+eleven test call sites moved and were read individually rather than bulk-replaced — the golden-files outcome asks for exactly that; two tests changed meaning rather than form, TestSupersededAndAbandonedAreAlsoUngated became SupersededAndRejected, and a new test asserts abandoned is now refused as unknown rather than quietly accepted
+NO golden file moved, and the reason is worth knowing: the goldens cover show and list on open records, so the close contract has no golden coverage at all — a breaking change to it was invisible to them
 
 ## ▶ 2026-09-07
 

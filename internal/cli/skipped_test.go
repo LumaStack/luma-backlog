@@ -75,7 +75,7 @@ func TestCloseReportsAnOutcomeItCouldNotRead(t *testing.T) {
 	}
 	breakRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))
 
-	_, _, errOut := run(t, app, "work-item", "close", "payments-v2", "--reason", "delivered")
+	_, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if !strings.Contains(errOut, "the-retry-queue-drains.md") {
 		t.Errorf("close drew a conclusion without mentioning the outcome it could not read:\nstderr: %q", errOut)
 	}

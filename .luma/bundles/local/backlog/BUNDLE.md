@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.22.0
+version: 0.23.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,18 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.23.0` — **the lag [[backlog-move]] documented is gone.**
+
+It carried a blockquote apologising for the binary: the disposition was settled
+as positional and `--reason` as prose, and the tool still spelled `--reason
+delivered|abandoned`. The tool caught up, so the procedure stops translating
+and simply says what to type.
+
+What remains unbuilt is narrower and now stated as such: **a cancellation or a
+rejection should be made to record why.** Those two are the only dispositions
+with no structural evidence behind them, so the prose is the only place their
+reason can live — and nothing requires it.
 
 `0.22.0` — **an outcome is a record, or it is not an outcome.**
 
