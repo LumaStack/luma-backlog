@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.24.4
+version: 0.24.5
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.5` — **the two forms owe different things.**
+
+Inline carries the substance by position, so the attribution beside a point is
+already complete. A footer has no position to say it for you, so it has to
+reference the point. That is why *journaled on WORK-0031* fails as a footer and
+would have been fine inline.
 
 `0.24.4` — **the rule contradicted itself and produced exactly the report it
 forbids.**
