@@ -63,6 +63,13 @@ latest verdict wins, the way the latest assertion is the current claim — teste
 message defect this change introduced and then fixed: the close refusal said 'N of M outcomes have no evidence', which became false the moment disproven existed — a disproven outcome has evidence and is not proven. now says 'are not proven', which is ADR-0007's own phrasing
 eleven test call sites moved, four of them in files that only used verify incidentally; three new tests cover the guard, that disproven does not count, and that a later proven supersedes an earlier disproven
 closing add-outcome-assert-and-outcome-archive: all three parts done — assert, abandon (never archive), and verify's positional. the task's TITLE is wrong and stays wrong, since renaming it changes the slug and breaks the citations in ADR-0007's amendment and WORK-0071
+DEFECT in what shipped today: 'the latest verdict wins' conflates two situations that are not the same. a retry — checked, failed, fixed it, checked again — genuinely supersedes the earlier verdict. two agents verifying INDEPENDENTLY do not supersede each other, they disagree, and latest-wins silently picks whoever ran last
+and it is order-dependent in a way that is arbitrary: A proven then B disproven gives disproven, B then A gives proven, from the same two facts. nothing about which ran first should decide it
+this is the same failure ADR-0007 exists to prevent, one axis over — it split doer from checker so a disagreement would stay visible, and the implementation then made a checker-versus-checker disagreement invisible
+the maintainer's shape: assert and verified should optionally carry SUPERSEDE data. an entry that names what it replaces is a retry; one that names nothing is an independent verdict and coexists. then state derives from the unsuperseded entries rather than from position
+which exposes a state the design does not have: two live verdicts that disagree. today that collapses to whichever ran last, and it should probably be visible the way doer-versus-checker disagreement is — an outcome in dispute is a fact, not a tie to be broken silently
+and there may be a non-order resolution already implied: spec 4.7 says a human entry raises the derived trust tier, so a human disproven against an agent proven might resolve by tier rather than by recency — worth deciding rather than inheriting from list order
+applies to asserted equally — two agents attempting in parallel versus one agent retrying is the same distinction, and the current 'the current claim is the last entry' reading has the same hole
 
 ## ▶ 2026-09-07
 
