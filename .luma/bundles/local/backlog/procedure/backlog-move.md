@@ -213,9 +213,13 @@ wants to do.
 would pick and why, and say it plainly rather than hedging. Reading the backlog
 is most of what an agent is for.
 
-**Then stop.** Never *start* it without confirmation. **The harm is the
-surprise, not the opinion**: nobody should discover what is being worked on by
-reading a diff, and that is as true of an orchestrator as of a person.
+**Then stop.** Never *start* it without confirmation. **The harm is not the
+surprise — it is proceeding without leaving room to approve.** Announcing while
+you go is not asking. The decision belongs to somebody, and taking it removes
+it from them however loudly you narrate.
+
+That holds for an orchestrator exactly as for a person: being told is not the
+same as being asked.
 
 Crossing the second gate is a commitment somebody makes — `prepared` to `todo`
 is the expensive one precisely because a person decides it. Proposing the

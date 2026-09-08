@@ -13,6 +13,7 @@ the say-where-it-went rule contradicted itself — 'what was journalled, where i
 settled by the maintainer: inline carries the substance by position and needs nothing more, a footer has no position so it must reference the point — which is why 'journaled on WORK-0031' fails as a footer and would have been fine inline
 two rules added to backlog-move at 0.25.0, both from live failure: finish a work item before starting another unless asked otherwise, and never pick the next one — asking a question is not confirmation and neither is answering one, which is exactly how it went wrong today
 corrected at 0.25.1 — 'never pick' forbade the opinion, and the maintainer wants it: recommend freely, then stop. the harm is the SURPRISE, not the recommendation, and an orchestrator is surprised by unannounced work exactly as a person is
+corrected again at 0.25.2 — 'the harm is the surprise' is satisfiable by narrating loudly while proceeding, and the maintainer's version closes it: the harm is proceeding without leaving room to approve. announcing while you go is not asking, and being told is not the same as being asked
 
 ## ▶ 2026-09-07
 
