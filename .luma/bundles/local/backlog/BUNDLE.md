@@ -69,10 +69,10 @@ judgment and calls the command for everything else.
 
 ## Version
 
-`0.26.0` — **recommend the next work item; do not start it.**
+`0.26.0` — **recommending the next work item is welcome; starting it is not.**
 
-An agent that reads the backlog well enough to have an opinion should give one.
-Choosing is somebody else's, and a question is not confirmation.
+An opinion about what to pick is invited rather than required. Choosing is
+somebody else's, and a question is not confirmation.
 
 Also: **finish what you started.** A work item at `in_progress` is worked until
 it is done unless somebody asks otherwise.

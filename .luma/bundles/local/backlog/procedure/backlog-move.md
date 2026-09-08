@@ -209,8 +209,8 @@ Leaving one open and moving to the next is how a backlog fills with things that
 were nearly finished, and the half that is missing is always the half nobody
 wants to do.
 
-**Recommend what to work on next.** Say which one and why — an opinion is
-wanted, and reading the backlog well enough to have one is most of the job.
+**Recommend what to work on next if you have a view.** An opinion is welcome
+— say which one and why. Say nothing if you have nothing.
 
 **Do not start it without confirmation.** Recommending is the agent's part;
 choosing is not. Wait for somebody to name the work.
