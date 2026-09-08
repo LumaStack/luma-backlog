@@ -72,6 +72,47 @@ belongs to waves (§2.3) or to a claim (§6.5), both outside the first release.
 - **`verified`** — the checker, `as: proven`, `as: disproven`, or
   `as: inconclusive`. Already a list.
 
+### Added 2026-09-08: an outcome can be abandoned
+
+**A fourth state, and it is a decision rather than a finding.** An outcome is
+`unverified`, `proven`, `disproven`, `inconclusive` — **or `abandoned`**.
+
+**Abandoning is not verifying**, so `verify` must not write it. A checker
+determines whether a condition holds; abandoning says the condition is no
+longer required. If one verb wrote both, a doer acting as their own checker
+could make an unmet outcome disappear by *verifying* it away — the independence
+this record exists to protect, one level down.
+
+```
+outcome verify  <ref> <proven|disproven|inconclusive>   a checker's finding
+outcome abandon <ref>                                    an owner's decision
+```
+
+**`abandoned` was released by this record and earns its place here.** It was
+dropped from the work-item dispositions above because *stopping without a
+decision is derivable* — from a record that has one and a journal that stops.
+**It is not derivable on an outcome.** One with no verdict may be one nobody
+got round to checking or one somebody gave up on, and nothing distinguishes
+them. The enum carries what the record cannot: the same test, opposite answer,
+one level down.
+
+**And the word is deliberately unflattering.** Both roads to it are failures —
+we wrote a requirement we could not state well, or we committed to one and
+changed our minds — and both should prompt a retrospective. `waived`,
+`accepted` and `tolerated` were considered and set aside for sounding like
+ordinary process; `relaxed` is accurate and makes lowering the bar sound fine.
+*Re-open if the two roads turn out to need separate values, since they prompt
+different questions.*
+
+**It is not `archived`.** `stage` says how much a record can be relied upon and
+whether to load it; abandoning says what happened to the requirement. Closing
+and archiving are different acts on a work item and they are different acts
+here — an abandoned outcome may stay in current context for a long time.
+
+**`spec.md` §5 already flags this operation** as *the one a team most likely
+wants to require review for*, which makes it the outcome-level twin of a forced
+close: an owner's approval, and the reason recorded.
+
 **One key for all three events.** Every field here is a past participle and `as`
 is what English puts after it — *asserted as succeeded, verified as proven,
 closed as completed*. The values remain distinct per axis, so a value alone

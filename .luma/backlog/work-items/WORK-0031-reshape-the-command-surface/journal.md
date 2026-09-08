@@ -49,6 +49,7 @@ the test that matters most is TestAssertingSuccessDoesNotLetAWorkItemComplete: a
 assert says when it contradicts — if a checker has already recorded a verdict, the output says both stand and the disagreement is the thing worth seeing; reported, never refused, since the disagreement is the point of splitting the axes
 outcome archive NOT built and verify's required positional NOT built — the task bundles three things and only one is done; the maintainer wants to understand archive before it is implemented, so the task stays open rather than being closed on a third of its checks
 outcome archive is NOT built and the reason is WORK-0071: archiving does not say whether the outcome held, and spec 5 flags outcome.retired as the operation most likely to need review — building it without the disposition ships the governance gap rather than the command
+outcome archive is not the command — it is outcome abandon, and archiving an outcome is not a thing this design does; the last task's shape changed rather than its size, and WORK-0071 carries the reasoning
 
 ## ▶ 2026-09-07
 
