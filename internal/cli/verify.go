@@ -11,13 +11,16 @@ func newVerifyCommand(a *App) *cobra.Command {
 	var evidence string
 
 	cmd := &cobra.Command{
-		Use:   "verify <outcome>",
+		Use:   "verify <outcome> <proven|disproven|inconclusive>",
 		Short: "Record that an outcome has been confirmed",
-		Long: "Adds a confirmation event, and the evidence it rests on.\n\n" +
+		Long: "Records what a checker found, and the evidence it rests on.\n\n" +
+			"The verdict is positional because recording proof has to be said out\n" +
+			"loud — an outcome nobody checked and one somebody disproved are\n" +
+			"different facts, and a command that could only say yes conflated them.\n\n" +
 			"Verification accumulates: several actors confirming the same outcome is\n" +
 			"the normal case, and a human entry raises the derived trust tier with no\n" +
 			"special handling.",
-		Args:         cobra.ExactArgs(1),
+		Args:         cobra.RangeArgs(1, 2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			s, err := open(a)
@@ -26,13 +29,17 @@ func newVerifyCommand(a *App) *cobra.Command {
 			}
 			defer s.Close()
 
-			res, err := s.Verify(app.VerifyRequest{Ref: args[0], Evidence: evidence})
+			as := ""
+			if len(args) == 2 {
+				as = args[1]
+			}
+			res, err := s.Verify(app.VerifyRequest{Ref: args[0], As: as, Evidence: evidence})
 			if err != nil {
 				return err
 			}
 
 			out := cmd.OutOrStdout()
-			fmt.Fprintf(out, "verified  %s\n", res.Path)
+			fmt.Fprintf(out, "verified  %s (%s)\n", res.Path, as)
 			if res.NoEvidence {
 				fmt.Fprintln(out,
 					"\nNo evidence recorded. An unbacked confirmation is the claim this\n"+

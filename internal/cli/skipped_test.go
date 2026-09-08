@@ -70,7 +70,7 @@ func TestCloseReportsAnOutcomeItCouldNotRead(t *testing.T) {
 	if code, _, e := run(t, app, "outcome", "new", "Latency holds", "-w", "payments-v2"); code != ExitOK {
 		t.Fatalf("new outcome failed: %s", e)
 	}
-	if code, _, e := run(t, app, "outcome", "verify", "latency-holds", "-e", "measured"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "verify", "latency-holds", "proven", "-e", "measured"); code != ExitOK {
 		t.Fatalf("verify failed: %s", e)
 	}
 	breakRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-retry-queue-drains.md"))

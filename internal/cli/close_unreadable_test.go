@@ -17,8 +17,8 @@ func withTwoOutcomes(t *testing.T) (*App, string) {
 		{"work-item", "new", "Payments v2", "--kind", "change"},
 		{"outcome", "new", "Latency holds", "-w", "payments-v2"},
 		{"outcome", "new", "The retry queue drains", "-w", "payments-v2"},
-		{"outcome", "verify", "latency-holds", "-e", "measured"},
-		{"outcome", "verify", "the-retry-queue-drains", "-e", "measured"},
+		{"outcome", "verify", "latency-holds", "proven", "-e", "measured"},
+		{"outcome", "verify", "the-retry-queue-drains", "proven", "-e", "measured"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)

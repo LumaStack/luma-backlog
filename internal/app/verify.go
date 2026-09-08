@@ -10,7 +10,9 @@ import (
 
 // VerifyRequest records that an outcome has been confirmed.
 type VerifyRequest struct {
-	Ref      string
+	Ref string
+	// As is what the checker found — one of corpus.Verdicts.
+	As       string
 	Evidence string
 }
 
@@ -28,6 +30,24 @@ type VerifyResult struct {
 // normal case, and a human entry raises the derived trust tier with no special
 // handling (docs/spec.md §4.7).
 func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
+	if req.As == "" {
+		return nil, UsageError("a verdict is required: %s\n\n"+
+			"Recording proof has to be said out loud. An outcome nobody checked and\n"+
+			"one somebody checked and disproved are different facts.", verdictList())
+	}
+	// Refused BY NAME rather than by omission. `abandoned` is a state an
+	// outcome can be in, so validating against the state list would let it
+	// through here — and a checker who can abandon an outcome can abandon
+	// their own, through the command that exists to be independent of them
+	// (ADR-0007). Deciding is not finding out.
+	if req.As == "abandoned" {
+		return nil, UsageError("abandoned is a decision, not a finding — use `outcome abandon`.\n"+
+			"A verdict is one of: %s", verdictList())
+	}
+	if !corpus.IsVerdict(req.As) {
+		return nil, UsageError("unknown verdict %q: expected %s", req.As, verdictList())
+	}
+
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
 		return nil, resolveError(err)
@@ -39,7 +59,7 @@ func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 	at, by := s.Env.Now(), s.Env.Actor.String()
 
 	if err := appendToList(it.Record, "verified",
-		map[string]string{"by": by, "at": at}); err != nil {
+		map[string]string{"by": by, "at": at, "as": req.As}); err != nil {
 		return nil, FailureError("%w", err)
 	}
 
@@ -116,4 +136,12 @@ func countList(r interface{ Node(string) *yaml.Node }, key string) int {
 		return 1
 	}
 	return 0
+}
+
+func verdictList() string {
+	names := make([]string, 0, len(corpus.Verdicts))
+	for _, v := range corpus.Verdicts {
+		names = append(names, string(v))
+	}
+	return strings.Join(names, ", ")
 }

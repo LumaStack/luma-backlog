@@ -94,7 +94,7 @@ func TestClosingReportsADuplicateKey(t *testing.T) {
 	if code, _, e := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "outcome", "verify", "it-drains", "-e", "measured"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "verify", "it-drains", "proven", "-e", "measured"); code != ExitOK {
 		t.Fatalf("verify failed: %s", e)
 	}
 	collide(t, project, "search-relevance", "WORK-0001")

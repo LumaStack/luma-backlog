@@ -1,6 +1,7 @@
 package corpus
 
 import (
+	"gopkg.in/yaml.v3"
 	"path"
 	"strings"
 
@@ -72,7 +73,7 @@ func Completions(b *root.Backlog) (map[string]Completion, error) {
 			c.Retired = append(c.Retired, it)
 		} else {
 			c.Live = append(c.Live, it)
-			if !it.Record.Has("verified") {
+			if !passes(it.Record) {
 				c.Unpassing = append(c.Unpassing, it)
 			}
 		}
@@ -118,7 +119,7 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 			continue
 		}
 		c.Live = append(c.Live, it)
-		if !it.Record.Has("verified") {
+		if !passes(it.Record) {
 			c.Unpassing = append(c.Unpassing, it)
 		}
 	}
@@ -127,6 +128,66 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 
 // CloseReason is why work ended. Only one of them is success, which is why
 // the terminal state is "closed" rather than "done" (docs/spec.md §5.3.1).
+// Verdict is what a checker found — the other axis of ADR-0007.
+//
+// `abandoned` is deliberately not here. It is a decision rather than a finding,
+// and a checker who could record it could abandon their own outcome through the
+// command that exists to be independent of them.
+type Verdict string
+
+const (
+	Proven       Verdict = "proven"
+	Disproven    Verdict = "disproven"
+	Inconclusive Verdict = "inconclusive"
+)
+
+// Verdicts lists them in the order they are offered.
+var Verdicts = []Verdict{Proven, Disproven, Inconclusive}
+
+// IsVerdict reports whether a value is one.
+func IsVerdict(s string) bool {
+	for _, v := range Verdicts {
+		if Verdict(s) == v {
+			return true
+		}
+	}
+	return false
+}
+
+// passes reports whether an outcome's evidence says the condition holds.
+//
+// The most recent verdict wins, the way the most recent assertion is the
+// current claim (ADR-0007). Disproven and inconclusive are both "not proven",
+// which is the answer close gates on.
+//
+// **A verdict with no `as` reads as proven.** Every entry written before the
+// field existed is a bare {by, at}, and reading those as unproven would flip
+// every verified outcome in every existing corpus at once. Migrating them is
+// work-items/WORK-0037.
+func passes(r interface{ Node(string) *yaml.Node }) bool {
+	node := r.Node("verified")
+	if node == nil {
+		return false
+	}
+	var entries []map[string]any
+	if err := node.Decode(&entries); err != nil {
+		var one map[string]any
+		if err2 := node.Decode(&one); err2 != nil {
+			return false
+		}
+		entries = []map[string]any{one}
+	}
+	if len(entries) == 0 {
+		return false
+	}
+	last := entries[len(entries)-1]
+	as, ok := last["as"]
+	if !ok || as == nil || as == "" {
+		return true
+	}
+	return as == string(Proven)
+}
+
 // Assertion is what a doer claims about an outcome — one axis of ADR-0007,
 // the other being the checker's verdict. They may disagree, and the
 // disagreement is the point.

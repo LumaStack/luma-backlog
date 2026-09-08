@@ -19,7 +19,7 @@ func withOutcomes(t *testing.T) (*App, string) {
 
 func TestCompletedIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 	app, _ := withOutcomes(t)
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran the drain test")
 
 	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitRefused {
@@ -36,8 +36,8 @@ func TestCompletedIsRefusedWhileAnyOutcomeLacksEvidence(t *testing.T) {
 
 func TestCompletedSucceedsOnceEveryOutcomeHasEvidence(t *testing.T) {
 	app, project := withOutcomes(t)
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran the drain test")
-	run(t, app, "outcome", "verify", "retries-are-durable", "-e", "killed the worker mid-flight")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran the drain test")
+	run(t, app, "outcome", "verify", "retries-are-durable", "proven", "-e", "killed the worker mid-flight")
 
 	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
 	if code != ExitOK {
@@ -85,7 +85,7 @@ func TestRetiredOutcomesAreExcludedFromTheCount(t *testing.T) {
 	// Otherwise retiring an outcome could never let a work item close,
 	// which is the point of retiring it.
 	app, _ := withOutcomes(t)
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "ran it")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
 	run(t, app, "set", "retries-are-durable", "stage=archived")
 
 	code, out, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
@@ -144,8 +144,8 @@ func TestCloseRejectsAnUnknownDisposition(t *testing.T) {
 func TestVerifyAccumulates(t *testing.T) {
 	// Several actors confirming the same outcome is the normal case.
 	app, project := withOutcomes(t)
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "first check")
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "second check")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "first check")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "second check")
 
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-queue-drains.md"))
 	var entries []map[string]any
@@ -166,7 +166,7 @@ func TestVerifyAccumulates(t *testing.T) {
 
 func TestVerifyWithoutEvidenceSaysSo(t *testing.T) {
 	app, _ := withOutcomes(t)
-	code, out, _ := run(t, app, "outcome", "verify", "the-queue-drains")
+	code, out, _ := run(t, app, "outcome", "verify", "the-queue-drains", "proven")
 	if code != ExitOK {
 		t.Fatalf("exit = %d", code)
 	}
@@ -180,7 +180,7 @@ func TestVerifyWithoutEvidenceSaysSo(t *testing.T) {
 
 func TestVerifyRefusesANonOutcome(t *testing.T) {
 	app, _ := withOutcomes(t)
-	if code, _, _ := run(t, app, "outcome", "verify", "payments-v2"); code != ExitUsage {
+	if code, _, _ := run(t, app, "outcome", "verify", "payments-v2", "proven"); code != ExitUsage {
 		t.Error("a work item was accepted for verification")
 	}
 }
@@ -237,7 +237,7 @@ func TestAssertRefusesANonOutcome(t *testing.T) {
 // the opposite of what the word is for.
 func TestAbandoningDoesNotCleanTheArithmetic(t *testing.T) {
 	app, _ := withOutcomes(t)
-	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "checked")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "checked")
 	if code, _, e := run(t, app, "outcome", "abandon", "retries-are-durable"); code != ExitOK {
 		t.Fatalf("abandon failed: %s", e)
 	}
@@ -269,5 +269,46 @@ func TestAbandonRefusesANonOutcome(t *testing.T) {
 	app, _ := withOutcomes(t)
 	if code, _, _ := run(t, app, "outcome", "abandon", "payments-v2"); code != ExitUsage {
 		t.Error("a work item was abandoned")
+	}
+}
+
+// The verdict is refused by name, not by omission. `abandoned` is a state an
+// outcome can be in, so validating against the state list would let it through
+// — and a checker able to record it could abandon their own outcome through the
+// command that exists to be independent of them (ADR-0007).
+func TestVerifyRefusesAbandonedByName(t *testing.T) {
+	app, _ := withOutcomes(t)
+	code, _, errOut := run(t, app, "outcome", "verify", "the-queue-drains", "abandoned")
+	if code != ExitUsage {
+		t.Fatalf("abandoned was accepted as a verdict: exit %d", code)
+	}
+	if !strings.Contains(errOut, "outcome abandon") {
+		t.Errorf("the refusal did not name the right command:\n%s", errOut)
+	}
+}
+
+// Disproven is evidence, and it is not passing. A command that could only say
+// yes conflated "nobody looked" with "somebody looked and it was false".
+func TestDisprovenDoesNotCount(t *testing.T) {
+	app, _ := withOutcomes(t)
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
+	run(t, app, "outcome", "verify", "retries-are-durable", "disproven", "-e", "it failed")
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
+	if code != ExitRefused {
+		t.Errorf("a disproven outcome let the close through: exit %d", code)
+	}
+	if !strings.Contains(errOut, "1 of 2") {
+		t.Errorf("the count did not treat disproven as unproven:\n%s", errOut)
+	}
+}
+
+// The latest verdict wins, the way the latest assertion is the current claim.
+func TestTheLatestVerdictWins(t *testing.T) {
+	app, _ := withOutcomes(t)
+	run(t, app, "outcome", "verify", "the-queue-drains", "disproven", "-e", "failed once")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "fixed, ran again")
+	run(t, app, "outcome", "verify", "retries-are-durable", "proven", "-e", "ok")
+	if code, _, e := run(t, app, "work-item", "close", "payments-v2", "completed"); code != ExitOK {
+		t.Errorf("a later proven verdict did not supersede an earlier disproven one: %s", e)
 	}
 }
