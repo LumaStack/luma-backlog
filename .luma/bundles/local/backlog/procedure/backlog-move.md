@@ -261,10 +261,18 @@ judged on its outcomes and on nothing else — so this is a warning, not a refus
 **Never auto-close the stragglers**: that invents a disposition nobody chose,
 which is exactly what `--force` refuses to do to outcomes.
 
-**Never force without approval.** Forcing overrides the only refusal this
-procedure has, and an override is a decision — an agent that forces a close has
-closed work nobody chose to close, which is the failure the whole section guards
-against. Ask, and say what the refusal was.
+**Never force without the owner's approval.** Forcing overrides the only refusal
+this procedure has, and an override is a decision that belongs to whoever is
+accountable (ADR-0008) — an agent that forces a close has closed work nobody
+chose to close. Ask, and say what the refusal was. **Until ownership ships, that
+is whoever is present**, which is the same person on a single-maintainer project
+and will not be later.
+
+**Record who answered, not that the owner approved.** Nothing authenticates an
+owner, so what the record can honestly carry is what was asked and who said yes.
+Writing *the owner approved* asserts something the tool cannot back, and a
+record claiming a confirmation nobody gave is worse than one with no attribution
+at all.
 
 **`--force` closes anyway and never touches the outcomes.** The tempting
 implementation marks them verified so the arithmetic comes out clean; that

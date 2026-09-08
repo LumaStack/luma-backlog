@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.21.0
+version: 0.21.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,20 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.21.1` — **the force approval belongs to the owner, and the record says who
+answered.**
+
+An override is a decision, and decisions about a work item belong to whoever is
+accountable for it — ADR-0008's owner, not whoever happens to be driving. The
+two are the same person on a single-maintainer project and will not be later,
+which is `ADR-0010`'s point exactly.
+
+**Nothing authenticates an owner**, so the record carries **what was asked and
+who said yes** rather than asserting that the owner approved. The weaker claim
+is the true one, and `CLAUDE.md` already says which way that trade goes: a
+record claiming a confirmation nobody gave is worse than one with no attribution
+at all.
 
 `0.21.0` — **the single-actor case stops being written as universal.**
 
