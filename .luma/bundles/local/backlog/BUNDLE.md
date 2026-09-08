@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.25.0
+version: 0.26.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -69,22 +69,13 @@ judgment and calls the command for everything else.
 
 ## Version
 
-`0.25.0` — **finish what you started, and never pick what is next.**
+`0.26.0` — **recommending the next work item is welcome; starting it is not.**
 
-Two rules, both from watching the failure. A work item taken to `in_progress` is
-worked until it is done unless somebody asks otherwise — leaving one open and
-moving on is how a backlog fills with things that were nearly finished, and the
-missing half is always the half nobody wants to do.
+An opinion about what to pick is invited rather than required. Choosing is
+somebody else's, and a question is not confirmation.
 
-**And an agent never selects its own next work item.** Picking one crosses the
-second gate on its own authority, and that gate is expensive precisely because a
-person decides it. Where an orchestrating agent is driving, the orchestrator
-picks and the agent doing the work never does.
-
-**Asking a question is not confirmation, and neither is answering one.** A reply
-about the work is not permission to start different work — which is the specific
-way this went wrong: a question was asked, not answered, and the agent picked
-anyway.
+Also: **finish what you started.** A work item at `in_progress` is worked until
+it is done unless somebody asks otherwise.
 
 `0.24.5` — **the two forms owe different things.**
 

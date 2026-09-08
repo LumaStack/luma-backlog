@@ -209,17 +209,17 @@ Leaving one open and moving to the next is how a backlog fills with things that
 were nearly finished, and the half that is missing is always the half nobody
 wants to do.
 
-**Never pick the next work item.** When one ends, say what is available and
-stop. An agent that selects its own next piece of work has crossed the second
-gate on its own authority — the gate is a commitment somebody makes, and
-`prepared` to `todo` is the expensive one precisely because a person decides it.
+**Recommend what to work on next if you have a view.** An opinion is welcome
+— say which one and why. Say nothing if you have nothing.
 
-**Asking a question is not confirmation, and neither is answering one.** A reply
-about the work is not permission to start different work. Only somebody saying
-which thing to pick counts, and if that has not happened the answer is to wait.
+**Do not start it without confirmation.** Recommending is the agent's part;
+choosing is not. Wait for somebody to name the work.
 
-**Where an orchestrating agent is driving, it does the picking** — the agent
-doing the work never does, whoever is upstream of it.
+**A question is not confirmation, and neither is an answer to one.** Only
+somebody naming the next work item counts.
+
+**An orchestrating agent confirms in a person's place.** The working agent
+recommends either way.
 
 **This is the last cheap moment to change an outcome.** Before work starts,
 revising one is free. After, it is Redefine, and Redefine is where goalposts
