@@ -86,39 +86,39 @@ pointer: it says where things stand and marks everything below as historical, so
 a reader knows where to stop. That is what lets an append-only file survive at
 length. **Never rewrite what is below it.**
 
-## Say where it went, beside the thing that went there
+## Say where it went
 
-**Each point that was journalled names its own destination**, in the sentence
-or paragraph that made it — not gathered into a line at the end.
+**Report every journal write, and make clear which point went where.** The
+mapping is the requirement; where it sits on the page is not.
+
+**Inline is nicer** — the destination in the paragraph that made the point:
 
 > **Closed is not archived** — closed is about the work, archived is about
 > attention. *Journaled on WORK-0039.*
->
-> **`stage` keeps its definition**, and the reading is an application of it
-> rather than a replacement. *Journaled on WORK-0036.*
 
-**A footer destroys what this is for.** *Journaled on WORK-0036, WORK-0039 and
-WORK-0031* tells a reader that three records were written and leaves them to
-work out which idea landed where. They cannot say *no, that one belongs on the
-other work item* about a mapping they were never shown, and correcting
-placement is the point — a learning filed on the wrong work item is nearly
-unfindable afterwards.
+**A footer is fine if it keeps the mapping:**
+
+> Journaled — *closed is not archived* on WORK-0039; the `stage` reading on
+> WORK-0036.
+
+**What fails is a bare list of records.** *Journaled on WORK-0036, WORK-0039
+and WORK-0031* proves three records were touched and hides which idea landed
+where — and **correcting placement is the reason for reporting at all.** A
+learning filed on the wrong work item is nearly unfindable afterwards; a reader
+shown the mapping says *that belongs on the other one* while moving it still
+costs a sentence. Nobody can correct a mapping they were never shown.
 
 **Because journalling is invisible and usually unasked.** This procedure says
 to trigger without being asked, so a line is written to a file the reader never
 sees, on their behalf, without their say-so. Not reporting it leaves them with
-no model of what is being recorded in their name — which is the provenance
-problem this project cares about most, one level down.
+no model of what is being recorded in their name — the provenance problem this
+project cares about most, one level down.
 
-**Where, not what.** The point already said the thing; repeating it as a
-summary is the same sentence twice, and it grows until the report is longer
-than the work.
+**Where, not what.** The point already said the thing; repeating it as a summary
+is the same sentence twice.
 
-**Merge when several points share a destination**, rather than repeating it
-after each. The mapping is what matters, not the ceremony.
-
-**Omit it when nothing was journalled**, and when the writing *was* the reply —
-somebody who asked for a line to be written has already been told it was.
+**Merge points that share a destination**, and **omit it entirely** when
+nothing was journalled, or when the writing *was* the reply.
 
 ## Two rules that are easy to get wrong
 

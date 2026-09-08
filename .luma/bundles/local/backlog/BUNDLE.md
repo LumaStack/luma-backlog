@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.24.1
+version: 0.24.2
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,15 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.2` — **the mapping is the rule; the position is a preference.**
+
+`0.24.1` forbade a footer. That was over-specified — a footer carrying *which
+point went where* does the job, and only a bare list of record names fails.
+Inline stays the nicer form and is no longer the required one.
+
+*Third version of one section inside half an hour, which is worth noticing:
+writing a rule from a live example converges fast and churns while it does.*
 
 `0.24.1` — **the attribution goes beside the point, not in a footer.**
 
