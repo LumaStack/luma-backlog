@@ -127,6 +127,29 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 
 // CloseReason is why work ended. Only one of them is success, which is why
 // the terminal state is "closed" rather than "done" (docs/spec.md §5.3.1).
+// Assertion is what a doer claims about an outcome — one axis of ADR-0007,
+// the other being the checker's verdict. They may disagree, and the
+// disagreement is the point.
+type Assertion string
+
+const (
+	Succeeded Assertion = "succeeded"
+	Failed    Assertion = "failed"
+)
+
+// Assertions lists them in the order they are offered.
+var Assertions = []Assertion{Succeeded, Failed}
+
+// IsAssertion reports whether a value is one.
+func IsAssertion(s string) bool {
+	for _, a := range Assertions {
+		if Assertion(s) == a {
+			return true
+		}
+	}
+	return false
+}
+
 type CloseReason string
 
 const (

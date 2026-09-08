@@ -184,3 +184,50 @@ func TestVerifyRefusesANonOutcome(t *testing.T) {
 		t.Error("a work item was accepted for verification")
 	}
 }
+
+// A doer's claim must never gate a close. Gating on it would gate on the thing
+// the design distrusts, and would let a doer clear their own work (ADR-0007).
+func TestAssertingSuccessDoesNotLetAWorkItemComplete(t *testing.T) {
+	app, _ := withOutcomes(t)
+	if code, _, e := run(t, app, "outcome", "assert", "the-queue-drains", "succeeded"); code != ExitOK {
+		t.Fatalf("assert failed: %s", e)
+	}
+	if code, _, _ := run(t, app, "work-item", "close", "payments-v2", "completed"); code != ExitRefused {
+		t.Errorf("a doer's own claim cleared the close: exit %d, want %d", code, ExitRefused)
+	}
+}
+
+// Claims accumulate, so a second attempt is visible. A single overwritten
+// field would make "failed once, then succeeded" indistinguishable from
+// "succeeded first time".
+func TestAssertionsAccumulate(t *testing.T) {
+	app, project := withOutcomes(t)
+	run(t, app, "outcome", "assert", "the-queue-drains", "failed")
+	run(t, app, "outcome", "assert", "the-queue-drains", "succeeded")
+
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-queue-drains.md"))
+	var entries []map[string]any
+	if err := r.Node("asserted").Decode(&entries); err != nil {
+		t.Fatalf("asserted is not a list: %v", err)
+	}
+	if len(entries) != 2 {
+		t.Fatalf("asserted has %d entries, want 2", len(entries))
+	}
+	if entries[0]["as"] != "failed" || entries[1]["as"] != "succeeded" {
+		t.Errorf("the sequence was not preserved: %v", entries)
+	}
+}
+
+func TestAssertRefusesAnUnknownClaim(t *testing.T) {
+	app, _ := withOutcomes(t)
+	if code, _, _ := run(t, app, "outcome", "assert", "the-queue-drains", "done"); code != ExitUsage {
+		t.Error("an unknown claim was accepted")
+	}
+}
+
+func TestAssertRefusesANonOutcome(t *testing.T) {
+	app, _ := withOutcomes(t)
+	if code, _, _ := run(t, app, "outcome", "assert", "payments-v2", "succeeded"); code != ExitUsage {
+		t.Error("a work item was asserted")
+	}
+}

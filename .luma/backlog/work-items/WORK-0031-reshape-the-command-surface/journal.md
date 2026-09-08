@@ -44,6 +44,10 @@ CompletionOf could not be called per item: List reads every record in the backlo
 a work item with no outcomes prints 'none' rather than '0 of 0', which reads as progress measured against nothing; and completion is ABSENT rather than zeroed on anything that is not a work item, since absent says not counted where a zeroed object says counted and none
 one golden moved, list-json, and it was inspected rather than regenerated blind: eight lines, all insertions, the completion object on two work items, nothing removed or renamed — additive under spec 9.9 rather than a contract change
 NOT done and flagged: the human listing table carries no counts. adding a column is a showing-records change, and that policy deliberately trimmed the listing to key, status and title — worth deciding rather than slipping in
+outcome assert built — the doer's axis of ADR-0007, appended never replaced, so failed-then-succeeded stays distinguishable from succeeded-first-time; four tests cover the sequence, an unknown claim, a non-outcome, and that a claim never gates a close
+the test that matters most is TestAssertingSuccessDoesNotLetAWorkItemComplete: asserting succeeded and then closing as completed is still refused, because gating on the doer's claim would gate on the thing the design distrusts and would let a doer clear their own work
+assert says when it contradicts — if a checker has already recorded a verdict, the output says both stand and the disagreement is the thing worth seeing; reported, never refused, since the disagreement is the point of splitting the axes
+outcome archive NOT built and verify's required positional NOT built — the task bundles three things and only one is done; the maintainer wants to understand archive before it is implemented, so the task stays open rather than being closed on a third of its checks
 
 ## ▶ 2026-09-07
 

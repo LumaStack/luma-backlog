@@ -63,6 +63,7 @@ func addNouns(root *cobra.Command, a *App) {
 			noun.AddCommand(newRankCommand(a))
 			noun.AddCommand(newJournalCommand(a))
 		case app.Outcome:
+			noun.AddCommand(newAssertCommand(a))
 			noun.AddCommand(newVerifyCommand(a))
 		}
 

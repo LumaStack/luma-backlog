@@ -99,3 +99,21 @@ func appendToList(r interface {
 	}
 	return r.SetRaw(key, string(encoded))
 }
+
+// countList reports how many entries a list field holds. A bare mapping counts
+// as one, the same way appendToList reads it.
+func countList(r interface{ Node(string) *yaml.Node }, key string) int {
+	node := r.Node(key)
+	if node == nil {
+		return 0
+	}
+	var many []map[string]any
+	if err := node.Decode(&many); err == nil {
+		return len(many)
+	}
+	var one map[string]any
+	if err := node.Decode(&one); err == nil {
+		return 1
+	}
+	return 0
+}
