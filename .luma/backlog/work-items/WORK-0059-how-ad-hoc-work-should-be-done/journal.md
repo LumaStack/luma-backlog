@@ -110,6 +110,23 @@ it is the same rule as the earlier discussion about canceled and rejected needin
 EDITOR: 'two readers can state the problem' should be 'two readers share an understanding of the problem' — the agent's paraphrase dropped the shared-ness, and two readers who each confidently state a DIFFERENT problem both pass the weaker version while being the actual failure
 worth noticing that the stronger criterion is also the more mechanical one — can-state-it is a property of each reader alone and cannot be checked, shared-understanding is a property of the pair and is exactly what the diff measures; the test the agent described was already right and only the criterion was wrong
 and the failure is invisible without the diff, because each reader alone would have proceeded — which is why the criterion has to be about the pair rather than about a reader
+WRAP — end of the first session, 2026-09-07/08.
+
+WHERE THINGS STAND. WORK-0059 is in_progress with no outcomes, deliberately. PR #78 is open against main: 47 files, ~4000 insertions, reviewed by nobody. The bundle went 0.15.0 to 0.21.1 across five changes. ADR-0010 is provisional and therefore in force. Ten work items were captured, WORK-0057 through WORK-0066.
+
+THE VERDICT ON THE MODE, which nothing else records. It worked: a procedure nobody had reopened since it was written is now the most examined document in the bundle, and it produced a decision, a policy and ten records on the way. Reading beat asking every time — every substantive finding came from opening the file or running the command, none from a question.
+
+Its failures were consistent and none were failures of judgment. PROSE COMPLIANCE: the agent broke rules it had already read, four times — a policy wikilinking outside its bundle, an internals reference in a procedure, a policy paraphrased until it drifted, and asking for a criterion one turn after recording that asking gets in the way; CLAUDE.md claims measured compliance with prose-only rules runs far below a guarantee, and this session is a measurement of that from inside the context that held the rules. OVER-CORRECTION: asked to fix one clause, the agent rewrote the paragraph twice and made it worse both times, because the surrounding activity set the size of the response rather than the request did. SINGLE-ACTOR FOSSILS: three shipped in one procedure in one day, and ADR-0010 exists because of them. DRIFT TOWARD COMMENTARY: rewrites reached for epistemology rather than for anything a reader could act on.
+
+AND THE FINDING THAT MATTERS MOST: every one of those was caught by a human reader and nothing mechanical caught anything. So editor mode as run here does not scale — it works because somebody was reading every turn, and an unattended version would accumulate these silently. That is the strongest argument yet for WORK-0058's sweep and WORK-0046's conditions.
+
+THE CRITERION ARRIVED, which was this experiment's own success condition. The test was never whether a criterion precedes the work but whether it arrives, and it did: a step is worth forcing when it prevents a false record, and a step that only enforces process is red tape. Nobody could have written that at the start.
+
+WHAT IS NEXT, in order. One, WORK-0059 cannot close as completed without outcomes — write them after the fact and prove them, which WORK-0032 ranks second of three and allows, or force the close, which now requires the owner's approval under a rule this session added; either path is the experiment testing itself. Two, WORK-0062 is ready to run and was not runnable before, because the session transcript is now committed at evidence/session-capture.md and the journal can finally be measured against its source. Three, PR #78 wants a reader who was not here.
+
+WHAT IS UNKNOWN. Identified or established — whether dependencies must be named or resolved before prepared decides whether that rung is reachable in a large organization, raised twice and unresolved both times. Paused and blocked were raised together and never separated. Who may cross the first gate, which is the same question as who may deny at it, since rejection carries an authority claim the other dispositions do not. Whether a reopen should sometimes create a new record rather than mutating. And the owner approval rule is written while ownership does not ship, so it reduces to whoever is present and cannot yet be what it says.
+
+FOR WHOEVER READS THIS JOURNAL: it is an instrument log and deliberately denser than spec 5.5 asks for anywhere else. Do not copy its density as house style.
 
 ## ▶ 2026-09-07
 
