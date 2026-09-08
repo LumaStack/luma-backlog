@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.24.3
+version: 0.24.4
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,19 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.4` — **the rule contradicted itself and produced exactly the report it
+forbids.**
+
+It opened with *what was journalled, where it went* and closed with *where, not
+what*. The second was meant to stop whole paragraphs being restated; it read as
+licence to name a record and say nothing about it — and that is the report it
+produced, twice, before somebody said *this tells me something was journalled,
+not what.*
+
+A clause each is enough. Naming only the record leaves a reader unable to tell
+which of five points in a reply landed there, which is the mapping the rule
+exists for.
 
 `0.24.3` — **the section says the rule and stops.**
 

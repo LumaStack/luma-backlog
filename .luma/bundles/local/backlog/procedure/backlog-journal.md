@@ -102,8 +102,13 @@ in each, and correcting placement is the reason for reporting at all.
 **Journalling is invisible and usually unasked**, so a reader who is not told
 has no model of what is being written in their name.
 
-**Where, not what.** Merge points that share a destination. Omit it when
-nothing was journalled, or when the writing was the reply.
+**Name the substance, not just the record.** *Journaled on WORK-0031* says
+something was written and leaves the reader no wiser. A clause each is enough:
+*journaled on WORK-0031 — that abandoning does not clean the count, and the
+verify guard.*
+
+**Merge points that share a destination.** Omit it when nothing was journalled,
+or when the writing was the reply.
 
 ## Two rules that are easy to get wrong
 
