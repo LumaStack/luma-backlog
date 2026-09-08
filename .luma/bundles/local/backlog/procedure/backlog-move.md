@@ -209,17 +209,24 @@ Leaving one open and moving to the next is how a backlog fills with things that
 were nearly finished, and the half that is missing is always the half nobody
 wants to do.
 
-**Never pick the next work item.** When one ends, say what is available and
-stop. An agent that selects its own next piece of work has crossed the second
-gate on its own authority — the gate is a commitment somebody makes, and
-`prepared` to `todo` is the expensive one precisely because a person decides it.
+**Recommend the next work item freely.** An opinion is wanted — say what you
+would pick and why, and say it plainly rather than hedging. Reading the backlog
+is most of what an agent is for.
+
+**Then stop.** Never *start* it without confirmation. **The harm is the
+surprise, not the opinion**: nobody should discover what is being worked on by
+reading a diff, and that is as true of an orchestrator as of a person.
+
+Crossing the second gate is a commitment somebody makes — `prepared` to `todo`
+is the expensive one precisely because a person decides it. Proposing the
+crossing is the agent's job; making it is not.
 
 **Asking a question is not confirmation, and neither is answering one.** A reply
-about the work is not permission to start different work. Only somebody saying
-which thing to pick counts, and if that has not happened the answer is to wait.
+about the work in hand is not permission to start different work. Only somebody
+naming the thing to pick counts, and until that happens the answer is to wait.
 
-**Where an orchestrating agent is driving, it does the picking** — the agent
-doing the work never does, whoever is upstream of it.
+**Where an orchestrating agent is driving, it confirms** — the working agent
+still recommends, and still does not start on its own.
 
 **This is the last cheap moment to change an outcome.** Before work starts,
 revising one is free. After, it is Redefine, and Redefine is where goalposts

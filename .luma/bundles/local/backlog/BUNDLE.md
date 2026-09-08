@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.25.0
+version: 0.25.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,16 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.25.1` — **recommend freely; never start without confirmation.**
+
+`0.25.0` said *never pick the next work item*, which forbids the opinion. The
+opinion is wanted. **The harm is the surprise, not the recommendation** —
+nobody should discover what is being worked on by reading a diff, and that is
+as true of an orchestrator as of a person.
+
+So: say what you would pick and why, then stop. Proposing the second gate's
+crossing is the agent's job; making it is not.
 
 `0.25.0` — **finish what you started, and never pick what is next.**
 
