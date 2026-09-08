@@ -19,6 +19,11 @@ type Spec struct {
 	Title    string
 	WorkItem string // slug; empty means derive from context or omit
 	Kind     string // classifies a work item; empty means ordinary work
+	// Description is prose about the record, written at creation. Empty means
+	// none — the field is omitted rather than present and blank, because
+	// unlike an outcome's desired_state there is nothing here that has to be
+	// filled in later.
+	Description string
 }
 
 // Result reports what happened, so a caller can tell a creation from a
@@ -148,6 +153,14 @@ func render(s Spec, cfg config.Config, e env.Env, adr int, key string) ([]byte, 
 		r.Set("key", key)
 	}
 	r.Set("title", s.Title)
+	// Beside the title, because they are the two fields written for a person
+	// and a reader looks for them together. Written here rather than by a
+	// following `set` so a record nobody has edited carries no `modified`
+	// stamp — one dated the same second as `created` reads as an edit that
+	// never happened.
+	if s.Description != "" {
+		r.Set("description", s.Description)
+	}
 
 	switch s.Unit {
 	case Decision:

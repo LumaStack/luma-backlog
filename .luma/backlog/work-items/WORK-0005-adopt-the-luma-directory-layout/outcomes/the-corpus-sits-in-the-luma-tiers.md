@@ -10,6 +10,7 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T19:02:14Z'}
 verified:
   - at: "2026-09-04T19:02:14Z"
     by: agent:claude-opus-5/luma-backlog
+    as: proven
 evidence:
   - at: "2026-09-04T19:02:14Z"
     by: agent:claude-opus-5/luma-backlog

@@ -49,9 +49,20 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 	if err != nil {
 		return nil, FailureError("%w", err)
 	}
+	// One walk for every work item's counts, attached after the loop. Calling
+	// CompletionOf per item would read the corpus once per work item.
+	completions, err := corpus.Completions(s.Backlog)
+	if err != nil {
+		return nil, FailureError("%w", err)
+	}
 	views := make([]View, 0, len(items))
 	for _, it := range items {
-		views = append(views, s.view(it))
+		v := s.view(it)
+		if it.Type() == corpus.WorkItem {
+			c := completions[it.Slug()].Counts()
+			v.Completion = &c
+		}
+		views = append(views, v)
 	}
 	byWorkOrder(views)
 	return &ListResult{

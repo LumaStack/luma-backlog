@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-08
+
+fifth instance, and the first done rather than deferred: 29 verified entries carried no 'as' because they were written by a command that could only say yes. stamped as: proven explicitly rather than defaulted, then the default flipped to not-proven — faithful to what the authors meant, and it leaves absence meaning nobody-said the way it does everywhere else
+
 ## ▶ 2026-09-06
 
 already needed three times and solved by hand each time — the unit rename, the username replacement, and everything WORK-0031 will change

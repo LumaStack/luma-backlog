@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.22.0
+version: 0.24.5
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,82 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.5` — **the two forms owe different things.**
+
+Inline carries the substance by position, so the attribution beside a point is
+already complete. A footer has no position to say it for you, so it has to
+reference the point. That is why *journaled on WORK-0031* fails as a footer and
+would have been fine inline.
+
+`0.24.4` — **the rule contradicted itself and produced exactly the report it
+forbids.**
+
+It opened with *what was journalled, where it went* and closed with *where, not
+what*. The second was meant to stop whole paragraphs being restated; it read as
+licence to name a record and say nothing about it — and that is the report it
+produced, twice, before somebody said *this tells me something was journalled,
+not what.*
+
+A clause each is enough. Naming only the record leaves a reader unable to tell
+which of five points in a reply landed there, which is the mapping the rule
+exists for.
+
+`0.24.3` — **the section says the rule and stops.**
+
+Three passes each added justification and none removed any, so a one-sentence
+rule carried thirty lines of argument that an agent pays for on every journal
+write. Cut to the rule, one example, and a clause of reason each.
+
+`0.24.2` — **the mapping is the rule; the position is a preference.**
+
+`0.24.1` forbade a footer. That was over-specified — a footer carrying *which
+point went where* does the job, and only a bare list of record names fails.
+Inline stays the nicer form and is no longer the required one.
+
+*Third version of one section inside half an hour, which is worth noticing:
+writing a rule from a live example converges fast and churns while it does.*
+
+`0.24.1` — **the attribution goes beside the point, not in a footer.**
+
+`0.24.0` asked for one line at the end naming the records written. That loses
+the mapping: *journaled on WORK-0036, WORK-0039 and WORK-0031* tells a reader
+three records were touched and leaves them to work out which idea landed where.
+
+**Correcting placement is the whole reason for reporting it**, and nobody can
+correct a mapping they were never shown. So each point names its own
+destination, in the paragraph that made it, and several points sharing one
+merge rather than repeating it.
+
+`0.24.0` — **[[backlog-journal]] says where it went.**
+
+Journalling is invisible and usually unasked — this procedure tells an agent to
+trigger without being told, so a line lands in a file the reader never sees, in
+their name, without their say-so. Nothing required saying so afterwards.
+
+**Every reply that journalled something now names where**, in one line, records
+only. That is the provenance rule this project already holds, one level down:
+writing in somebody's name and not telling them is how a record ends up
+claiming something nobody saw.
+
+**And it is the only moment placement can be corrected.** A learning filed on
+the wrong work item is nearly unfindable later; a reader told at the time says
+*that belongs on the other one* while it still costs a sentence to move.
+
+Where, not what — the reply already said the thing, and repeating it as a
+summary grows until the report is longer than the work.
+
+`0.23.0` — **the lag [[backlog-move]] documented is gone.**
+
+It carried a blockquote apologising for the binary: the disposition was settled
+as positional and `--reason` as prose, and the tool still spelled `--reason
+delivered|abandoned`. The tool caught up, so the procedure stops translating
+and simply says what to type.
+
+What remains unbuilt is narrower and now stated as such: **a cancellation or a
+rejection should be made to record why.** Those two are the only dispositions
+with no structural evidence behind them, so the prose is the only place their
+reason can live — and nothing requires it.
 
 `0.22.0` — **an outcome is a record, or it is not an outcome.**
 

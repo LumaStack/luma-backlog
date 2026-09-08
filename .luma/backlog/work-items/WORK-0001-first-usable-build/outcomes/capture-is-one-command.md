@@ -9,6 +9,7 @@ created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"
     by: agent:opus-5/luma-backlog
+    as: proven
 evidence:
   - at: "2026-08-10T05:39:04Z"
     by: agent:opus-5/luma-backlog

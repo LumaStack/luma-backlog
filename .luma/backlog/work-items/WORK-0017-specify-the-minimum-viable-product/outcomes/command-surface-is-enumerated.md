@@ -13,6 +13,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T01:34:02Z'}
 verified:
   - at: "2026-09-06T13:16:22Z"
     by: human:luma-foundry
+    as: proven
 evidence:
   - at: "2026-09-06T13:16:22Z"
     by: human:luma-foundry

@@ -1,6 +1,7 @@
 package corpus
 
 import (
+	"gopkg.in/yaml.v3"
 	"path"
 	"strings"
 
@@ -36,6 +37,62 @@ func (c Completion) Complete() bool {
 	return len(c.Live) > 0 && len(c.Unpassing) == 0 && len(c.Skipped) == 0
 }
 
+// Counts is a completion reduced to numbers, for a reader rather than a
+// refusal. Proven is what a person means by "how far along is this".
+type Counts struct {
+	Proven  int
+	Live    int
+	Retired int
+	Skipped int
+}
+
+// Counts reduces a completion to the four numbers worth showing.
+func (c Completion) Counts() Counts {
+	return Counts{
+		Proven:  len(c.Live) - len(c.Unpassing),
+		Live:    len(c.Live),
+		Retired: len(c.Retired),
+		Skipped: len(c.Skipped),
+	}
+}
+
+// Completions counts every work item's outcomes in one walk.
+//
+// CompletionOf reads the corpus each time it is called, which is fine for the
+// single record `show` reads and quadratic for a listing. A listing gets this
+// instead: one walk, grouped by work item.
+func Completions(b *root.Backlog) (map[string]Completion, error) {
+	items, skipped, err := List(b, Filter{Unit: Outcome})
+	if err != nil {
+		return nil, err
+	}
+	out := map[string]Completion{}
+	for _, it := range items {
+		c := out[it.WorkItem]
+		if s, _ := it.Record.Get("stage"); s == "archived" {
+			c.Retired = append(c.Retired, it)
+		} else {
+			c.Live = append(c.Live, it)
+			if !passes(it.Record) {
+				c.Unpassing = append(c.Unpassing, it)
+			}
+		}
+		out[it.WorkItem] = c
+	}
+	// An unreadable file where an outcome would be counts against the work
+	// item it sits under, the same as it does for a refusal — a work item
+	// whose evidence cannot be read is not a work item with less evidence.
+	for _, sk := range skipped {
+		for wi, c := range out {
+			if couldBeOutcomeOf(sk.Path, wi) {
+				c.Skipped = append(c.Skipped, sk)
+				out[wi] = c
+			}
+		}
+	}
+	return out, nil
+}
+
 // CompletionOf counts the outcomes of a work item.
 //
 // Derived by counting, never read from a field. There is nothing to store that
@@ -62,7 +119,7 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 			continue
 		}
 		c.Live = append(c.Live, it)
-		if !it.Record.Has("verified") {
+		if !passes(it.Record) {
 			c.Unpassing = append(c.Unpassing, it)
 		}
 	}
@@ -71,17 +128,110 @@ func CompletionOf(b *root.Backlog, workItem string) (Completion, error) {
 
 // CloseReason is why work ended. Only one of them is success, which is why
 // the terminal state is "closed" rather than "done" (docs/spec.md §5.3.1).
+// Verdict is what a checker found — the other axis of ADR-0007.
+//
+// `abandoned` is deliberately not here. It is a decision rather than a finding,
+// and a checker who could record it could abandon their own outcome through the
+// command that exists to be independent of them.
+type Verdict string
+
+const (
+	Proven       Verdict = "proven"
+	Disproven    Verdict = "disproven"
+	Inconclusive Verdict = "inconclusive"
+)
+
+// Verdicts lists them in the order they are offered.
+var Verdicts = []Verdict{Proven, Disproven, Inconclusive}
+
+// IsVerdict reports whether a value is one.
+func IsVerdict(s string) bool {
+	for _, v := range Verdicts {
+		if Verdict(s) == v {
+			return true
+		}
+	}
+	return false
+}
+
+// passes reports whether an outcome's evidence says the condition holds.
+//
+// The most recent verdict wins, the way the most recent assertion is the
+// current claim (ADR-0007). Disproven and inconclusive are both "not proven",
+// which is the answer close gates on.
+//
+// **A verdict with no `as` is not proven.** Absence means nobody said, the way
+// it does everywhere else here — no verified entries means unchecked, no kind
+// means unclassified. Reading it as proven would make the one value that clears
+// a close the thing you get for free from a hand edit, another tool, or a bug
+// that omitted the field.
+//
+// The entries written before the field existed were stamped `as: proven`
+// rather than defaulted, because that is what their authors meant: they were
+// written by a command that could only say yes. Faithful to the intent, and it
+// leaves the default safe.
+func passes(r interface{ Node(string) *yaml.Node }) bool {
+	node := r.Node("verified")
+	if node == nil {
+		return false
+	}
+	var entries []map[string]any
+	if err := node.Decode(&entries); err != nil {
+		var one map[string]any
+		if err2 := node.Decode(&one); err2 != nil {
+			return false
+		}
+		entries = []map[string]any{one}
+	}
+	if len(entries) == 0 {
+		return false
+	}
+	last := entries[len(entries)-1]
+	return last["as"] == string(Proven)
+}
+
+// Assertion is what a doer claims about an outcome — one axis of ADR-0007,
+// the other being the checker's verdict. They may disagree, and the
+// disagreement is the point.
+type Assertion string
+
+const (
+	Succeeded Assertion = "succeeded"
+	Failed    Assertion = "failed"
+)
+
+// Assertions lists them in the order they are offered.
+var Assertions = []Assertion{Succeeded, Failed}
+
+// IsAssertion reports whether a value is one.
+func IsAssertion(s string) bool {
+	for _, a := range Assertions {
+		if Assertion(s) == a {
+			return true
+		}
+	}
+	return false
+}
+
 type CloseReason string
 
 const (
-	Delivered  CloseReason = "delivered"
+	Completed  CloseReason = "completed"
+	Rejected   CloseReason = "rejected"
 	Canceled   CloseReason = "canceled"
 	Superseded CloseReason = "superseded"
-	Abandoned  CloseReason = "abandoned"
 )
 
-// CloseReasons lists them in the order they are offered.
-var CloseReasons = []CloseReason{Delivered, Canceled, Superseded, Abandoned}
+// CloseReasons lists them in the order ADR-0007 sets them out.
+//
+// `completed` rather than `delivered`: the tool cannot observe a handover and
+// can compute a count.
+//
+// `abandoned` is gone. The enum carries what the record cannot derive, and
+// stopping without a decision is derivable — from a record that has one and a
+// journal that stops. `rejected` earns its place by the same test: never
+// crossed the first gate is a statement of intent nothing else holds.
+var CloseReasons = []CloseReason{Completed, Rejected, Canceled, Superseded}
 
 // IsCloseReason reports whether a value is one.
 func IsCloseReason(s string) bool {
@@ -95,10 +245,10 @@ func IsCloseReason(s string) bool {
 
 // GatedOnCompletion reports whether a reason requires every outcome to pass.
 //
-// Only delivery is gated. Gating cancellation would make it impossible to stop
+// Only completion is gated. Gating cancellation would make it impossible to stop
 // work precisely because it was unfinished — which is the only reason anyone
 // ever cancels anything.
-func (r CloseReason) GatedOnCompletion() bool { return r == Delivered }
+func (r CloseReason) GatedOnCompletion() bool { return r == Completed }
 
 // couldBeOutcomeOf reports whether an unreadable file sits where an outcome of
 // this work item would.

@@ -11,14 +11,18 @@ func newCloseCommand(a *App) *cobra.Command {
 	var reason string
 
 	cmd := &cobra.Command{
-		Use:   "close <work-item>",
+		Use:   "close <work-item> <completed|rejected|canceled|superseded>",
 		Short: "End a work item, recording why",
 		Long: "Work ends for more reasons than success, so the terminal state is\n" +
-			"\"closed\" and every closing records why.\n\n" +
-			"Only --reason delivered is checked against the outcomes. The others\n" +
-			"close freely: gating cancellation on completion would make it\n" +
-			"impossible to stop work precisely because it was unfinished.",
-		Args:         cobra.ExactArgs(1),
+			"\"closed\" and every closing records which ending it was.\n\n" +
+			"Only completed is checked against the outcomes. The others close\n" +
+			"freely: gating cancellation on completion would make it impossible\n" +
+			"to stop work precisely because it was unfinished.\n\n" +
+			"The disposition is positional because it is not optional — a close\n" +
+			"without one is not a close. --reason carries prose, if there is any.",
+		// Two, but the second is allowed to be missing so the failure is a
+		// list of what was expected rather than cobra counting arguments.
+		Args:         cobra.RangeArgs(1, 2),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			s, err := open(a)
@@ -27,7 +31,11 @@ func newCloseCommand(a *App) *cobra.Command {
 			}
 			defer s.Close()
 
-			res, err := s.CloseWorkItem(app.CloseRequest{Ref: args[0], Reason: reason})
+			as := ""
+			if len(args) == 2 {
+				as = args[1]
+			}
+			res, err := s.CloseWorkItem(app.CloseRequest{Ref: args[0], As: as, Reason: reason})
 			if err != nil {
 				return err
 			}
@@ -43,6 +51,6 @@ func newCloseCommand(a *App) *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVarP(&reason, "reason", "r", "",
-		"delivered, canceled, superseded, or abandoned")
+		"why, in your words — free prose, not one of the dispositions")
 	return cmd
 }
