@@ -90,8 +90,9 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 			}
 			return nil, RefusedError(
 				"%s cannot be completed: %d of %d outcomes have no evidence.\n%s\n\n"+
-					"Verify them, retire the ones that no longer apply, or close with a\n"+
-					"different disposition.",
+					"Verify them, or close with a different disposition. Abandoning one\n"+
+					"records why it is unmet and does not clear this — a completed close\n"+
+					"over an unmet outcome needs --force, and the count will say so.",
 				it.Slug(), len(c.Unpassing), len(c.Live), strings.Join(names, "\n"))
 		}
 	}

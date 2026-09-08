@@ -50,6 +50,11 @@ assert says when it contradicts — if a checker has already recorded a verdict,
 outcome archive NOT built and verify's required positional NOT built — the task bundles three things and only one is done; the maintainer wants to understand archive before it is implemented, so the task stays open rather than being closed on a third of its checks
 outcome archive is NOT built and the reason is WORK-0071: archiving does not say whether the outcome held, and spec 5 flags outcome.retired as the operation most likely to need review — building it without the disposition ships the governance gap rather than the command
 outcome archive is not the command — it is outcome abandon, and archiving an outcome is not a thing this design does; the last task's shape changed rather than its size, and WORK-0071 carries the reasoning
+outcome abandon built — a decision rather than a finding, appended as a list like every other event, with an optional --reason that a retrospective actually reads
+the design call that mattered: abandoning does NOT remove the outcome from the count. it explains why an outcome is unmet and does not make the work item completable — a completed close still needs --force and the arithmetic still says 1 of 2. letting it clean the count would make abandonment the cheapest way out of a commitment, which is the opposite of what the word is for, and it would manufacture the clean arithmetic ADR-0007 refuses to produce at force
+the close refusal now names real exits and says so: verify them or close with a different disposition, and abandoning one records why it is unmet without clearing it — the old message pointed at a retire command that never existed
+GAP left deliberately: verify rejects 'abandoned' today only because it does not take a verdict positional yet, which is accidental protection. when verify gains its positional it must reject abandoned explicitly, or a doer acting as their own checker can verify an outcome away — that is the same task's remaining half
+outcome archive was never built and will not be — the command is abandon, and archiving an outcome is not a thing this design does
 
 ## ▶ 2026-09-07
 

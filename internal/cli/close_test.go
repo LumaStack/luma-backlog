@@ -231,3 +231,43 @@ func TestAssertRefusesANonOutcome(t *testing.T) {
 		t.Error("a work item was asserted")
 	}
 }
+
+// Abandoning records why an outcome is unmet. It must not make the work item
+// completable — otherwise it is the cheapest way out of a commitment, which is
+// the opposite of what the word is for.
+func TestAbandoningDoesNotCleanTheArithmetic(t *testing.T) {
+	app, _ := withOutcomes(t)
+	run(t, app, "outcome", "verify", "the-queue-drains", "-e", "checked")
+	if code, _, e := run(t, app, "outcome", "abandon", "retries-are-durable"); code != ExitOK {
+		t.Fatalf("abandon failed: %s", e)
+	}
+	code, _, errOut := run(t, app, "work-item", "close", "payments-v2", "completed")
+	if code != ExitRefused {
+		t.Errorf("abandoning cleared the close: exit %d, want %d", code, ExitRefused)
+	}
+	if !strings.Contains(errOut, "1 of 2") {
+		t.Errorf("the abandoned outcome left the count:\n%s", errOut)
+	}
+}
+
+func TestAbandonAppendsRatherThanReplacing(t *testing.T) {
+	app, project := withOutcomes(t)
+	run(t, app, "outcome", "abandon", "the-queue-drains")
+	run(t, app, "outcome", "abandon", "the-queue-drains", "-r", "second thoughts")
+
+	r := readRecord(t, project, wiPath(t, project, "payments-v2", "outcomes", "the-queue-drains.md"))
+	var entries []map[string]any
+	if err := r.Node("abandoned").Decode(&entries); err != nil {
+		t.Fatalf("abandoned is not a list: %v", err)
+	}
+	if len(entries) != 2 {
+		t.Errorf("abandoned has %d entries, want 2", len(entries))
+	}
+}
+
+func TestAbandonRefusesANonOutcome(t *testing.T) {
+	app, _ := withOutcomes(t)
+	if code, _, _ := run(t, app, "outcome", "abandon", "payments-v2"); code != ExitUsage {
+		t.Error("a work item was abandoned")
+	}
+}
