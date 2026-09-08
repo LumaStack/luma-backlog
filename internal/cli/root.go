@@ -28,7 +28,11 @@ const (
 	ExitNotFound = 3
 	ExitConflict = 4 // the record changed underneath; re-read and retry
 	ExitRefused  = 5 // a validated act did not pass its check
-	ExitClaimed  = 6
+	// There is deliberately no sixth. `6` was reserved for "already taken",
+	// and taking does not ship (ADR-0008) — a code held for a feature nobody
+	// has designed is a promise about a shape nobody chose. Adding one is
+	// additive and removing one is breaking (spec.md §9.9), so six is the
+	// reversible direction.
 )
 
 // App is what a command runs against: the ambient facts, gathered once, so no

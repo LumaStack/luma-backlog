@@ -22,6 +22,11 @@ fixed with corpus.ErrAmbiguous and a single app.resolveError that classifies a r
 the path was completely untested, which is why it stayed wrong; added a case to exitcodes_test covering both that ambiguity exits 2 and that the candidates are listed
 message reworded from 'ambiguous reference: X matches more than one record' to 'ambiguous reference: X could be any of' — wrapping the sentinel made the old text say the same thing twice
 still open on this task and NOT fixed: a filesystem path with the .luma/ prefix does not resolve, though the corpus-relative form does; that is what a person pastes from ls or from an error message, and it bit the agent twice today
+resolve-a-reference closed: all three verify_by clauses re-checked against the built binary — key-scoped and bare forms resolve, ambiguity exits 2 listing candidates, and an emitted path round-trips as input
+closed without the .luma/-prefixed filesystem path resolving — that is outside this task's stated checks, and captured on the record rather than folded in silently
+drop-the-seventh-exit-code: removed ExitClaimed from internal/cli, the app.Taken arm from the mapping, and the 6 row from spec.md 9.4 so the table and the constant block agree
+also removed app.Taken itself, which is beyond the task's stated checks — nothing produced it, and the task's own argument applies unchanged: a KIND held for a feature nobody has designed is the same promise about a shape nobody chose as a code held for one
+added to spec 9.4 while the section was open, from the policy published in command-line-interface 0.4.0: every subcommand draws from one list, which codes a subcommand can return differs and what a code MEANS does not
 
 ## ▶ 2026-09-07
 

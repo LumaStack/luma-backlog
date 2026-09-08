@@ -1412,7 +1412,10 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 | `3` | Not found | Stop; the target does not exist. |
 | `4` | **Conflict** — the record changed underneath (§6.3) | **Re-read and retry.** |
 | `5` | **Refused** — a validated act did not pass its check (§5.3) | Do not retry; satisfy the condition first. |
-| `6` | **Already taken** | Choose different work. Reserved; taking is not in the first release (ADR-0008), and adding a code is additive (§9.9). |
+
+**Six codes, and `6` is not reserved.** *Already taken* was held for taking, which does not ship (ADR-0008) — and a code reserved for a feature nobody has designed is a promise about a shape nobody chose. Adding a code is additive and removing one is breaking (§9.9), so six is the direction that can be undone.
+
+**Every subcommand draws from this one list**, and a code means the same thing wherever it appears. Which codes a given subcommand can return differs; what a code *means* does not.
 
 ### 9.5 Idempotency
 

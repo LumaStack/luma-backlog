@@ -39,8 +39,9 @@ const (
 	// Refused means a validated act did not pass its check. Satisfy the
 	// condition first; retrying will not help.
 	Refused
-	// Taken means somebody else holds it. Choose different work.
-	Taken
+	// There is no Taken. It classified a failure only taking can produce, and
+	// taking does not ship (ADR-0008) — the same argument that removed the
+	// exit code it mapped to. Nothing produced it.
 )
 
 // Error carries a failure and what sort it is.

@@ -69,8 +69,6 @@ func exitFor(k app.Kind) int {
 		return ExitConflict
 	case app.Refused:
 		return ExitRefused
-	case app.Taken:
-		return ExitClaimed
 	default:
 		return ExitError
 	}
