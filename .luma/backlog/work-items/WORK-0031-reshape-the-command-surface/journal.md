@@ -48,6 +48,7 @@ outcome assert built — the doer's axis of ADR-0007, appended never replaced, s
 the test that matters most is TestAssertingSuccessDoesNotLetAWorkItemComplete: asserting succeeded and then closing as completed is still refused, because gating on the doer's claim would gate on the thing the design distrusts and would let a doer clear their own work
 assert says when it contradicts — if a checker has already recorded a verdict, the output says both stand and the disagreement is the thing worth seeing; reported, never refused, since the disagreement is the point of splitting the axes
 outcome archive NOT built and verify's required positional NOT built — the task bundles three things and only one is done; the maintainer wants to understand archive before it is implemented, so the task stays open rather than being closed on a third of its checks
+outcome archive is NOT built and the reason is WORK-0071: archiving does not say whether the outcome held, and spec 5 flags outcome.retired as the operation most likely to need review — building it without the disposition ships the governance gap rather than the command
 
 ## ▶ 2026-09-07
 
