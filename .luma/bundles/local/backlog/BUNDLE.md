@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.26.0
+version: 0.27.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,12 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.27.0` — **a finished work item is where a session clears.**
+
+The pause after closing one is the last moment anything held only in the
+conversation still exists, so it is where everything gets written down and
+committed before `/clear`. A session's context is not storage.
 
 `0.26.0` — **recommending the next work item is welcome; starting it is not.**
 
