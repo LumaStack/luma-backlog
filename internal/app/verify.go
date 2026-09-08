@@ -30,7 +30,7 @@ type VerifyResult struct {
 func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, &Error{Kind: NotFound, Err: err}
+		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.Outcome {
 		return nil, UsageError("%s is a %s — only an outcome is verified", it.Slug(), it.Type())

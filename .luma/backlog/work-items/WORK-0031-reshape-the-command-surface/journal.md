@@ -15,6 +15,13 @@ show and set stay top-level and are NOT the same case — they take a reference 
 found on starting: the test suite was red before any of this work began — the session transcript committed to WORK-0059/evidence/ broke TestTheProjectsOwnRecordsParse, so nothing could tell whether a change here broke something; fixed first
 decide-where-cross-type-listing-lives turned out to be already IMPLEMENTED — list.go says there is deliberately no listing across types and root.go registers list as work-item list; what was missing was the decision being recorded rather than the code being written
 closing that task needed 'set decide-where-cross-type-listing-lives' — the path form WORK-0031/tasks/<slug> returned 'nothing matches', which is exactly resolve-a-reference-the-way-a-person-writes-it hitting the agent while working on the same work item
+resolve-a-reference: the task's stated live failure was already fixed — WORK-0031/tasks/<slug> resolves, corpus.scoped handles the key-scoped form, and show emits a corpus-relative path that resolves as input, so references round-trip
+the real defect was the exit code: corpus.Resolve returned bare errors for both 'nothing matches' and 'matches more than one', and all six app call sites wrapped any resolve failure as NotFound, so ambiguity exited 3
+why that matters beyond tidiness — spec 9.4 says 3 means the target does not exist and 2 means fix the invocation; an agent told not-found about a reference that matches five records will reasonably CREATE one, so a well-formed query produces a duplicate
+fixed with corpus.ErrAmbiguous and a single app.resolveError that classifies a resolve failure once, replacing six inline wraps — six chances to get it wrong became one, and one of the six already was
+the path was completely untested, which is why it stayed wrong; added a case to exitcodes_test covering both that ambiguity exits 2 and that the candidates are listed
+message reworded from 'ambiguous reference: X matches more than one record' to 'ambiguous reference: X could be any of' — wrapping the sentinel made the old text say the same thing twice
+still open on this task and NOT fixed: a filesystem path with the .luma/ prefix does not resolve, though the corpus-relative form does; that is what a person pastes from ls or from an error message, and it bit the agent twice today
 
 ## ▶ 2026-09-07
 

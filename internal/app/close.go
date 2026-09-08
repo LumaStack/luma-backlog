@@ -42,7 +42,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, &Error{Kind: NotFound, Err: err}
+		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.WorkItem {
 		return nil, UsageError("%s is a %s — close applies to a work item", it.Slug(), it.Type())

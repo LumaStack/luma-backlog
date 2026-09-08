@@ -1,6 +1,7 @@
 package corpus
 
 import (
+	"errors"
 	"fmt"
 	"path"
 	"sort"
@@ -201,6 +202,14 @@ func matches(i Item, f Filter) bool {
 // An ambiguous reference is an error listing the candidates, never a guess.
 // Picking one quietly is how the wrong record gets edited and nobody finds out
 // until later.
+// ErrAmbiguous reports a reference that names several records rather than none.
+//
+// It is a different failure from not finding one, and the difference decides
+// what a caller should do: a missing record invites creating it, while an
+// ambiguous reference means the record exists and the invocation has to be
+// narrowed. Collapsing them is how a well-formed query produces a duplicate.
+var ErrAmbiguous = errors.New("ambiguous reference")
+
 func Resolve(b *root.Backlog, ref string) (Item, error) {
 	// Skips are not surfaced here yet. Resolve answers "which record did you
 	// mean", and a broken record reports as not found — misleading, but a
@@ -254,7 +263,8 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		for _, c := range candidates {
 			paths = append(paths, c.Path)
 		}
-		return Item{}, fmt.Errorf("%q matches more than one record:\n  %s",
+		return Item{}, fmt.Errorf("%w: %q could be any of:\n  %s",
+			ErrAmbiguous,
 			ref, strings.Join(paths, "\n  "))
 	}
 }

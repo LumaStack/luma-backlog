@@ -19,7 +19,7 @@ type Filter struct {
 func (s *Session) Get(ref string) (Record, error) {
 	it, err := corpus.Resolve(s.Backlog, ref)
 	if err != nil {
-		return Record{}, &Error{Kind: NotFound, Err: err}
+		return Record{}, resolveError(err)
 	}
 	return s.record(it)
 }
