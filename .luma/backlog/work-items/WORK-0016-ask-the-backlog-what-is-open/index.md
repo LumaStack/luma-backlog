@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0016
 title: Ask the backlog what is open
-workflow_status: captured
+workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T01:50:04Z'}
+rank: 070.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:15:39Z'}
 ---
 
 # Ask the backlog what is open

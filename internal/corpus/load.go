@@ -98,6 +98,11 @@ type Filter struct {
 	WorkItem string
 	Status   string
 	Kind     string
+	// Open narrows to records that have not ended. Terminal names the status
+	// that counts as ended, passed in rather than read here, so matching stays
+	// a pure function of the record and the filter.
+	Open     bool
+	Terminal string
 }
 
 // List reads every record in the backlog, filtered.
@@ -190,6 +195,14 @@ func matches(i Item, f Filter) bool {
 	if f.Status != "" {
 		s, _ := i.Record.Get("workflow_status")
 		if s != f.Status {
+			return false
+		}
+	}
+	if f.Open && f.Terminal != "" {
+		// A record with no status reads as the first rung, which is never the
+		// terminal one — so absence is open, and only an explicit terminal
+		// value is closed.
+		if s, _ := i.Record.Get("workflow_status"); s == f.Terminal {
 			return false
 		}
 	}

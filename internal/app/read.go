@@ -12,6 +12,8 @@ type Filter struct {
 	WorkItem string
 	Status   string
 	Kind     string
+	// Open narrows to work that has not ended.
+	Open bool
 }
 
 // Get reads one record. A reference is a slug, a path, or an unambiguous
@@ -40,11 +42,16 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 		return nil, UsageError("unknown unit %q: expected one of %s",
 			f.Unit, strings.Join(corpus.Units, ", "))
 	}
+	if f.Open && f.Status != "" {
+		return nil, UsageError("--open and --status %s say different things: pass one", f.Status)
+	}
 	items, skipped, err := corpus.List(s.Backlog, corpus.Filter{
 		Unit:     f.Unit,
 		WorkItem: f.WorkItem,
 		Status:   f.Status,
 		Kind:     f.Kind,
+		Open:     f.Open,
+		Terminal: s.Config.TerminalStatusFor(unitFor(f.Unit)),
 	})
 	if err != nil {
 		return nil, FailureError("%w", err)
@@ -73,4 +80,13 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 			Drifted:    s.statusDrift(items),
 		},
 	}, nil
+}
+
+// unitFor is which vocabulary a listing's terminal status comes from. A
+// listing with no unit is a work-item listing, which is what a bare `list` is.
+func unitFor(unit string) string {
+	if unit == "" {
+		return corpus.WorkItem
+	}
+	return unit
 }
