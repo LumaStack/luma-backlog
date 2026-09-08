@@ -45,6 +45,25 @@ func newShowCommand(a *App) *cobra.Command {
 			if rec.Status != "" {
 				fmt.Fprintf(w, "status\t%s\n", rec.Status)
 			}
+			// Computed, and above the frontmatter because it is the one line
+			// here that appears nowhere in the file. A work item with no
+			// outcomes says so rather than showing 0 of 0, which reads as
+			// progress measured against nothing.
+			if c := rec.Completion; c != nil {
+				switch {
+				case c.Live == 0:
+					fmt.Fprintf(w, "outcomes\tnone\n")
+				default:
+					line := fmt.Sprintf("%d of %d proven", c.Proven, c.Live)
+					if c.Retired > 0 {
+						line += fmt.Sprintf(", %d retired", c.Retired)
+					}
+					if c.Skipped > 0 {
+						line += fmt.Sprintf(", %d unreadable", c.Skipped)
+					}
+					fmt.Fprintf(w, "outcomes\t%s\n", line)
+				}
+			}
 			for _, k := range rec.Order {
 				switch k {
 				case "type", "title", "workflow_status":

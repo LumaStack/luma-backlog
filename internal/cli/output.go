@@ -13,6 +13,15 @@ import (
 // without anyone noticing.
 
 // itemJSON is one record in a listing.
+// completionJSON is the count a board puts on a card and a listing can show
+// without provoking a refusal to find out (docs/spec.md §9.3).
+type completionJSON struct {
+	Proven  int `json:"proven"`
+	Live    int `json:"live"`
+	Retired int `json:"retired,omitempty"`
+	Skipped int `json:"skipped,omitempty"`
+}
+
 type itemJSON struct {
 	Path string `json:"path"`
 	Type string `json:"type"`
@@ -29,8 +38,12 @@ type itemJSON struct {
 	// Created and Modified are omitted where a record carries no stamp, rather
 	// than emitted empty --- absent says "this record has none", where
 	// {"by":"","at":""} says the tool read one and found nothing in it.
-	Created  *stampJSON `json:"created,omitempty"`
-	Modified *stampJSON `json:"modified,omitempty"`
+	// Completion is how many live outcomes are proven, out of how many there
+	// are. Omitted on anything that is not a work item — absent says "not
+	// counted", where a zeroed object would say "counted, and none".
+	Completion *completionJSON `json:"completion,omitempty"`
+	Created    *stampJSON      `json:"created,omitempty"`
+	Modified   *stampJSON      `json:"modified,omitempty"`
 	// Status is omitted rather than emptied when the record's type declares
 	// no workflow status. A consumer can then tell "no lifecycle" from a
 	// lifecycle whose value happens to be blank.
@@ -63,6 +76,17 @@ func toItemJSON(v app.View) itemJSON {
 		WorkItem: v.WorkItem,
 		Created:  toStampJSON(v.Created),
 		Modified: toStampJSON(v.Modified),
+		Completion: func() *completionJSON {
+			if v.Completion == nil {
+				return nil
+			}
+			return &completionJSON{
+				Proven:  v.Completion.Proven,
+				Live:    v.Completion.Live,
+				Retired: v.Completion.Retired,
+				Skipped: v.Completion.Skipped,
+			}
+		}(),
 	}
 }
 

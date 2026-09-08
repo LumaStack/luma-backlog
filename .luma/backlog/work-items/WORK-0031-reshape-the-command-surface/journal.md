@@ -39,6 +39,11 @@ prose is yaml-quoted on the way in, since the sentence most likely to contain a 
 ADR-0007's list shape is NOT done: closed is still a single mapping rather than an append-only list of {by, at, as}; out of this task's stated checks and left for whoever does the reopen work, which is where a second entry first becomes possible
 eleven test call sites moved and were read individually rather than bulk-replaced — the golden-files outcome asks for exactly that; two tests changed meaning rather than form, TestSupersededAndAbandonedAreAlsoUngated became SupersededAndRejected, and a new test asserts abandoned is now refused as unknown rather than quietly accepted
 NO golden file moved, and the reason is worth knowing: the goldens cover show and list on open records, so the close contract has no golden coverage at all — a breaking change to it was invisible to them
+carry-completion-counts done — show prints 'outcomes  N of M proven' above the frontmatter because it is the one line there that appears nowhere in the file, and both show and list carry it in --json
+CompletionOf could not be called per item: List reads every record in the backlog and then filters, so one call is one full walk — 70 work items against 141 records would be roughly 9900 file reads to render one listing; added corpus.Completions which walks once and groups outcomes by work item, and left CompletionOf for the single record show reads
+a work item with no outcomes prints 'none' rather than '0 of 0', which reads as progress measured against nothing; and completion is ABSENT rather than zeroed on anything that is not a work item, since absent says not counted where a zeroed object says counted and none
+one golden moved, list-json, and it was inspected rather than regenerated blind: eight lines, all insertions, the completion object on two work items, nothing removed or renamed — additive under spec 9.9 rather than a contract change
+NOT done and flagged: the human listing table carries no counts. adding a column is a showing-records change, and that policy deliberately trimmed the listing to key, status and title — worth deciding rather than slipping in
 
 ## ▶ 2026-09-07
 

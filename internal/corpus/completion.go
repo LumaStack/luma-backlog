@@ -36,6 +36,62 @@ func (c Completion) Complete() bool {
 	return len(c.Live) > 0 && len(c.Unpassing) == 0 && len(c.Skipped) == 0
 }
 
+// Counts is a completion reduced to numbers, for a reader rather than a
+// refusal. Proven is what a person means by "how far along is this".
+type Counts struct {
+	Proven  int
+	Live    int
+	Retired int
+	Skipped int
+}
+
+// Counts reduces a completion to the four numbers worth showing.
+func (c Completion) Counts() Counts {
+	return Counts{
+		Proven:  len(c.Live) - len(c.Unpassing),
+		Live:    len(c.Live),
+		Retired: len(c.Retired),
+		Skipped: len(c.Skipped),
+	}
+}
+
+// Completions counts every work item's outcomes in one walk.
+//
+// CompletionOf reads the corpus each time it is called, which is fine for the
+// single record `show` reads and quadratic for a listing. A listing gets this
+// instead: one walk, grouped by work item.
+func Completions(b *root.Backlog) (map[string]Completion, error) {
+	items, skipped, err := List(b, Filter{Unit: Outcome})
+	if err != nil {
+		return nil, err
+	}
+	out := map[string]Completion{}
+	for _, it := range items {
+		c := out[it.WorkItem]
+		if s, _ := it.Record.Get("stage"); s == "archived" {
+			c.Retired = append(c.Retired, it)
+		} else {
+			c.Live = append(c.Live, it)
+			if !it.Record.Has("verified") {
+				c.Unpassing = append(c.Unpassing, it)
+			}
+		}
+		out[it.WorkItem] = c
+	}
+	// An unreadable file where an outcome would be counts against the work
+	// item it sits under, the same as it does for a refusal — a work item
+	// whose evidence cannot be read is not a work item with less evidence.
+	for _, sk := range skipped {
+		for wi, c := range out {
+			if couldBeOutcomeOf(sk.Path, wi) {
+				c.Skipped = append(c.Skipped, sk)
+				out[wi] = c
+			}
+		}
+	}
+	return out, nil
+}
+
 // CompletionOf counts the outcomes of a work item.
 //
 // Derived by counting, never read from a field. There is nothing to store that

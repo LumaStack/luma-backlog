@@ -29,6 +29,10 @@ type View struct {
 	// record nobody has placed, which is most of them: ranking one record
 	// writes one file, so a status is not seeded just because it was read.
 	Rank string
+	// Completion is how many of a work item's live outcomes are proven, out of
+	// how many there are. Nil on anything that is not a work item — absent
+	// means not counted, never counted as zero.
+	Completion *corpus.Counts
 	// Created and Modified are the record's stamps. Empty where a record has
 	// none --- one written before stamps existed, or one nobody has edited.
 	Created  Stamp
@@ -96,8 +100,17 @@ func (s *Session) record(it corpus.Item) (Record, error) {
 			raw[k] = v
 		}
 	}
+	v := s.view(it)
+	// A single record costs one extra walk, which is what CompletionOf already
+	// does. A listing uses the batched form instead.
+	if it.Type() == corpus.WorkItem {
+		if comp, cErr := corpus.CompletionOf(s.Backlog, it.Slug()); cErr == nil {
+			c := comp.Counts()
+			v.Completion = &c
+		}
+	}
 	return Record{
-		View:   s.view(it),
+		View:   v,
 		Hash:   it.Hash(),
 		Fields: fields,
 		Order:  order,
