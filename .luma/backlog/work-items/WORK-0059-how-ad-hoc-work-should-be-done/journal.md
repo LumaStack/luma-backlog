@@ -132,6 +132,7 @@ two outcomes written AFTER the work, which is WORK-0032's rank two and permitted
 the first outcome's third check is the interesting one — confirm the journal and the transcript DISAGREE somewhere, because if they never differ the journal was written from the transcript and is not evidence of what the session thought at the time; that is the cheapest defence against an after-the-fact outcome being fitted to what happened
 the second outcome's check is a human saying it is good enough, and that is correct rather than lazy — this is the quality axis, where verification catches wrong and not bland, and line counts or link audits would be green on a worse document; ADR-0007 gates on the checker's verdict and never says the verdict must be computed
 captured WORK-0068: evidence/session-capture.md is reported as a skip by every listing that walks the work item, twice per show, because the tool has no notion of a file that legitimately is not a record — WORK-0008 made skips visible for good reasons and this is a skip that should never have been one
+the maintainer's line — an outcome that does not exist on disk is not an outcome at all — landed in _types/outcome at bundle 0.22.0, and WORK-0002 crossed the first gate on the strength of the instance this session produced
 
 ## ▶ 2026-09-07
 

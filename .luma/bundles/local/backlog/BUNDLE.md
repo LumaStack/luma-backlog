@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.21.1
+version: 0.22.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,26 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.22.0` — **an outcome is a record, or it is not an outcome.**
+
+An agent wrote two conditions into an outcome's `verify_by` list rather than
+creating them as outcomes. They read as checks and were states — and a condition
+living inside another record's fields has no identity, no stage, nothing to
+verify and nothing to supersede. It cannot be cited, argued with or proven.
+
+**The failure mode is looking better specified than you are**: two outcomes on
+disk asserting five conditions between them, three of which nobody can check.
+`spec.md` ranks *writing no outcomes* as the worst case, and this is a way to
+approach it while appearing not to.
+
+`_types/outcome` now says so, and says that **the title is the handle** — unique
+within a work item because the filename derives from it and creation is
+idempotent by name (§9.5), with hand-editing the one way to break it.
+
+**Neither of those would have prevented the error**, which is the honest note to
+end on: the agent never opened the type definition. Only a check would have, and
+that is `WORK-0002`, moved out of the pile on the strength of this instance.
 
 `0.21.1` — **the force approval belongs to the owner, and the record says who
 answered.**

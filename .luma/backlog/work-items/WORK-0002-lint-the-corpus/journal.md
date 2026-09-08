@@ -4,6 +4,12 @@
 
 ---
 
+## ▶ 2026-09-08
+
+fresh instance, 2026-09-08: an agent wrote two conditions into an outcome's verify_by list instead of creating them as outcomes — the maintainer's line was that an outcome which does not exist on disk is not an outcome at all; nothing detected it, and neither an ADR nor the type definition would have, because the agent never opened either
+four rules were proposed and three of them already exist or nearly do — required fields are declared in _types/outcome, title uniqueness follows from the filename, and outcomes-must-exist-on-disk is now one paragraph there; the fourth rule, that outcomes are never hallucinated, IS this work item, and it is the enforcement the other three lack
+crossing the first gate on that instance — CLAUDE.md names invariants prose cannot hold as one of three things that promote prose to a command, and this session produced a measured example: the rule was written down after being broken, by an agent that had the rules in context
+
 ## ▶ 2026-09-06
 
 set writes a date as a quoted string — ADR-0003 got decided: "2026-09-05" where every other record has an unquoted date scalar, so the same field carries two YAML types across the corpus
