@@ -8,10 +8,33 @@ description: Change where a work item sits on the workflow ladder — select it 
 
 ```
 luma-backlog set <ref> workflow_status=<status>
-luma-backlog work-item close <ref> --reason <disposition>
 ```
 
-Status and rank are written together, always. You never write `rank` yourself.
+**That is every move except closing.** Closing is a different command with its
+own refusals and its own vocabulary — it is below, and nothing here applies to
+it unchanged.
+
+## Always true
+
+**Three invariants. They hold on every move, including the ones this procedure
+does not name, and none of them is advice.**
+
+**Status and rank are written together.** You never write `rank` yourself, and
+there is no way to write one without the other — every status change in
+`internal/app` routes through one function, so no caller can produce a record
+where the two disagree (ADR-0005). `set workflow_status=…` and `close` both go
+through it.
+
+**A move re-enqueues the record at the back of its destination.** A rank is a
+position in a queue and leaving the queue does not carry it with you. **So rank
+before moving, not after** — advancing several records in rank order lands them
+in the same relative order, because each arrives behind the last.
+
+**The back is not always the bottom of the listing.** Unranked records sort
+after ranked ones, so a record arriving where nothing has been ranked lands at
+the back of nothing and reads as *first*. That is the design working — a rank is
+a position somebody chose, and an unplaced record should not outrank a
+considered one — but it looks like a bug the first time.
 
 ## The moves that have names
 
@@ -74,20 +97,35 @@ work, what a future reader would need — [[backlog-journal]]. After closing,
 nobody comes back to write it, and the work item's memory is the only thing that
 survives the session.
 
-**Only `delivered` is checked against the outcomes.** The others close freely,
+**Only `completed` is checked against the outcomes.** The others close freely,
 deliberately: gating cancellation on completion would make it impossible to stop
 work *because* it was unfinished, which is the usual reason.
 
 | disposition | when |
 | --- | --- |
-| `delivered` | the outcomes hold |
-| `canceled` | we are not doing this, and nothing replaces it |
+| `completed` | the outcomes hold, and at least one is live and proven |
+| `canceled` | we wanted it, then changed our minds |
+| `rejected` | never a consideration — declined, not dropped |
 | `superseded` | something else covers it — link to what |
-| `abandoned` | stopped without a decision, and nobody is coming back |
 
-**`canceled` and `abandoned` are different and the difference matters.**
-Cancelled is a decision; abandoned is an absence of one. Recording abandonment
-as cancellation invents a choice nobody made.
+**`rejected` and `canceled` are different and the difference matters.**
+Cancelled is *we wanted this once*; rejected is *we never did*. Only a person
+can say which, and no field elsewhere on the record can reconstruct it — which
+is the test ADR-0007 uses, and the reason `rejected` earns a slot.
+
+**There is no `abandoned`.** ADR-0007 dropped it on the same test: stopping
+without a decision is **derivable** from a record that has one and from a
+journal that stops, so the enum does not need to carry it. *The enum carries
+what the record cannot.*
+
+> **The binary has not caught up.** It ships `--reason` with `delivered` and
+> `abandoned`, which ADR-0007 replaced and removed — `work-item close <ref> <as>`
+> with the disposition positional is the settled shape, and `--reason` becomes
+> prose. The task is
+> `WORK-0031/tasks/make-close-take-its-disposition-positionally`, still `todo`.
+> **Use the vocabulary above and translate at the command line until it lands**;
+> a decision in force outranks the implementation, and teaching the shipped
+> spelling is how a superseded vocabulary survives in people's heads.
 
 ## Sending work back
 
@@ -101,12 +139,3 @@ resuming or new work that supersedes it. Same work resuming keeps the history an
 the journal; new work that happens to rhyme should be its own record linking
 back. Getting this wrong severs a work item from its own past, or welds together
 two things that were never the same.
-
-## What this never does
-
-**A rank is not touched by hand.** Changing status re-enqueues the record at the
-back of its new status automatically — a position in a queue does not travel with
-you when you leave the queue.
-
-**Advancing several records in rank order preserves their order**, because each
-arrives behind the last. So rank before moving, not after.

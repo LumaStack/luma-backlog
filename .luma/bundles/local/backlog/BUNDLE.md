@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.15.0
+version: 0.19.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,8 +43,10 @@ they need.
 - [[when-a-work-item-splits]] — what to do when tasks keep arriving. Growth is
   the measurement that says look; three of the four things it can mean are fixed
   by editing an outcome.
+- [[adopting-a-rule-the-corpus-does-not-meet]] — a new rule almost always fails
+  the records already written. Backfill or grandfather, never neither.
 
-**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
+**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a rundown](templates/rundown.md)
 
 **Procedures** — one per thing somebody does to a backlog. Each holds the
 judgment and calls the command for everything else.
@@ -62,9 +64,109 @@ judgment and calls the command for everything else.
   memory a session leaves behind.
 - [[backlog-show]] — assembles one work item's whole state, or lists whichever
   work items were asked for. The way into both `show` and `list`.
-- [[backlog-next]] — picks the next thing to work on, and says why.
+- [[backlog-rundown]] — runs down where the work stands, then picks the next
+  thing and says why.
 
 ## Version
+
+`0.19.0` — **[[backlog-move]] stops teaching a vocabulary a decision replaced.**
+
+Its disposition table said `delivered` and `abandoned`, and spent a paragraph
+arguing the `canceled` versus `abandoned` distinction. ADR-0007 is in force and
+renamed `delivered` to `completed`, added `rejected`, and **dropped `abandoned`
+outright** — so the procedure was pinned to the shipped binary while
+contradicting the decision that supersedes it. A decision in force outranks the
+implementation, and teaching the shipped spelling is how a dead vocabulary
+survives in people's heads. The binary's lag is now stated in the document
+instead of reproduced by it.
+
+**And the invariants are in one place.** The rank rule was stated at the top and
+again in a closing section — the same rule twice, which is how two copies drift.
+There is now an `Always true` section holding all three, near the top where a
+reader meets them before doing anything.
+
+**One of those three exists because it was got wrong.** *The back is not always
+the bottom of the listing*: unranked records sort after ranked ones, so a record
+arriving where nothing has been ranked lands at the back of nothing and reads as
+*first*. That was reported as a defect, and reading `internal/app/status.go`
+showed the code and the document had agreed all along. The paragraph is the
+correction.
+
+`0.18.0` — **adds [[adopting-a-rule-the-corpus-does-not-meet]].**
+
+A comprehension test was proposed for the first gate in the same week six of the
+seven newest work items shipped with an empty `## The problem`. The rule and its
+counterexamples arrived together, and nothing said which had to give.
+
+**The finding is that doing neither is the default.** Not choosing looks like
+adopting the rule, and produces a corpus visibly violating its own policy — at
+which point a reader concludes the rules are aspirational and reads the next one
+that way too. One unenforced rule devalues the others.
+
+So: backfill or grandfather, explicitly, in the change that adopts the rule.
+**Lean backfill**, mechanically where that is possible and by a model given
+written instructions where it is not — and in that case **the instructions are
+the artifact**, because a model run nobody can repeat is a one-time edit wearing
+a migration's clothes.
+
+**Grandfathering stays legitimate** and has to be said out loud, with which
+records are exempt and why. Unrecorded, it is indistinguishable from a rule
+nobody enforces.
+
+What is *not* settled is when grandfathering beats backfilling, and who decides.
+Cost is the obvious axis and probably not the only one: a rule about what a
+record **means** may be unbackfillable at any price, since nobody can
+reconstruct what an author intended.
+
+`0.17.0` — **`backlog-next` is `backlog-rundown`, and `next` is reserved.**
+
+Three depths were wanted where there was one. **`next`** — quick and punchy, the
+pick and nothing else. **`rundown`** — this, the middle: enough of the corpus to
+know where you are, and it checks nothing. **`sweep`** — reserved, and the
+expensive one: goes and confirms that what the records claim is actually true.
+
+**The axis is impression versus guarantee**, not reach. `next` gives an answer,
+`rundown` gives a read, `sweep` gives a proof — which is what makes `sweep`
+costly, rather than it simply looking in more places.
+
+`rundown` won on naming the artifact rather than the method, which is what
+`next` already does. `survey`, `scan` and `sweep` name how you move over the
+ground; `bearings`, `digest` and `rundown` name what you end up holding. Of
+those, `rundown` is the one somebody says out loud and the only plain candidate
+nothing here had claimed — `status` is a rung, `state` is on every outcome,
+`position` is rank ordering, `standing` is §5.2's standing conditions, `view`
+belongs to `record-view` and §11.2, and `take` is ADR-0008's.
+
+**Breaking: two documents renamed.** `procedure/backlog-next` →
+`procedure/backlog-rundown`, and `templates/next-report` → `templates/rundown`.
+Shipping it minor rather than major because nothing outside this project adopts
+this bundle, and every inbound link is repointed in the same commit.
+
+**`rundown` keeps every trigger for now, including the bare "what's next".**
+Handing that phrase to a command nobody has built would break the most common
+way in to reserve a name. The boundary — `next` takes the bare question,
+`rundown` keeps *catch me up*, *where do things stand* and session start — gets
+drawn when `next` exists, not before.
+
+`0.16.0` — **risks are a bulleted list.**
+
+The Risks section of a what's-next report was prose, and a run of paragraphs
+hides the one thing the section is read for: how many there are. One concern and
+four look alike until both have been read, and this is the section somebody
+scans to decide whether to worry.
+
+So it is bullets now, one per concern, in [[rundown]] and in the worked
+example on [[backlog-rundown]]. A bullet may run to a second sentence and never to
+a paragraph, and whatever makes it checkable — the number, the record, the file
+— goes in the first clause where a scan will find it.
+
+**Plain bullets, not the state marks.** A risk is not a record and has no state,
+so [[showing-records]] does not reach it. Saying so is the point: the marks are
+the house style for rows, and a rule that stops somewhere has to say where.
+
+This leaves **Last touched as the only prose in the overview**, which is an
+improvement rather than a side effect — it is the one section that is written
+rather than tallied, and the contrast now says so.
 
 `0.15.0` — **adds [[when-a-work-item-splits]].**
 
@@ -95,7 +197,7 @@ The shapes are now three templates and the procedures point at them.
 
 The split follows the rest of the catalog: **a policy is a rule, a template is a
 thing you copy, a procedure is judgment.** [[showing-records]] says what the
-marks mean and why; [[listing]], [[record-view]] and [[next-report]] say what
+marks mean and why; [[listing]], [[record-view]] and [[rundown]] say what
 the output looks like; the procedures say when to produce it and what to
 notice.
 

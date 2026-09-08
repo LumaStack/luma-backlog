@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Show where a work item stands
-description: Show one record and everything about it, show a column or status, or show the backlog at a glance when nothing is named. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see records. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-next), or to change anything.
+description: Show one record and everything about it, show a column or status, or show the backlog at a glance when nothing is named. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see records. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-rundown), or to change anything.
 ---
 
 # Show where a work item stands
@@ -99,7 +99,7 @@ perfectly healthy.
 ## The layout
 
 **[[record-view]] for one record, [[listing]] for several.** The shapes live
-there so this procedure and [[backlog-next]] cannot drift apart; the marks and
+there so this procedure and [[backlog-rundown]] cannot drift apart; the marks and
 the ordering are [[showing-records]].
 
 **Use them every time.** A view arranged differently on each reading cannot be
@@ -237,7 +237,7 @@ ranked sort last --- an absence of a decision, not neglect.
 
 **Report the shape only when it is the answer.** Somebody asking what is in
 progress and finding nine things has been told something useful. What to *do*
-about it is [[backlog-next]].
+about it is [[backlog-rundown]].
 
 **An empty result is an answer**, and gets the same heading and command as a
 full one. *"Nothing is in progress"* under the command that looked is a fact;
@@ -252,5 +252,5 @@ asked cannot tell what they had. If something needs fixing, say so and let them
 ask.
 
 **It does not recommend.** Describing and choosing are different acts --- see
-[[backlog-next]]. Somebody asking what is in To Do wants to know what is in
+[[backlog-rundown]]. Somebody asking what is in To Do wants to know what is in
 To Do.
