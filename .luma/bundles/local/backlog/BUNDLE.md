@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.23.0
+version: 0.24.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,24 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.0` — **[[backlog-journal]] says where it went.**
+
+Journalling is invisible and usually unasked — this procedure tells an agent to
+trigger without being told, so a line lands in a file the reader never sees, in
+their name, without their say-so. Nothing required saying so afterwards.
+
+**Every reply that journalled something now names where**, in one line, records
+only. That is the provenance rule this project already holds, one level down:
+writing in somebody's name and not telling them is how a record ends up
+claiming something nobody saw.
+
+**And it is the only moment placement can be corrected.** A learning filed on
+the wrong work item is nearly unfindable later; a reader told at the time says
+*that belongs on the other one* while it still costs a sentence to move.
+
+Where, not what — the reply already said the thing, and repeating it as a
+summary grows until the report is longer than the work.
 
 `0.23.0` — **the lag [[backlog-move]] documented is gone.**
 

@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-08
+
+backlog-journal gained a 'say where it went' section at bundle 0.24.0 — the maintainer noticed the agent doing it ad hoc and wanted it consistent; the argument that made it a rule rather than a courtesy is that journalling is invisible AND unasked, so not reporting it leaves a reader with no model of what is being written in their name
+
 ## ▶ 2026-09-07
 
 seven procedures, three policies and three templates were written in one session with no work item — so no outcomes, and nothing says what a good procedure is; that is why reviewed had no meaning until this record invented one

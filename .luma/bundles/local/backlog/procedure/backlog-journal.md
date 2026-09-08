@@ -86,6 +86,31 @@ pointer: it says where things stand and marks everything below as historical, so
 a reader knows where to stop. That is what lets an append-only file survive at
 length. **Never rewrite what is below it.**
 
+## Say where it went
+
+**Every reply that journalled something names where.** One short line, at the
+end, listing the records written to and nothing else:
+
+> Journaled on WORK-0036 and WORK-0039.
+
+**Because journalling is invisible and usually unasked.** This procedure says
+to trigger without being asked, so a line is written to a file the reader never
+sees, on their behalf, without their say-so. Not reporting it leaves them with
+no model of what is being recorded in their name — which is the provenance
+problem this project cares about most, one level down.
+
+**And it is the only chance to correct placement.** A learning filed on the
+wrong work item is nearly unfindable afterwards; a reader who is told sees it
+in the same breath and says *no, that belongs on the other one*. Silence spends
+that for nothing.
+
+**Where, not what.** The reply already said the thing — repeating it as a
+summary is the same sentence twice, and it grows until the report is longer
+than the work.
+
+**Omit it when nothing was journalled**, and when the writing *was* the reply —
+somebody who asked for a line to be written has already been told it was.
+
 ## Two rules that are easy to get wrong
 
 **Record a path not taken as deferred, with what would reopen it — never as
