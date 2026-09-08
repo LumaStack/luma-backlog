@@ -160,10 +160,16 @@ func IsVerdict(s string) bool {
 // current claim (ADR-0007). Disproven and inconclusive are both "not proven",
 // which is the answer close gates on.
 //
-// **A verdict with no `as` reads as proven.** Every entry written before the
-// field existed is a bare {by, at}, and reading those as unproven would flip
-// every verified outcome in every existing corpus at once. Migrating them is
-// work-items/WORK-0037.
+// **A verdict with no `as` is not proven.** Absence means nobody said, the way
+// it does everywhere else here — no verified entries means unchecked, no kind
+// means unclassified. Reading it as proven would make the one value that clears
+// a close the thing you get for free from a hand edit, another tool, or a bug
+// that omitted the field.
+//
+// The entries written before the field existed were stamped `as: proven`
+// rather than defaulted, because that is what their authors meant: they were
+// written by a command that could only say yes. Faithful to the intent, and it
+// leaves the default safe.
 func passes(r interface{ Node(string) *yaml.Node }) bool {
 	node := r.Node("verified")
 	if node == nil {
@@ -181,11 +187,7 @@ func passes(r interface{ Node(string) *yaml.Node }) bool {
 		return false
 	}
 	last := entries[len(entries)-1]
-	as, ok := last["as"]
-	if !ok || as == nil || as == "" {
-		return true
-	}
-	return as == string(Proven)
+	return last["as"] == string(Proven)
 }
 
 // Assertion is what a doer claims about an outcome — one axis of ADR-0007,

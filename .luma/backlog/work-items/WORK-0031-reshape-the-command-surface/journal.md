@@ -70,6 +70,7 @@ the maintainer's shape: assert and verified should optionally carry SUPERSEDE da
 which exposes a state the design does not have: two live verdicts that disagree. today that collapses to whichever ran last, and it should probably be visible the way doer-versus-checker disagreement is — an outcome in dispute is a fact, not a tie to be broken silently
 and there may be a non-order resolution already implied: spec 4.7 says a human entry raises the derived trust tier, so a human disproven against an agent proven might resolve by tier rather than by recency — worth deciding rather than inheriting from list order
 applies to asserted equally — two agents attempting in parallel versus one agent retrying is the same distinction, and the current 'the current claim is the last entry' reading has the same hole
+the proven default is gone: absence now means not proven, and the 29 legacy entries were migrated to say as: proven explicitly. keeping the default would have made the one value that clears a close the thing you get free from a hand edit, another tool, or a bug that omitted the field
 
 ## ▶ 2026-09-07
 
