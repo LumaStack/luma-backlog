@@ -22,6 +22,7 @@ func newListCommand(a *App, unit string) *cobra.Command {
 		workItem string
 		status   string
 		kind     string
+		onlyOpen bool
 	)
 
 	cmd := &cobra.Command{
@@ -40,7 +41,7 @@ func newListCommand(a *App, unit string) *cobra.Command {
 			}
 			defer s.Close()
 
-			f := app.Filter{Unit: unit, WorkItem: workItem, Status: status, Kind: kind}
+			f := app.Filter{Unit: unit, WorkItem: workItem, Status: status, Kind: kind, Open: onlyOpen}
 
 			if asTree {
 				return runTree(cmd, s, f, asJSON)
@@ -84,6 +85,10 @@ func newListCommand(a *App, unit string) *cobra.Command {
 		cmd.Flags().BoolVar(&asTree, "tree", false, "show each work item's outcomes and tasks beneath it")
 	}
 	cmd.Flags().StringVarP(&status, "status", "s", "", "only records with this workflow status")
+	// The question anybody asks first, and the one that could not be expressed:
+	// --status matches a single value, so "everything except closed" needed a
+	// second language to answer (docs/design/mvp.md).
+	cmd.Flags().BoolVar(&onlyOpen, "open", false, "only work that has not ended")
 
 	// A work item does not belong to a work item, so the filter has nothing to
 	// narrow there. --kind classifies work items and means nothing elsewhere.

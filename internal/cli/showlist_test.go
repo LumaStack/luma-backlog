@@ -440,3 +440,40 @@ func TestAnUneditedRecordHasNoModifiedStamp(t *testing.T) {
 		t.Errorf("an edited record has no modified stamp:\n%s", after)
 	}
 }
+
+// The question anybody asks first, and the one that could not be expressed:
+// --status matches a single value, so "everything except closed" needed a
+// second language to answer.
+func TestOpenExcludesOnlyTheTerminalStatus(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Still going")
+	run(t, app, "work-item", "new", "Finished")
+	run(t, app, "work-item", "close", "finished", "canceled")
+
+	_, out, _ := run(t, app, "work-item", "list", "--open")
+	if strings.Contains(out, "Finished") {
+		t.Errorf("--open included a closed work item:\n%s", out)
+	}
+	if !strings.Contains(out, "Still going") {
+		t.Errorf("--open dropped an open work item:\n%s", out)
+	}
+}
+
+// A record with no status reads as the first rung, which is never terminal.
+func TestOpenIncludesARecordWithNoStatus(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Unstamped")
+	_, out, _ := run(t, app, "work-item", "list", "--open")
+	if !strings.Contains(out, "Unstamped") {
+		t.Errorf("--open dropped a record that has not ended:\n%s", out)
+	}
+}
+
+// Passing both says two different things about one listing, and picking one
+// for the caller leaves them believing something untrue about what they got.
+func TestOpenAndStatusTogetherAreRefused(t *testing.T) {
+	app, _ := initialized(t)
+	if code, _, _ := run(t, app, "work-item", "list", "--open", "-s", "closed"); code != ExitUsage {
+		t.Error("--open and --status were accepted together")
+	}
+}

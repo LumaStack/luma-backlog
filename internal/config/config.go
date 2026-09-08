@@ -116,6 +116,24 @@ func (c Config) DefaultStatusFor(unit string) string {
 	return ""
 }
 
+// TerminalStatusFor is the last value in the configured vocabulary — where
+// work ends.
+//
+// Derived rather than configured, and it mirrors DefaultStatusFor taking the
+// first: the ladder is ordered and its ordinals ascend, so the last rung is the
+// one nothing follows. A project that renames `closed` keeps working, and one
+// that adds a rung after it moves the terminal with no key to remember.
+//
+// Empty where a unit has no vocabulary, which reads as "nothing is terminal"
+// and leaves every record open.
+func (c Config) TerminalStatusFor(unit string) string {
+	s := c.StatusesFor(unit)
+	if len(s) == 0 {
+		return ""
+	}
+	return s[len(s)-1]
+}
+
 // Qualify expands a short type name using the declared namespace. An already
 // qualified name is returned unchanged — it is always legal and always wins.
 func (c Config) Qualify(typeName string) string {
