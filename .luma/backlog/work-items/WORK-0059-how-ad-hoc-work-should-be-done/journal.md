@@ -127,6 +127,7 @@ WHAT IS NEXT, in order. One, WORK-0059 cannot close as completed without outcome
 WHAT IS UNKNOWN. Identified or established — whether dependencies must be named or resolved before prepared decides whether that rung is reachable in a large organization, raised twice and unresolved both times. Paused and blocked were raised together and never separated. Who may cross the first gate, which is the same question as who may deny at it, since rejection carries an authority claim the other dispositions do not. Whether a reopen should sometimes create a new record rather than mutating. And the owner approval rule is written while ownership does not ship, so it reduces to whoever is present and cannot yet be what it says.
 
 FOR WHOEVER READS THIS JOURNAL: it is an instrument log and deliberately denser than spec 5.5 asks for anywhere else. Do not copy its density as house style.
+WORK-0067 captured to retro this work item and harvest what it learned — the ten records captured during the session were the things somebody noticed at the time, and what nobody noticed is what remains only in prose
 
 ## ▶ 2026-09-07
 
