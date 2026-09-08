@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Move a work item along the workflow
-description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready". Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
+description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, reopen it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready". Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
 ---
 
 # Move a work item along the workflow
@@ -16,14 +16,25 @@ it unchanged.
 
 ## Always true
 
-**Three invariants. They hold on every move, including the ones this procedure
-does not name, and none of them is advice.**
+**Five invariants. They hold on every move, including ones this procedure does
+not name, and none of them is advice.**
 
-**Status and rank are written together.** You never write `rank` yourself, and
-there is no way to write one without the other — every status change in
-`internal/app` routes through one function, so no caller can produce a record
-where the two disagree (ADR-0005). `set workflow_status=…` and `close` both go
-through it.
+**The status must be true.** Every rung is a claim about the present, and the
+only thing this procedure is really enforcing is that the claim holds. Every
+rule below is a consequence: a record at `preparing` with nobody shaping it, at
+`in_progress` with nobody on it, or at `prepared` when a blocker remains, is
+lying. **A step that only enforces process is red tape** — the ones worth
+forcing are the ones that prevent a false record.
+
+**Status and rank are written together.** You never write `rank` yourself —
+`set` refuses the field — and no command will write one without the other, so a
+record where the two disagree cannot be produced by using the tool (ADR-0005).
+That holds for `set workflow_status=…` and for `close` alike.
+
+**Where a move implies a field, the move writes it — it does not refuse.**
+Entering `in_progress` means the record is no longer a draft, so the move sets
+`stage`, the way it already sets `rank`. Refusing a move to make somebody set a
+field by hand adds a step and prevents nothing.
 
 **A move re-enqueues the record at the back of its destination.** A rank is a
 position in a queue and leaving the queue does not carry it with you. **So rank
@@ -32,26 +43,41 @@ in the same relative order, because each arrives behind the last.
 
 **The back is not always the bottom of the listing.** Unranked records sort
 after ranked ones, so a record arriving where nothing has been ranked lands at
-the back of nothing and reads as *first*. That is the design working — a rank is
-a position somebody chose, and an unplaced record should not outrank a
-considered one — but it looks like a bug the first time.
+the back of nothing and reads as *first*. That is the design working — an
+unplaced record should not outrank a considered one — but it looks like a bug
+the first time.
+
+## The ladder is a narrowing of what can block
+
+**Not bookkeeping.** Each rung removes a class of blocker, and that is what
+makes a move testable: ask which class this one removed.
+
+| rung | what still blocks it |
+| --- | --- |
+| `captured` | nobody has decided it is worth understanding |
+| `unprepared` | it is not understood |
+| `preparing` | understanding it is underway |
+| `prepared` | scheduling, and capacity |
+| `todo` | capacity |
+| `in_progress` | nothing but the work itself |
+
+**`prepared` is a claim about the record; `todo` is a claim about the world.**
+Scheduling and capacity live nowhere on the work item, which is why the two
+gates feel different in kind.
 
 ## The moves that have names
 
-Most of the ladder is bookkeeping. **Two of these are gates, and the gates are
-where the thinking is.**
-
 | move | what it means |
 | --- | --- |
-| `captured` → `unprepared` | **select.** Somebody decided this will become work. |
-| `unprepared` → `preparing` | somebody started working out what it is |
-| `preparing` → `prepared` | it is worked out |
-| `prepared` → `todo` | **select.** Somebody decided to do it now. |
+| `captured` → `unprepared` | **select.** we intend to do this work. |
+| `unprepared` → `preparing` | somebody is understanding the work |
+| `preparing` → `prepared` | the work is understood and is now actionable |
+| `prepared` → `todo` | **select.** We are committing to start this soon. |
 | `todo` → `in_progress` | started |
 | `in_progress` → `closed` | ended, and why |
 | `closed` → anything | reopened |
 
-## The first gate: will this become work?
+## Unprepared - The first gate: will this become work?
 
 Above it sits a pile that may or may not become anything. Below it, everything
 has been chosen.
@@ -60,31 +86,128 @@ has been chosen.
 this*. A good idea nobody will act on stays `captured`, and that is an honest
 place for it rather than a failure.
 
+**What crossing means** is that this went from *something we may do* to
+*something we intend to understand better*. It commits you to attempting to
+prepare it. **Not to doing it** — that is the second gate.
+
 **Crossing costs nothing later; not crossing costs nothing now.** A record left
-at `captured` is not neglected. The pile is the point — it is where things wait
-without implying anybody owes them attention.
+at `captured` is not neglected. The pile is where things wait without implying
+anybody owes them attention.
 
-**What crossing commits you to** is working out what the thing is. Not doing it.
-That is the second gate.
+**The record has to be understandable before it crosses.** The test: **two
+independent readers can say what problem it is trying to solve.** They may
+disagree entirely about how to solve it; the problem itself must not be hard to
+read. This is the one gate criterion that can be *run* rather than asserted —
+give it to two readers and diff the answers.
 
-## The second gate: will we do it now?
+**`kind` should be set by now**, and very little should get much further
+without it. Strongly encourage it; do not block on it. **A surviving
+`kind: idea` is different from a missing one** — the type defines `idea` as *a
+classification that becomes one of the others*, so it is transitional by
+construction and this is where it resolves.
 
-**This is the expensive one.** Below it, work is queued and somebody will pick it
-up. Above it, work is understood but nobody has committed.
+**Reversal should be rare and reviewable.** Some work crosses and is later found
+not worth doing; this gate is what should keep that number small. Nothing
+records the reasoning for crossing today, and nothing records a reversal.
 
-**Do not cross it because preparation finished.** `prepared` means *we know what
-this is*; `todo` means *we are going to do it*. Conflating them is how a backlog
-fills with work nobody chose, which is indistinguishable from a backlog nobody
-prunes.
+## Preparing
 
-**Check the outcomes first.** A work item crossing this gate without outcomes is
-one nobody can tell is finished — see [[backlog-refine]].
+**The `in_progress` of the preparation pipeline.** It is the only other rung
+that describes activity, so a record sitting here with nobody shaping anything
+is the same lie as a stale `in_progress`.
 
-## Starting
+**At its most basic:**
+
+- **Scope the work and break it down.**
+- **Define what done means** — the outcomes — and refine them until they are
+  *effective*, which means they pass a test. Three checks already exist for
+  that: an outcome with no `verify_by` is `outcome.unmeasured` (`spec.md` §5.2);
+  an outcome that can never be finally true has no edge
+  ([[when-a-work-item-splits]]); and an outcome nobody can read fails the same
+  two-readers test the first gate uses.
+- **Define the dependencies.** Three kinds, and they resolve differently: an
+  **external work item** has a status you can check, a **team** has no state at
+  all, and a **deliverable** — a document, design, mockup, requirement — can
+  exist and still be inadequate, which is the one that goes stale most quietly.
+- **Say who must be included or informed, and at what point.** Included may collapse
+  to one person on a small team; **informed does not** — future readers,
+  observers, and the next session are all on it.
+
+**Outcome completeness is not guaranteed here**, though it should be. Which
+means `close … completed` checks a set nobody claimed was complete, and
+*the outcomes hold* really means *the ones we wrote hold*.
+
+**The outcome test is also the exit condition.** Scoping and breakdown can run
+forever; outcome refinement stops when the outcome passes. It is the only thing
+in this rung with a natural stopping point.
+
+> **Larger organizations will run whole sub-pipelines inside this rung** — product,
+> security, legal, compliance, customer advocacy, operations, QA, engineering,
+> each with its own questions and its own sequence. Two things follow and neither
+> is built: **deciding which of them activate is itself part of preparing**, and
+> **a pipeline considered and dismissed has to be recorded**, or nobody can later
+> tell whether security was assessed and ruled out or never thought of. That is
+> the same test ADR-0007 used for dispositions — *the enum carries what the
+> record cannot*.
+
+## Prepared
+
+**One test, and it beats any checklist:** *name a reason this cannot start.* If
+every answer is scheduling or capacity, it is prepared. If any answer is
+anything else, it is not.
+
+What that implies, and what to check because of it: the contributors are known, when
+they are needed is known, what they must deliver is known, and the known
+blockers are identified.
+
+**De-risking should have happened**, strongly, and the exception is work whose
+own outcome *is* de-risking. **A work item that de-risks its own work is a
+smell** — that usually wants to be its own work item, an `inquiry`.
+
+**Prepared can never mean risk-free.** Unknown unknowns are undefinable here by
+construction, and their discovery during work is `lifecycle.md` §2.8's
+**Redefine**, not a failure of this rung.
+
+## Todo - The second gate: are we committing to doing it soon?
+
+**The expensive one, because it is a promise.** Below it, work is queued and
+somebody will pick it up. Above it, work is understood and nobody has committed.
+
+**Do not cross because preparation finished.** `prepared` means *we know what
+this is*; `todo` means *we are going to do it*. The affirmative test is
+**scheduling is resolved** — that is the blocker this move removes.
+
+**`todo` is not a passive queue.** It puts the work in focus and makes the
+allocation problem live: mapping it to available resources so capacity is well
+used *and* quality is good. Those two pull against each other, and the tool
+records neither today.
+
+**So `todo` is perishable.** Capacity is a property of the team at a moment, not
+of the record — a `todo` list older than the assumptions that created it is
+lying. **Its size is a measurement**: a `todo` of fifty is `prepared` with a
+different label, and a `todo` of zero means nothing is in focus.
+
+**Check the outcomes before crossing.** A work item crossing without them is one
+nobody can tell is finished — [[backlog-refine]].
+
+**When sprints exist.** Teams that use sprints will typically use Todo to communicate 
+what get committed to for each sprint.
+
+## In progress - Starting
 
 `todo` → `in_progress` says somebody is on it now. **It is a claim about the
-present**, not an intention, and a record left `in_progress` across weeks is
-lying about what is happening.
+present**, not an intention, and a record left `in_progress` for several sessions
+is lying about what is happening (unless it is blocked).
+**Sessions, not weeks** — a work item here may be created, worked and closed
+inside a single session ([[when-a-work-item-splits]]).
+
+**This is the last cheap moment to change an outcome.** Before work starts,
+revising one is free. After, it is Redefine, and Redefine is where goalposts
+move. So if the outcomes are not in good shape, stop and fix them here — a
+strong recommendation, never a block.
+
+**Several things `in_progress` at once is itself a finding.** More was started
+than gets finished.
 
 ## Closing
 
@@ -103,39 +226,103 @@ work *because* it was unfinished, which is the usual reason.
 
 | disposition | when |
 | --- | --- |
-| `completed` | the outcomes hold, and at least one is live and proven |
-| `canceled` | we wanted it, then changed our minds |
-| `rejected` | never a consideration — declined, not dropped |
+| `completed` | at least one live outcome exists and **every one is proven** |
+| `canceled` | it was attempted, and we decided not to continue |
+| `rejected` | it came in and was never put into `unprepared` — it was denied |
 | `superseded` | something else covers it — link to what |
 
-**`rejected` and `canceled` are different and the difference matters.**
-Cancelled is *we wanted this once*; rejected is *we never did*. Only a person
-can say which, and no field elsewhere on the record can reconstruct it — which
-is the test ADR-0007 uses, and the reason `rejected` earns a slot.
+**`rejected` and `canceled` are positional, not a matter of intent.** Rejection
+is the first gate saying no: the record arrived and never crossed. Once it has
+crossed, stopping it is a cancellation — **and crossing once is enough**, so a
+record that went to `unprepared`, came back, and then stopped is cancelled. That
+makes ADR-0007's distinction checkable rather than introspective, since crossing
+the first gate *is* the act of considering it.
 
-**There is no `abandoned`.** ADR-0007 dropped it on the same test: stopping
-without a decision is **derivable** from a record that has one and from a
-journal that stops, so the enum does not need to carry it. *The enum carries
-what the record cannot.*
+**There is no `abandoned`.** ADR-0007 dropped it on its own test: stopping
+without a decision is **derivable** from a record that has one and a journal that
+stops. *The enum carries what the record cannot.*
 
-> **The binary has not caught up.** It ships `--reason` with `delivered` and
-> `abandoned`, which ADR-0007 replaced and removed — `work-item close <ref> <as>`
-> with the disposition positional is the settled shape, and `--reason` becomes
-> prose. The task is
-> `WORK-0031/tasks/make-close-take-its-disposition-positionally`, still `todo`.
-> **Use the vocabulary above and translate at the command line until it lands**;
-> a decision in force outranks the implementation, and teaching the shipped
-> spelling is how a superseded vocabulary survives in people's heads.
+**Closing gates on verification, never on the assertion** — gating on the doer's
+claim would gate on the thing the design distrusts, and would let a doer close
+their own work.
+
+**Closing sets `stage` to `stable`.** The content is not expected to change much
+afterwards.
+
+**Tasks should be resolved, and need not be successful.** A task left *open and
+ready to start* under a closed work item advertises work nobody can pick up. It
+does not have to have worked — `spec.md` §2.4 is explicit that a work item is
+judged on its outcomes and on nothing else — so this is a warning, not a refusal.
+**Never auto-close the stragglers**: that invents a disposition nobody chose,
+which is exactly what `--force` refuses to do to outcomes.
+
+**`--force` closes anyway and never touches the outcomes.** The tempting
+implementation marks them verified so the arithmetic comes out clean; that
+destroys the record. Instead completion still computes *two of five* and the
+work item carries the forced close, so a reader sees a completed record whose own
+arithmetic disagrees with it — which is the truth.
+
+> **Two things are settled and unbuilt.** The disposition becomes **positional**
+> and `--reason` becomes prose (ADR-0007) — the binary still spells `--reason
+> delivered|abandoned`, so translate at the command line and use the vocabulary
+> above. And **a cancellation or a rejection should record why**: those two are
+> the only dispositions with no structural evidence behind them, since
+> `completed` has the outcomes and `superseded` has its link. A forced close
+> needs a reason most of all, and nothing records one.
 
 ## Sending work back
 
 **Work goes both ways.** A `prepared` item that turns out not to be prepared goes
-back to `preparing`; a `todo` item nobody will get to goes back to `prepared`.
-This is not failure — it is a record correcting itself, and leaving it wrong is
-worse.
+back to `preparing`; a `todo` item nobody will get to goes back to `prepared` —
+descoped. This is not failure. It is a record correcting itself, and leaving it
+wrong is worse.
 
-**Reopening a closed item is different.** Ask first whether this is the same work
-resuming or new work that supersedes it. Same work resuming keeps the history and
-the journal; new work that happens to rhyme should be its own record linking
-back. Getting this wrong severs a work item from its own past, or welds together
-two things that were never the same.
+**Two different things send work back from `todo`, and only one is capacity.**
+The other is **a risk that became true**, which is a real event and the more
+interesting of the two.
+
+## Reopening
+
+**Reopening mutates the record.** Whether some reopens should instead create a
+new record is open; for now the same work resuming keeps its history and its
+journal, and new work that merely rhymes should be its own record linking back.
+
+**Clear what claims the present. Keep what records the past.** That decides
+every field, including ones nobody has thought of:
+
+- **`stage` resets** to `draft` or `provisional` — never `stable`. It is a claim
+  about how settled the content is now.
+- **`closed` stays**, and is already an append-only list, so re-closing later
+  adds an entry rather than overwriting one.
+- **Verifications stay.** If the scope grew, the old proofs still hold; if the
+  work turned out not to be done, the proof was *wrong* — append a `disproven`
+  verdict rather than erasing a `proven` one.
+
+**Journal why it is being reopened**, always. Nothing else records it.
+
+**Ask where it is reopening into.** Any rung whose claim is true right now is
+legal — and that is the whole rule. Recommend `unprepared`, `preparing`, `todo`
+or `in_progress`, but do not force a march up the ladder: a record closed as
+`canceled` for budget, reopened when the budget returns, is genuinely
+`prepared`, and walking it through three rungs to get there would write three
+false statuses on the way.
+
+## What each rung asks for
+
+| by | what | how hard |
+| --- | --- | --- |
+| `unprepared` | `kind` set; `idea` resolved to something else | strongly encouraged |
+| `unprepared` | two readers can state the problem | the gate criterion |
+| `prepared` | outcomes exist and are effective | strongly encouraged |
+| `todo` | outcomes exist | checked at the gate |
+| `todo` | no longer a draft | warned |
+| `in_progress` | `stage` is at least `provisional` | written by the move |
+| `in_progress` | an assignee | *settled, unbuilt — ADR-0008 ships no `take`* |
+| `closed` as `completed` | every live outcome proven | refused otherwise |
+| `closed` | every task resolved | warned |
+| `closed` | `stage` becomes `stable` | written by the move |
+
+**Everything else observes.** The tool refuses in two places — `close …
+completed` without proven outcomes, and where compliance or security exposure
+makes proceeding unbounded in cost. That is the whole refusal surface, and it is
+deliberately small.

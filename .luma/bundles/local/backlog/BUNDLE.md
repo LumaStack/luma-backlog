@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.19.0
+version: 0.20.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,40 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.20.0` — **[[backlog-move]] is rewritten from a rung-by-rung interview.**
+
+It was the least examined procedure in the bundle — two commits, written in one
+pass, never reopened — while carrying both selection gates, which is where the
+whole ladder model lives. Four of its seven moves had no prose at all.
+
+**The organizing idea replaces "most of the ladder is bookkeeping."** It is not
+bookkeeping: **each rung removes a class of blocker**, and that makes a move
+testable by asking which class it removed. `prepared` is blocked by scheduling
+and capacity, `todo` by capacity alone — which also explains why the two gates
+feel different in kind, since `prepared` is a claim about the record and `todo`
+is a claim about the world.
+
+**And one rule sits under everything:** *a step is worth forcing when it prevents
+a false record; a step that only enforces process is red tape.* Four positions
+taken separately — observed-never-refused, force-writes-rather-than-refuses, a
+tiny refusal surface, and reopening to any true rung — turn out to be that one
+sentence. The refusal surface is now stated outright, and it has two members.
+
+**`rejected` and `canceled` became positional.** ADR-0007 distinguishes them by
+intent, which needs introspection; *did it ever cross the first gate* is a
+lookup, and says the same thing, because crossing the first gate **is** the act
+of considering it. That is an amendment to a decision in force and its table
+wants the positional wording.
+
+**Every rung gained what it was missing** — `preparing` and `prepared` had none
+— plus a table of what each rung asks for and how hard it asks, and a `Blocked`
+section for a state that is a flag rather than a rung.
+
+**Things settled but unbuilt are marked as such** rather than written as though
+they work: the positional disposition, a required reason on a cancellation, an
+assignee at `in_progress`. A procedure that describes a tool it does not have is
+the drift this bundle exists to prevent.
 
 `0.19.0` — **[[backlog-move]] stops teaching a vocabulary a decision replaced.**
 
