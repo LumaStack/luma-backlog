@@ -107,6 +107,33 @@ membership stable enough to be a path fact* and named dimension membership as
 something that *"changes routinely"*; and `kind` is an enum, so shipping `epic`
 makes a team that says `release` file epics.
 
+## Members may live in another backlog
+
+**A delivery routinely spans projects**, so a container has to be able to hold
+work items from other corpora. That is wanted, and it breaks the part of this
+design that was cheapest.
+
+**Container-ness stops being derivable.** *A work item is a container if
+anything belongs to it* holds only where everything that could belong to it is
+visible. A work item in another repository pointing here is invisible from here,
+so a cross-corpus container cannot know its own membership.
+
+**Which raises a direction problem the local case did not have.** With
+`belong_to` on the member, a foreign member has to know the container's
+identity, and the container learns nothing. Inverting it — the container lists
+its members — spans corpora but loses the derivation that made the local case
+free. **Possibly both: derive locally, declare across.** That is two mechanisms
+for one relation, and saying so now is cheaper than discovering it.
+
+**Keys are per-corpus**, so a foreign reference needs a namespace that does not
+exist. `spec.md` §6.1 forbids a coordinator, which rules out the obvious answer.
+
+**And membership can regress with nobody touching the record** — a foreign
+member reopening changes a container's completion silently. Every relation on
+this ladder has been local until now, which is the same finding the dependency
+work turned up: reading another corpus's state is a capability this tool has
+never had, and more than one thing wants it.
+
 ## Related shape
 
 [[work-items/WORK-0025-how-one-work-item-blocking-many-others-is-modeled]] is
