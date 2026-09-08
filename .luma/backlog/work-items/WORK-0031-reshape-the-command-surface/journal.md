@@ -55,6 +55,7 @@ the design call that mattered: abandoning does NOT remove the outcome from the c
 the close refusal now names real exits and says so: verify them or close with a different disposition, and abandoning one records why it is unmet without clearing it — the old message pointed at a retire command that never existed
 GAP left deliberately: verify rejects 'abandoned' today only because it does not take a verdict positional yet, which is accidental protection. when verify gains its positional it must reject abandoned explicitly, or a doer acting as their own checker can verify an outcome away — that is the same task's remaining half
 outcome archive was never built and will not be — the command is abandon, and archiving an outcome is not a thing this design does
+restating the verify guard plainly, because the first version was not readable: verify is the checker's command and will one day take its finding as a word, like 'outcome verify X proven'. today it takes no word at all, so it rejects 'abandoned' the same way it rejects anything — the protection is an accident of being unfinished. whoever adds the word will validate it against the states an outcome can be in, and abandoned is one of those states, so verify would start accepting it. then somebody could abandon their own outcome through the checker's command. it must be excluded by name
 
 ## ▶ 2026-09-07
 
