@@ -221,6 +221,15 @@ somebody naming the next work item counts.
 **An orchestrating agent confirms in a person's place.** The working agent
 recommends either way.
 
+**Then get everything on disk and clear.** A finished work item is the natural
+place to start a session fresh, and the pause before that is the last moment
+anything held only in the conversation still exists.
+
+Before clearing, check that it is all written down: journal entries for what was
+learned, records for what was captured, decisions where a position settled, and
+everything committed. **A session's context is not storage** — whatever matters
+and is not on disk is lost at `/clear`, and nobody finds out.
+
 **This is the last cheap moment to change an outcome.** Before work starts,
 revising one is free. After, it is Redefine, and Redefine is where goalposts
 move. So if the outcomes are not in good shape, stop and fix them here — a
