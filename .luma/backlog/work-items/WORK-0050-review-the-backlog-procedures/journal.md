@@ -11,6 +11,7 @@ backlog-journal gained a 'say where it went' section at bundle 0.24.0 — the ma
 corrected within minutes at 0.24.1 — the first version asked for one line at the end and the maintainer wanted it per point, per blurb; a footer names the records and hides the mapping, and correcting placement is the whole reason for reporting, which nobody can do for a mapping they were never shown
 the say-where-it-went rule contradicted itself — 'what was journalled, where it went' followed by 'where, not what' — and the agent followed the second, producing a footer naming a record and saying nothing about it; sixth instance today of a rule failing in practice, and the first where the PROSE was wrong rather than the compliance
 settled by the maintainer: inline carries the substance by position and needs nothing more, a footer has no position so it must reference the point — which is why 'journaled on WORK-0031' fails as a footer and would have been fine inline
+two rules added to backlog-move at 0.25.0, both from live failure: finish a work item before starting another unless asked otherwise, and never pick the next one — asking a question is not confirmation and neither is answering one, which is exactly how it went wrong today
 
 ## ▶ 2026-09-07
 

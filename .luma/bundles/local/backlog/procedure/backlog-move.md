@@ -203,6 +203,24 @@ is lying about what is happening (unless it is blocked).
 **Sessions, not weeks** — a work item here may be created, worked and closed
 inside a single session ([[when-a-work-item-splits]]).
 
+**Finish what you started.** A work item taken to `in_progress` is worked until
+it is done — outcomes proven and closed — unless somebody asks otherwise.
+Leaving one open and moving to the next is how a backlog fills with things that
+were nearly finished, and the half that is missing is always the half nobody
+wants to do.
+
+**Never pick the next work item.** When one ends, say what is available and
+stop. An agent that selects its own next piece of work has crossed the second
+gate on its own authority — the gate is a commitment somebody makes, and
+`prepared` to `todo` is the expensive one precisely because a person decides it.
+
+**Asking a question is not confirmation, and neither is answering one.** A reply
+about the work is not permission to start different work. Only somebody saying
+which thing to pick counts, and if that has not happened the answer is to wait.
+
+**Where an orchestrating agent is driving, it does the picking** — the agent
+doing the work never does, whoever is upstream of it.
+
 **This is the last cheap moment to change an outcome.** Before work starts,
 revising one is free. After, it is Redefine, and Redefine is where goalposts
 move. So if the outcomes are not in good shape, stop and fix them here — a

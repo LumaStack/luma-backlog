@@ -10,6 +10,14 @@ verify_by:
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:45:00Z'}
+verified:
+  - as: proven
+    at: "2026-09-08T19:19:50Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-08T19:19:50Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'ran every check: all 16 noun-verb pairs resolve; ''list work-item'' errors as an unknown command rather than taking a type positionally; newListCommand and newNewCommand are each registered once per noun from one implementation; top-level is init, show, set, list only'
 ---
 
 # Every command is noun then verb

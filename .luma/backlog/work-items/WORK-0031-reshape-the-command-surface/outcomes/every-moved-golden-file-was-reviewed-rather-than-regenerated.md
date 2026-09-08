@@ -9,6 +9,14 @@ verify_by:
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:45:00Z'}
+verified:
+  - as: proven
+    at: "2026-09-08T19:19:50Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-08T19:19:50Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: one golden moved across the whole reshape — list-json, 8 lines, every one an insertion, nothing removed or renamed; the diff was read before each commit rather than regenerated in bulk; internal/guards passes, so adapters still cannot import the engine
 ---
 
 # Every moved golden file was reviewed rather than regenerated
