@@ -157,6 +157,15 @@ func isRecordPath(rel string) bool {
 		// .luma/_types/ holds contracts for documents outside any bundle,
 		// which are not this tool's records either.
 		return false
+	case strings.Contains(rel, "/evidence/"):
+		// A record may keep supporting material beside it — a transcript, a
+		// log, an export. Those are attachments rather than records, and
+		// reporting them as unreadable records is a warning that fires on a
+		// correct state, which is the kind readers learn to skip past.
+		//
+		// `evidence/` is a local convention and not yet a layout tier; where
+		// attachments belong is open.
+		return false
 	}
 	return true
 }

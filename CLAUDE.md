@@ -53,6 +53,7 @@ Provenance is the point of that field. A record that says a person confirmed som
 - **Optimize for readability.** Short, unless clarity genuinely costs more.
 - **Propose format changes freely, until this project reaches 1.0.** We are the knowledge format's first consumer and it is pre-1.0. Hitting a limit is evidence about the format, not a reason to contort around it — record the ask in `docs/format-requests.md` and, where sensible, ship ahead of it.
 - **Record a path not taken as deferred with a re-open trigger, never as rejected.** *Rejected* reads as permanent and stops the option ever being raised again.
+- **Correct a decision in place rather than superseding it.** The `decision-records` procedure says a changed position needs a new number and an archived predecessor. That is right for a project people build on and it is noise here — this one is new enough that a superseded record is a second thing to read that says nothing anybody needs. **Edit the record, dated and visible.** Revisit when somebody outside this repository depends on a decision holding still.
 
 ## Conventions
 

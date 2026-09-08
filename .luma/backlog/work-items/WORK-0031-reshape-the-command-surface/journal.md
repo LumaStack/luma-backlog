@@ -5,6 +5,17 @@
 
 ---
 
+## ▶ 2026-09-08
+
+starting: WORK-0070 needs the breaking changes finished before another project adopts, since WORK-0037's window for migration being a one-repo problem closes on first use elsewhere
+DECIDED: cross-type listing is dropped. list stays out of ADR-0006's verb-only set, which is what that decision already says, so nothing is amended — the gap was list never having been considered when the set was enumerated, and the answer is that it did not belong there
+deferred rather than rejected, with the trigger the maintainer gave: add it back the day we need it
+the task's own evidence was discarded — 18 of 21 bare list call sites are in the TEST SUITE, and WORK-0003 already names that as the weakest form of confirmation since the tests share an author with the code; the procedures are the better proxy and are 16 typed calls to zero bare
+show and set stay top-level and are NOT the same case — they take a reference that identifies its own type, so they are polymorphic on one record rather than listing across types; only list had no noun to attach to
+found on starting: the test suite was red before any of this work began — the session transcript committed to WORK-0059/evidence/ broke TestTheProjectsOwnRecordsParse, so nothing could tell whether a change here broke something; fixed first
+decide-where-cross-type-listing-lives turned out to be already IMPLEMENTED — list.go says there is deliberately no listing across types and root.go registers list as work-item list; what was missing was the decision being recorded rather than the code being written
+closing that task needed 'set decide-where-cross-type-listing-lives' — the path form WORK-0031/tasks/<slug> returned 'nothing matches', which is exactly resolve-a-reference-the-way-a-person-writes-it hitting the agent while working on the same work item
+
 ## ▶ 2026-09-07
 
 split at 23 tasks — five reading tasks went to WORK-0043 and rank repair to WORK-0022; what stays is shapes a decision already settled, what left was found by writing the procedures

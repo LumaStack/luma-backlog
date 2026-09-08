@@ -43,6 +43,11 @@ func TestTheProjectsOwnRecordsParse(t *testing.T) {
 		if strings.Contains(filepath.ToSlash(rel), "/bundles/") {
 			return nil
 		}
+		// Attachments beside a record are not records. corpus.isRecordPath
+		// excludes the same subtree for the same reason.
+		if strings.Contains(filepath.ToSlash(rel), "/evidence/") {
+			return nil
+		}
 		if strings.HasSuffix(path, "journal.md") && !strings.HasPrefix(string(data), "---") {
 			return nil // journals carry no frontmatter yet
 		}
