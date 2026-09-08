@@ -209,28 +209,17 @@ Leaving one open and moving to the next is how a backlog fills with things that
 were nearly finished, and the half that is missing is always the half nobody
 wants to do.
 
-**Recommend the next work item freely.** An opinion is wanted — say what you
-would pick and why, and say it plainly rather than hedging. Reading the backlog
-is most of what an agent is for.
+**Recommend what to work on next.** Say which one and why — an opinion is
+wanted, and reading the backlog well enough to have one is most of the job.
 
-**Then stop.** Never *start* it without confirmation. **The harm is not the
-surprise — it is proceeding without leaving room to approve.** Announcing while
-you go is not asking. The decision belongs to somebody, and taking it removes
-it from them however loudly you narrate.
+**Do not start it without confirmation.** Recommending is the agent's part;
+choosing is not. Wait for somebody to name the work.
 
-That holds for an orchestrator exactly as for a person: being told is not the
-same as being asked.
+**A question is not confirmation, and neither is an answer to one.** Only
+somebody naming the next work item counts.
 
-Crossing the second gate is a commitment somebody makes — `prepared` to `todo`
-is the expensive one precisely because a person decides it. Proposing the
-crossing is the agent's job; making it is not.
-
-**Asking a question is not confirmation, and neither is answering one.** A reply
-about the work in hand is not permission to start different work. Only somebody
-naming the thing to pick counts, and until that happens the answer is to wait.
-
-**Where an orchestrating agent is driving, it confirms** — the working agent
-still recommends, and still does not start on its own.
+**An orchestrating agent confirms in a person's place.** The working agent
+recommends either way.
 
 **This is the last cheap moment to change an outcome.** Before work starts,
 revising one is free. After, it is Redefine, and Redefine is where goalposts

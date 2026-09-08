@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.25.2
+version: 0.26.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -69,39 +69,13 @@ judgment and calls the command for everything else.
 
 ## Version
 
-`0.25.2` — **the harm is proceeding, not surprising.**
+`0.26.0` — **recommend the next work item; do not start it.**
 
-`0.25.1` said the harm was the surprise, which an agent satisfies by announcing
-loudly and carrying on. **Announcing while you go is not asking.** The decision
-belongs to somebody, and taking it removes it from them however clearly you
-narrate — being told is not the same as being asked.
+An agent that reads the backlog well enough to have an opinion should give one.
+Choosing is somebody else's, and a question is not confirmation.
 
-`0.25.1` — **recommend freely; never start without confirmation.**
-
-`0.25.0` said *never pick the next work item*, which forbids the opinion. The
-opinion is wanted. **The harm is the surprise, not the recommendation** —
-nobody should discover what is being worked on by reading a diff, and that is
-as true of an orchestrator as of a person.
-
-So: say what you would pick and why, then stop. Proposing the second gate's
-crossing is the agent's job; making it is not.
-
-`0.25.0` — **finish what you started, and never pick what is next.**
-
-Two rules, both from watching the failure. A work item taken to `in_progress` is
-worked until it is done unless somebody asks otherwise — leaving one open and
-moving on is how a backlog fills with things that were nearly finished, and the
-missing half is always the half nobody wants to do.
-
-**And an agent never selects its own next work item.** Picking one crosses the
-second gate on its own authority, and that gate is expensive precisely because a
-person decides it. Where an orchestrating agent is driving, the orchestrator
-picks and the agent doing the work never does.
-
-**Asking a question is not confirmation, and neither is answering one.** A reply
-about the work is not permission to start different work — which is the specific
-way this went wrong: a question was asked, not answered, and the agent picked
-anyway.
+Also: **finish what you started.** A work item at `in_progress` is worked until
+it is done unless somebody asks otherwise.
 
 `0.24.5` — **the two forms owe different things.**
 
