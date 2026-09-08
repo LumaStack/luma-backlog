@@ -71,6 +71,10 @@ which exposes a state the design does not have: two live verdicts that disagree.
 and there may be a non-order resolution already implied: spec 4.7 says a human entry raises the derived trust tier, so a human disproven against an agent proven might resolve by tier rather than by recency — worth deciding rather than inheriting from list order
 applies to asserted equally — two agents attempting in parallel versus one agent retrying is the same distinction, and the current 'the current claim is the last entry' reading has the same hole
 the proven default is gone: absence now means not proven, and the 29 legacy entries were migrated to say as: proven explicitly. keeping the default would have made the one value that clears a close the thing you get free from a hand edit, another tool, or a bug that omitted the field
+WRAP: 17 of 17 tasks closed and all four outcomes verified proven, each check actually run rather than stamped — the noun-verb pairs, the settled shapes against ADR-0005/0006/0007/0008, reference resolution round-tripping, and the golden diff read line by line
+two verify_by clauses were corrected in place before verifying, dated and visible: one required 'outcome archive' to exist, which ADR-0007's amendment reversed the same day; the other named internal/app as resolution's home when it lives in internal/corpus, BELOW the adapters, which satisfies what the check was asking for more strongly than the literal wording did
+WEAKNESS ON THE RECORD: doer and checker are the same actor. an agent wrote every task and the same agent recorded every verdict, which is the independence ADR-0007 exists to protect and it is absent here. the verdicts name that actor, so a reader can see it rather than having to work it out
+found while verifying, and worth more than the result: the first pair-existence check reported all sixteen MISSING because zsh does not word-split an unquoted parameter, so 'work-item new' went in as one argument and cobra fell back to root help. a verification that lies is worse than none, and it nearly produced a false negative on the outcome it was checking
 
 ## ▶ 2026-09-07
 
