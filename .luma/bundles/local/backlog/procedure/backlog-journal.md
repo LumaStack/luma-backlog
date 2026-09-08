@@ -86,12 +86,23 @@ pointer: it says where things stand and marks everything below as historical, so
 a reader knows where to stop. That is what lets an append-only file survive at
 length. **Never rewrite what is below it.**
 
-## Say where it went
+## Say where it went, beside the thing that went there
 
-**Every reply that journalled something names where.** One short line, at the
-end, listing the records written to and nothing else:
+**Each point that was journalled names its own destination**, in the sentence
+or paragraph that made it — not gathered into a line at the end.
 
-> Journaled on WORK-0036 and WORK-0039.
+> **Closed is not archived** — closed is about the work, archived is about
+> attention. *Journaled on WORK-0039.*
+>
+> **`stage` keeps its definition**, and the reading is an application of it
+> rather than a replacement. *Journaled on WORK-0036.*
+
+**A footer destroys what this is for.** *Journaled on WORK-0036, WORK-0039 and
+WORK-0031* tells a reader that three records were written and leaves them to
+work out which idea landed where. They cannot say *no, that one belongs on the
+other work item* about a mapping they were never shown, and correcting
+placement is the point — a learning filed on the wrong work item is nearly
+unfindable afterwards.
 
 **Because journalling is invisible and usually unasked.** This procedure says
 to trigger without being asked, so a line is written to a file the reader never
@@ -99,14 +110,12 @@ sees, on their behalf, without their say-so. Not reporting it leaves them with
 no model of what is being recorded in their name — which is the provenance
 problem this project cares about most, one level down.
 
-**And it is the only chance to correct placement.** A learning filed on the
-wrong work item is nearly unfindable afterwards; a reader who is told sees it
-in the same breath and says *no, that belongs on the other one*. Silence spends
-that for nothing.
-
-**Where, not what.** The reply already said the thing — repeating it as a
+**Where, not what.** The point already said the thing; repeating it as a
 summary is the same sentence twice, and it grows until the report is longer
 than the work.
+
+**Merge when several points share a destination**, rather than repeating it
+after each. The mapping is what matters, not the ceremony.
 
 **Omit it when nothing was journalled**, and when the writing *was* the reply —
 somebody who asked for a line to be written has already been told it was.

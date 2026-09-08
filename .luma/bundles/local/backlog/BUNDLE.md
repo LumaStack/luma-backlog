@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.24.0
+version: 0.24.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,17 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.1` — **the attribution goes beside the point, not in a footer.**
+
+`0.24.0` asked for one line at the end naming the records written. That loses
+the mapping: *journaled on WORK-0036, WORK-0039 and WORK-0031* tells a reader
+three records were touched and leaves them to work out which idea landed where.
+
+**Correcting placement is the whole reason for reporting it**, and nobody can
+correct a mapping they were never shown. So each point names its own
+destination, in the paragraph that made it, and several points sharing one
+merge rather than repeating it.
 
 `0.24.0` — **[[backlog-journal]] says where it went.**
 

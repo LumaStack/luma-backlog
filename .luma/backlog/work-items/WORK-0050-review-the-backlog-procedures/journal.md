@@ -8,6 +8,7 @@
 ## ▶ 2026-09-08
 
 backlog-journal gained a 'say where it went' section at bundle 0.24.0 — the maintainer noticed the agent doing it ad hoc and wanted it consistent; the argument that made it a rule rather than a courtesy is that journalling is invisible AND unasked, so not reporting it leaves a reader with no model of what is being written in their name
+corrected within minutes at 0.24.1 — the first version asked for one line at the end and the maintainer wanted it per point, per blurb; a footer names the records and hides the mapping, and correcting placement is the whole reason for reporting, which nobody can do for a mapping they were never shown
 
 ## ▶ 2026-09-07
 
