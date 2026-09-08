@@ -6,8 +6,8 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:24:25Z'}
-description: work items are the only grouping unit, so a set of them that constitutes a delivery point or business outcome has nowhere to live. it is a dimension — but a tracked one, because it always carries metadata the system holds, and because people will call it a project, epic, milestone, release or initiative and every one is right for somebody. research what tracked dimensions are, how they are sequenced when wanted, and how a delivery is finished.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:26:00Z'}
+description: 'a set of work items that constitutes a delivery has nowhere to live. leading answer is a relation rather than a unit — a work item belongs to many work items, container-ness is derived from anything pointing at it, and the container''s own title supplies the name so nothing ships a vocabulary. open: declared status against derived state, completion arithmetic, cycles, and whether a container''s key should read differently.'
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:35:27Z'}
 ---
 
 # The backlog has no unit for a delivery
@@ -47,45 +47,72 @@ what it is waiting on, and whether it comes after another one. A classification
 axis cannot hold any of that — `milestone: v1` on eight records says they share
 a label, not that a delivery exists, and certainly not that it is finished.
 
-## It is a dimension, but not a plain one
+## The leading answer: a work item belongs to many work items
 
-**Settled going in, and it is a third answer rather than either obvious one.**
-Not a sixth record type, and not *all dimensions gain mechanics*. **Two classes
-of dimension:**
+**No new unit, and no dimension either — a relation.** A work item carries
+`belong_to`, pointing at other work items, and may point at several.
 
-- **Plain** — classifies and nothing more, exactly as §2.7 has it today.
-- **Tracked** — always carries metadata the system has to hold, because the
-  thing it names has state: is the delivery reached, what is it waiting on,
-  does it come after another.
+**That gives §2.7's key property for free.** Dimensions exist partly because
+*"a record may sit on several at once — a work item can belong to a milestone
+**and** an initiative without the two competing."* Belonging to many work items
+**is** that, with no axes to declare, no configuration, and no tracked-versus-
+plain distinction to name.
 
-**And the reason it must stay a dimension is the naming.** People will call this
-a project, an epic, a milestone, a release, an initiative, a phase — and every
-one of them is right for somebody. Making it a type called `milestone` forces a
-team that says `release` to rename a built-in, which is exactly the interop
-mismatch §2.7 removed when `project` stopped being the unit name.
+**And it dissolves the naming problem rather than solving it.** The container's
+own title says what it is — `v1 release`, `Payments initiative` — so nothing
+ships an opinion about the word, and two teams using different vocabularies
+never have to agree.
 
-**This project already has the mechanism for that split**, one level down.
-`workflow_status` is configurable vocabulary that *"carries no meaning to the
-tool"* (§8), while the ladder's mechanics are the tool's. **A tracked dimension
-is to `epic` and `milestone` what `workflow_status` is to `todo` and `closed`:**
-the mechanics belong to the tool, the words belong to the project.
+**Container-ness is derived, not declared.** A work item is a container if
+anything belongs to it. No `kind`, no flag, nothing to keep in sync — the same
+move this design already makes for outcome state and for `resolved_at`.
 
-**Where each unit sits, now that the shape is clear:**
+**The mechanics come free.** A container has status, rank, outcomes and a
+journal because it is a work item. *Business outcomes* — the phrase that started
+this — are just its outcomes.
 
-```
-tracked dimension        ← work items live inside this
-    work item
-        outcome
-        task
-        wave             ← an attempt at a set of outcomes, inside the work item
-```
+### What is open in it
 
-**A wave is inside a work item; this is what a work item is inside of.** They
-are opposite directions from the same record and neither answers for the other.
+- **Status is declared and a container's state is derived.** §2.2 is explicit
+  that workflow status is *declared — somebody sets it*, which is what lets it
+  map to board columns. A release at `in_progress` while every member is
+  `captured` is a lie nobody wrote on purpose. Either containers declare and can
+  lie, or they derive and the ladder stops being uniform across one type.
+- **Completion forks the same way.** `CompletionOf` counts proven outcomes; a
+  container's completion is presumably its members' progress. Two computations
+  under one type, and `close … completed` gates on one of them.
+- **Cycles.** A belongs to B belongs to A. Needs a guard, and it is the kind of
+  defect found by a listing that hangs.
+- **Whether a container's key should read differently** — `WORK-EPIC-0001`, or
+  a separate series. **For:** a key that says what it is needs no lookup.
+  **Against:** it forks the key space, ADR-0003's collision repair has to hold
+  across both, and **it ships the word after all** — `EPIC` in a key is the
+  vocabulary decision this whole approach avoids, unless the prefix is
+  configurable, which needs the configuration this approach removed. A state
+  mark in a listing is the cheaper answer to the same need, since container-ness
+  is already derivable.
 
-§2.7 already carries an undecided adjacent question — whether `project`, `epic`
-and `milestone` ship as default-defined dimensions — and it is now the same
-question as this one rather than a neighbour.
+### Two options this replaced
+
+**A tracked dimension** — a dimension carrying metadata the system holds,
+because plain dimensions *"carry no mechanics of their own"* (§2.7). Replaced
+because the relation gets the multi-axis property without declaring axes at all.
+
+**A sixth `kind` of work item** that groups others. It passes
+`_types/work-item`'s test — *what would earn a sixth: something that produces
+none of a fix, an answer, a classification, more work, or the work itself* — and
+a container produces none of them. **It fails on two other grounds:** membership
+would still have to be a field, because §7.1 settled the layout on *is work item
+membership stable enough to be a path fact* and named dimension membership as
+something that *"changes routinely"*; and `kind` is an enum, so shipping `epic`
+makes a team that says `release` file epics.
+
+## Related shape
+
+[[work-items/WORK-0025-how-one-work-item-blocking-many-others-is-modeled]] is
+the same shape — work-item-to-work-item as a field. If `belong_to` lands,
+blocking is the second such relation, and the two want one mechanism rather than
+two invented separately.
 
 ## What it has to answer
 
