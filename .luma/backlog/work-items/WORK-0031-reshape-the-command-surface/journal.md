@@ -5,6 +5,29 @@
 
 ---
 
+## ▶ 2026-09-08
+
+starting: WORK-0070 needs the breaking changes finished before another project adopts, since WORK-0037's window for migration being a one-repo problem closes on first use elsewhere
+DECIDED: cross-type listing is dropped. list stays out of ADR-0006's verb-only set, which is what that decision already says, so nothing is amended — the gap was list never having been considered when the set was enumerated, and the answer is that it did not belong there
+deferred rather than rejected, with the trigger the maintainer gave: add it back the day we need it
+the task's own evidence was discarded — 18 of 21 bare list call sites are in the TEST SUITE, and WORK-0003 already names that as the weakest form of confirmation since the tests share an author with the code; the procedures are the better proxy and are 16 typed calls to zero bare
+show and set stay top-level and are NOT the same case — they take a reference that identifies its own type, so they are polymorphic on one record rather than listing across types; only list had no noun to attach to
+found on starting: the test suite was red before any of this work began — the session transcript committed to WORK-0059/evidence/ broke TestTheProjectsOwnRecordsParse, so nothing could tell whether a change here broke something; fixed first
+decide-where-cross-type-listing-lives turned out to be already IMPLEMENTED — list.go says there is deliberately no listing across types and root.go registers list as work-item list; what was missing was the decision being recorded rather than the code being written
+closing that task needed 'set decide-where-cross-type-listing-lives' — the path form WORK-0031/tasks/<slug> returned 'nothing matches', which is exactly resolve-a-reference-the-way-a-person-writes-it hitting the agent while working on the same work item
+resolve-a-reference: the task's stated live failure was already fixed — WORK-0031/tasks/<slug> resolves, corpus.scoped handles the key-scoped form, and show emits a corpus-relative path that resolves as input, so references round-trip
+the real defect was the exit code: corpus.Resolve returned bare errors for both 'nothing matches' and 'matches more than one', and all six app call sites wrapped any resolve failure as NotFound, so ambiguity exited 3
+why that matters beyond tidiness — spec 9.4 says 3 means the target does not exist and 2 means fix the invocation; an agent told not-found about a reference that matches five records will reasonably CREATE one, so a well-formed query produces a duplicate
+fixed with corpus.ErrAmbiguous and a single app.resolveError that classifies a resolve failure once, replacing six inline wraps — six chances to get it wrong became one, and one of the six already was
+the path was completely untested, which is why it stayed wrong; added a case to exitcodes_test covering both that ambiguity exits 2 and that the candidates are listed
+message reworded from 'ambiguous reference: X matches more than one record' to 'ambiguous reference: X could be any of' — wrapping the sentinel made the old text say the same thing twice
+still open on this task and NOT fixed: a filesystem path with the .luma/ prefix does not resolve, though the corpus-relative form does; that is what a person pastes from ls or from an error message, and it bit the agent twice today
+resolve-a-reference closed: all three verify_by clauses re-checked against the built binary — key-scoped and bare forms resolve, ambiguity exits 2 listing candidates, and an emitted path round-trips as input
+closed without the .luma/-prefixed filesystem path resolving — that is outside this task's stated checks, and captured on the record rather than folded in silently
+drop-the-seventh-exit-code: removed ExitClaimed from internal/cli, the app.Taken arm from the mapping, and the 6 row from spec.md 9.4 so the table and the constant block agree
+also removed app.Taken itself, which is beyond the task's stated checks — nothing produced it, and the task's own argument applies unchanged: a KIND held for a feature nobody has designed is the same promise about a shape nobody chose as a code held for one
+added to spec 9.4 while the section was open, from the policy published in command-line-interface 0.4.0: every subcommand draws from one list, which codes a subcommand can return differs and what a code MEANS does not
+
 ## ▶ 2026-09-07
 
 split at 23 tasks — five reading tasks went to WORK-0043 and rank repair to WORK-0022; what stays is shapes a decision already settled, what left was found by writing the procedures
@@ -20,6 +43,8 @@ the lesson is narrow and mechanical: an outcome is not provable until its verify
 redefined every-command-is-noun-then-verb: the old check asserted over every universal verb, a set nobody had settled, so no amount of building could satisfy it — a whitelist of required pairs is closed and cannot grow silently as verbs are added
 six of ADR-0006's seven verb-only commands do not exist, so the old check demanded work this item never owed; each now has its own work item and three of them are inquiries because whether they should exist is genuinely open
 the procedures were written during this work item's session and are not its work — they are WORK-0050's, and having no work item of their own for a whole session is why nobody noticed most were never reviewed
+markdown facts that shaped every output design here and are easy to rediscover the hard way: ## and ### render identically in a terminal so heading level divides nothing; leading spaces collapse and four become a code block, so indentation needs a list or literal box-drawing; emoji are double-width and break every column beside them
+the session ended with four findings noticed and never captured until asked — the config filename bug, show printing key twice, a record with two modified stamps, and the vendored bundle being three versions behind; noticing is not capturing, and the gap was invisible until somebody asked what would be lost
 
 ## ▶ 2026-09-06
 

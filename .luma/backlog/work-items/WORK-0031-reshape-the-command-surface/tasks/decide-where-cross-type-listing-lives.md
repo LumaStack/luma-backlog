@@ -2,9 +2,10 @@
 type: task
 title: Decide where cross-type listing lives
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T17:05:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:43:48Z'}
 ---
 
 # Decide where cross-type listing lives

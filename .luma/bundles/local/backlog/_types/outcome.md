@@ -11,6 +11,10 @@ fields:
 
 A statement of what must become true. A work item is complete when every live outcome passes with recorded evidence — computed, never asserted.
 
+**An outcome is a record, or it is not an outcome.** A condition written inside another record's fields — most temptingly into a `verify_by` list — has no identity, no stage, nothing to verify and nothing to supersede. It cannot be cited, argued with or proven, and it makes a work item look better specified than it is: two outcomes on disk asserting five conditions between them, three of which nobody can check.
+
+**The title is the handle**, and it is unique within a work item because the filename derives from it and creation is idempotent by name (`spec.md` §9.5). Editing a title by hand is the one way to break that, and nothing notices.
+
 **Body:** why this matters, and anything needed to read the check correctly. Short; the frontmatter carries the substance.
 
 ## Notes on the fields

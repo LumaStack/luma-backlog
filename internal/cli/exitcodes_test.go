@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -43,6 +44,24 @@ func TestExitCodes(t *testing.T) {
 		app, _ := initialized(t)
 		if code, _, _ := run(t, app, "show", "no-such-record"); code != ExitNotFound {
 			t.Errorf("exit = %d, want %d", code, ExitNotFound)
+		}
+	})
+
+	// An ambiguous reference is a usage failure and not a missing record. Both
+	// used to exit 3, so a caller told "not found" about a record that exists
+	// several times over would reasonably create another. Untested until the
+	// day it was wrong, which is why it stayed wrong.
+	t.Run("2 usage — an ambiguous reference is not a missing one", func(t *testing.T) {
+		app, _ := withWorkItem(t) // Payments v2
+		if code, _, e := run(t, app, "work-item", "new", "Payments rollout"); code != ExitOK {
+			t.Fatalf("new failed: %s", e)
+		}
+		code, _, errOut := run(t, app, "show", "payments")
+		if code != ExitUsage {
+			t.Errorf("exit = %d, want %d — ambiguity is a usage failure", code, ExitUsage)
+		}
+		if !strings.Contains(errOut, "could be any of") {
+			t.Errorf("stderr did not list the candidates: %q", errOut)
 		}
 	})
 

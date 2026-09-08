@@ -1,4 +1,4 @@
-# What's next template
+# Rundown template
 
 **Where the work stands, then an opinion.** Copy the shape, not this file.
 Listings inside it follow [[listing]].
@@ -23,7 +23,8 @@ Listings inside it follow [[listing]].
 
 **Risks**
 
-<what you noticed that nobody asked about --- or omit it>
+- <what you noticed that nobody asked about --- or omit the section>
+- <one concern per bullet>
 
 **Last touched**
 
@@ -68,8 +69,20 @@ records above it --- *"WORK-0031 has 23 tasks"* means nothing before WORK-0031
 has appeared --- so it cannot lead, and it is the second thing worth reading, so
 it sits second from the bottom.
 
-**Last touched is prose, not a listing.** What happened is usually more than a
-record and a timestamp.
+**Risks is a bulleted list, one concern per bullet.** A run of paragraphs hides
+the count --- one risk and four look alike until both have been read --- and
+this is the section somebody scans to decide whether to worry. A bullet may run
+to a second sentence; it may not run to a paragraph, and whatever makes it
+checkable --- the number, the record, the file and line --- goes in the first
+clause where a scan will find it.
+
+**Plain bullets, never the state marks.** A risk is not a record and has no
+state, so `○` and `✔` do not belong here. [[showing-records]] governs rows that
+stand for records; these stand for nothing but themselves.
+
+**Last touched is prose, and the only prose in the overview.** What happened is
+usually more than a record and a timestamp, and the contrast is what makes it
+read as the one section written rather than tallied.
 
 **It says whether the reader left mid-flight or at a clean stop**, because the
 last record touched is often a closed one. Those are different positions ---

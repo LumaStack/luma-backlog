@@ -240,7 +240,7 @@ Dimensions — projects, epics, milestones, initiatives, phases, releases, sprin
 
 > **`project` belongs here.** Once the backlog unit stopped being called a project, the word was free — and it lands naturally as a dimension, because that is the scale it already has everywhere else: a container holding many work items. This also removes the interop mismatch that made `project` awkward as a unit name. An external tracker's project maps to a dimension of the same name and the same scale, rather than to a unit several sizes smaller.
 >
-> **Under consideration:** shipping `project`, and possibly `epic` and `milestone`, as dimensions defined by default rather than left entirely to configuration. The argument for is that most teams will want them and a blank slate is unhelpful; the argument against is that any default is an opinion, and this document has consistently pushed opinions into configuration. Not yet decided.
+> **Under consideration:** shipping `project`, and possibly `epic` and `milestone`, as dimensions defined by default rather than left entirely to configuration. The argument for is that most teams will want them and a blank slate is unhelpful; the argument against is that any default is an opinion, and this document has consistently pushed opinions into configuration. Not yet decided — and it is the same question as `WORK-0069`, which asks what a **tracked** dimension is: one carrying metadata the system holds, because the thing it names has state. These three are the candidates for being tracked, which is why defaulting them and defining them are one decision rather than two.
 
 A dimension is an axis a record is classified along, and **a record may sit on several at once**: a work item can belong to a milestone *and* an initiative without the two competing. A dimension may also have **levels that nest** — an initiative holding epics holding milestones is one axis with a hierarchy, in the way a geography dimension holds country, region, and city. Both properties come from the word: independent axes that combine freely, with roll-up levels inside any one of them.
 
@@ -1412,7 +1412,10 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 | `3` | Not found | Stop; the target does not exist. |
 | `4` | **Conflict** — the record changed underneath (§6.3) | **Re-read and retry.** |
 | `5` | **Refused** — a validated act did not pass its check (§5.3) | Do not retry; satisfy the condition first. |
-| `6` | **Already taken** | Choose different work. Reserved; taking is not in the first release (ADR-0008), and adding a code is additive (§9.9). |
+
+**Six codes, and `6` is not reserved.** *Already taken* was held for taking, which does not ship (ADR-0008) — and a code reserved for a feature nobody has designed is a promise about a shape nobody chose. Adding a code is additive and removing one is breaking (§9.9), so six is the direction that can be undone.
+
+**Every subcommand draws from this one list**, and a code means the same thing wherever it appears. Which codes a given subcommand can return differs; what a code *means* does not.
 
 ### 9.5 Idempotency
 

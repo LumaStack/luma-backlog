@@ -46,7 +46,7 @@ func (s *Session) Rank(req RankRequest) (*RankResult, error) {
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, &Error{Kind: NotFound, Err: err}
+		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.WorkItem {
 		return nil, UsageError("%s is a %s: only work items are ranked", it.Name(), it.Type())
@@ -148,7 +148,7 @@ func (s *Session) positionFor(req RankRequest, peers []peer) (corpus.Position, e
 	// asking for a position that cannot exist.
 	target, err := corpus.Resolve(s.Backlog, req.Neighbor)
 	if err != nil {
-		return "", &Error{Kind: NotFound, Err: err}
+		return "", resolveError(err)
 	}
 	at := -1
 	for i, p := range peers {

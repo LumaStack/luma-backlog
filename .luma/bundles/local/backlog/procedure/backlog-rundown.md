@@ -1,10 +1,10 @@
 ---
 type: procedure
-title: Decide what to work on next
-description: Say where the work stands and what to pick up — what was last touched, what is under way, what is queued, and what is worth preparing — then recommend. Use when asked "what should I work on", "what's next", "what should I pick up", "where were we", "anything I should be doing", or at the start of a session with no stated task. Do NOT use to display a record or a listing without choosing (backlog-show), and never to reorder or move anything.
+title: Run down where the work stands
+description: Run down where the work stands and what to pick up — what was last touched, what is under way, what is queued, and what is worth preparing — then recommend. Use when asked "what should I work on", "what's next", "what should I pick up", "where were we", "catch me up", "where do things stand", "anything I should be doing", or at the start of a session with no stated task. Do NOT use to display a record or a listing without choosing (backlog-show), and never to reorder or move anything.
 ---
 
-# Decide what to work on next
+# Run down where the work stands
 
 **Three divisions, each named so a reader can stop at the one they came for.**
 
@@ -23,7 +23,7 @@ render identically in a terminal so they cannot divide, and a `###` section
 outranks plain text, so mixing them puts sections above the divisions that
 contain them.
 
-**The shape is [[next-report]]**, its listings are [[listing]], and the marks
+**The shape is [[rundown]]**, its listings are [[listing]], and the marks
 are [[showing-records]]. Do not invent a second format.
 
 ```
@@ -70,9 +70,14 @@ Started work outranks queued work — not because it matters more, but because
 **work in flight costs something every day it stays in flight and returns
 nothing until it lands.**
 
-**Several things `in_progress` is itself the finding.** More was started than
-gets finished. Say it plainly; recommending a sixth thing to start answers the
-question asked rather than the one that matters.
+**Several things `in_progress` for one worker is itself the finding** — a human
+assignee, or an agent session. More was started than gets finished. Say it
+plainly; recommending a sixth thing to start answers the question asked rather
+than the one that matters.
+
+**A team with many in flight is not the same thing**, and until an assignee
+exists there is no way to tell the two apart — so say what you counted rather
+than what it means.
 
 **Blocked is not the same as slow.** Check the journal before calling something
 stalled — [[backlog-show]].
@@ -85,6 +90,14 @@ amount of reading further changes that.
 
 **The last of the overview, and honest.** What you noticed while reading that nobody
 asked about.
+
+**One bullet per risk**, so the count is read rather than counted — a run of
+paragraphs makes one concern and four look alike. A bullet may run to a second
+sentence, never to a paragraph, and whatever makes it checkable goes in the
+first clause. **Plain bullets:** a risk is not a record and has no state, so the
+marks in [[showing-records]] do not apply to it.
+
+What to look for:
 
 - Work `in_progress` with a journal silent for weeks — the status is a claim
   about the present and has stopped being true.
@@ -162,7 +175,7 @@ recommendation with a reason is worth more than a filled one without.
 
 ## What a good one reads like
 
-Shape is [[next-report]]; this is the judgment, which is the part that does not
+Shape is [[rundown]]; this is the judgment, which is the part that does not
 come from a template.
 
 > ──[ Overview ]──────────────────────────────────────────
@@ -184,14 +197,12 @@ come from a template.
 >
 > **Risks**
 >
-> Fifty-six commits here and two in luma-catalog, none pushed. Everything from
-> today is in one working tree.
->
-> WORK-0031 has 23 tasks and began the day with 9. The reshape is finished; what
-> remains is the pile of commands it turned up.
->
-> The second gate has never been used --- nothing has ever been `todo`, so this
-> report can only ever show an empty queue.
+> - Fifty-six commits here and two in luma-catalog, none pushed. Everything
+>   from today is in one working tree.
+> - WORK-0031 has 23 tasks and began the day with 9. The reshape is finished;
+>   what remains is the pile of commands it turned up.
+> - The second gate has never been used --- nothing has ever been `todo`, so
+>   this report can only ever show an empty queue.
 >
 > **Last touched**
 >

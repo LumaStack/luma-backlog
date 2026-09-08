@@ -16,6 +16,7 @@ import (
 	"fmt"
 
 	"github.com/lumastack/luma-backlog/internal/config"
+	"github.com/lumastack/luma-backlog/internal/corpus"
 	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/lumastack/luma-backlog/internal/root"
 )
@@ -38,8 +39,9 @@ const (
 	// Refused means a validated act did not pass its check. Satisfy the
 	// condition first; retrying will not help.
 	Refused
-	// Taken means somebody else holds it. Choose different work.
-	Taken
+	// There is no Taken. It classified a failure only taking can produce, and
+	// taking does not ship (ADR-0008) — the same argument that removed the
+	// exit code it mapped to. Nothing produced it.
 )
 
 // Error carries a failure and what sort it is.
@@ -133,3 +135,20 @@ func Open(e env.Env, workingDir, ceiling string) (*Session, error) {
 
 // Close releases the backlog handle.
 func (s *Session) Close() error { return s.Backlog.Close() }
+
+// resolveError classifies a failure from corpus.Resolve.
+//
+// An ambiguous reference is a Usage failure, not a NotFound one. The records
+// exist; there are too many of them, and the caller has to narrow the
+// invocation. Reported as NotFound it reads as "no such record", and the
+// reasonable next move on that is to create one — a duplicate produced by a
+// well-formed query.
+//
+// One place classifies it, because six call sites each wrapping inline is six
+// chances to get it wrong and one of them already was.
+func resolveError(err error) error {
+	if errors.Is(err, corpus.ErrAmbiguous) {
+		return &Error{Kind: Usage, Err: err}
+	}
+	return &Error{Kind: NotFound, Err: err}
+}

@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.15.0
+version: 0.22.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -43,8 +43,10 @@ they need.
 - [[when-a-work-item-splits]] — what to do when tasks keep arriving. Growth is
   the measurement that says look; three of the four things it can mean are fixed
   by editing an outcome.
+- [[adopting-a-rule-the-corpus-does-not-meet]] — a new rule almost always fails
+  the records already written. Backfill or grandfather, never neither.
 
-**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a what's-next report](templates/next-report.md)
+**Templates** — [a listing](templates/listing.md) · [a record view](templates/record-view.md) · [a rundown](templates/rundown.md)
 
 **Procedures** — one per thing somebody does to a backlog. Each holds the
 judgment and calls the command for everything else.
@@ -62,9 +64,202 @@ judgment and calls the command for everything else.
   memory a session leaves behind.
 - [[backlog-show]] — assembles one work item's whole state, or lists whichever
   work items were asked for. The way into both `show` and `list`.
-- [[backlog-next]] — picks the next thing to work on, and says why.
+- [[backlog-rundown]] — runs down where the work stands, then picks the next
+  thing and says why.
 
 ## Version
+
+`0.22.0` — **an outcome is a record, or it is not an outcome.**
+
+An agent wrote two conditions into an outcome's `verify_by` list rather than
+creating them as outcomes. They read as checks and were states — and a condition
+living inside another record's fields has no identity, no stage, nothing to
+verify and nothing to supersede. It cannot be cited, argued with or proven.
+
+**The failure mode is looking better specified than you are**: two outcomes on
+disk asserting five conditions between them, three of which nobody can check.
+`spec.md` ranks *writing no outcomes* as the worst case, and this is a way to
+approach it while appearing not to.
+
+`_types/outcome` now says so, and says that **the title is the handle** — unique
+within a work item because the filename derives from it and creation is
+idempotent by name (§9.5), with hand-editing the one way to break it.
+
+**Neither of those would have prevented the error**, which is the honest note to
+end on: the agent never opened the type definition. Only a check would have, and
+that is `WORK-0002`, moved out of the pile on the strength of this instance.
+
+`0.21.1` — **the force approval belongs to the owner, and the record says who
+answered.**
+
+An override is a decision, and decisions about a work item belong to whoever is
+accountable for it — ADR-0008's owner, not whoever happens to be driving. The
+two are the same person on a single-maintainer project and will not be later,
+which is `ADR-0010`'s point exactly.
+
+**Nothing authenticates an owner**, so the record carries **what was asked and
+who said yes** rather than asserting that the owner approved. The weaker claim
+is the true one, and `CLAUDE.md` already says which way that trade goes: a
+record claiming a confirmation nobody gave is worse than one with no attribution
+at all.
+
+`0.21.0` — **the single-actor case stops being written as universal.**
+
+`ADR-0010` makes a team of people and a team of agents the default shape, and
+two lines here were fossils of the exception: *several things `in_progress` is
+itself the finding* is only true where one worker exists, since a team of ten
+with ten in flight is healthy. Both [[backlog-move]] and [[backlog-rundown]] now
+say **one worker** — a human assignee or an agent session, because one agent can
+hold many sessions at once — and both say plainly that **nothing can check it
+yet**, since the actor format cannot name a session. A rule that quietly never
+fires is worse than one that admits it.
+
+**Forcing a close now requires approval.** It overrides the only refusal this
+procedure has, and an override is a decision — an agent that forces a close has
+closed work nobody chose to close.
+
+**The first gate's criterion got stronger and shorter.** *Two readers can state
+the problem* passes when each states a **different** problem confidently, which
+is the actual failure and is invisible without the diff. It now asks that they
+arrive at the same understanding.
+
+**And a paragraph explaining why `abandoned` was dropped is gone.** A procedure
+states the vocabulary; it does not defend the absence of a value. The only
+reader who could be confused is one who ran `--help` and saw the binary still
+offering it, which the note about the binary's lag already covers.
+
+`0.20.0` — **[[backlog-move]] is rewritten from a rung-by-rung interview.**
+
+It was the least examined procedure in the bundle — two commits, written in one
+pass, never reopened — while carrying both selection gates, which is where the
+whole ladder model lives. Four of its seven moves had no prose at all.
+
+**The organizing idea replaces "most of the ladder is bookkeeping."** It is not
+bookkeeping: **each rung removes a class of blocker**, and that makes a move
+testable by asking which class it removed. `prepared` is blocked by scheduling
+and capacity, `todo` by capacity alone — which also explains why the two gates
+feel different in kind, since `prepared` is a claim about the record and `todo`
+is a claim about the world.
+
+**And one rule sits under everything:** *a step is worth forcing when it prevents
+a false record; a step that only enforces process is red tape.* Four positions
+taken separately — observed-never-refused, force-writes-rather-than-refuses, a
+tiny refusal surface, and reopening to any true rung — turn out to be that one
+sentence. The refusal surface is now stated outright, and it has two members.
+
+**`rejected` and `canceled` became positional.** ADR-0007 distinguishes them by
+intent, which needs introspection; *did it ever cross the first gate* is a
+lookup, and says the same thing, because crossing the first gate **is** the act
+of considering it. That is an amendment to a decision in force and its table
+wants the positional wording.
+
+**Every rung gained what it was missing** — `preparing` and `prepared` had none
+— plus a table of what each rung asks for and how hard it asks, and a `Blocked`
+section for a state that is a flag rather than a rung.
+
+**Things settled but unbuilt are marked as such** rather than written as though
+they work: the positional disposition, a required reason on a cancellation, an
+assignee at `in_progress`. A procedure that describes a tool it does not have is
+the drift this bundle exists to prevent.
+
+`0.19.0` — **[[backlog-move]] stops teaching a vocabulary a decision replaced.**
+
+Its disposition table said `delivered` and `abandoned`, and spent a paragraph
+arguing the `canceled` versus `abandoned` distinction. ADR-0007 is in force and
+renamed `delivered` to `completed`, added `rejected`, and **dropped `abandoned`
+outright** — so the procedure was pinned to the shipped binary while
+contradicting the decision that supersedes it. A decision in force outranks the
+implementation, and teaching the shipped spelling is how a dead vocabulary
+survives in people's heads. The binary's lag is now stated in the document
+instead of reproduced by it.
+
+**And the invariants are in one place.** The rank rule was stated at the top and
+again in a closing section — the same rule twice, which is how two copies drift.
+There is now an `Always true` section holding all three, near the top where a
+reader meets them before doing anything.
+
+**One of those three exists because it was got wrong.** *The back is not always
+the bottom of the listing*: unranked records sort after ranked ones, so a record
+arriving where nothing has been ranked lands at the back of nothing and reads as
+*first*. That was reported as a defect, and reading `internal/app/status.go`
+showed the code and the document had agreed all along. The paragraph is the
+correction.
+
+`0.18.0` — **adds [[adopting-a-rule-the-corpus-does-not-meet]].**
+
+A comprehension test was proposed for the first gate in the same week six of the
+seven newest work items shipped with an empty `## The problem`. The rule and its
+counterexamples arrived together, and nothing said which had to give.
+
+**The finding is that doing neither is the default.** Not choosing looks like
+adopting the rule, and produces a corpus visibly violating its own policy — at
+which point a reader concludes the rules are aspirational and reads the next one
+that way too. One unenforced rule devalues the others.
+
+So: backfill or grandfather, explicitly, in the change that adopts the rule.
+**Lean backfill**, mechanically where that is possible and by a model given
+written instructions where it is not — and in that case **the instructions are
+the artifact**, because a model run nobody can repeat is a one-time edit wearing
+a migration's clothes.
+
+**Grandfathering stays legitimate** and has to be said out loud, with which
+records are exempt and why. Unrecorded, it is indistinguishable from a rule
+nobody enforces.
+
+What is *not* settled is when grandfathering beats backfilling, and who decides.
+Cost is the obvious axis and probably not the only one: a rule about what a
+record **means** may be unbackfillable at any price, since nobody can
+reconstruct what an author intended.
+
+`0.17.0` — **`backlog-next` is `backlog-rundown`, and `next` is reserved.**
+
+Three depths were wanted where there was one. **`next`** — quick and punchy, the
+pick and nothing else. **`rundown`** — this, the middle: enough of the corpus to
+know where you are, and it checks nothing. **`sweep`** — reserved, and the
+expensive one: goes and confirms that what the records claim is actually true.
+
+**The axis is impression versus guarantee**, not reach. `next` gives an answer,
+`rundown` gives a read, `sweep` gives a proof — which is what makes `sweep`
+costly, rather than it simply looking in more places.
+
+`rundown` won on naming the artifact rather than the method, which is what
+`next` already does. `survey`, `scan` and `sweep` name how you move over the
+ground; `bearings`, `digest` and `rundown` name what you end up holding. Of
+those, `rundown` is the one somebody says out loud and the only plain candidate
+nothing here had claimed — `status` is a rung, `state` is on every outcome,
+`position` is rank ordering, `standing` is §5.2's standing conditions, `view`
+belongs to `record-view` and §11.2, and `take` is ADR-0008's.
+
+**Breaking: two documents renamed.** `procedure/backlog-next` →
+`procedure/backlog-rundown`, and `templates/next-report` → `templates/rundown`.
+Shipping it minor rather than major because nothing outside this project adopts
+this bundle, and every inbound link is repointed in the same commit.
+
+**`rundown` keeps every trigger for now, including the bare "what's next".**
+Handing that phrase to a command nobody has built would break the most common
+way in to reserve a name. The boundary — `next` takes the bare question,
+`rundown` keeps *catch me up*, *where do things stand* and session start — gets
+drawn when `next` exists, not before.
+
+`0.16.0` — **risks are a bulleted list.**
+
+The Risks section of a what's-next report was prose, and a run of paragraphs
+hides the one thing the section is read for: how many there are. One concern and
+four look alike until both have been read, and this is the section somebody
+scans to decide whether to worry.
+
+So it is bullets now, one per concern, in [[rundown]] and in the worked
+example on [[backlog-rundown]]. A bullet may run to a second sentence and never to
+a paragraph, and whatever makes it checkable — the number, the record, the file
+— goes in the first clause where a scan will find it.
+
+**Plain bullets, not the state marks.** A risk is not a record and has no state,
+so [[showing-records]] does not reach it. Saying so is the point: the marks are
+the house style for rows, and a rule that stops somewhere has to say where.
+
+This leaves **Last touched as the only prose in the overview**, which is an
+improvement rather than a side effect — it is the one section that is written
+rather than tallied, and the contrast now says so.
 
 `0.15.0` — **adds [[when-a-work-item-splits]].**
 
@@ -95,7 +290,7 @@ The shapes are now three templates and the procedures point at them.
 
 The split follows the rest of the catalog: **a policy is a rule, a template is a
 thing you copy, a procedure is judgment.** [[showing-records]] says what the
-marks mean and why; [[listing]], [[record-view]] and [[next-report]] say what
+marks mean and why; [[listing]], [[record-view]] and [[rundown]] say what
 the output looks like; the procedures say when to produce it and what to
 notice.
 

@@ -169,10 +169,23 @@ a record should never carry a word claiming more than the tool can defend.
 
 | | accepted? | work started? |
 | --- | --- | --- |
-| `rejected` | no — never a consideration | no |
+| `rejected` | no — never crossed the first gate | no |
 | `canceled` | yes, then changed our minds | no |
 | `superseded` | either — replaced by another record | either |
 | `completed` | yes | yes, and proven |
+
+**Corrected 2026-09-08: `rejected` and `canceled` are positional, not
+introspective.** They were distinguished by intent — *never a consideration*
+against *wanted, then changed our minds* — which asks somebody to be honest
+about what they once thought. **Crossing the first gate is the act of
+considering it**, so the same distinction reads off `workflow_status` history:
+a record that never reached `unprepared` is rejected, and one that ever did is
+cancelled however briefly. **Crossing once is enough** — a record that crossed,
+came back to `captured`, and then stopped is cancelled.
+
+The position has not moved; the test for it has. Anybody following the old
+wording lands in the same place, which is why this is a correction rather than
+a new record ([[CLAUDE.md]] — *correct a decision in place*).
 
 **`abandoned` is dropped.** The rule: *the enum carries what the record cannot
 derive.* Whether work started is derivable — from whether it reached

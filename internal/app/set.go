@@ -38,7 +38,7 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, &Error{Kind: NotFound, Err: err}
+		return nil, resolveError(err)
 	}
 
 	// Optimistic concurrency: the caller states what it saw, and a write that
