@@ -88,37 +88,22 @@ length. **Never rewrite what is below it.**
 
 ## Say where it went
 
-**Report every journal write, and make clear which point went where.** The
-mapping is the requirement; where it sits on the page is not.
-
-**Inline is nicer** — the destination in the paragraph that made the point:
+**Report every journal write: what was journalled, where it went, briefly.**
+The mapping is the requirement — which point landed on which record. Where it
+sits on the page is not.
 
 > **Closed is not archived** — closed is about the work, archived is about
 > attention. *Journaled on WORK-0039.*
 
-**A footer is fine if it keeps the mapping:**
+A footer works too, if it carries the mapping. **A bare list of record names
+does not** — it proves three records were touched and hides which idea landed
+in each, and correcting placement is the reason for reporting at all.
 
-> Journaled — *closed is not archived* on WORK-0039; the `stage` reading on
-> WORK-0036.
+**Journalling is invisible and usually unasked**, so a reader who is not told
+has no model of what is being written in their name.
 
-**What fails is a bare list of records.** *Journaled on WORK-0036, WORK-0039
-and WORK-0031* proves three records were touched and hides which idea landed
-where — and **correcting placement is the reason for reporting at all.** A
-learning filed on the wrong work item is nearly unfindable afterwards; a reader
-shown the mapping says *that belongs on the other one* while moving it still
-costs a sentence. Nobody can correct a mapping they were never shown.
-
-**Because journalling is invisible and usually unasked.** This procedure says
-to trigger without being asked, so a line is written to a file the reader never
-sees, on their behalf, without their say-so. Not reporting it leaves them with
-no model of what is being recorded in their name — the provenance problem this
-project cares about most, one level down.
-
-**Where, not what.** The point already said the thing; repeating it as a summary
-is the same sentence twice.
-
-**Merge points that share a destination**, and **omit it entirely** when
-nothing was journalled, or when the writing *was* the reply.
+**Where, not what.** Merge points that share a destination. Omit it when
+nothing was journalled, or when the writing was the reply.
 
 ## Two rules that are easy to get wrong
 

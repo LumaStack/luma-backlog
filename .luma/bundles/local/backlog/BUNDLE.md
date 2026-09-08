@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.24.2
+version: 0.24.3
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,12 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.24.3` — **the section says the rule and stops.**
+
+Three passes each added justification and none removed any, so a one-sentence
+rule carried thirty lines of argument that an agent pays for on every journal
+write. Cut to the rule, one example, and a clause of reason each.
 
 `0.24.2` — **the mapping is the rule; the position is a preference.**
 
