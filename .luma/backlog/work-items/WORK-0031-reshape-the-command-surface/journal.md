@@ -62,6 +62,7 @@ backwards compatibility, and it matters: a verified entry with no 'as' reads as 
 latest verdict wins, the way the latest assertion is the current claim — tested with disproven then proven, which closes clean
 message defect this change introduced and then fixed: the close refusal said 'N of M outcomes have no evidence', which became false the moment disproven existed — a disproven outcome has evidence and is not proven. now says 'are not proven', which is ADR-0007's own phrasing
 eleven test call sites moved, four of them in files that only used verify incidentally; three new tests cover the guard, that disproven does not count, and that a later proven supersedes an earlier disproven
+closing add-outcome-assert-and-outcome-archive: all three parts done — assert, abandon (never archive), and verify's positional. the task's TITLE is wrong and stays wrong, since renaming it changes the slug and breaks the citations in ADR-0007's amendment and WORK-0071
 
 ## ▶ 2026-09-07
 

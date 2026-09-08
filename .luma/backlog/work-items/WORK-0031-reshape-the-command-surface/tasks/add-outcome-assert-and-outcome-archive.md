@@ -2,9 +2,10 @@
 type: task
 title: Add outcome assert and outcome archive
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:49:48Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:02:42Z'}
 ---
 
 # Add outcome assert and outcome archive
