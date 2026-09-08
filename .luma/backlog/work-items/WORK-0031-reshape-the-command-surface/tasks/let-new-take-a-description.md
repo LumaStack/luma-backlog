@@ -2,9 +2,10 @@
 type: task
 title: Let new take a description
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T21:15:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T17:29:14Z'}
 ---
 
 # Let new take a description

@@ -2,9 +2,10 @@
 type: task
 title: Accept a positional title on work-item new
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:49:48Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T17:29:14Z'}
 ---
 
 # Accept a positional title on work-item new

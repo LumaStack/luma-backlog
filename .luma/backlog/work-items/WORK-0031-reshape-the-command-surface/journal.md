@@ -27,6 +27,12 @@ closed without the .luma/-prefixed filesystem path resolving — that is outside
 drop-the-seventh-exit-code: removed ExitClaimed from internal/cli, the app.Taken arm from the mapping, and the 6 row from spec.md 9.4 so the table and the constant block agree
 also removed app.Taken itself, which is beyond the task's stated checks — nothing produced it, and the task's own argument applies unchanged: a KIND held for a feature nobody has designed is the same promise about a shape nobody chose as a code held for one
 added to spec 9.4 while the section was open, from the policy published in command-line-interface 0.4.0: every subcommand draws from one list, which codes a subcommand can return differs and what a code MEANS does not
+let-new-take-a-description and accept-a-positional-title done together — both are the same call chain, corpus.Spec through app.CreateRequest to the cobra command, and splitting them would have touched the same three files twice
+description is written at CREATION and omitted when empty rather than present and blank — unlike an outcome's desired_state there is nothing here that has to be filled in later, and writing it at creation is the point: a following set stamps modified on a record nobody edited, dated the same second as created
+placed beside title in the frontmatter, since those are the two fields written for a person and a reader looks for them together
+both title forms accepted and supplying both REFUSED rather than one silently winning — a caller that passed two titles believes something untrue about the record it is about to get, and picking one for them leaves that belief in place; exit 2 naming both values
+verified in a scratch corpus: positional creates, --title creates, both exits 2 naming the conflict, neither exits 2 naming what is needed, --description lands with no modified stamp, idempotency by name survives, and -d works on every noun not just work-item
+no golden file moved, which is correct — adding flags is additive and changes no existing output; the golden-files outcome is about the breaking changes, and this was not one
 
 ## ▶ 2026-09-07
 

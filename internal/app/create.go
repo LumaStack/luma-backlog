@@ -20,6 +20,8 @@ type CreateRequest struct {
 	Kind string
 	// Project states that a decision is a standing rule.
 	Project bool
+	// Description is prose about the record, written at creation.
+	Description string
 }
 
 // CreateResult describes the record.
@@ -71,10 +73,11 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	}
 
 	res, err := corpus.Create(s.Backlog, s.Config, s.Env, corpus.Spec{
-		Unit:     req.Unit,
-		Title:    req.Title,
-		WorkItem: workItem,
-		Kind:     req.Kind,
+		Unit:        req.Unit,
+		Title:       req.Title,
+		WorkItem:    workItem,
+		Kind:        req.Kind,
+		Description: req.Description,
 	})
 	if err != nil {
 		return nil, UsageError("%w", err)
