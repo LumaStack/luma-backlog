@@ -128,6 +128,10 @@ WHAT IS UNKNOWN. Identified or established — whether dependencies must be name
 
 FOR WHOEVER READS THIS JOURNAL: it is an instrument log and deliberately denser than spec 5.5 asks for anywhere else. Do not copy its density as house style.
 WORK-0067 captured to retro this work item and harvest what it learned — the ten records captured during the session were the things somebody noticed at the time, and what nobody noticed is what remains only in prose
+two outcomes written AFTER the work, which is WORK-0032's rank two and permitted: that the experiment ran and left a complete record of itself, and that backlog-move is better than it was
+the first outcome's third check is the interesting one — confirm the journal and the transcript DISAGREE somewhere, because if they never differ the journal was written from the transcript and is not evidence of what the session thought at the time; that is the cheapest defence against an after-the-fact outcome being fitted to what happened
+the second outcome's check is a human saying it is good enough, and that is correct rather than lazy — this is the quality axis, where verification catches wrong and not bland, and line counts or link audits would be green on a worse document; ADR-0007 gates on the checker's verdict and never says the verdict must be computed
+captured WORK-0068: evidence/session-capture.md is reported as a skip by every listing that walks the work item, twice per show, because the tool has no notion of a file that legitimately is not a record — WORK-0008 made skips visible for good reasons and this is a skip that should never have been one
 
 ## ▶ 2026-09-07
 
