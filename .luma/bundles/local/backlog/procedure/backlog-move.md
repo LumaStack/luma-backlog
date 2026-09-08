@@ -95,10 +95,12 @@ at `captured` is not neglected. The pile is where things wait without implying
 anybody owes them attention.
 
 **The record has to be understandable before it crosses.** The test: **two
-independent readers can say what problem it is trying to solve.** They may
-disagree entirely about how to solve it; the problem itself must not be hard to
-read. This is the one gate criterion that can be *run* rather than asserted —
-give it to two readers and diff the answers.
+independent readers arrive at the same understanding of the problem.** They may
+disagree entirely about how to solve it; what the problem *is* must not be in
+doubt. This is the one gate criterion that can be *run* rather than asserted —
+give it to two readers and diff the answers. **Two confident answers that
+describe different problems is the failure**, and it is invisible without the
+diff, because each reader alone would have proceeded.
 
 **`kind` should be set by now**, and very little should get much further
 without it. Strongly encourage it; do not block on it. **A surviving
@@ -190,7 +192,7 @@ different label, and a `todo` of zero means nothing is in focus.
 **Check the outcomes before crossing.** A work item crossing without them is one
 nobody can tell is finished — [[backlog-refine]].
 
-**When sprints exist.** Teams that use sprints will typically use Todo to communicate 
+**When sprints exist.** Teams that use sprints will typically use Todo to communicate
 what get committed to for each sprint.
 
 ## In progress - Starting
@@ -206,8 +208,14 @@ revising one is free. After, it is Redefine, and Redefine is where goalposts
 move. So if the outcomes are not in good shape, stop and fix them here — a
 strong recommendation, never a block.
 
-**Several things `in_progress` at once is itself a finding.** More was started
-than gets finished.
+**One thing `in_progress` per worker** — a human assignee, or an agent session,
+since one agent can hold many sessions at once. A team of ten with ten items in
+flight is healthy; one worker holding three is context-switching, and more was
+started than gets finished (ADR-0010).
+
+**Nothing can check this yet.** It needs an assignee, and the actor format
+cannot name a session — so today the tool cannot tell two concurrent workers
+apart.
 
 ## Closing
 
@@ -216,9 +224,10 @@ luma-backlog work-item close <ref> --reason <disposition>
 ```
 
 **Write the journal entry first.** What was learned, what was tried that did not
-work, what a future reader would need — [[backlog-journal]]. After closing,
-nobody comes back to write it, and the work item's memory is the only thing that
-survives the session.
+work, what a future reader would need, what will help an eventual retrospective, and
+what may be considered valuable and should not become lost after this session —
+[[backlog-journal]]. After closing, nobody comes back to write it, and the work
+item's memory is the only thing that survives the session.
 
 **Only `completed` is checked against the outcomes.** The others close freely,
 deliberately: gating cancellation on completion would make it impossible to stop
@@ -233,14 +242,10 @@ work *because* it was unfinished, which is the usual reason.
 
 **`rejected` and `canceled` are positional, not a matter of intent.** Rejection
 is the first gate saying no: the record arrived and never crossed. Once it has
-crossed, stopping it is a cancellation — **and crossing once is enough**, so a
-record that went to `unprepared`, came back, and then stopped is cancelled. That
-makes ADR-0007's distinction checkable rather than introspective, since crossing
-the first gate *is* the act of considering it.
-
-**There is no `abandoned`.** ADR-0007 dropped it on its own test: stopping
-without a decision is **derivable** from a record that has one and a journal that
-stops. *The enum carries what the record cannot.*
+crossed the first gate, stopping it is a cancellation — **and crossing once is
+enough**, so a record that went to `unprepared`, came back, and then stopped is
+cancelled. That makes ADR-0007's distinction checkable rather than introspective,
+since crossing the first gate *is* the act of considering it.
 
 **Closing gates on verification, never on the assertion** — gating on the doer's
 claim would gate on the thing the design distrusts, and would let a doer close
@@ -255,6 +260,11 @@ does not have to have worked — `spec.md` §2.4 is explicit that a work item is
 judged on its outcomes and on nothing else — so this is a warning, not a refusal.
 **Never auto-close the stragglers**: that invents a disposition nobody chose,
 which is exactly what `--force` refuses to do to outcomes.
+
+**Never force without approval.** Forcing overrides the only refusal this
+procedure has, and an override is a decision — an agent that forces a close has
+closed work nobody chose to close, which is the failure the whole section guards
+against. Ask, and say what the refusal was.
 
 **`--force` closes anyway and never touches the outcomes.** The tempting
 implementation marks them verified so the arithmetic comes out clean; that
@@ -312,7 +322,7 @@ false statuses on the way.
 | by | what | how hard |
 | --- | --- | --- |
 | `unprepared` | `kind` set; `idea` resolved to something else | strongly encouraged |
-| `unprepared` | two readers can state the problem | the gate criterion |
+| `unprepared` | two readers share one understanding of the problem | the gate criterion |
 | `prepared` | outcomes exist and are effective | strongly encouraged |
 | `todo` | outcomes exist | checked at the gate |
 | `todo` | no longer a draft | warned |

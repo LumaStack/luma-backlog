@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.20.0
+version: 0.21.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,31 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.21.0` — **the single-actor case stops being written as universal.**
+
+`ADR-0010` makes a team of people and a team of agents the default shape, and
+two lines here were fossils of the exception: *several things `in_progress` is
+itself the finding* is only true where one worker exists, since a team of ten
+with ten in flight is healthy. Both [[backlog-move]] and [[backlog-rundown]] now
+say **one worker** — a human assignee or an agent session, because one agent can
+hold many sessions at once — and both say plainly that **nothing can check it
+yet**, since the actor format cannot name a session. A rule that quietly never
+fires is worse than one that admits it.
+
+**Forcing a close now requires approval.** It overrides the only refusal this
+procedure has, and an override is a decision — an agent that forces a close has
+closed work nobody chose to close.
+
+**The first gate's criterion got stronger and shorter.** *Two readers can state
+the problem* passes when each states a **different** problem confidently, which
+is the actual failure and is invisible without the diff. It now asks that they
+arrive at the same understanding.
+
+**And a paragraph explaining why `abandoned` was dropped is gone.** A procedure
+states the vocabulary; it does not defend the absence of a value. The only
+reader who could be confused is one who ran `--help` and saw the binary still
+offering it, which the note about the binary's lag already covers.
 
 `0.20.0` — **[[backlog-move]] is rewritten from a rung-by-rung interview.**
 

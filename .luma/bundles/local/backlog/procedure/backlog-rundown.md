@@ -70,9 +70,14 @@ Started work outranks queued work — not because it matters more, but because
 **work in flight costs something every day it stays in flight and returns
 nothing until it lands.**
 
-**Several things `in_progress` is itself the finding.** More was started than
-gets finished. Say it plainly; recommending a sixth thing to start answers the
-question asked rather than the one that matters.
+**Several things `in_progress` for one worker is itself the finding** — a human
+assignee, or an agent session. More was started than gets finished. Say it
+plainly; recommending a sixth thing to start answers the question asked rather
+than the one that matters.
+
+**A team with many in flight is not the same thing**, and until an assignee
+exists there is no way to tell the two apart — so say what you counted rather
+than what it means.
 
 **Blocked is not the same as slow.** Check the journal before calling something
 stalled — [[backlog-show]].
