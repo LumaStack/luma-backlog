@@ -57,6 +57,14 @@ versus quick.*
 - During idea capturing we never want to stop or say no. We just want to observe
   problems and capture them below, so we can sort it out later.
 
+## Sections, and a template
+
+We should define the sections that get captured, and a template to fill in.
+
+One of those sections should be **"In the capturing agent's own words"** — a
+place for the agent to give its interpretation. That will be an interesting and
+valuable thing to have.
+
 ---
 
 ## Related
@@ -68,3 +76,22 @@ versus quick.*
 - [[work-items/WORK-0052-quick-capture-has-nowhere-to-put-a-long-thought]] — the
   narrow case of the quick-capture tension above: what happens when the raw idea
   itself is long, and the mode that must not spend turns is the one holding it.
+
+## Observed while capturing
+
+**Interpretation is not the same as analysis, and the difference is why that
+section is a good idea.** What agents write today is commentary — relations,
+concerns, prior art. *In the capturing agent's own words* would be the agent
+saying **what it understood the person to mean**, which surfaces a misreading
+immediately rather than three sessions later when something built on it turns
+out wrong.
+
+**The separator this template needs already exists as a habit.** Records in this
+corpus carry a line reading *everything above is the maintainer's, with wording
+improved and intent unchanged; everything below was added by the agent* — used
+consistently and written down nowhere. The template is where it stops being a
+convention and becomes a rule.
+
+**And this record is the case in point.** It was captured raw on instruction,
+which left the agent's reading of it entirely outside the record — in a
+conversation that will not survive the session.
