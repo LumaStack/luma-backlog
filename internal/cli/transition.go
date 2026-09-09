@@ -12,7 +12,7 @@ func newTransitionCommand(a *App) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "transition <work-item> <status>",
-		Short: "Move a work item to another workflow status",
+		Short: "Change a work item's workflow status",
 		Long: "Changes where a work item sits on the workflow ladder.\n\n" +
 			"A status change is an operation rather than a field write: it writes\n" +
 			"workflow_status and rank together, so no record can be left with the two\n" +

@@ -16,10 +16,10 @@ func newRankCommand(a *App) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "rank <work-item>",
 		Short: "Reorder a work item",
-		Long: "Moves a work item within its workflow status.\n\n" +
+		Long: "Reorders a work item within the records at its own workflow status.\n\n" +
 			"Rank is work order, and workflow status dominates it: a record at a later\n" +
 			"status is ahead of every record at an earlier one, whatever its rank. So\n" +
-			"ranking moves a record among the others at its own status, and nowhere else.\n\n" +
+			"ranking reorders a record among the others at its own status, and nowhere else.\n\n" +
 			"You say where; the tool chooses the ordering key. `set` refuses the rank\n" +
 			"field for the same reason.",
 		Args:         cobra.ExactArgs(1),
