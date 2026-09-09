@@ -65,7 +65,7 @@ enough — see the note at the end of this section.
 | what somebody wants | what to do |
 | --- | --- |
 | **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
-| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it; skip gates if they already have the answers they need |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it — advancing without spending a turn wherever you already have the answers for that gate |
 | **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
 
 **They are ordered by speed, and the break comes last.** Reading down the table
@@ -74,21 +74,25 @@ stops answering the questions**, which is the whole distinction the rest of this
 section turns on. The other two both answer them; they differ only in how long
 they take about it.
 
-**A gate whose question is already answered has been satisfied, not skipped.**
-That is what lets the middle row move past one without breaking anything — the
-gate exists to get the question answered, and it is. Passing a gate whose
-question **nobody has answered** is the third row, whatever it gets called.
+**Every gate is crossed. What speed saves is the turn, not the gate.** Where you
+already have the answers **for that gate**, answer it from them and advance —
+do not stop to ask a question you can already answer. **Nothing is passed over;
+a question is simply not asked twice.**
 
-**So fast is not the same as skipping, and confusing the two is how a gate goes
-missing.** The middle row still answers every gate — sometimes by noticing the
-answer is already there and saying so. An agent reading *be quick* as *skip
-preparing* has turned what was asked for into something nobody said, and it will
-look like efficiency in the transcript.
+**Gate by gate, and each one on its own answers.** Having what `preparing`
+needed says nothing about what `todo` asks — the two gates ask different
+questions, and one being answered is not evidence about the next.
 
-**Which makes *already answered* the thing to be honest about.** It is the one
-judgement in this section an agent can make alone and be wrong about invisibly,
-so say what the answer is and where it came from — a sentence, not a claim that
-one exists.
+**Fast is not the same as skipping, and confusing the two is how a gate goes
+missing.** An agent reading *be quick* as *skip preparing* has turned what was
+asked for into something nobody said, and it will look like efficiency in the
+transcript.
+
+**Which makes *I already have the answer* the thing to be honest about.** It is
+the one judgement in this section an agent makes alone and can be wrong about
+invisibly, so give the answer rather than assert that one exists — a sentence,
+and where it came from. **Not having it is not a reason to stay put either:**
+that is the moment to ask, which is the one turn worth spending.
 
 **Only the third row breaks protocol**, which is why it alone gets a warning and
 a journal line. The first two are both compliant and differ only in pace — so

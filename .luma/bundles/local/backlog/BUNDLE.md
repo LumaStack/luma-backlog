@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.30.0
+version: 0.30.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -69,17 +69,25 @@ judgment and calls the command for everything else.
 
 ## Version
 
+`0.30.1` — **every gate is crossed; what speed saves is the turn.**
+
+Correcting 0.30.0, which said *skip* where it meant *do not stop to ask*. Where
+you already have the answers **for that gate**, answer it from them and advance.
+Nothing is passed over — a question is simply not asked twice.
+
+Gate by gate, and each on its own answers: having what `preparing` needed says
+nothing about what `todo` asks.
+
 `0.30.0` — **a gate whose question is already answered has been satisfied, not
 skipped.**
 
 Speeding through protocol may pass a gate where the answers are already in
-hand. That is not a skip, because the gate exists to get the question answered
-and it is. Passing a gate nobody has answered is the third row, whatever it gets
-called.
+hand. *Superseded by 0.30.1: it does not pass the gate, it crosses it without
+asking.*
 
-*Already answered* is now the judgement to be honest about — the one an agent
-can make alone and be wrong about invisibly — so it has to be said out loud with
-where the answer came from.
+*I already have the answer* is the judgement to be honest about — the one an
+agent makes alone and can be wrong about invisibly — so it has to be given
+rather than asserted.
 
 `0.29.2` — **ordered by speed, with the break last.**
 
