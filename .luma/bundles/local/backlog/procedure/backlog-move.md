@@ -67,14 +67,23 @@ enough — see the note at the end of this section.
 | **stop at each gate and answer its question** | walk it, one rung at a time |
 | **the gates are worthless for this one; go where they know is best** | take them there, having warned once |
 
-**Work out which one you are in with as few questions as possible — often
-none**, because the work says so. Asking every time is its own failure: it
-spends a turn on something usually visible, and it teaches people that the tool
-needs handling.
+**The default is the first row.** Preparing is not skipped unless something says
+to skip it — somebody said so, or the work itself says so plainly enough that
+you can give the reason in a sentence. **Where nothing has said the gates are
+worthless for this one, they are not.**
+
+**Fewest questions is about cost, not licence.** Establish which scenario you are
+in as cheaply as you can: a question you could have answered from the record is
+waste, and an answer you assumed and had no way to know is worse. Where it is
+genuinely unclear, ask — one question, not a survey.
+
+**Never skip silently.** Say which scenario you took this to be, and why, before
+crossing. That is what makes a wrong call correctable while it is cheap instead
+of at a retrospective.
 
 **Somebody who has not thought about it yet is not a third scenario.** They are
 the ordinary case, and the rest of this section is what to do about them — judge
-it, coach where it is worth coaching, and ask only where judging fails.
+it, coach where it is worth coaching, and ask where judging fails.
 
 ### Some gates are always worth stopping at, and some are not
 
@@ -95,22 +104,25 @@ worth.
 **When somebody wants to work on something captured:**
 
 1. **Skip `unprepared`.** They already chose.
-2. **Judge whether preparing is worth it.** Ask only if judging fails — and
-   when asking, **show what good looks like** rather than asking a bare
-   question. A person who has seen an outcome with a real `verify_by` can answer
+2. **Prepare it, unless something plainly says not to.** That is the default and
+   the burden sits on skipping. Where it is unclear, ask — and when asking,
+   **show what good looks like** rather than asking a bare question. A person who has seen an outcome with a real `verify_by` can answer
    in one word; a person asked *do you want to prepare this?* is being asked to
    guess what preparing would produce.
 3. **Then place it by when**, not by how ready it is:
 
 | they want it | it becomes | and |
 | --- | --- | --- |
-| **now** | `in_progress` | with an assignee set |
-| **soon** | `todo` | with an assignee --- **ask who**, because it may not be them |
+| **now** | `in_progress` | with an owner set |
+| **soon** | `todo` | with an owner — **ask who**, because it may not be them |
 
-> **The assignee half is unbuilt.** ADR-0008 ships no `take`, and the actor
-> format cannot name a session (`WORK-0066`), so *set an assignee* is currently
-> a thing to say rather than a thing to do. Say it anyway; the gap is worth
-> being visible.
+> **Owner, not assignee, and that is the settled word.** ADR-0008 decided a work
+> item is owned by whoever is accountable **even while somebody else does the
+> work**, and taking a task expires where ownership does not. Its own section is
+> titled *"A work item is owned, and ownership is not modelled yet"* — so the
+> concept is in force and **the field does not exist**. Say who owns it anyway;
+> the gap is worth being visible. Assignees are a later question
+> ([[work-items/WORK-0063-an-algorithm-for-assigning-work-to-assignees]]).
 
 ### Fast-tracking is legitimate
 
@@ -344,9 +356,14 @@ since one agent can hold many sessions at once. A team of ten with ten items in
 flight is healthy; one worker holding three is context-switching, and more was
 started than gets finished (ADR-0010).
 
-**Nothing can check this yet.** It needs an assignee, and the actor format
-cannot name a session — so today the tool cannot tell two concurrent workers
-apart.
+**Nothing can check this yet.** It needs to know who is working, and the actor
+format cannot name a session — so today the tool cannot tell two concurrent
+workers apart.
+
+> **This one is deliberately not `owner`.** ADR-0008 puts ownership on whoever
+> is accountable *even while somebody else does the work*, so an owner does not
+> say who is at the keyboard. The limit above counts workers, and that is a
+> different field nobody has.
 
 ## Closing
 
@@ -468,7 +485,7 @@ false statuses on the way.
 | `todo` | outcomes exist | checked at the gate |
 | `todo` | no longer a draft | warned |
 | `in_progress` | `stage` is at least `provisional` | written by the move |
-| `in_progress` | an assignee | *settled, unbuilt — ADR-0008 ships no `take`* |
+| `in_progress` | an owner | *settled by ADR-0008, unbuilt — no field, and no `take`* |
 | `closed` as `completed` | every live outcome proven | refused otherwise |
 | `closed` | every task resolved | warned |
 | `closed` | `stage` becomes `stable` | written by the move |

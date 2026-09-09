@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.28.1
+version: 0.28.2
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,14 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.28.2` — **the default is to prepare, and owner is the word.**
+
+*Fewest questions* was reading as licence to decide alone — *often none* is
+gone, the burden now sits on skipping rather than on stopping, and a skip is
+never silent. Separately: `owner`, not `assignee`, which is what ADR-0008
+settled. The work-in-progress limit keeps counting workers, because ownership
+does not say who is at the keyboard.
 
 `0.28.1` — **two scenarios, not three.**
 
