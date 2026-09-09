@@ -416,3 +416,36 @@ func TestLeavingThePileWithARealKindIsSilent(t *testing.T) {
 		t.Errorf("an ordinary selection said something:\n%s", errOut)
 	}
 }
+
+// Announcing a force tells whoever is at the terminal; the journal is what lets
+// anybody ask later how often this happens and what it cost. Same reason a
+// skipped gate gets a line.
+func TestAForcedCrossingIsRecordedInTheJournal(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "transition", "WORK-0001", "in_progress", "--force")
+
+	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	if !strings.Contains(journal, "FORCED") {
+		t.Errorf("a forced crossing left no journal entry:\n%s", journal)
+	}
+	if !strings.Contains(journal, "no outcomes") {
+		t.Errorf("the entry did not say what was overridden:\n%s", journal)
+	}
+	if !strings.Contains(journal, "→ in_progress") {
+		t.Errorf("the entry did not say which crossing:\n%s", journal)
+	}
+}
+
+// A force with no refusal to override records nothing. --force is not a mode.
+func TestForceWithNothingToOverrideRecordsNothing(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "transition", "WORK-0001", "in_progress", "--force")
+
+	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	if strings.Contains(journal, "FORCED") {
+		t.Errorf("--force wrote an entry with nothing to override:\n%s", journal)
+	}
+}

@@ -86,7 +86,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 			it.Path, shortHash(req.IfUnchanged), shortHash(it.Hash()))
 	}
 
-	var advice []string
+	var advice, forced []string
 	from := it.Status(s.Config.DefaultStatusFor(it.Type()))
 	terminal := s.Config.TerminalStatusFor(it.Type())
 	reopening := terminal != "" && from == terminal
@@ -127,8 +127,8 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 					"something else.\n\nResolve it --- set %s kind=<defect|request|inquiry|change> "+
 					"--- or pass --force.", req.Ref, req.Ref)
 		}
-		advice = append(advice,
-			"selected "+req.Ref+" while it is still an idea, forced --- unformed work is now queued beside formed work")
+		forced = append(forced,
+			"selected while still an idea --- unformed work is now queued beside formed work")
 	}
 
 	// Starting work nobody can tell is finished. Deliberately "does one exist"
@@ -141,8 +141,8 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 					"Write one --- outcome new \"<what must be true>\" -w %s --- or pass --force.",
 				req.Ref, req.Ref)
 		}
-		advice = append(advice,
-			"started "+req.Ref+" with no outcomes, forced --- nothing says when it is finished")
+		forced = append(forced,
+			"started with no outcomes --- nothing says when it is finished")
 	}
 
 	// Leaving the shaping rung is where the work is supposed to have been
@@ -195,6 +195,20 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// journal is already the place reasoning lives, it is append-only so a
 	// second crossing does not overwrite the first, and a field would hold only
 	// the most recent — which is the half of the history worth least.
+	// A forced crossing is written down whether or not a reason was given.
+	// Announcing it on stderr tells whoever is at the terminal; the journal is
+	// what lets anybody ask later how often this happens and what it cost ---
+	// which is the same reason a skipped gate gets a line.
+	for _, f := range forced {
+		if _, err := s.Journal(JournalRequest{
+			WorkItem: it.Slug(),
+			Line:     "FORCED " + from + " → " + req.To + ": " + f,
+		}); err != nil {
+			return nil, err
+		}
+		advice = append(advice, "forced: "+f+" --- recorded in the journal")
+	}
+
 	journaled := false
 	if reason := strings.TrimSpace(req.Reason); reason != "" {
 		if _, err := s.Journal(JournalRequest{
