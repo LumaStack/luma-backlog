@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0081
 title: A move is a command, not a field write
-workflow_status: in_progress
+workflow_status: preparing
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:04:31Z'}
 description: 'move becomes how a work item changes workflow_status, and set stops accepting the field — the way it already refuses rank. workflows will run during a move and set should not be carrying those; eventually a move may commit, branch, or talk to a database, all of which are wrong inside a field write. rank is already this shape and needs finishing: --above and --below as the neighbor flags, and reachable without typing work-item first.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:06:43Z'}
-rank: 060.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:12:57Z'}
+rank: 030.0010.000
 ---
 
 # A move is a command, not a field write
@@ -117,6 +117,64 @@ where an addition would be free.
 as the primary names and keep the old pair as accepted aliases, or replace them
 outright. **The first is free to reverse; the second is not.** Worth deciding at
 preparation rather than discovering in review.
+
+### Where the checks and balances are already defined
+
+**Both halves exist. Neither is wired to a move, because there is no move.**
+
+**The rules are `backlog-move`'s "What each rung asks for" table**, whose third
+column is the strength — and that is the checks-and-balances definition this
+work has to implement. **It uses six wordings, not three:**
+
+| wording in the table | rows | reads as |
+| --- | --- | --- |
+| *strongly encouraged* | 2 | warn |
+| *warned* | 2 | warn |
+| *checked at the gate* | 1 | refuse — but see below |
+| *refused otherwise* | 1 | refuse |
+| *written by the move* | 2 | not a check at all — a side effect (WORK-0075) |
+| *the gate criterion* | 1 | two readers agreeing; no machine can check it |
+| *settled, unbuilt* | 1 | nothing yet — needs an assignee |
+
+**Mapping those onto three tiers is the design work**, and it is why this
+belongs in preparing rather than in review.
+
+**The mechanism exists on the code side too**, and it is already three-tiered:
+
+- **Allowed** — exit `0`, silent.
+- **Allowed but discouraged** — `app.Observations`, rendered by
+  `internal/cli/session.go:27` to **stderr**, exit `0`. Its comment already sets
+  the bar: *"A warning that appears on ordinary runs is one people learn to
+  scroll past, and these have to survive being ignored for months before they
+  matter once."* Three kinds ship today — skipped files, duplicate keys, rank
+  drift.
+- **Denied** — `ExitRefused = 5`, `internal/cli/root.go:30`, commented *"a
+  validated act did not pass its check."*
+
+**So this work does not invent a vocabulary. It connects two that already
+exist**, and the exit codes are already allocated: `0` ok, `1` unexpected, `2`
+usage, `3` not found, `4` conflict, `5` refused.
+
+### One contradiction has to be settled before the table can be implemented
+
+**`backlog-move` says the refusal surface has exactly two members:** *"The tool
+refuses in two places --- `close … completed` without proven outcomes, and where
+compliance or security exposure makes proceeding unbounded in cost. That is the
+whole refusal surface, and it is **deliberately small**."*
+
+**Its own table then marks a third row *checked at the gate*** --- `todo` requires
+that outcomes exist --- which reads as a refusal and is not one of the two.
+
+**Both cannot be true.** Either the `todo` outcome check is a warning and the
+column is overstating it, or the refusal surface has three members and the prose
+is out of date. **This is a decision, not an implementation detail**, and
+choosing wrong in code silently changes how strict the tool is.
+
+**The leaning is that it warns**, because everything else in the design points
+that way --- *observed, never refused*, *most gates should advise rather than
+stop*, and *shipping every gate as a refusal is the fastest way to teach people
+to route around the tool*. **But it is the maintainer's call, and it is written
+here rather than assumed.**
 
 ### What closes when this lands
 
