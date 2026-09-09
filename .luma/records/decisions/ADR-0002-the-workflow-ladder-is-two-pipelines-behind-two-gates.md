@@ -3,9 +3,9 @@ type: decision
 title: The workflow ladder is two pipelines behind two gates
 decided: 2026-09-04
 stage: provisional
-reopen_trigger: a team's real workflow does not fit three zones — work that is neither a candidate, nor being shaped, nor being done — or the two gates turn out to be one in practice
+reopen_trigger: a real workflow does not fit three zones; the two gates turn out to be one in practice; subdivision arrives and column grouping does not carry it; or a pipeline is found to hold two activities with different endings, so subdividing means adding a pipeline rather than working inside one
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:33:18Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:36:38Z'}
 ---
 
 # ADR-0002: The workflow ladder is two pipelines behind two gates
@@ -143,6 +143,16 @@ chose.
 - A real workflow does not fit three zones — work that is neither a candidate, nor being shaped, nor being done.
 - The two gates turn out to be one in practice, because nothing ever rests at `unprepared`.
 - Subdivision arrives and column grouping proves not to carry it.
+- **A pipeline turns out to hold two activities with different endings**, so subdividing means adding a pipeline rather than working inside one. This is the second *Assumption* above failing, rather than an unforeseen case — and an assumption stated without a trigger attached to it cannot fire.
+
+> **Corrected 2026-09-09.** Two things were wrong and neither was the position.
+> The fourth bullet is new, raised by
+> [[work-items/WORK-0080-preparation-and-definition-may-be-two-different-things]]
+> — the proposal that preparation and definition are separate pipelines, which
+> is the most likely challenge to this decision and matched none of the three
+> triggers as written. And the frontmatter `reopen_trigger` carried only the
+> first two bullets, so the one field a reader or a tool checks was a strict
+> subset of this section. **The decision itself is unchanged.**
 
 ## Follow-up
 
