@@ -77,21 +77,126 @@ valuable thing to have.
   narrow case of the quick-capture tension above: what happens when the raw idea
   itself is long, and the mode that must not spend turns is the one holding it.
 
-## Observed while capturing
 
-**Interpretation is not the same as analysis, and the difference is why that
-section is a good idea.** What agents write today is commentary — relations,
-concerns, prior art. *In the capturing agent's own words* would be the agent
-saying **what it understood the person to mean**, which surfaces a misreading
-immediately rather than three sessions later when something built on it turns
-out wrong.
+## In the capturing agent's own words
 
-**The separator this template needs already exists as a habit.** Records in this
-corpus carry a line reading *everything above is the maintainer's, with wording
-improved and intent unchanged; everything below was added by the agent* — used
-consistently and written down nowhere. The template is where it stops being a
-convention and becomes a rule.
+*Demonstrating the section this record asks for: what the agent understood, not
+what it thinks.*
 
-**And this record is the case in point.** It was captured raw on instruction,
-which left the agent's reading of it entirely outside the record — in a
-conversation that will not survive the session.
+**The ask is that a captured record stop being one voice.** Today an agent reads
+what somebody said and writes a record *about* it. This wants two things kept
+apart on the page — the person's thought, preserved and only tidied, and
+everything the agent has, however much of it there is.
+
+**Quick and normal differ by budget, not by care.** Both record relations,
+overlaps, duplicates and opinions. Quick stops when doing so would cost real
+time or another turn; normal spends what it needs. **Quick is not a licence to
+notice less** — it is permission to stop looking sooner.
+
+**And capture never refuses.** Where something is wrong — a duplicate, a
+contradiction, work that should not happen — the answer is to write it down
+below, not to block. Sorting it out is later's job.
+
+## Ideas and concerns from the capturing agent
+
+### It reverses two standing instructions, and they were argued for
+
+**`backlog-capture` quick mode currently says the opposite, twice.** *"Do not
+check for duplicates"* and *"Do not offer opinions, not even good ones — not a
+collision you noticed, not a record it resembles, not a better framing."*
+
+**Both have reasons attached**, and they deserve an answer rather than an
+overwrite. The duplicate rule: *"Creation is idempotent by title, and a
+near-duplicate is cheaper than a lost thought."* The opinions rule: a one-line
+version *"would be the same job done worse, and it competes with the good one."*
+
+**The second reason is the one that survives contact with this idea.** The worry
+is not that opinions are unwelcome in quick mode — it is that a rushed opinion
+*displaces* a good one later. A template with its own section may answer that
+completely, because the rushed version has a labelled home rather than
+masquerading as the considered one.
+
+### The hard part is judging cost before paying it
+
+**"Only if it isn't going to take a long time or multiple turns" has to be
+decided before doing the work that would answer it.** Whether a duplicate scan
+is cheap depends on what is in the corpus, which is what the scan finds out.
+
+**A budget is more implementable than a prediction.** Bound the effort rather
+than the outcome — one listing pass, the plausible records opened and no more,
+whatever that turns up — and record what was and was not looked at. **The
+current procedure already asks for the second half**: *"Finding nothing is a
+result and worth one line."*
+
+### The record already breaks the raw rule in three places nobody has noticed
+
+**The title is written by the agent, always.** It is the most-read part of a
+record and never the person's words. Under *always capture the raw idea* it is
+the first violation, and it needs either an explicit exemption or the person's
+own phrasing kept somewhere.
+
+**So is `description`.** It is a summary the agent composes, and it is what every
+listing shows.
+
+**And so is `kind`.** The procedure instructs *"Guess the kind. Do not ask"* —
+a guess written into a field that looks like a decision.
+
+**None of the three is obviously wrong; all three are interpretation.** The
+can/cannot lists do not currently reach them, and the details this record says
+need working out are mostly these boundary cases: is reordering somebody's
+bullets formatting or restructuring? Is splitting a run-on sentence tidying or
+reading?
+
+### The separator is doing load-bearing work and is written down nowhere
+
+**Every record captured in this corpus carries a line** reading *everything above
+is the maintainer's, with wording improved and intent unchanged; everything below
+was added by the agent*. Used consistently, specified in no procedure.
+
+**The template is where it becomes a rule** — and it may earn more than tidiness.
+`backlog-capture` currently **refuses** to append raw text to a record past
+`captured`, because doing so *"puts unreviewed text beside reviewed text with
+nothing marking the difference."* **A guaranteed separator removes that reason**,
+which would let capture keep its promise never to refuse.
+
+### The template has to survive the record growing
+
+**A captured record gets added to.** This one was amended three times within
+twenty minutes of being written, and each amendment had to find a home.
+
+**Fixed sections plus later appends is where the boundary erodes** — a fifth
+addition lands wherever there is room, and the raw half quietly acquires
+sentences nobody said. Worth deciding at design time where an amendment goes,
+including one that revises rather than extends.
+
+### Interpretation drifting into advocacy would waste the section
+
+**Its value is fidelity.** *What I understood* is checkable against what was
+meant; *what I think* is not, and is already covered elsewhere. **If the section
+becomes a second opinions block it stops catching misreadings**, which is the one
+thing it can do that nothing else does. Probably a one-line constraint when the
+template gets written.
+
+### Naming
+
+**`thorough` is right to drop.** Of the alternatives, **`default`** is the most
+accurate — it is what happens when nobody says otherwise — while **`normal`**
+quietly implies quick is abnormal, which is not the intent. Small, and names
+last.
+
+### A multi-turn capture can be interrupted
+
+**Normal capture may take several turns**, and a capture spread across turns can
+be interrupted before it finishes — repeatedly, in the session that produced this
+record. **Where a half-written capture lives is unanswered**, and if the answer
+is *uncommitted in the working tree* it collides with
+[[work-items/WORK-0076-how-the-backlog-stays-in-sync-with-everyone-working-it]].
+
+### The strongest overlap is with WORK-0078
+
+**Relations recorded as prose here, and stamped as data there.**
+[[work-items/WORK-0078-how-duplicate-capture-is-handled]] wants duplicate,
+overlap and conflict written into frontmatter so they survive the conversation.
+**This record wants the same information recorded and does not say where it
+goes.** Same requirement from two sides, and deciding them apart would produce
+two answers.
