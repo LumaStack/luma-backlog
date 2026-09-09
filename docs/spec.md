@@ -1365,7 +1365,7 @@ Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
-| `rank` | work item | Reorder relative to another — `--before`, `--after`, `--top`, `--bottom`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Not `move`, which this document uses throughout for relocating a record on disk — the one operation it forbids (ADR-0005). |
+| `rank` | work item | Reorder relative to another — `--before`, `--after`, `--first`, `--last`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Not `move`, which this document uses throughout for relocating a record on disk — the one operation it forbids (ADR-0005). |
 | `take` / `release` / `steal` | task | Take, give up, or take over a task (§6.5). Stealing is explicit and recorded. Not `claim`, which this design spends on assertions about truth (ADR-0008). |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
 | `journal` | any | With an argument, append one line to the journal, opening today's entry if needed. With none, show it (§5.5). |
@@ -1431,6 +1431,10 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 **Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one work item writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
+**Position is named by sequence, never by the screen: `--before`, `--after`, `--first`, `--last`.** Those four describe a place in the order, so they stay correct however the order is drawn — a listing sorted in reverse still has the same record before the same neighbour, and the same record first.
+
+**`--above`, `--below`, `--top` and `--bottom` describe where something sits in a view**, and they invert the moment the sort does. A caller who learned them from a board is then wrong everywhere else. **A flag that means one thing in one view and the opposite in another is not a naming preference; it is a defect that only appears in the second view** — which is why it survives review and is found by a user.
+
 **Keys are fixed-width: four digits, a point, three decimals** — `0010.000`, `0020.000`, `0010.500`.
 
 That width is doing real work. **Zero-padding makes lexicographic order identical to numeric order**, so anything that can compare text sorts correctly — a script piping through `sort`, an editor plugin, a derived index, a tool nobody wrote for this project. There is no comparator to implement and therefore no way to get ordering silently wrong. Keys also align in a column, which is what makes a file of them readable.
@@ -1458,7 +1462,7 @@ Storing it as a string rather than a number is deliberate: floating-point values
 
 **A rebalance is never mandatory**, because the width is a normal form rather than a hard limit — which is what keeps a multi-record write from arriving in the middle of a drag.
 
-The caller never sees the key. `move --before`, `--after`, `--top`, `--bottom` express intent; the tool chooses the value.
+The caller never sees the key. `rank --before`, `--after`, `--first`, `--last` express intent; the tool chooses the value.
 
 **Some operations are irreducibly multi-record**, and this is where the guarantees have to be stated:
 
