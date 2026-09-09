@@ -40,6 +40,29 @@ compliance with prose-only rules runs far below what a guarantee requires. A
 table column reading **written by the move** is a claim about the binary, so
 asking an agent to remember it is the failure mode rather than the fix.
 
+## Two more rows, found by using the table
+
+**Moving WORK-0074 through both gates on 2026-09-09 ran three of these rows and
+none of them fired.** `internal/app/status.go:21` — `applyStatus` writes
+`workflow_status` and `rank` and returns. That is the whole move. One of the
+three is the `in_progress` row this record already named; **two are new.**
+
+- `in_progress` → **`stage` is at least `provisional`** — *written by the move*.
+  Not written. WORK-0074 is `in_progress` and reads `stage: draft`.
+- `todo` → **no longer a draft** — *warned*. No warning. Nothing inspects
+  `stage` at any gate.
+- `todo` → **outcomes exist** — *checked at the gate*. There is no check. The
+  column claims a refusal, and a work item with no outcomes crosses silently.
+
+**The last one is the worst of the three**, because *checked at the gate* is the
+strongest thing that column says, and it is the row that keeps a work item
+nobody can tell is finished out of the queue.
+
+**So the promise is unkept in four rows, not two.** The two this record opened
+with are `stage` writes; these are a `stage` warning and an outcome check, which
+means the gap is not one missing field write but **the move having no gate logic
+at all**.
+
 ## Out of scope
 
 **Whether `stage` should exist on work items at all.** That is
