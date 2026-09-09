@@ -6,8 +6,8 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:01:16Z'}
-description: always capture, even when it looks like a duplicate — agents cannot always be trusted to make this call, even though we want them to make it, and a lost idea is worse than a second record. stamp duplicate, overlap and conflict in the frontmatter of everything involved. commit, so there is a checkpoint to revert to. only then let an agent reject as duplicate, merge it into another record, or leave both standing. the three relations are already computed at capture time and reported in chat, where they die.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:01:16Z'}
+description: 'always capture, even when it looks like a duplicate — agents cannot always be trusted to make this call, even though we want them to make it, and a lost idea is worse than a second record. stamp duplicate, overlap and conflict in the frontmatter of everything involved. commit, so there is a checkpoint to revert to. only then let an agent reject as duplicate, merge it into another record, or leave both standing. the three relations are already computed at capture time and reported in chat, where they die. capture should also present three modes, which need working better but are different things: quick capture; find overlap and then maybe capture; capture, save, and then consider overlaps.'
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:07:41Z'}
 ---
 
 # How duplicate capture is handled
@@ -37,6 +37,27 @@ wrong in the other loses the idea, and nothing reports that it happened.
 
 **The commit is what makes step four safe.** Nothing is destroyed by a bad call
 if the state before the call is in history.
+
+## Three capture modes, presented as an option
+
+**When capturing work we should probably present an option:**
+
+1. **Quick capture.**
+2. **Find overlap and then maybe capture.**
+3. **Capture, save, and then consider overlaps.**
+
+**These need to be worked better, but they are different things.** To explain
+what they are:
+
+1. **Save it, and I don't want to waste any turns** — I need to get back to what
+   I was doing.
+2. **I don't want to create git noise**, so let's only add my idea if it is new,
+   and let's append something or refine it if it's not new.
+3. **I want to save this idea in its raw form**, and then after it's
+   immortalized, then we can figure out how to integrate it into the existing
+   backlog — and I'm willing to accept additional git noise for checkpoints that
+   I can guarantee are captured correctly, because this idea is important to me
+   to get it in its raw form.
 
 ## What is being delivered
 
@@ -153,6 +174,27 @@ call, record that it made one, make it reviewable.
 say what is happening, take the acknowledgement, record which call was made so
 it can be judged later. **So "let them decide, but keep it reviewable" is an
 existing idiom here rather than new machinery.**
+
+### The three modes map onto what already exists, except one
+
+**Mode 1 is shipped.** It is `backlog-capture`'s quick path, and its stated
+justification is the same one: *"Speed is the whole feature. A capture that costs
+three turns and a discussion is one that stops happening."*
+
+**Mode 3 is the leading answer above** — capture raw, commit, adjudicate after.
+
+**Mode 2 is the one with nothing behind it.** It is also the only mode that can
+*decline to create a record*, which makes it the only one where a lost idea is
+possible — and the reason it is wanted is git noise rather than speed. **That
+puts the same axis under two records**: whether noise is a cost worth avoiding
+is what
+[[work-items/WORK-0076-how-the-backlog-stays-in-sync-with-everyone-working-it]]
+has to decide, and here it is being offered to the user as a per-capture choice.
+
+**Presenting a choice has a cost mode 1 exists to avoid.** Asking which mode is
+a turn, and mode 1's whole value is not spending one. So the option cannot be a
+question asked every time — it has to be a default with an override, and which
+default is part of the answer.
 
 ### Two questions worth leaving open
 
