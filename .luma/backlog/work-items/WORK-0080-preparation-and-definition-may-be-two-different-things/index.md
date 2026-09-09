@@ -6,8 +6,8 @@ workflow_status: captured
 kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:32:21Z'}
-description: 'maybe preparation should be renamed to definition, and preparing to defining. and maybe preparation and definition should be separate pipelines: preparation is all the work you need to do in order to define something, definition is all the work you need to do to have well defined outcomes. likes it a lot, and also does not want to make the process too cumbersome.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:32:21Z'}
+description: 'maybe preparation should be renamed to definition, and preparing to defining. and maybe preparation and definition should be separate pipelines: preparation is all the work you need to do in order to define something, definition is all the work you need to do to have well defined outcomes. the real question is whether all preparation must be complete before any defining starts — if not, one pipeline with the two distinct somehow within each work item. likes it a lot, and also does not want to make the process too cumbersome.'
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:34:23Z'}
 ---
 
 # Preparation and definition may be two different things
@@ -27,12 +27,56 @@ called `defining`.
 **I like this a lot, and I also don't want to make the process too
 cumbersome.** Both of those are true at once, and neither is the answer.
 
+## The real question
+
+**Does all preparation always need to be complete before any defining starts?**
+
+**If that isn't true, then they should be combined into one pipeline** — but
+distinct somehow within each work item.
+
 ---
 
 *Everything above is the maintainer's, with wording improved and intent
 unchanged. Everything below was added by the agent while capturing it.*
 
 ## Added while capturing
+
+### The real question is the sequential-or-parallel question, and both answers already have a shape
+
+**`workflow-status.md` has worked out what follows from each answer**, in the
+gates section, so the test decides the design rather than merely framing it:
+
+| if preparation must finish first | if it need not |
+| --- | --- |
+| **Sequential.** *"Fits the ladder as it stands — more rungs in order, grouped under one column heading. **Configuration, no code**."* | **Parallel.** *"Does not [fit], and that is the constraint worth recording. **A record holds one `workflow_status`**… a single ordered value cannot say so."* |
+
+**So the two answers are not equally expensive, and the cheap one is the split.**
+Separate rungs, if the sequence is real, cost nothing but words in a config file.
+
+**And *distinct somehow within each work item* already has a precedent.** If the
+two run at once, whatever distinguishes them has to travel **alongside** the
+position rather than be a position in it — which is the argument `spec.md`
+§4.1.1 makes about `blocked`, and which
+[[work-items/WORK-0065-blocked-is-a-flag-rather-than-a-rung]] is already
+designing. **That is the shape the answer would take**, rather than a new
+question.
+
+### This project is evidence, and it points at *no*
+
+**WORK-0074 is the case to look at.** Its outcomes were written on 2026-09-09
+while its scope, constraints and open questions were still being worked in the
+same session — defining and preparing interleaved rather than queued.
+
+**And the gap found at its gate today was a preparation fact discovered after
+the outcomes existed**: the store is keyed by corpus, and two worktrees of one
+corpus is a case nothing covers. *Who runs this, and where* is preparation. It
+surfaced while checking whether the definition was good.
+
+**One case is not a rule**, and this one has a bias — a single maintainer
+working with an agent has no coordination step that could plausibly gate
+anything. **A team with a legal review would answer differently, and that may be
+the actual finding: the answer is per organization, which makes it
+configuration rather than a default.**
 
 ### The rename alone is already configuration
 
@@ -141,3 +185,5 @@ not obviously cheaper than showing it.
   that already splits two and two.
 - [[work-items/WORK-0079-how-exploration-is-chosen-and-what-it-produces]] —
   exploration in preparation, which would have to choose a side.
+- [[work-items/WORK-0065-blocked-is-a-flag-rather-than-a-rung]] — the shape
+  *distinct within the work item* would take, if the two run at once.
