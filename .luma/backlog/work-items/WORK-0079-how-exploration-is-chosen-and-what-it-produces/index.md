@@ -37,9 +37,24 @@ define the outcomes and move the work forward.**
 | **in preparation** | it defines **this** work item |
 | **in progress, on an inquiry** | it generates **other** work items, or deliverables |
 
-**This is a very strong recommendation and not a hard rule.** The two directions
-are how exploration is nearly always used, and somebody with a reason to use it
+**And because it is a recommendation rather than a rule, there is a third,
+less desirable option:**
+
+| where | what it produces |
+| --- | --- |
+| **in progress, on work you believe needs redefining** | a change to work already under way, because an unknown was uncovered |
+
+**Any change to this work needs to be recorded to history**, and possibly sent
+to some kind of steering committee, or trigger something that informs
+stakeholders.
+
+**These options are guidance, not strict rules.** The two directions above are
+how exploration is nearly always used, and somebody with a reason to use it
 otherwise should not be stopped.
+
+**When someone breaks the guidance, that should trigger a process that informs
+the people who need to be in the know — rather than blocking them from
+progress.**
 
 ## What is being delivered
 
@@ -143,6 +158,67 @@ about who may add to them is how a tool becomes unlearnable —
 [[records/decisions/ADR-0009-a-symbol-that-must-mean-one-thing-is-assigned-in-one-place]]
 is the shape of the argument, applied to a mechanism rather than a name.
 
+### The third direction is Redefine, and it already has a name
+
+**`lifecycle.md` §2.8 is the phase**, asking *was that the right definition of
+done?* — and `backlog-move` already says this is where an uncovered unknown
+lands: *"Unknown unknowns are undefinable here by construction, and their
+discovery during work is `lifecycle.md` §2.8's **Redefine**, not a failure of
+this rung."*
+
+**So the third direction is not a lesser version of the other two — it is a
+named phase of the loop.** Calling it *less desirable* is right about its
+frequency and wrong about its legitimacy, and the record should keep both:
+`when-a-work-item-splits` is blunt that *"revising an outcome is not a smell;
+never revising one while tasks pile up is."*
+
+**What makes it dangerous is governance, not the act.** Redefine *"requires
+governance precisely because it is where goalposts get moved"*, and
+[[work-items/WORK-0032-how-goalpost-fitting-is-discouraged-without-being-prevented]]
+is the record already holding that problem. **The third direction is that record
+seen from the exploration side.**
+
+### The informing half already has three records and a mechanism
+
+**Recording the change to history** is what the journal is for, and Redefine is
+one of the few events with nothing else recording it.
+
+**Informing the people who need to know** is
+[[work-items/WORK-0061-surface-work-that-went-around-the-system-to-observers]],
+almost word for word: *"an observer — compliance, leadership, security — needs
+to find work that skipped gates, reviews or decisions without opening every
+journal, and intervene only when it is an actual problem. Observed, never
+refused."*
+
+**The protocol for the moment it happens** is
+[[work-items/WORK-0060-a-configurable-menu-of-working-modes]]: say what is
+happening, take the acknowledgement, find a path forward, record which call was
+made.
+
+**And the trigger mechanism is specified but unsettled.** `spec.md` §5.4 defines
+a hook as *"a command the tool runs when a boundary is crossed"*, with
+configuration mapping boundary to command and the tool never interpreting what
+it does — which is exactly *inform a steering committee* without the tool
+knowing what a steering committee is. It is also flagged as *"the least settled
+part of this document"*, with a cheaper alternative on the table.
+
+**So a steering-committee notification needs no new machinery**; it needs §5.4
+to be settled, which is `open-questions.md` §22.
+
+### The principle here is bigger than exploration, and this is the third time it has been stated
+
+**Guidance that informs rather than blocks** is now written in three places
+independently: `workflow-status.md` on gates, WORK-0059's *observed, never
+refused*, and here.
+
+**A principle restated three times in three records is one nobody has decided.**
+It reads as a candidate for a decision record of its own — *the tool advises and
+reports; it refuses only where proceeding is unbounded in cost* — which
+`backlog-move` already asserts as fact when it says the refusal surface is
+*"deliberately small"* and names its two members. **Recommended rather than
+done**, because it belongs to whoever decides this project's posture and not to
+a capture.
+
 ### On findings feeding outcomes
 
 **Direction one ends by writing or sharpening outcomes, which is where the
@@ -168,3 +244,10 @@ against rather than discovering.
 - [[work-items/WORK-0078-how-duplicate-capture-is-handled]] — the second.
 - [[work-items/WORK-0069-the-backlog-has-no-unit-for-a-delivery]] — deliverables,
   which direction two is said to produce.
+- `docs/lifecycle.md` §2.8 — Redefine, which is the third direction.
+- `docs/spec.md` §5.4 and `docs/open-questions.md` §22 — hooks, the unsettled
+  mechanism a stakeholder notification would use.
+- [[work-items/WORK-0032-how-goalpost-fitting-is-discouraged-without-being-prevented]]
+  — the governance the third direction needs.
+- [[work-items/WORK-0061-surface-work-that-went-around-the-system-to-observers]]
+  — informing the people who need to be in the know.
