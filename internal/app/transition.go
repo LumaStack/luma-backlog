@@ -72,10 +72,16 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	if err != nil {
 		return nil, resolveError(err)
 	}
-	if it.Type() != corpus.WorkItem {
+	// Tasks carry a workflow status too, and their own ladder (`todo`,
+	// `in_progress`, `closed`). They transition the same way --- applyStatus
+	// already writes rank only for work items, since only work items are
+	// ranked.
+	if it.Type() != corpus.WorkItem && it.Type() != corpus.Task {
 		return nil, UsageError(
-			"%s is a %s: only work items carry a workflow status", it.Name(), it.Type())
+			"%s is a %s: only work items and tasks carry a workflow status",
+			it.Name(), it.Type())
 	}
+	isWorkItem := it.Type() == corpus.WorkItem
 
 	// Optimistic concurrency, the same contract `set` offers (§6.3). Conflict
 	// means re-read and retry, which is different advice from "something
@@ -101,7 +107,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Reaching `closed` through here would bypass the outcome gate, the
 	// disposition, the `closed` event and the `--force` requirement — every
 	// check `close` exists to perform (spec.md §5.3.1).
-	if req.To == terminal && terminal != "" {
+	if isWorkItem && req.To == terminal && terminal != "" {
 		return nil, UsageError(
 			"%q is terminal — use: work-item close %s <completed|rejected|canceled|superseded>",
 			req.To, req.Ref)
@@ -110,17 +116,20 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Two refusals, both narrow, and both take --force. A refusal that cannot
 	// be overridden is the tool holding an opinion; one that can is the tool
 	// making somebody say they meant it (spec.md §5.0).
-	counts, err := s.outcomeCounts(it)
-	if err != nil {
-		return nil, err
+	counts, kind := 0, ""
+	if isWorkItem {
+		var err error
+		if counts, err = s.outcomeCounts(it); err != nil {
+			return nil, err
+		}
+		kind, _ = it.Record.Get("kind")
 	}
-	kind, _ := it.Record.Get("kind")
 
 	// Leaving the pile with `kind: idea` still on it. The type defines an idea
 	// as "a classification that becomes one of the others" --- transitional by
 	// construction --- so carrying one past the first gate files unformed work
 	// beside formed work with nothing marking the difference.
-	if s.leavesThePile(it, from, req.To) && kind == "idea" {
+	if isWorkItem && s.leavesThePile(it, from, req.To) && kind == "idea" {
 		if !req.Force {
 			return nil, RefusedError(
 				"%s is still an idea, and an idea is a classification on its way to "+
@@ -134,7 +143,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Starting work nobody can tell is finished. Deliberately "does one exist"
 	// rather than "are they good": any opinion beyond zero would be the tool
 	// holding a view about how work gets defined.
-	if req.To == s.startedStatusFor(it) && counts == 0 {
+	if isWorkItem && req.To == s.startedStatusFor(it) && counts == 0 {
 		if !req.Force {
 			return nil, RefusedError(
 				"%s has no outcomes, so nothing says when it is finished.\n\n"+
@@ -148,7 +157,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Leaving the shaping rung is where the work is supposed to have been
 	// worked out. Warned rather than refused: not all work is equal, and some
 	// is trivial or urgent.
-	if from == s.shapingStatusFor(it) {
+	if isWorkItem && from == s.shapingStatusFor(it) {
 		tasks, err := s.taskCount(it)
 		if err != nil {
 			return nil, err
@@ -185,7 +194,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Nothing is expected of the ordinary rungs. `captured` to `unprepared`
 	// always has the same answer, and a prompt whose answer is always the same
 	// teaches people to type past it.
-	if reopening && strings.TrimSpace(req.Reason) == "" {
+	if isWorkItem && reopening && strings.TrimSpace(req.Reason) == "" {
 		advice = append(advice,
 			"reopening "+req.Ref+" and nothing records why --- pass --reason; "+
 				"the closed entry stays, and no field holds the un-ending")
@@ -201,7 +210,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// which is the same reason a skipped gate gets a line.
 	for _, f := range forced {
 		if _, err := s.Journal(JournalRequest{
-			WorkItem: it.Slug(),
+			WorkItem: s.journalTargetFor(it),
 			Line:     "FORCED " + from + " → " + req.To + ": " + f,
 		}); err != nil {
 			return nil, err
@@ -212,8 +221,8 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	journaled := false
 	if reason := strings.TrimSpace(req.Reason); reason != "" {
 		if _, err := s.Journal(JournalRequest{
-			WorkItem: it.Slug(),
-			Line:     from + " → " + req.To + ": " + reason,
+			WorkItem: s.journalTargetFor(it),
+			Line:     it.Name() + " " + from + " → " + req.To + ": " + reason,
 		}); err != nil {
 			return nil, err
 		}
@@ -302,6 +311,25 @@ func missingWork(outcomes, tasks int) string {
 		return "no outcomes"
 	case tasks == 0:
 		return "no tasks"
+	}
+	return ""
+}
+
+// journalTargetFor is whose journal a line belongs in. Only work items have
+// one, so a task's reasoning goes to its parent --- which is where somebody
+// reading the work would look for it. The path already carries the parent,
+// since children nest under the work item they belong to (spec.md §7.2).
+func (s *Session) journalTargetFor(it corpus.Item) string {
+	if it.Type() == corpus.WorkItem {
+		return it.Slug()
+	}
+	const under = "work-items/"
+	rest := it.Path
+	if i := strings.Index(rest, under); i >= 0 {
+		rest = rest[i+len(under):]
+	}
+	if i := strings.Index(rest, "/"); i > 0 {
+		return rest[:i]
 	}
 	return ""
 }

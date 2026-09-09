@@ -135,20 +135,6 @@ func TestTransitionOnAMissingRecordExitsNotFound(t *testing.T) {
 	}
 }
 
-// Only work items carry a workflow status.
-func TestTransitionRefusesANonWorkItem(t *testing.T) {
-	app, _ := initialized(t)
-	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
-
-	code, _, errOut := run(t, app, "work-item", "transition", "the-queue-drains", "todo")
-	if code != ExitUsage {
-		t.Errorf("exit = %d, want %d", code, ExitUsage)
-	}
-	if !strings.Contains(errOut, "outcome") {
-		t.Errorf("the refusal did not say what the record is:\n%s", errOut)
-	}
-}
 
 // The optimistic-concurrency contract `set` offers is offered here too: a write
 // that would clobber a change it never saw is refused rather than applied
@@ -447,5 +433,60 @@ func TestForceWithNothingToOverrideRecordsNothing(t *testing.T) {
 	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
 	if strings.Contains(journal, "FORCED") {
 		t.Errorf("--force wrote an entry with nothing to override:\n%s", journal)
+	}
+}
+
+// Tasks carry a workflow status and their own ladder. Nothing else can change
+// it --- there is no task close --- so transition has to accept them, including
+// all the way to their terminal.
+func TestATaskTransitionsThroughItsOwnLadder(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+
+	for _, status := range []string{"in_progress", "closed"} {
+		if code, _, e := run(t, app, "transition", "do-the-thing", status); code != ExitOK {
+			t.Fatalf("task transition to %s failed: %s", status, e)
+		}
+	}
+	_, out, _ := run(t, app, "show", "do-the-thing", "--json")
+	if !strings.Contains(out, `"workflow_status": "closed"`) {
+		t.Errorf("the task did not reach closed:\n%s", out)
+	}
+	// Only work items are ranked (ADR-0005), so a task gains no rank on the way.
+	if strings.Contains(out, `"rank"`) {
+		t.Errorf("a task was given a rank:\n%s", out)
+	}
+}
+
+// The work-item checks are work-item concepts and must not fire on a task ---
+// a task has no outcomes and no kind, and would fail every one of them.
+func TestATaskIsNotHeldToWorkItemChecks(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+
+	code, _, errOut := run(t, app, "transition", "do-the-thing", "in_progress")
+	if code != ExitOK {
+		t.Fatalf("a task was refused for having no outcomes: %s", errOut)
+	}
+	if strings.TrimSpace(errOut) != "" {
+		t.Errorf("a task transition said something:\n%s", errOut)
+	}
+}
+
+// An outcome carries no workflow status, and saying so is better than a
+// confusing refusal about ladders.
+func TestAnOutcomeCannotTransition(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+
+	code, _, errOut := run(t, app, "transition", "the-queue-drains", "todo")
+	if code != ExitUsage {
+		t.Errorf("exit = %d, want %d", code, ExitUsage)
+	}
+	if !strings.Contains(errOut, "outcome") {
+		t.Errorf("the refusal did not say what the record is:\n%s", errOut)
 	}
 }

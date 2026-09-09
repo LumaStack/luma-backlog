@@ -45,8 +45,14 @@ func newTransitionCommand(a *App) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s (%s)\n",
-				res.Path, res.From, res.To, res.Rank)
+			// Only work items are ranked, so a task has none to report.
+			if res.Rank != "" {
+				fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s (%s)\n",
+					res.Path, res.From, res.To, res.Rank)
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s\n",
+					res.Path, res.From, res.To)
+			}
 			if res.Journaled {
 				fmt.Fprintf(cmd.OutOrStdout(), "journaled the reason\n")
 			}
