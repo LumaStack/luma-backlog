@@ -66,7 +66,7 @@ enough — see the note at the end of this section.
 | --- | --- |
 | **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it |
 | **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
-| **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip |
+| **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
 
 **Fast is not the same as skipping, and confusing the two is how a gate goes
 missing.** The first row crosses **every** gate; it just does not linger at any
@@ -153,8 +153,9 @@ particular work item, not what preparing is.
 twice is arguing, and refusing them is the thing that teaches people to route
 around the tool.
 
-**And journal the skip.** Not as a reprimand — as the only way anybody learns
-which of three things happened:
+**And journal the skip, so the decision can be retrospected.** Not as a
+reprimand — the entry is the only thing that lets anybody later establish which
+of three things happened:
 
 - **the process is broken** for work of this shape, and the gate should not have
   been there;

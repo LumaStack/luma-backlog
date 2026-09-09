@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.29.0
+version: 0.29.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.29.1` — **the skip is journaled so it can be retrospected.**
+
+Naming the purpose in the row rather than only the mechanism. A journal line
+written as a reprimand gets written defensively; one written as evidence for a
+retrospective gets written honestly, and only the second kind is any use months
+later.
 
 `0.29.0` — **fast is not the same as skipping.**
 
