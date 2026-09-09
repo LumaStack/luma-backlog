@@ -9,6 +9,14 @@ verify_by:
 work_item: '[[work-items/WORK-0059-how-ad-hoc-work-should-be-done]]'
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:47:41Z'}
+verified:
+  - as: proven
+    at: "2026-09-09T03:04:01Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-09T03:04:01Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'All three checks read. (1) Journal covers both days the work ran, 09-07 and 09-08, with 6 lines prefixed ''shortcut taken'' and 3 ''hypothesis, untested'' — recorded as taken, not justified after. (2) evidence/session-capture.md, 1,892 lines, committed at 1da0023: the maintainer ruled that this file as it stands is the full conversation they asked for — the captured extent is the intended extent, and ''end to end'' in the check does not mean every later session. (3) The two disagree: transcript line 493 hedges the rank finding into two readings and says it cannot tell which, while the journal line from the same afternoon records it flatly as a defect. The journal is more confident than the session was, which a reconstruction could not produce.'
 ---
 
 # The experiment ran and left a complete record of itself
