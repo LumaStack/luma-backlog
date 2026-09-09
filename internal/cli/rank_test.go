@@ -103,7 +103,7 @@ func TestRankAgainstAnotherStatusIsRefused(t *testing.T) {
 	run(t, app, "work-item", "new", "Alpha")
 	run(t, app, "work-item", "new", "Bravo")
 	run(t, app, "work-item", "rank", "WORK-0002", "--bottom")
-	run(t, app, "set", "WORK-0002", "workflow_status=todo")
+	run(t, app, "work-item", "transition", "WORK-0002", "todo")
 
 	code, _, errOut := run(t, app, "work-item", "rank", "WORK-0001", "--before", "WORK-0002")
 	if code != ExitUsage {

@@ -28,13 +28,13 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if code, _, e := run(t, app, "set", "payments-v2", "workflow_status=in_progress"); code != ExitOK {
+	if code, _, e := run(t, app, "set", "payments-v2", "kind=change"); code != ExitOK {
 		t.Fatalf("set failed: %s", e)
 	}
 
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
-	if got, _ := r.Get("workflow_status"); got != "in_progress" {
-		t.Errorf("workflow_status = %q", got)
+	if got, _ := r.Get("kind"); got != "change" {
+		t.Errorf("kind = %q", got)
 	}
 	// Losing another system's state is silent data loss, not a reported bug.
 	if !r.Has("some_other_tool") {
@@ -47,7 +47,7 @@ func TestSetChangesOnlyWhatWasNamed(t *testing.T) {
 
 func TestSetStampsModified(t *testing.T) {
 	app, project := withWorkItem(t)
-	run(t, app, "set", "payments-v2", "workflow_status=todo")
+	run(t, app, "set", "payments-v2", "kind=change")
 
 	r := readRecord(t, project, wiPath(t, project, "payments-v2", "index.md"))
 	if !r.Has("modified") {
@@ -132,7 +132,7 @@ func TestSetRefusesAStaleWrite(t *testing.T) {
 	data, _ := os.ReadFile(path)
 	os.WriteFile(path, append(data, []byte("\nsomeone else was here\n")...), 0o644)
 
-	code, _, errOut := run(t, app, "set", "payments-v2", "workflow_status=todo", "--if-unchanged", seen.Hash)
+	code, _, errOut := run(t, app, "set", "payments-v2", "kind=change", "--if-unchanged", seen.Hash)
 	if code != ExitConflict {
 		t.Fatalf("exit = %d, want %d (conflict)", code, ExitConflict)
 	}
@@ -155,7 +155,7 @@ func TestSetAcceptsAMatchingHash(t *testing.T) {
 	}
 	json.Unmarshal([]byte(out), &seen)
 
-	if code, _, e := run(t, app, "set", "payments-v2", "workflow_status=todo", "--if-unchanged", seen.Hash); code != ExitOK {
+	if code, _, e := run(t, app, "set", "payments-v2", "kind=change", "--if-unchanged", seen.Hash); code != ExitOK {
 		t.Fatalf("a matching hash was refused: exit %d, %s", code, e)
 	}
 }

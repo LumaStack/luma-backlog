@@ -318,7 +318,7 @@ func TestATreeFilterNarrowsWorkItemsNotChildren(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
 	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
-	run(t, app, "set", "payments-v2", "workflow_status=todo")
+	run(t, app, "work-item", "transition", "payments-v2", "todo")
 
 	code, out, errOut := run(t, app, "list", "--tree", "--status", "todo")
 	if code != ExitOK {
@@ -434,7 +434,7 @@ func TestAnUneditedRecordHasNoModifiedStamp(t *testing.T) {
 		t.Errorf("an unedited record carried a modified stamp:\n%s", out)
 	}
 
-	run(t, app, "set", "WORK-0001", "workflow_status=todo")
+	run(t, app, "work-item", "transition", "WORK-0001", "todo")
 	_, after, _ := run(t, app, "work-item", "list", "--json")
 	if !strings.Contains(after, `"modified"`) {
 		t.Errorf("an edited record has no modified stamp:\n%s", after)

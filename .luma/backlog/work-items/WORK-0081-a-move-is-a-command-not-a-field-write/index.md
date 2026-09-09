@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0081
 title: A transition is a command, not a field write
-workflow_status: preparing
+workflow_status: in_progress
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:04:31Z'}
 description: 'transition becomes how a work item changes workflow_status, and set stops accepting the field — the way it already refuses rank. workflows will run during a transition and set should not be carrying those; eventually a transition may commit, branch, or talk to a database, all of which are wrong inside a field write. move is not a verb this interface has, except possibly as an alias. rank is already this shape and needs finishing: --top and --bottom become --first and --last, and it should be reachable without typing work-item first.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T19:45:47Z'}
-rank: 030.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T19:50:31Z'}
+rank: 060.0010.000
 ---
 
 # A transition is a command, not a field write

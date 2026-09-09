@@ -18,7 +18,7 @@ func TestAStatusChangeRewritesTheRank(t *testing.T) {
 		t.Fatalf("expected a captured-ordinal rank:\n%s", before)
 	}
 
-	run(t, app, "set", "WORK-0001", "workflow_status=todo")
+	run(t, app, "work-item", "transition", "WORK-0001", "todo")
 	_, after, _ := run(t, app, "show", "WORK-0001", "--json")
 	if !strings.Contains(after, "050.") {
 		t.Errorf("the rank prefix did not follow the status:\n%s", after)
@@ -50,7 +50,7 @@ func TestAdvancingInOrderPreservesOrder(t *testing.T) {
 		run(t, app, "work-item", "rank", ref, "--bottom")
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
-		run(t, app, "set", ref, "workflow_status=todo")
+		run(t, app, "work-item", "transition", ref, "todo")
 	}
 	_, out, _ := run(t, app, "work-item", "list")
 	if order(out) != "Alpha Bravo Charlie" {
@@ -65,7 +65,7 @@ func TestAnUnrankedRecordGetsARankOnAStatusChange(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 
-	run(t, app, "set", "WORK-0001", "workflow_status=todo")
+	run(t, app, "work-item", "transition", "WORK-0001", "todo")
 	_, out, _ := run(t, app, "show", "WORK-0001", "--json")
 	if !strings.Contains(out, "050.0010.000") {
 		t.Errorf("a status change left the record unranked:\n%s", out)
@@ -78,7 +78,7 @@ func TestAStatusTheLadderDoesNotCarryIsRefused(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 
-	code, _, errOut := run(t, app, "set", "WORK-0001", "workflow_status=marinating")
+	code, _, errOut := run(t, app, "work-item", "transition", "WORK-0001", "marinating")
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}

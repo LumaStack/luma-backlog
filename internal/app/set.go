@@ -66,16 +66,16 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 		// available, as it does for everything.
 		if a.Field == "rank" {
 			return nil, UsageError(
-				"rank is not set directly --- use: work-item rank <ref> --top | --bottom | --before <ref> | --after <ref>")
+				"rank is not set directly --- use: work-item rank <ref> --first | --last | --before <ref> | --after <ref>")
 		}
-		// A status change is one operation that writes rank too (ADR-0005).
-		// Routing it here rather than letting the assignment through is what
-		// stops a caller producing a record whose two fields disagree.
+		// A status change is one operation that writes rank too (ADR-0005), and
+		// the destination rung may require things a field write cannot check.
+		// So it is refused here for the same reason `rank` is: letting the
+		// assignment through would make the operation optional.
 		if a.Field == "workflow_status" {
-			if err := s.applyStatus(it, a.Value); err != nil {
-				return nil, err
-			}
-			continue
+			return nil, UsageError(
+				"workflow_status is not set directly --- use: work-item transition %s %s",
+				req.Ref, a.Value)
 		}
 		if a.Raw {
 			if err := it.Record.SetRaw(a.Field, a.Value); err != nil {
@@ -86,6 +86,19 @@ func (s *Session) Set(req SetRequest) (*SetResult, error) {
 		it.Record.Set(a.Field, a.Value)
 	}
 	for _, key := range req.Unset {
+		// Removing workflow_status is a status change --- absence reads as the
+		// first configured value (spec.md §4.2), so it silently moves the
+		// record to the bottom of the ladder without writing rank.
+		if key == "workflow_status" {
+			return nil, UsageError(
+				"workflow_status cannot be unset --- absence reads as %q; use: work-item transition %s <status>",
+				s.Config.DefaultStatusFor(it.Type()), req.Ref)
+		}
+		if key == "rank" {
+			return nil, UsageError(
+				"rank cannot be unset --- it is written with the status; use: work-item transition %s <status>",
+				req.Ref)
+		}
 		it.Record.Remove(key)
 	}
 
