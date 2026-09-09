@@ -43,6 +43,16 @@ invariant that makes it trustworthy — see `luma-layout`.
 
 ## Scope
 
+**`pick` and nothing else.** One active work item, replaced by picking another.
+No queue, no stack, no second verb — an interruption means picking the other
+thing and picking back, which is two commands rather than a structure nobody can
+see. *Queues are deferred rather than rejected; re-open when returning turns out
+to cost more than re-picking does.*
+
+**`pick` does not move the work item.** Picking a `captured` record to journal a
+thought about it is ordinary; dragging it across two gates is not. The pick says
+where somebody is, the status says what the work is.
+
 **Per machine first, per user eventually.** On one machine with one person they
 are the same thing, and true per-user across machines needs synchronisation
 nobody has asked for. Starting per machine costs nothing later: a per-user store
@@ -62,17 +72,20 @@ repository rather than one globally.
 - **Absence is normal.** No active work item is the ordinary state, and every
   command must work without one — this is a shortcut, never a requirement.
 
+## Settled while planning
+
+- **The verb is `pick`.** `select` is spent — `workflow-status.md` says *both
+  gates are a selection* — and `take`, `release` and `claim` are ADR-0008's and
+  §4.5's. `active` and `current` both name the concept well and are noun-shaped.
+- **Closing the picked work item clears the pick**, and nothing else does.
+- **`-w` wins over the pick, silently.** An explicit flag disagreeing with the
+  active item is a legitimate act, not something to comment on.
+- **A pick that no longer resolves is reported and ignored**, never fatal.
+
 ## Open
 
-- **What clears it.** Closing the work item is the obvious candidate; so is
-  never, leaving a closed record as the last thing you touched.
-- **What happens when it names a record that is gone** — deleted, renamed, or in
-  a branch you are no longer on. Reporting rather than failing is this project's
-  habit.
-- **Whether `-w` still wins**, which it should, and whether an explicit flag that
-  disagrees with the active item is worth saying out loud.
-- **Whether setting it is a command of its own** or a side effect of moving a
-  work item to `in_progress`.
+- **Whether a second verb is wanted at all** — most tools of this shape have
+  none, because you switch rather than clear.
 
 ## References
 
