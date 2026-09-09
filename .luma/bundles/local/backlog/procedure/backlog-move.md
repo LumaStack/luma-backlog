@@ -60,16 +60,21 @@ maintainer sent it back to `todo` because no work had been done on it. **This
 procedure already said not to**, which is the evidence that saying it is not
 enough — see the note at the end of this section.
 
-### Three scenarios, and the fewest questions that tell them apart
+### Two scenarios, and the fewest questions that tell them apart
 
 | what somebody wants | what to do |
 | --- | --- |
 | **stop at each gate and answer its question** | walk it, one rung at a time |
 | **the gates are worthless for this one; go where they know is best** | take them there, having warned once |
-| **they have not thought about it** | judge it, and ask only where judging fails |
 
-**Asking which scenario this is, every time, is its own failure.** The goal is
-the fewest questions that establish it — often none, because the work says so.
+**Work out which one you are in with as few questions as possible — often
+none**, because the work says so. Asking every time is its own failure: it
+spends a turn on something usually visible, and it teaches people that the tool
+needs handling.
+
+**Somebody who has not thought about it yet is not a third scenario.** They are
+the ordinary case, and the rest of this section is what to do about them — judge
+it, coach where it is worth coaching, and ask only where judging fails.
 
 ### Some gates are always worth stopping at, and some are not
 

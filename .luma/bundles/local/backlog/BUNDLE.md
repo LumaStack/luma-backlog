@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.28.0
+version: 0.28.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.28.1` — **two scenarios, not three.**
+
+A requirement was written up as a case. *Ask the fewest questions that tell
+them apart* governs both scenarios; it is not a third one. Somebody who has not
+thought about it yet is the ordinary case, and the section already says what to
+do about them.
 
 `0.28.0` — **how many rungs at a time, and where to stop.**
 
