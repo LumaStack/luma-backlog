@@ -7,8 +7,13 @@ description: Change where a work item sits on the workflow ladder — select it 
 # Move a work item along the workflow
 
 ```
-luma-backlog set <ref> workflow_status=<status>
+luma-backlog transition <ref> <status>
 ```
+
+**`set` no longer accepts `workflow_status`**, and refuses it naming this
+command. A status change writes rank too, and the destination rung may require
+things a field write cannot check — so it is an operation, the way `rank`
+already is. `move` is an alias and never a name (`spec.md` §9.2).
 
 **That is every move except closing.** Closing is a different command with its
 own refusals and its own vocabulary — it is below, and nothing here applies to
@@ -29,7 +34,7 @@ forcing are the ones that prevent a false record.
 **Status and rank are written together.** You never write `rank` yourself —
 `set` refuses the field — and no command will write one without the other, so a
 record where the two disagree cannot be produced by using the tool (ADR-0005).
-That holds for `set workflow_status=…` and for `close` alike.
+That holds for `transition` and for `close` alike.
 
 **Where a move implies a field, the move writes it — it does not refuse.**
 Entering `in_progress` means the record is no longer a draft, so the move sets
@@ -510,20 +515,54 @@ false statuses on the way.
 
 ## What each rung asks for
 
-| by | what | how hard |
-| --- | --- | --- |
-| `unprepared` | `kind` set; `idea` resolved to something else | strongly encouraged |
-| `unprepared` | two readers share one understanding of the problem | the gate criterion |
-| `prepared` | outcomes exist and are effective | strongly encouraged |
-| `todo` | outcomes exist | checked at the gate |
-| `todo` | no longer a draft | warned |
-| `in_progress` | `stage` is at least `provisional` | written by the move |
-| `in_progress` | an owner | *settled by ADR-0008, unbuilt — no field, and no `take`* |
-| `closed` as `completed` | every live outcome proven | refused otherwise |
-| `closed` | every task resolved | warned |
-| `closed` | `stage` becomes `stable` | written by the move |
+**Three strengths and nothing else: allowed, warned, refused.** A refusal always
+takes `--force`, and forcing is recorded.
 
-**Everything else observes.** The tool refuses in two places — `close …
-completed` without proven outcomes, and where compliance or security exposure
-makes proceeding unbounded in cost. That is the whole refusal surface, and it is
-deliberately small.
+| leaving or reaching | what | how hard | built |
+| --- | --- | --- | --- |
+| leaving `captured` | `kind` is not `idea` | **refused** — `--force` | ✔ |
+| leaving `captured` | two readers share one understanding | the gate criterion — no machine can check it | — |
+| leaving `preparing` | outcomes and tasks exist | **warned** | ✔ |
+| `prepared` | outcomes exist and are effective | strongly encouraged | — |
+| `todo` | outcomes exist | **warned** — committing before defining is a bad habit, not a thing to be stopped from doing | — |
+| reaching `in_progress` | at least one outcome exists | **refused** — `--force` | ✔ |
+| reaching `in_progress` | `stage` is at least `provisional` | written by the move | ✘ WORK-0075 |
+| reaching `in_progress` | an owner | *settled by ADR-0008, unbuilt — no field, and no `take`* | ✘ |
+| leaving `closed` | a reason is given | **warned** — nothing else records a reopen | ✔ |
+| `closed` as `completed` | every live outcome proven | **refused** — `--force` | ✔ refusal, ✘ force (WORK-0086) |
+| `closed` | every task resolved | warned | ✘ |
+| `closed` | `stage` becomes `stable` | written by the move | ✘ WORK-0075 |
+
+**The refusal surface is three checks and one judgement call**, and it is
+deliberately small: leaving the pile as an idea, starting with no outcomes,
+closing as completed over an unproven one — plus proceeding where compliance or
+security exposure makes the cost unbounded. **Everything else observes.**
+
+**Why those three and nothing more.** Each one stops a record that would
+otherwise say something untrue about itself: an idea filed as chosen work, work
+in flight that nobody can tell is finished, and a completion the evidence
+contradicts. **A refusal on anything less than that is the tool holding an
+opinion about how work gets done**, which `spec.md` §5.0 says it does not.
+
+## Forcing, and the reason
+
+**`--force` proceeds past a refusal, says so, and writes it down.** A forced
+crossing appends `FORCED <from> → <to>: <what was overridden>` to the work
+item's journal, whether or not a reason was given.
+
+**Announcing is for whoever is at the terminal; the journal is for whoever asks
+later.** How often work starts undefined, and whether it cost anything, is not
+knowable at the moment of the force — which is the same reason a skipped gate
+gets a line.
+
+**`--force` with nothing to override records nothing.** It is not a mode.
+
+**`--reason` is optional and goes to the journal**, naming the crossing it
+explains. Expected on a reopen and nowhere else: everywhere else the answer is
+usually the same, and a prompt whose answer is always the same teaches people to
+type past it.
+
+> **Later, and deliberately not now:** requiring a reason for some crossings,
+> configured per project, because organizations care to different degrees.
+> Making an optional flag mandatory is breaking (`spec.md` §9.9); requiring it
+> *conditionally* is configuration, which is the cheaper door.

@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.30.1
+version: 0.31.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,18 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.31.0` — **the ladder has a command, and the strengths are real.**
+
+`transition` replaces `set workflow_status=`, which now refuses and says so.
+The rung table is rewritten around three strengths — allowed, warned, refused —
+with a column saying which rows are actually built, because six of twelve are
+not.
+
+The refusal surface is three checks and one judgement call, and the reason they
+qualify is stated: each stops a record that would say something untrue about
+itself. Every refusal takes `--force`, and forcing is announced *and* journaled,
+because how often it happens is not knowable at the moment it happens.
 
 `0.30.1` — **every gate is crossed; what speed saves is the turn.**
 

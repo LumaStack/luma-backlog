@@ -288,7 +288,7 @@ is neither.
 | Creating a work item | `work-item new` |
 | Creating an outcome | `outcome new --work-item <ref>` |
 | Creating a task | `task new --work-item <ref>` |
-| Moving between columns | `work-item set <ref> workflow_status=<value> --if-unchanged <hash>` |
+| Moving between columns | `transition <ref> <status> --if-unchanged <hash>` |
 | Ranking within a column | `work-item rank <ref> --before <ref>` |
 | One visible column beside the detail | **view state** — an arrangement, not a capability |
 | Loading screen | **view state** |
