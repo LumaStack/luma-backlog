@@ -64,12 +64,17 @@ enough — see the note at the end of this section.
 
 | what somebody wants | what to do |
 | --- | --- |
-| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it |
 | **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it |
 | **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
 
+**They are ordered by speed, and the break comes last.** Reading down the table
+is reading from slowest to fastest — and the third row is fastest **because** it
+stops crossing gates, which is the whole distinction the rest of this section
+turns on.
+
 **Fast is not the same as skipping, and confusing the two is how a gate goes
-missing.** The first row crosses **every** gate; it just does not linger at any
+missing.** The middle row crosses **every** gate; it just does not linger at any
 of them. An agent reading *be quick* as *skip preparing* has turned what was
 asked for into something nobody said, and it will look like efficiency in the
 transcript.

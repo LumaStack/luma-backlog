@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.29.1
+version: 0.29.2
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.29.2` — **ordered by speed, with the break last.**
+
+Crawl, then fast within protocol, then fast by abandoning it. Reading down the
+table now reads slowest to fastest, which makes the point the section argues
+visible in its shape: the third row is fastest *because* it stops crossing
+gates.
 
 `0.29.1` — **the skip is journaled so it can be retrospected.**
 
