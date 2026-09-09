@@ -10,7 +10,7 @@ import (
 func newRankCommand(a *App) *cobra.Command {
 	var (
 		before, after string
-		top, bottom   bool
+		first, last   bool
 	)
 
 	cmd := &cobra.Command{
@@ -24,17 +24,17 @@ func newRankCommand(a *App) *cobra.Command {
 			"field for the same reason.",
 		Args:         cobra.ExactArgs(1),
 		SilenceUsage: true,
-		Example: "  luma-backlog work-item rank WORK-0031 --top\n" +
+		Example: "  luma-backlog work-item rank WORK-0031 --first\n" +
 			"  luma-backlog work-item rank WORK-0031 --before WORK-0022",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			req := app.RankRequest{Ref: args[0]}
 			set := 0
 			switch {
-			case top:
-				req.Where, set = app.RankTop, set+1
+			case first:
+				req.Where, set = app.RankFirst, set+1
 			}
-			if bottom {
-				req.Where, set = app.RankBottom, set+1
+			if last {
+				req.Where, set = app.RankLast, set+1
 			}
 			if before != "" {
 				req.Where, req.Neighbor, set = app.RankBefore, before, set+1
@@ -43,7 +43,7 @@ func newRankCommand(a *App) *cobra.Command {
 				req.Where, req.Neighbor, set = app.RankAfter, after, set+1
 			}
 			if set > 1 {
-				return usageErr("pass one of --top, --bottom, --before or --after")
+				return usageErr("pass one of --first, --last, --before or --after")
 			}
 
 			s, err := open(a)
@@ -60,8 +60,8 @@ func newRankCommand(a *App) *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().BoolVar(&top, "top", false, "first at its status")
-	cmd.Flags().BoolVar(&bottom, "bottom", false, "last at its status")
+	cmd.Flags().BoolVar(&first, "first", false, "first at its status")
+	cmd.Flags().BoolVar(&last, "last", false, "last at its status")
 	cmd.Flags().StringVar(&before, "before", "", "immediately before this record")
 	cmd.Flags().StringVar(&after, "after", "", "immediately after this record")
 	return cmd

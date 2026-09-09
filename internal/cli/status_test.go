@@ -11,7 +11,7 @@ import (
 func TestAStatusChangeRewritesTheRank(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "work-item", "rank", "WORK-0001", "--bottom")
+	run(t, app, "work-item", "rank", "WORK-0001", "--last")
 
 	_, before, _ := run(t, app, "show", "WORK-0001", "--json")
 	if !strings.Contains(before, "010.") {
@@ -30,7 +30,7 @@ func TestAStatusChangeRewritesTheRank(t *testing.T) {
 func TestClosingRewritesTheRank(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "work-item", "rank", "WORK-0001", "--bottom")
+	run(t, app, "work-item", "rank", "WORK-0001", "--last")
 	run(t, app, "work-item", "close", "WORK-0001", "canceled")
 
 	_, out, _ := run(t, app, "show", "WORK-0001", "--json")
@@ -47,7 +47,7 @@ func TestAdvancingInOrderPreservesOrder(t *testing.T) {
 		run(t, app, "work-item", "new", title)
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
-		run(t, app, "work-item", "rank", ref, "--bottom")
+		run(t, app, "work-item", "rank", ref, "--last")
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
 		run(t, app, "work-item", "transition", ref, "todo")

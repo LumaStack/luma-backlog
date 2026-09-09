@@ -12,7 +12,7 @@ func TestRankSeedsAndAppends(t *testing.T) {
 		run(t, app, "work-item", "new", title)
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
-		if code, _, e := run(t, app, "work-item", "rank", ref, "--bottom"); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "rank", ref, "--last"); code != ExitOK {
 			t.Fatalf("%s: exit %d: %s", ref, code, e)
 		}
 	}
@@ -30,11 +30,11 @@ func TestRankMovesWithoutDisturbingNeighbors(t *testing.T) {
 		run(t, app, "work-item", "new", title)
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
-		run(t, app, "work-item", "rank", ref, "--bottom")
+		run(t, app, "work-item", "rank", ref, "--last")
 	}
 	_, before, _ := run(t, app, "show", "WORK-0002", "--json")
 
-	run(t, app, "work-item", "rank", "WORK-0003", "--top")
+	run(t, app, "work-item", "rank", "WORK-0003", "--first")
 	_, out, _ := run(t, app, "work-item", "list")
 	if order(out) != "Charlie Alpha Bravo" {
 		t.Errorf("order = %q", order(out))
@@ -52,7 +52,7 @@ func TestRankBeforeAndAfter(t *testing.T) {
 		run(t, app, "work-item", "new", title)
 	}
 	for _, ref := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
-		run(t, app, "work-item", "rank", ref, "--bottom")
+		run(t, app, "work-item", "rank", ref, "--last")
 	}
 	run(t, app, "work-item", "rank", "WORK-0003", "--before", "WORK-0001")
 	_, out, _ := run(t, app, "work-item", "list")
@@ -72,7 +72,7 @@ func TestUnrankedRecordsSortLast(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 	run(t, app, "work-item", "new", "Zulu")
-	run(t, app, "work-item", "rank", "WORK-0002", "--top")
+	run(t, app, "work-item", "rank", "WORK-0002", "--first")
 
 	_, out, _ := run(t, app, "work-item", "list")
 	if order(out) != "Zulu Alpha" {
@@ -102,7 +102,7 @@ func TestRankAgainstAnotherStatusIsRefused(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 	run(t, app, "work-item", "new", "Bravo")
-	run(t, app, "work-item", "rank", "WORK-0002", "--bottom")
+	run(t, app, "work-item", "rank", "WORK-0002", "--last")
 	run(t, app, "work-item", "transition", "WORK-0002", "todo")
 
 	code, _, errOut := run(t, app, "work-item", "rank", "WORK-0001", "--before", "WORK-0002")

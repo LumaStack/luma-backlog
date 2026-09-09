@@ -180,3 +180,23 @@ func TestMoveIsAnAliasAndNotAName(t *testing.T) {
 		t.Errorf("transition is missing from help:\n%s", help)
 	}
 }
+
+// Only work items carry a workflow status or a rank, so the noun adds a word
+// and removes no ambiguity. Reaching rank only under the noun is why it read as
+// missing to somebody who went looking for it.
+func TestTransitionAndRankAreReachableWithoutTheNoun(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	if code, _, e := run(t, app, "transition", "WORK-0001", "todo"); code != ExitOK {
+		t.Errorf("transition is not reachable at the top level: %s", e)
+	}
+	if code, _, e := run(t, app, "rank", "WORK-0001", "--first"); code != ExitOK {
+		t.Errorf("rank is not reachable at the top level: %s", e)
+	}
+	// The same operation, not a second implementation.
+	_, out, _ := run(t, app, "show", "WORK-0001", "--json")
+	if !strings.Contains(out, `"workflow_status": "todo"`) {
+		t.Errorf("the top-level form did not write the status:\n%s", out)
+	}
+}

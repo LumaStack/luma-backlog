@@ -110,6 +110,14 @@ func newRootCommand(app *App) *cobra.Command {
 	root.AddCommand(inGroup(newShowCommand(app), groupCore))
 	root.AddCommand(inGroup(newSetCommand(app), groupCore))
 
+	// `transition` and `rank` are `work-item transition` and `work-item rank`,
+	// for the same reason `list` is below: only work items carry a workflow
+	// status or a rank, so the noun adds a word and removes no ambiguity. It is
+	// also the pair typed most often, and `rank` reading as absent because it
+	// was only reachable under the noun is the observed cost of not doing this.
+	root.AddCommand(inGroup(newTransitionCommand(app), groupCore))
+	root.AddCommand(inGroup(newRankCommand(app), groupCore))
+
 	// `list` is `work-item list`. The tool is called backlog; listing the
 	// backlog means listing work items, which is the reading of the command
 	// name and the overwhelmingly common case.

@@ -86,7 +86,7 @@ func TestAppendingPastTheCeilingBisects(t *testing.T) {
 	}
 }
 
-// --top allocates below the current minimum, because ascending order is the
+// --first allocates below the current minimum, because ascending order is the
 // work order and a higher number is a lower rank (ADR-0005).
 func TestTopAllocatesBelowTheMinimum(t *testing.T) {
 	p, err := Between("", "0010.000")

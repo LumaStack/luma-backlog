@@ -114,7 +114,7 @@ func Between(before, after Position) (Position, error) {
 
 	case before == "":
 		// Nothing above: step below the first, or bisect toward zero when
-		// there is no room. --top allocates a key *below* the current minimum,
+		// there is no room. --first allocates a key *below* the current minimum,
 		// because ascending order is the work order (ADR-0005).
 		hi, err := parsePosition(after)
 		if err != nil {

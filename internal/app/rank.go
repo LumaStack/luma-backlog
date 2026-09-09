@@ -6,12 +6,16 @@ import (
 	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
-// Where a record is being moved to. Exactly one is set.
+// Where a record goes in the order. Exactly one is set.
+//
+// Named by sequence rather than by the screen: --first and --last stay correct
+// when a listing is drawn in reverse, where --top and --bottom would invert
+// with it (spec.md §9.6).
 type RankPosition int
 
 const (
-	RankTop RankPosition = iota + 1
-	RankBottom
+	RankFirst RankPosition = iota + 1
+	RankLast
 	RankBefore
 	RankAfter
 )
@@ -38,7 +42,7 @@ type RankResult struct {
 // a decimal ordering key is what buys that (§9.6).
 func (s *Session) Rank(req RankRequest) (*RankResult, error) {
 	if req.Where == 0 {
-		return nil, UsageError("say where: --top, --bottom, --before <ref>, or --after <ref>")
+		return nil, UsageError("say where: --first, --last, --before <ref>, or --after <ref>")
 	}
 	if (req.Where == RankBefore || req.Where == RankAfter) && req.Neighbor == "" {
 		return nil, UsageError("--before and --after need a record to sit against")
@@ -130,13 +134,13 @@ func (s *Session) rankedPeers(moving corpus.Item, status string) ([]peer, error)
 
 func (s *Session) positionFor(req RankRequest, peers []peer) (corpus.Position, error) {
 	switch req.Where {
-	case RankTop:
+	case RankFirst:
 		if len(peers) == 0 {
 			return corpus.Between("", "")
 		}
 		return corpus.Between("", peers[0].pos)
 
-	case RankBottom:
+	case RankLast:
 		if len(peers) == 0 {
 			return corpus.Between("", "")
 		}
