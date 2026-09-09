@@ -9,6 +9,7 @@ import (
 
 func newTransitionCommand(a *App) *cobra.Command {
 	var ifUnchanged, reason string
+	var force bool
 
 	cmd := &cobra.Command{
 		Use:   "transition <work-item> <status>",
@@ -39,6 +40,7 @@ func newTransitionCommand(a *App) *cobra.Command {
 				To:          args[1],
 				IfUnchanged: ifUnchanged,
 				Reason:      reason,
+				Force:       force,
 			})
 			if err != nil {
 				return err
@@ -57,6 +59,8 @@ func newTransitionCommand(a *App) *cobra.Command {
 		},
 	}
 
+	cmd.Flags().BoolVar(&force, "force", false,
+		"start work with no outcomes anyway")
 	cmd.Flags().StringVar(&reason, "reason", "",
 		"why, in your words --- appended to the work item's journal")
 	cmd.Flags().StringVar(&ifUnchanged, "if-unchanged", "",

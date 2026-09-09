@@ -65,6 +65,8 @@ func TestSetRefusesToUnsetRank(t *testing.T) {
 func TestTransitionReachesEveryRungBelowTerminal(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
+	// in_progress refuses without one, which is its own test below.
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
 
 	for _, status := range []string{"unprepared", "preparing", "prepared", "todo", "in_progress"} {
 		if code, _, e := run(t, app, "work-item", "transition", "WORK-0001", status); code != ExitOK {
@@ -285,5 +287,132 @@ func TestAnOrdinaryCrossingIsNotAdvisedAbout(t *testing.T) {
 	_, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
 	if strings.TrimSpace(errOut) != "" {
 		t.Errorf("an ordinary crossing said something:\n%s", errOut)
+	}
+}
+
+// The one refusal a transition carries: starting work nobody can tell is
+// finished. Deliberately narrow --- not "are the outcomes good" but "does one
+// exist", because any opinion beyond zero would be the tool holding a view
+// about how work gets defined.
+func TestStartingWithNoOutcomesIsRefused(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "in_progress")
+	if code != ExitRefused {
+		t.Errorf("exit = %d, want %d", code, ExitRefused)
+	}
+	if !strings.Contains(errOut, "outcome new") {
+		t.Errorf("the refusal did not say how to fix it:\n%s", errOut)
+	}
+
+	_, out, _ := run(t, app, "show", "WORK-0001", "--json")
+	if strings.Contains(out, `"workflow_status": "in_progress"`) {
+		t.Error("a refused transition started the work anyway")
+	}
+}
+
+// --force proceeds, and says so rather than going quiet: a forced start is
+// exactly the thing a later reader needs to know happened.
+func TestStartingWithNoOutcomesCanBeForced(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "in_progress", "--force")
+	if code != ExitOK {
+		t.Fatalf("--force did not proceed: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "forced") {
+		t.Errorf("a forced start was silent:\n%s", errOut)
+	}
+}
+
+// An outcome is all it takes. The bar is zero, not quality.
+func TestStartingWithOneOutcomeIsAllowed(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+
+	if code, _, e := run(t, app, "transition", "WORK-0001", "in_progress"); code != ExitOK {
+		t.Fatalf("a work item with an outcome was refused: %s", e)
+	}
+}
+
+// Leaving the shaping rung is where the work was supposed to be worked out.
+// Warned rather than refused: not all work is equal, and some is trivial.
+func TestLeavingPreparingWithoutOutcomesOrTasksWarns(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "transition", "WORK-0001", "preparing")
+
+	code, out, errOut := run(t, app, "transition", "WORK-0001", "prepared")
+	if code != ExitOK {
+		t.Fatalf("leaving preparing was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "no outcomes and no tasks") {
+		t.Errorf("leaving preparing unshaped was not warned about:\n%s", errOut)
+	}
+	if strings.Contains(out, "no outcomes") {
+		t.Errorf("the warning reached stdout:\n%s", out)
+	}
+}
+
+// It names what is actually missing rather than both every time.
+func TestLeavingPreparingNamesOnlyWhatIsMissing(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "transition", "WORK-0001", "preparing")
+
+	_, _, errOut := run(t, app, "transition", "WORK-0001", "prepared")
+	if !strings.Contains(errOut, "no tasks") {
+		t.Errorf("the missing half was not named:\n%s", errOut)
+	}
+	if strings.Contains(errOut, "no outcomes") {
+		t.Errorf("it complained about outcomes that exist:\n%s", errOut)
+	}
+}
+
+// An idea is a classification on its way to something else. Carrying one past
+// the first gate files unformed work beside formed work.
+func TestLeavingThePileAsAnIdeaIsRefused(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "idea")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
+	if code != ExitRefused {
+		t.Errorf("exit = %d, want %d", code, ExitRefused)
+	}
+	if !strings.Contains(errOut, "kind=") {
+		t.Errorf("the refusal did not say how to fix it:\n%s", errOut)
+	}
+}
+
+// Every refusal takes --force, and says it was forced.
+func TestLeavingThePileAsAnIdeaCanBeForced(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "idea")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared", "--force")
+	if code != ExitOK {
+		t.Fatalf("--force did not proceed: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "forced") {
+		t.Errorf("a forced selection was silent:\n%s", errOut)
+	}
+}
+
+// A kind that is not idea passes freely --- the refusal is about ideas, not
+// about classification being present.
+func TestLeavingThePileWithARealKindIsSilent(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "defect")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
+	if code != ExitOK {
+		t.Fatalf("a defect was refused: %s", errOut)
+	}
+	if strings.TrimSpace(errOut) != "" {
+		t.Errorf("an ordinary selection said something:\n%s", errOut)
 	}
 }

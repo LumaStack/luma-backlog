@@ -23,6 +23,10 @@ type TransitionRequest struct {
 	// IfUnchanged is the hash the caller last saw. When set, a write that
 	// would clobber a change it never saw is refused rather than applied.
 	IfUnchanged string
+	// Force proceeds past the one refusal a transition carries. Never set by
+	// default, and never set on a caller's behalf: overriding a refusal is a
+	// decision that belongs to whoever is accountable (ADR-0008).
+	Force bool
 	// Reason is why, in the caller's words. Optional, and appended to the work
 	// item's journal rather than stored on the record.
 	//
@@ -82,6 +86,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 			it.Path, shortHash(req.IfUnchanged), shortHash(it.Hash()))
 	}
 
+	var advice []string
 	from := it.Status(s.Config.DefaultStatusFor(it.Type()))
 	terminal := s.Config.TerminalStatusFor(it.Type())
 	reopening := terminal != "" && from == terminal
@@ -100,6 +105,59 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 		return nil, UsageError(
 			"%q is terminal — use: work-item close %s <completed|rejected|canceled|superseded>",
 			req.To, req.Ref)
+	}
+
+	// Two refusals, both narrow, and both take --force. A refusal that cannot
+	// be overridden is the tool holding an opinion; one that can is the tool
+	// making somebody say they meant it (spec.md §5.0).
+	counts, err := s.outcomeCounts(it)
+	if err != nil {
+		return nil, err
+	}
+	kind, _ := it.Record.Get("kind")
+
+	// Leaving the pile with `kind: idea` still on it. The type defines an idea
+	// as "a classification that becomes one of the others" --- transitional by
+	// construction --- so carrying one past the first gate files unformed work
+	// beside formed work with nothing marking the difference.
+	if s.leavesThePile(it, from, req.To) && kind == "idea" {
+		if !req.Force {
+			return nil, RefusedError(
+				"%s is still an idea, and an idea is a classification on its way to "+
+					"something else.\n\nResolve it --- set %s kind=<defect|request|inquiry|change> "+
+					"--- or pass --force.", req.Ref, req.Ref)
+		}
+		advice = append(advice,
+			"selected "+req.Ref+" while it is still an idea, forced --- unformed work is now queued beside formed work")
+	}
+
+	// Starting work nobody can tell is finished. Deliberately "does one exist"
+	// rather than "are they good": any opinion beyond zero would be the tool
+	// holding a view about how work gets defined.
+	if req.To == s.startedStatusFor(it) && counts == 0 {
+		if !req.Force {
+			return nil, RefusedError(
+				"%s has no outcomes, so nothing says when it is finished.\n\n"+
+					"Write one --- outcome new \"<what must be true>\" -w %s --- or pass --force.",
+				req.Ref, req.Ref)
+		}
+		advice = append(advice,
+			"started "+req.Ref+" with no outcomes, forced --- nothing says when it is finished")
+	}
+
+	// Leaving the shaping rung is where the work is supposed to have been
+	// worked out. Warned rather than refused: not all work is equal, and some
+	// is trivial or urgent.
+	if from == s.shapingStatusFor(it) {
+		tasks, err := s.taskCount(it)
+		if err != nil {
+			return nil, err
+		}
+		if missing := missingWork(counts, tasks); missing != "" {
+			advice = append(advice,
+				"leaving "+s.shapingStatusFor(it)+" with "+missing+" --- "+req.Ref+
+					" was shaped without them, and whoever picks it up pays for that")
+		}
 	}
 
 	if err := s.applyStatus(it, req.To); err != nil {
@@ -127,10 +185,9 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Nothing is expected of the ordinary rungs. `captured` to `unprepared`
 	// always has the same answer, and a prompt whose answer is always the same
 	// teaches people to type past it.
-	var advice []string
 	if reopening && strings.TrimSpace(req.Reason) == "" {
 		advice = append(advice,
-			"reopening "+it.Name()+" and nothing records why --- pass --reason; "+
+			"reopening "+req.Ref+" and nothing records why --- pass --reason; "+
 				"the closed entry stays, and no field holds the un-ending")
 	}
 
@@ -157,4 +214,80 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 		Journaled: journaled,
 		Advice:    advice,
 	}, nil
+}
+
+// outcomeCounts is how many live outcomes a work item has. Zero is the only
+// number this file cares about.
+func (s *Session) outcomeCounts(it corpus.Item) (int, error) {
+	c, err := corpus.CompletionOf(s.Backlog, it.Slug())
+	if err != nil {
+		return 0, FailureError("%w", err)
+	}
+	return c.Counts().Live, nil
+}
+
+// startedStatusFor is the rung that means somebody is working on it.
+//
+// Derived as the one before terminal, the same way TerminalStatusFor is
+// derived as the last: the ladder is ordered, so the rung nothing follows but
+// the ending is where work is being done. A project that renames `in_progress`
+// keeps working.
+//
+// **This is the weakest inference in the file, and it is worth saying so.**
+// `workflow-status.md` is explicit that the tool attaches no meaning to any
+// value — so nothing actually tells it which rung means started, and a project
+// that adds a rung between `in_progress` and `closed` moves this silently. The
+// honest fix is for the ladder to say which rung is which, and that does not
+// exist yet.
+func (s *Session) startedStatusFor(it corpus.Item) string {
+	l := s.Config.LadderFor(it.Type())
+	if len(l.Statuses) < 2 {
+		return ""
+	}
+	return l.Statuses[len(l.Statuses)-2]
+}
+
+
+// leavesThePile reports a crossing of the first gate: out of the rung where
+// things wait to be judged, into the pipeline where they have been chosen.
+func (s *Session) leavesThePile(it corpus.Item, from, to string) bool {
+	pile := s.Config.DefaultStatusFor(it.Type())
+	return from == pile && to != pile
+}
+
+// shapingStatusFor is the rung where the work gets worked out.
+//
+// Positional, and carrying the same weakness as startedStatusFor: nothing in
+// the ladder says which rung shapes work, so this counts from the pile. The
+// default ladder puts it third --- captured, unprepared, preparing --- and a
+// project that inserts a rung before it moves this silently.
+func (s *Session) shapingStatusFor(it corpus.Item) string {
+	l := s.Config.LadderFor(it.Type())
+	if len(l.Statuses) < 3 {
+		return ""
+	}
+	return l.Statuses[2]
+}
+
+// taskCount is how many tasks a work item has. Zero is the only number that
+// matters here.
+func (s *Session) taskCount(it corpus.Item) (int, error) {
+	items, _, err := corpus.List(s.Backlog, corpus.Filter{Unit: corpus.Task, WorkItem: it.Slug()})
+	if err != nil {
+		return 0, FailureError("%w", err)
+	}
+	return len(items), nil
+}
+
+// missingWork names what a shaped work item does not have, or nothing.
+func missingWork(outcomes, tasks int) string {
+	switch {
+	case outcomes == 0 && tasks == 0:
+		return "no outcomes and no tasks"
+	case outcomes == 0:
+		return "no outcomes"
+	case tasks == 0:
+		return "no tasks"
+	}
+	return ""
 }
