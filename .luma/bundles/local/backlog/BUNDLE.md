@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.27.0
+version: 0.28.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,18 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.28.0` — **how many rungs at a time, and where to stop.**
+
+Not in one burst, unless somebody said to. `preparing` is the gate worth
+stopping at and `unprepared` is the one to blow past. Fast-tracking is
+legitimate and simplicity is only one of its reasons. Where preparing is plainly
+needed, coach once, accept the answer, and journal the skip — because whether
+the process was wrong, the person was right, or it cost something later is not
+knowable at the moment of the skip.
+
+Written from a measured failure rather than a worry: an agent ran WORK-0074 up
+three rungs in three commands and the maintainer sent it back.
 
 `0.27.0` — **a finished work item is where a session clears.**
 

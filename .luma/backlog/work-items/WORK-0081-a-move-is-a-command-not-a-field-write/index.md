@@ -155,6 +155,45 @@ belongs in preparing rather than in review.
 exist**, and the exit codes are already allocated: `0` ok, `1` unexpected, `2`
 usage, `3` not found, `4` conflict, `5` refused.
 
+### Making it harder to skip steps: syntax is the wrong lever
+
+**The want is real and the obvious mechanisms do not serve it.** Two shapes were
+raised --- `move <ref> --advance`, which can only go one rung, and
+`move <ref> <status>`, which names a destination and can therefore jump four.
+
+**`--advance` cannot be the only form.** `backlog-move` has a whole *Sending
+work back* section --- a `prepared` item that is not prepared returns to
+`preparing`, a `todo` nobody will reach returns to `prepared` --- and
+*"leaving it wrong is worse"*. **Going backwards needs a named destination**, so
+`<status>` exists whatever else does.
+
+**And neither shape catches the failure this is aimed at.** On 2026-09-09 an
+agent took WORK-0074 from `preparing` to `in_progress` **one rung at a time**,
+in rung order, and did no preparation. `--advance` would have permitted every
+one of those. A refusal on multi-rung jumps would have permitted every one of
+them. **The failure is crossing a gate without answering it, not crossing
+several at once**, and syntax cannot tell those apart.
+
+**The lever that does work is already named as missing.** `backlog-move`, on the
+first gate: *"**Nothing records the reasoning for crossing today, and nothing
+records a reversal.**"*
+
+**So the anti-skip mechanism is to make a gate crossing carry its answer** ---
+the `prepared` test is *name a reason this cannot start*, and a crossing that
+cannot produce one has not happened. That is a check in the tier system above
+rather than a flag, it fills a gap the procedure already admits to, and it
+records something a reader wants later anyway.
+
+**Scope it to the two gates, not to every rung.** Two prompts per work item is
+proportionate --- the gates are where the expensive decisions are --- and
+requiring prose on all six moves is the cumbersomeness that gets a tool routed
+around.
+
+**Leaning: `move <ref> <status>` as the only form**, with the effort spent on
+what a gate crossing has to carry. **`--advance` is convenience, and convenience
+is what let the ladder be raced in the first place.** Recorded as a leaning
+because the maintainer raised both shapes and has not chosen.
+
 ### One contradiction has to be settled before the table can be implemented
 
 **`backlog-move` says the refusal surface has exactly two members:** *"The tool
