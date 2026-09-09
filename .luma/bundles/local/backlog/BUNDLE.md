@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.29.2
+version: 0.30.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,18 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.30.0` — **a gate whose question is already answered has been satisfied, not
+skipped.**
+
+Speeding through protocol may pass a gate where the answers are already in
+hand. That is not a skip, because the gate exists to get the question answered
+and it is. Passing a gate nobody has answered is the third row, whatever it gets
+called.
+
+*Already answered* is now the judgement to be honest about — the one an agent
+can make alone and be wrong about invisibly — so it has to be said out loud with
+where the answer came from.
 
 `0.29.2` — **ordered by speed, with the break last.**
 

@@ -65,19 +65,30 @@ enough — see the note at the end of this section.
 | what somebody wants | what to do |
 | --- | --- |
 | **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
-| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it; skip gates if they already have the answers they need |
 | **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
 
 **They are ordered by speed, and the break comes last.** Reading down the table
-is reading from slowest to fastest — and the third row is fastest **because** it
-stops crossing gates, which is the whole distinction the rest of this section
-turns on.
+is reading from slowest to fastest — and the third row is fastest **because it
+stops answering the questions**, which is the whole distinction the rest of this
+section turns on. The other two both answer them; they differ only in how long
+they take about it.
 
-**Fast is not the same as skipping, and confusing the two is how a gate goes
-missing.** The middle row crosses **every** gate; it just does not linger at any
-of them. An agent reading *be quick* as *skip preparing* has turned what was
-asked for into something nobody said, and it will look like efficiency in the
-transcript.
+**A gate whose question is already answered has been satisfied, not skipped.**
+That is what lets the middle row move past one without breaking anything — the
+gate exists to get the question answered, and it is. Passing a gate whose
+question **nobody has answered** is the third row, whatever it gets called.
+
+**So fast is not the same as skipping, and confusing the two is how a gate goes
+missing.** The middle row still answers every gate — sometimes by noticing the
+answer is already there and saying so. An agent reading *be quick* as *skip
+preparing* has turned what was asked for into something nobody said, and it will
+look like efficiency in the transcript.
+
+**Which makes *already answered* the thing to be honest about.** It is the one
+judgement in this section an agent can make alone and be wrong about invisibly,
+so say what the answer is and where it came from — a sentence, not a claim that
+one exists.
 
 **Only the third row breaks protocol**, which is why it alone gets a warning and
 a journal line. The first two are both compliant and differ only in pace — so
