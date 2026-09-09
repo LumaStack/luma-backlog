@@ -98,3 +98,7 @@ from work items and outcomes and kept only for decisions is a complete result**
 - `docs/open-questions.md` §7 — derived conditions, and why they cannot decay.
 - `.luma/bundles/local/backlog/procedure/backlog-new.md` — *"two different
   status fields… they are unrelated."*
+- [[work-items/WORK-0075-a-move-does-not-write-the-stage-it-promises]] — the
+  concrete defect this inquiry decides the fate of: `backlog-move` promises the
+  move writes `stage` and nothing does. If `stage` is removed, that record
+  becomes deleting the promise rather than keeping it.
