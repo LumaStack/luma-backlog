@@ -35,6 +35,12 @@ I want to **always** capture the raw idea, which means:
   isn't going to make the agent work for a long time or require multiple turns.
   So that will be hard to figure out.
 
+**Recording this is the default, not a reward for having spare time.** Links,
+overlaps, duplicates, observations, opinions and recommendations get written
+down unless something stops them — and the only thing that stops them is cost,
+in quick capture alone: it is very time consuming, or it needs more than one
+turn. **Nothing else counts as a reason.**
+
 ## For normal capture
 
 *We should stop calling it thorough capture — just regular / normal / default,
@@ -50,3 +56,15 @@ versus quick.*
   ideas, we should never stop them.
 - During idea capturing we never want to stop or say no. We just want to observe
   problems and capture them below, so we can sort it out later.
+
+---
+
+## Related
+
+- [[work-items/WORK-0029-separate-quick-capture-from-thoughtful-capture]] —
+  separating the two modes, which is the split this record then writes rules
+  for. **Possibly a duplicate**: it is already `unprepared` where this is
+  `captured`, so whichever gets worked leaves the other stale.
+- [[work-items/WORK-0052-quick-capture-has-nowhere-to-put-a-long-thought]] — the
+  narrow case of the quick-capture tension above: what happens when the raw idea
+  itself is long, and the mode that must not spend turns is the one holding it.
