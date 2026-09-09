@@ -236,3 +236,54 @@ func TestTransitionWithoutAReasonWritesNoJournalLine(t *testing.T) {
 		t.Errorf("a crossing with no reason wrote to the journal anyway:\n%s", journal)
 	}
 }
+
+// Reopening is the one crossing that should always say why: the closed entry
+// keeps the ending and no field holds the un-ending. Strongly encouraged rather
+// than required --- it warns, the crossing happens, and stdout stays clean.
+func TestReopeningWithoutAReasonIsAdvisedAgainstButAllowed(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "work-item", "close", "WORK-0001", "canceled")
+
+	code, out, errOut := run(t, app, "transition", "WORK-0001", "todo")
+	if code != ExitOK {
+		t.Fatalf("reopening was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "why") {
+		t.Errorf("reopening without a reason was not advised against:\n%s", errOut)
+	}
+	if strings.Contains(out, "why") {
+		t.Errorf("advice reached stdout:\n%s", out)
+	}
+
+	_, shown, _ := run(t, app, "show", "WORK-0001", "--json")
+	if !strings.Contains(shown, `"workflow_status": "todo"`) {
+		t.Errorf("the reopen did not happen:\n%s", shown)
+	}
+}
+
+// With a reason, there is nothing to advise about.
+func TestReopeningWithAReasonIsSilent(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "work-item", "close", "WORK-0001", "canceled")
+
+	_, _, errOut := run(t, app, "transition", "WORK-0001", "todo",
+		"--reason", "the budget came back")
+	if strings.Contains(errOut, "why") {
+		t.Errorf("a reopen carrying a reason was advised against anyway:\n%s", errOut)
+	}
+}
+
+// The ordinary rungs expect nothing. captured to unprepared always has the same
+// answer, and a prompt whose answer is always the same teaches people to type
+// past it.
+func TestAnOrdinaryCrossingIsNotAdvisedAbout(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	_, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
+	if strings.TrimSpace(errOut) != "" {
+		t.Errorf("an ordinary crossing said something:\n%s", errOut)
+	}
+}

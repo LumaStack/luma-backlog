@@ -47,6 +47,9 @@ type TransitionResult struct {
 	Rank string
 	// Journaled is true when a reason was given and written.
 	Journaled bool
+	// Advice is what the caller should hear but is not stopped by. Rendered to
+	// stderr at exit 0: the crossing happened.
+	Advice []string
 }
 
 // Transition changes a work item's workflow status, writing status and rank
@@ -80,6 +83,8 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	}
 
 	from := it.Status(s.Config.DefaultStatusFor(it.Type()))
+	terminal := s.Config.TerminalStatusFor(it.Type())
+	reopening := terminal != "" && from == terminal
 
 	ladder := s.Config.LadderFor(it.Type())
 	if _, ok := ladder.Ordinal(req.To); !ok {
@@ -91,7 +96,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Reaching `closed` through here would bypass the outcome gate, the
 	// disposition, the `closed` event and the `--force` requirement — every
 	// check `close` exists to perform (spec.md §5.3.1).
-	if terminal := s.Config.TerminalStatusFor(it.Type()); req.To == terminal && terminal != "" {
+	if req.To == terminal && terminal != "" {
 		return nil, UsageError(
 			"%q is terminal — use: work-item close %s <completed|rejected|canceled|superseded>",
 			req.To, req.Ref)
@@ -112,6 +117,21 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	}
 	if err := s.Backlog.WriteFileAtomic(it.Path, out, 0o644); err != nil {
 		return nil, FailureError("%w", err)
+	}
+
+	// Reopening is the one crossing that should always say why, because
+	// nothing else records it: the `closed` list keeps the ending, and no
+	// field holds the un-ending. Strongly encouraged rather than required ---
+	// a project that wants the hard version can have it, and most do not.
+	//
+	// Nothing is expected of the ordinary rungs. `captured` to `unprepared`
+	// always has the same answer, and a prompt whose answer is always the same
+	// teaches people to type past it.
+	var advice []string
+	if reopening && strings.TrimSpace(req.Reason) == "" {
+		advice = append(advice,
+			"reopening "+it.Name()+" and nothing records why --- pass --reason; "+
+				"the closed entry stays, and no field holds the un-ending")
 	}
 
 	// The reason goes to the journal rather than onto the record. A work item's
@@ -135,5 +155,6 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 		To:        req.To,
 		Rank:      rank,
 		Journaled: journaled,
+		Advice:    advice,
 	}, nil
 }

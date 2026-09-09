@@ -48,6 +48,11 @@ func newTransitionCommand(a *App) *cobra.Command {
 			if res.Journaled {
 				fmt.Fprintf(cmd.OutOrStdout(), "journaled the reason\n")
 			}
+			// Advice goes to stderr at exit 0: the crossing happened, and
+			// stdout stays clean for a caller piping it.
+			for _, a := range res.Advice {
+				fmt.Fprintf(cmd.ErrOrStderr(), "luma-backlog: %s\n", a)
+			}
 			return nil
 		},
 	}
