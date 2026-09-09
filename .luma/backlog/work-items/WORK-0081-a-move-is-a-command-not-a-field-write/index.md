@@ -1,33 +1,33 @@
 ---
 type: work-item
 key: WORK-0081
-title: A move is a command, not a field write
+title: A transition is a command, not a field write
 workflow_status: preparing
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:04:31Z'}
-description: 'move becomes how a work item changes workflow_status, and set stops accepting the field — the way it already refuses rank. workflows will run during a move and set should not be carrying those; eventually a move may commit, branch, or talk to a database, all of which are wrong inside a field write. rank is already this shape and needs finishing: --above and --below as the neighbor flags, and reachable without typing work-item first.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:12:57Z'}
+description: 'transition becomes how a work item changes workflow_status, and set stops accepting the field — the way it already refuses rank. workflows will run during a transition and set should not be carrying those; eventually a transition may commit, branch, or talk to a database, all of which are wrong inside a field write. move is not a verb this interface has, except possibly as an alias. rank is already this shape and needs finishing: --top and --bottom become --first and --last, and it should be reachable without typing work-item first.'
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T19:45:47Z'}
 rank: 030.0010.000
 ---
 
-# A move is a command, not a field write
+# A transition is a command, not a field write
 
 ## The problem
 
-**Changing `workflow_status` through `set` is a field write, and a move is an
-operation.** The two are not the same thing and the gap is already costing.
+**Changing `workflow_status` through `set` is a field write, and a transition is
+an operation.** The two are not the same thing and the gap is already costing.
 
-**Workflows will run during a move**, and `set` should not be carrying them.
+**Workflows will run during a transition**, and `set` should not be carrying them.
 That is too much for a command whose whole job is *change the fields named and
 leave everything else alone*.
 
-**Eventually a move may commit, branch, or talk to a database.** None of those
+**Eventually a transition may commit, branch, or talk to a database.** None of those
 belong inside a field write.
 
 **The principle is already applied to `rank` and not to this.** `set` refuses
 the `rank` field, for the reason its own help gives: *"You say where; the tool
-chooses the ordering key."* A move is the same shape and got left behind.
+chooses the ordering key."* A transition is the same shape and got left behind.
 
 **And it is already producing defects.**
 [[work-items/WORK-0073-closing-through-set-skips-every-check-close-performs]] —
@@ -39,7 +39,7 @@ where that logic could live.
 
 ## What is being delivered
 
-**`move`**, as the way a work item changes `workflow_status`, and **`set`
+**`transition`**, as the way a work item changes `workflow_status`, and **`set`
 refusing the field.**
 
 **And `rank` finished**, since it is already this shape: `--above` and `--below`
@@ -47,7 +47,7 @@ as the neighbor flags, and reachable without typing `work-item` first.
 
 ## Out of scope
 
-**What a move should do besides write the field.** The gate checks, the `stage`
+**What a transition should do besides write the field.** The gate checks, the `stage`
 writes, hooks, commits and branching are why the command has to exist; **which
 of them ship is decided elsewhere** —
 [[work-items/WORK-0075-a-move-does-not-write-the-stage-it-promises]] for the
@@ -63,7 +63,7 @@ for anything touching git. This delivers **the place they can live**.
 
 - **`close` already exists and stays.** It has its own refusals and its own
   vocabulary, and `backlog-move` is explicit that *"closing is a different
-  command"*. `move` must not become a second way to close.
+  command"*. `transition` must not become a second way to close.
 - **Every interface is an adapter over one application layer**
   ([[records/decisions/ADR-0004-every-interface-is-an-adapter-over-one-application-layer]]),
   so the operation lands in `internal/app` and the command is a thin adapter
@@ -71,7 +71,7 @@ for anything touching git. This delivers **the place they can live**.
 - **Status and rank are written together** and no command writes one without the
   other
   ([[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]]).
-  `applyStatus` already does this and is the thing `move` should call.
+  `applyStatus` already does this and is the thing `transition` should call.
 - **Removals are breaking, additions are not** (`spec.md` §9.9). `set` refusing
   a field it accepts today is a removal, so it needs to say what to use instead
   rather than failing blankly.
@@ -88,7 +88,7 @@ unchanged. Everything below was added by the agent while capturing it.*
 **`internal/app/status.go:21` already holds the operation.** `applyStatus`
 resolves the ladder ordinal, finds the peers at the destination, computes the
 back position and writes `workflow_status` and `rank` together. **That is the
-move.** It is reachable only through `Set`, which is the whole defect.
+transition.** It is reachable only through `Set`, which is the whole defect.
 
 **So this is mostly a surfacing change rather than new logic** — an application
 operation and a command in front of it — and that is why the gate checks are out
@@ -120,7 +120,8 @@ preparation rather than discovering in review.
 
 ### Where the checks and balances are already defined
 
-**Both halves exist. Neither is wired to a move, because there is no move.**
+**Both halves exist. Neither is wired to a transition, because there is no
+transition command.**
 
 **The rules are `backlog-move`'s "What each rung asks for" table**, whose third
 column is the strength — and that is the checks-and-balances definition this
@@ -133,6 +134,8 @@ work has to implement. **It uses six wordings, not three:**
 | *checked at the gate* | 1 | refuse — but see below |
 | *refused otherwise* | 1 | refuse |
 | *written by the move* | 2 | not a check at all — a side effect (WORK-0075) |
+
+*The table's own wording still says "written by the move"; repointing it is one of the tasks.*
 | *the gate criterion* | 1 | two readers agreeing; no machine can check it |
 | *settled, unbuilt* | 1 | nothing yet — needs an assignee |
 
@@ -158,8 +161,9 @@ usage, `3` not found, `4` conflict, `5` refused.
 ### Making it harder to skip steps: syntax is the wrong lever
 
 **The want is real and the obvious mechanisms do not serve it.** Two shapes were
-raised --- `move <ref> --advance`, which can only go one rung, and
-`move <ref> <status>`, which names a destination and can therefore jump four.
+raised --- `transition <ref> --advance`, which can only go one rung, and
+`transition <ref> <status>`, which names a destination and can therefore jump
+four.
 
 **`--advance` cannot be the only form.** `backlog-move` has a whole *Sending
 work back* section --- a `prepared` item that is not prepared returns to
@@ -189,7 +193,7 @@ proportionate --- the gates are where the expensive decisions are --- and
 requiring prose on all six moves is the cumbersomeness that gets a tool routed
 around.
 
-**Leaning: `move <ref> <status>` as the only form**, with the effort spent on
+**Leaning: `transition <ref> <status>` as the only form**, with the effort spent on
 what a gate crossing has to carry. **`--advance` is convenience, and convenience
 is what let the ladder be raced in the first place.** Recorded as a leaning
 because the maintainer raised both shapes and has not chosen.

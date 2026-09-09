@@ -33,21 +33,33 @@ We will define **rank as work order**.
 
 ### The verb is `rank`, and it is the only way in
 
-`spec.md` §9.2 calls this `move`. **It is renamed to `rank`.**
+`spec.md` §9.2 called this `move` when this record was written. **It is renamed to `rank`.**
 
-In this specification "move" already means **relocating a record on disk**, and
-that is the operation the design most consistently forbids — §4.8.1 and §7.2.1
-(*"promotion copies; it never moves"*), §7.1 (moving changes what a record
-*is*), §9.2 and §9.10 (`archive` never moves anything), §10.4 (a status change
-never moves a file). Six places. Naming the board's most-used command after the
-one operation that never happens teaches the wrong word by repetition.
-
-`rank` also names the field it changes rather than a gesture, and survives if
-tasks are ever ranked.
+`rank` names the field it changes rather than a gesture, and survives if tasks
+are ever ranked. **Ranking and changing status are two axes** — this record's
+own finding — so the two verbs have to be distinguishable at a glance, and
+`move` is the generic word for both.
 
 ```
-work-item rank <ref> [--before <ref> | --after <ref> | --top | --bottom]
+work-item rank <ref> [--before <ref> | --after <ref> | --first | --last]
 ```
+
+> **Corrected 2026-09-09. The conclusion is unchanged; one argument for it is
+> not.**
+>
+> This record originally rejected `move` on the grounds that the word *"already
+> means relocating a record on disk"*, counting six places where the
+> specification used it that way. **That premise no longer holds.** `move` is
+> now not a verb this interface has at all: a status change is a
+> **`transition`**, repositioning a file on disk is a **relocation**, and
+> `spec.md` §9.2 carries the rule and its single alias exception.
+>
+> **`rank` stays `rank`**, on the two reasons above, which never depended on the
+> premise that changed.
+>
+> The flags are also updated: `--top` and `--bottom` become `--first` and
+> `--last`, because a name taken from a view inverts when the sort does while a
+> name taken from the sequence does not (`spec.md` §9.6).
 
 **`--at <n>` is deferred**
 ([[backlog/work-items/WORK-0021-rank-by-position-rather-than-by-neighbor]]).

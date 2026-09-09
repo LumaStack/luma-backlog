@@ -1,6 +1,6 @@
 ---
 type: task
-title: Refuse workflow_status in set, naming move
+title: Refuse workflow_status in set, naming transition
 description: Both the assignment and --unset. The message has to say what to use instead — spec.md 9.9 makes this a removal, and a removal that fails blankly is worse than one that redirects.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'
 workflow_status: todo

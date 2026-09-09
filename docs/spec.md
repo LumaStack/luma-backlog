@@ -622,7 +622,7 @@ A decision never completes (§2.6). Its `stage` uses the format's own values —
 
 A minority of decisions outlive the work that produced them and deserve to become standing rules.
 
-**Promotion copies; it never moves.** A new record is created in the top-level decision space carrying `promoted_from`, and the original is left untouched. Moving would change the original's identity and break every inbound link. The new record carries the link, so promotion writes exactly one file — the same member-side rule as everywhere else (§3.2), which also means "was this promoted?" is an index lookup rather than a field someone must remember to set.
+**Promotion copies; it never relocates.** A new record is created in the top-level decision space carrying `promoted_from`, and the original is left untouched. Relocating would change the original's identity and break every inbound link. The new record carries the link, so promotion writes exactly one file — the same member-side rule as everywhere else (§3.2), which also means "was this promoted?" is an index lookup rather than a field someone must remember to set.
 
 **The two records are not competing copies.** They have different jobs, and that is what removes any divergence problem:
 
@@ -1075,9 +1075,9 @@ The backlog lives in `.backlog/` at the repository root. Everything in it is pla
 
 ### 7.1 Directories encode only what does not change
 
-**Volatile properties are attributes, never directories.** A record's status, priority, and dimension values are fields in its frontmatter. They do not determine where its file lives, and changing one does not move it.
+**Volatile properties are attributes, never directories.** A record's status, priority, and dimension values are fields in its frontmatter. They do not determine where its file lives, and changing one does not relocate it.
 
-This is not only about churn, though the churn is real — moving files between directories on every status change produces noisy history and loses continuity. The decisive reason is **identity**: in the format, a record's identity *is* its path. Filing a record under `active/` and later moving it to `archived/` therefore changes what the record *is*, breaking every inbound link to it and severing it from its own history. Status changes are among the most frequent writes in the system, and identity has to be stable under them.
+This is not only about churn, though the churn is real — relocating files between directories on every status change produces noisy history and loses continuity. The decisive reason is **identity**: in the format, a record's identity *is* its path. Filing a record under `active/` and later moving it to `archived/` therefore changes what the record *is*, breaking every inbound link to it and severing it from its own history. Status changes are among the most frequent writes in the system, and identity has to be stable under them.
 
 A directory structure may only reflect properties that are effectively permanent. Everything else is queried, not walked — which a derived index makes cheap, and which can be rebuilt without loss.
 
@@ -1137,9 +1137,9 @@ Exploration is ideas, research, spikes, and investigations — including the one
 
 **Its own directory, and its own type, because the whole risk is leakage.** An idea recorded while thinking must never be mistaken for something the team committed to. That is already true structurally — **a work item is judged on its outcomes and on nothing else** (§2.4) — and keeping exploration visibly apart makes it true on inspection as well, for a reader skimming rather than querying.
 
-**Nothing moves out of exploration except by an explicit act.** Turning an investigation into work means someone creating an outcome or a task from it, deliberately. There is no promotion the tool performs and no inference it draws.
+**Nothing leaves exploration except by an explicit act.** Turning an investigation into work means someone creating an outcome or a task from it, deliberately. There is no promotion the tool performs and no inference it draws.
 
-**Promotion copies; it never moves** — the same rule decisions follow (§2.6). The exploration record stays where it is, and the outcome or task created from it references it. Moving would erase the reasoning at the exact moment it becomes worth having.
+**Promotion copies; it never relocates** — the same rule decisions follow (§2.6). The exploration record stays where it is, and the outcome or task created from it references it. Relocating would erase the reasoning at the exact moment it becomes worth having.
 
 **Both endings are non-destructive.** An exploration either produces work or does not, and neither outcome is a deletion:
 
@@ -1154,22 +1154,22 @@ Exploration is ideas, research, spikes, and investigations — including the one
 
 ### 7.3 Why work item membership is the only path fact
 
-Nesting outcomes, waves, and tasks under their work item **encodes that membership in the path** — which sits in tension with membership living on the member (§3.2), and means reassigning a record between work items is a move, and a move changes identity.
+Nesting outcomes, waves, and tasks under their work item **encodes that membership in the path** — which sits in tension with membership living on the member (§3.2), and means reassigning a record between work items is a relocation, and relocating changes identity.
 
 That tension is accepted for exactly one relationship, because it is the only one that passes the §7.1 test:
 
 | Relationship | Stable enough to be a path? |
 |---|---|
-| A record's **work item** | **Yes.** Records are created for a work item and rarely move between them. |
-| A task's **wave** | No. Tasks move between attempts, or gain successors, routinely (§4.6). |
+| A record's **work item** | **Yes.** Records are created for a work item and rarely relocate between them. |
+| A task's **wave** | No. Tasks relocate between attempts, or gain successors, routinely (§4.6). |
 | A record's **dimensions** | No. Classification changes freely by design (§3.1). |
 | **Workflow status**, priority, claims | No. Among the most frequent writes in the system. |
 
 So the path carries work item membership and nothing else; everything else is a field.
 
-**When a record does move work items** — uncommon but real — it is a rename, and the tool rewrites inbound links as part of it. This is the mechanism the format anticipates for renames, rather than a workaround.
+**When a record does relocate between work items** — uncommon but real — it is a rename, and the tool rewrites inbound links as part of it. This is the mechanism the format anticipates for renames, rather than a workaround.
 
-**What the nesting buys** is worth the single exception. A work item's entire working set is one directory: a person browsing it in an editor sees everything at once, and an agent gathering context reads one place rather than filtering thousands of files by a frontmatter field. It also keeps directories small — a work item holds tens of records, where a flat layout would accumulate thousands in one place with no sanctioned way to reduce it, since archiving is an attribute and therefore cannot move anything.
+**What the nesting buys** is worth the single exception. A work item's entire working set is one directory: a person browsing it in an editor sees everything at once, and an agent gathering context reads one place rather than filtering thousands of files by a frontmatter field. It also keeps directories small — a work item holds tens of records, where a flat layout would accumulate thousands in one place with no sanctioned way to reduce it, since archiving is an attribute and therefore cannot relocate anything.
 
 ### 7.4 Names and references
 
@@ -1359,13 +1359,18 @@ Universal across record types:
 | `list` | Read many, with filters. |
 | `set` | Change fields non-interactively — the verb agents use. |
 | `edit` | Open in an editor — the verb people use. |
-| `archive` | Retire. **Never deletes**, and never moves the record (§7.1). |
+| `archive` | Retire. **Never deletes**, and never relocates the record (§7.1). |
+
+**`move` is not a verb this interface has.** It reads as `mv` in a tool whose records are files in a git repository, which is the one reading a user is most primed for and the wrong one. A status change is a **transition** — a guarded step between two rungs, which is what the model actually is (`workflow-status.md`) — and repositioning a file on disk is a **relocation**. Ordinary speech may still call a transition a move, and a skill's trigger words should include it because that is what people type.
+
+**One exception, and only one: `move` may be an alias for `transition` on the command line.** An alias is a door, not a name — it resolves to the same operation, help and output still call it `transition`, and **nothing else in the system may be named after it**: no flag, no field, no status value, no identifier in the code. Everywhere except that one door, the word does not exist.
 
 Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
-| `rank` | work item | Reorder relative to another — `--before`, `--after`, `--first`, `--last`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Not `move`, which this document uses throughout for relocating a record on disk — the one operation it forbids (ADR-0005). |
+| `transition` | work item | Change `workflow_status`, in either direction, running whatever the destination rung requires. `set` refuses the field. **Not `move`** — see below. |
+| `rank` | work item | Reorder relative to another — `--before`, `--after`, `--first`, `--last`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Ranking and transitioning are two axes, and `workflow_status` dominates `rank` (ADR-0005), so the two verbs stay distinct. |
 | `take` / `release` / `steal` | task | Take, give up, or take over a task (§6.5). Stealing is explicit and recorded. Not `claim`, which this design spends on assertions about truth (ADR-0008). |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |
 | `journal` | any | With an argument, append one line to the journal, opening today's entry if needed. With none, show it (§5.5). |
@@ -1427,9 +1432,9 @@ Distinguishable, because an agent's next move depends on *why* something failed 
 
 ### 9.6 Ordering, and operations that touch more than one record
 
-**Most operations write exactly one file, and that is not an accident.** Membership lives on the member (§3.2), promotion copies rather than moves (§4.8.1), succession creates rather than edits (§4.6). Each of those rules exists partly so that the common case never needs a transaction.
+**Most operations write exactly one file, and that is not an accident.** Membership lives on the member (§3.2), promotion copies rather than relocates (§4.8.1), succession creates rather than edits (§4.6). Each of those rules exists partly so that the common case never needs a transaction.
 
-**Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Moving one work item writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
+**Ordering is designed to stay in that case.** A record's position is a **decimal ordering key**, not an index. Ranking one work item writes one record and leaves its neighbours untouched. Positions would rewrite every record after the moved one — churn on the most visible operation the board has, and contention whenever two actors reorder at once.
 
 **Position is named by sequence, never by the screen: `--before`, `--after`, `--first`, `--last`.** Those four describe a place in the order, so they stay correct however the order is drawn — a listing sorted in reverse still has the same record before the same neighbour, and the same record first.
 
@@ -1503,7 +1508,7 @@ Unrecognized fields in output are to be ignored by consumers rather than treated
 - **Structured output changing shape between repositories.** Local labels are display only; the contract is universal.
 - **Prompting in a non-interactive context.**
 - **A conflict reported as a generic failure.** The distinction between `4` and `5` is what makes correct retry behavior possible.
-- **`archive` deleting or moving anything** (§7.1).
+- **`archive` deleting or relocating anything** (§7.1).
 - **A mutation reachable from the board that no command produces.** Every surface resolves to the same request (ADR-0004); none is privileged.
 
 ## 9a. Repository and build
@@ -1623,7 +1628,7 @@ Most of it is in place, arrived at for unrelated reasons — which is reasonable
 |---|---|---|
 | One record per file | §4 | Per-record work; no whole-file rewrites. |
 | Membership on the member | §3.2 | Matches how trackers reference containers — nothing to invert. |
-| Attributes, not directories | §7.1 | A status change never moves a file, so identity is stable across the churn a sync creates most of. |
+| Attributes, not directories | §7.1 | A status change never relocates a file, so identity is stable across the churn a sync creates most of. |
 | Unknown fields preserved | §4.1 | A synchronizer stores its own state *on the record* without this tool knowing the concept exists. |
 | Creation idempotent by name | §9.5 | Re-importing does not duplicate. |
 | Conflict detection on write | §6.3 | A pass is told when it would clobber something it never read. |
@@ -1754,7 +1759,7 @@ The board edits through the same layer as everything else — **every mutation r
 
 The board can still *show* the command it is about to run, which makes it a way to learn the interface rather than an alternative to it. That becomes a feature rather than the mechanism.
 
-**Each surface owns its own wording.** The board may label something `Move` that the command line calls `set workflow_status` — one gesture may even resolve to two commands, since moving a card horizontally changes status and moving it vertically changes rank. What is shared is the request, never the vocabulary. Lean toward the same word where it costs nothing.
+**Each surface owns its own wording.** The board may label something `Move` that the command line calls `transition` — one gesture may even resolve to two commands, since dragging a card sideways transitions it and dragging it up or down ranks it. **That is the sanctioned home for the word:** a label a person reads, never an identifier anything is built from (§9.2). What is shared is the request, never the vocabulary. Lean toward the same word where it costs nothing.
 
 **Conflicts surface here as everywhere.** A person editing a description while an agent changes the same record gets told (§6.3), not silently overruled and not silently overruling.
 
