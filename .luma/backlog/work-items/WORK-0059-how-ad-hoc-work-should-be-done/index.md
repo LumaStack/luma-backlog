@@ -2,13 +2,14 @@
 type: work-item
 key: WORK-0059
 title: How ad hoc work should be done
-workflow_status: in_progress
+workflow_status: closed
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:54:30Z'}
 description: act fast on a vague direction, plow toward a solution taking shortcuts, and work out what the work is while doing it — outcomes and tasks as an afterthought rather than fleshed out first, because specifying up front would produce a worse result when you do not know what you want until you see it. backlog-move is the vehicle.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T15:09:34Z'}
-rank: 060.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T03:09:34Z'}
+rank: 070.0040.000
+closed: {on: 2026-09-09, as: completed, by: 'agent:claude-opus-5/luma-backlog', reason: 'The maintainer read backlog-move and said it was good enough, which is the whole of that outcome''s check; the record-of-itself outcome verified on all three checks once the maintainer ruled that the captured transcript is the full conversation they asked for. Closed as completed rather than delivered — ADR-0007 renamed that word.'}
 ---
 
 # How ad hoc work should be done

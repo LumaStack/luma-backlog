@@ -7,6 +7,14 @@ verify_by:
 work_item: '[[work-items/WORK-0059-how-ad-hoc-work-should-be-done]]'
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:47:41Z'}
+verified:
+  - as: proven
+    at: "2026-09-09T02:59:58Z"
+    by: human:luma-foundry
+evidence:
+  - at: "2026-09-09T02:59:58Z"
+    by: human:luma-foundry
+    what: 'The maintainer read backlog-move on 2026-09-08 and said it was good enough. That is the check verify_by names, in full: ''The maintainer says it is good enough. There is no mechanical check and inventing one would measure something else.'' The procedure read is .luma/bundles/local/backlog/procedure/backlog-move.md at 0a6fa86. The version the dissatisfaction was pointing at is ba69c6c, its last state before WORK-0059 was created; eleven commits separate the two, and git log -p on that path is the diff a reader can check.'
 ---
 
 # backlog-move is better than it was

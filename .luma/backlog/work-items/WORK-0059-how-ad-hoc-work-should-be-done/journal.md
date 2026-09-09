@@ -5,6 +5,42 @@
 
 ---
 
+## ▶ 2026-09-09
+
+VERIFIED proven by the maintainer: 'backlog-move is better than it was' — they read it and said it was good enough, which is the whole of verify_by; recorded as human:luma-foundry because the person is the checker, not the agent that typed it, and the baseline for the diff is ba69c6c, the file's last state before this work item existed
+the other outcome is NOT provable as written and the check that fails is the one nobody had read: 'evidence/session-capture.md holds the session's transcript end to end' — the file was committed once, at 1da0023 on 09-07 21:07, and its last lines are the maintainer asking for the full conversation and the agent starting to write it, so the capture stops mid-session and the whole backlog-move rewrite that outcome one just signed off on is not in it
+and the 09-08 session has no transcript at all — six commits to backlog-move between 12:43 and 14:32 plus two journal commits, none of it recoverable from evidence/; the journal covers both days so check one holds, which is exactly the shape the outcome warned about: reasoning survived, what was said did not
+check three PASSES and the disagreement it found is worth more than the check: at line 493 the transcript hedges the rank finding into two readings and says it cannot tell which, while the journal line written the same afternoon records it flatly as 'second defect: doc and behavior disagree' — the journal is MORE CONFIDENT than the session was at the moment, which is proof it was written in flight rather than reconstructed, since a reconstruction would have carried the hedge
+so the journal loses hedges, and that is a systematic bias rather than one slip — a one-line-per-thought instrument has no room for 'two readings, cannot tell which', so uncertainty gets rounded to a claim on the way in; WORK-0062 is where that belongs, it is already captured as reviewing journal quality against the transcript
+RULED by the maintainer, and it overturns the line above: evidence/session-capture.md as it stands IS the full conversation that was asked for — the captured extent is the intended extent, so 'end to end' in the check never meant every session that later touched the work, and the agent's reading of it as a gap was wrong
+verify_by left UNCHANGED deliberately, though the wording is what produced the wrong reading — editing a check to match what was found is the exact move WORK-0032 exists to discourage, and rewording it now would erase the evidence that the check was ambiguous; the ruling lives here instead, where the next reader hits it before re-arguing it
+both outcomes are now proven, so WORK-0059 can close as delivered — ADR-0007's refusal no longer applies; what is NOT done is WORK-0067, the retro, which is where the 348 journal lines and the transcript get harvested and is the reason closing this does not end the thread
+CLOSING WRAP — where this ended, and what a future reader needs
+
+Both outcomes are proven and the work is over. What the experiment set out to test was whether ad hoc work — acting on a vague direction, taking shortcuts, writing outcomes afterwards — produces a better result than routing through the ladder, and whether it can be told apart from impatience wearing its clothes.
+
+WHAT IT FOUND, in the order it matters:
+- The mode is real and the maintainer named it editor mode, from editing a book: you cannot enumerate the edits before reading, so outcomes-up-front is impossible rather than merely expensive.
+- The brief may not exist either. 'All I know is I do not like it and I want to make it better' falsified the agent's first hypothesis within one turn. Dissatisfaction is a standard that is not articulable yet, and a system demanding the why first forbids the reading that would produce it.
+- So the test is not whether the criterion precedes the work, it is whether it ARRIVES. If the editing finishes and nobody can say what it was for, that is thrashing — diagnosed after, which is the only time it can be diagnosed at all.
+- The idiom for governing it already existed: observed, never refused. Never block ad hoc work, name it, report when it looks like abuse.
+- Recording is not surfacing. Every shortcut got a line and they all sit inside one work item an observer has no reason to open.
+
+WHAT WAS TRIED AND DID NOT WORK:
+- outcomes-as-criterion, the first hypothesis, that an editor always has a brief even when the edits are unknown. Falsified in one turn.
+- The rank defect, reported from one observation without reading internal/app/status.go. It was wrong; the code and the doc agreed. The smaller finding survived and is now in backlog-move: the back is not always the bottom, because unranked records sort after ranked ones.
+- Reading the journal as a faithful record of the session. It is not — see below.
+
+THE INSTRUMENT TURNED OUT TO HAVE A BIAS, and this is the finding nobody was looking for. At transcript line 493 the session hedged the rank finding into two readings and said it could not tell which; the journal line from the same afternoon states it flatly as a defect. The journal is MORE CONFIDENT than the session was. That is what proves it was written in flight rather than reconstructed — and it means a one-line-per-thought instrument rounds uncertainty up to a claim, systematically. WORK-0062 is where that gets measured.
+
+OPEN THREADS, none of which closing this ends:
+- WORK-0067, the retro. Load-bearing. 348 journal lines and a 1,892-line transcript, and the ten work items harvested during the run are only what somebody noticed AT THE TIME.
+- WORK-0060, the configurable menu of working modes. Deliberately deferred until there was real experience rather than armchair design; there now is.
+- WORK-0061, surfacing work that went around the system to observers. This is the unsolved half — the record exists and nothing indexes it.
+- WORK-0062, journal quality against the transcript, which now has a measured instance to work from.
+
+WHAT A RETRO SHOULD ASK: whether backlog-move is better BECAUSE of the mode or merely after it — nothing here separates those, and one procedure is one data point. The out-of-scope note said the other six procedures are the template if it worked; that is still undecided and this record is not evidence enough to decide it.
+
 ## ▶ 2026-09-08
 
 captured the task disposition gap as WORK-0064; corpus check found no existing record, only journal mentions on WORK-0001, WORK-0031 and this one
