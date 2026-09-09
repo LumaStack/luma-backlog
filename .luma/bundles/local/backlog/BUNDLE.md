@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.28.2
+version: 0.29.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,17 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.29.0` — **fast is not the same as skipping.**
+
+Three things somebody can want: speed without breaking protocol, a crawl for as
+long as it takes, or skipping gates because they think they know best — and
+maybe they do. The first two are compliant and differ only in pace; only the
+third gets a warning and a journal line.
+
+The distinction that earns the version: **speeding through a gate still crosses
+it.** An agent reading *be quick* as *skip preparing* has changed the request
+into something nobody made, and it reads as efficiency afterwards.
 
 `0.28.2` — **the default is to prepare, and owner is the word.**
 

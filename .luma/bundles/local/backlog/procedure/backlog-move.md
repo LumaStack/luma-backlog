@@ -60,30 +60,42 @@ maintainer sent it back to `todo` because no work had been done on it. **This
 procedure already said not to**, which is the evidence that saying it is not
 enough — see the note at the end of this section.
 
-### Two scenarios, and the fewest questions that tell them apart
+### Three things somebody wants, and the fewest questions that tell them apart
 
 | what somebody wants | what to do |
 | --- | --- |
-| **stop at each gate and answer its question** | walk it, one rung at a time |
-| **the gates are worthless for this one; go where they know is best** | take them there, having warned once |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it |
+| **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
+| **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip |
 
-**The default is the first row.** Preparing is not skipped unless something says
-to skip it — somebody said so, or the work itself says so plainly enough that
-you can give the reason in a sentence. **Where nothing has said the gates are
+**Fast is not the same as skipping, and confusing the two is how a gate goes
+missing.** The first row crosses **every** gate; it just does not linger at any
+of them. An agent reading *be quick* as *skip preparing* has turned what was
+asked for into something nobody said, and it will look like efficiency in the
+transcript.
+
+**Only the third row breaks protocol**, which is why it alone gets a warning and
+a journal line. The first two are both compliant and differ only in pace — so
+getting them the wrong way round costs somebody time, while mistaking either for
+the third costs the record its truth.
+
+**The default is protocol.** Preparing is not skipped unless something says to
+skip it — somebody said so, or the work itself says so plainly enough that you
+can give the reason in a sentence. **Where nothing has said the gates are
 worthless for this one, they are not.**
 
-**Fewest questions is about cost, not licence.** Establish which scenario you are
-in as cheaply as you can: a question you could have answered from the record is
-waste, and an answer you assumed and had no way to know is worse. Where it is
-genuinely unclear, ask — one question, not a survey.
+**Fewest questions is about cost, not licence.** Establish which of the three
+you are in as cheaply as you can: a question you could have answered from the
+record is waste, and an answer you assumed and had no way to know is worse.
+Where it is genuinely unclear, ask — one question, not a survey.
 
-**Never skip silently.** Say which scenario you took this to be, and why, before
-crossing. That is what makes a wrong call correctable while it is cheap instead
-of at a retrospective.
+**Never skip silently.** Say which of the three you took this to be, and why,
+before crossing. That is what makes a wrong call correctable while it is cheap
+instead of at a retrospective.
 
-**Somebody who has not thought about it yet is not a third scenario.** They are
-the ordinary case, and the rest of this section is what to do about them — judge
-it, coach where it is worth coaching, and ask where judging fails.
+**Somebody who has not thought about it yet is not a fourth.** They are the
+ordinary case, and the rest of this section is what to do about them — judge it,
+coach where it is worth coaching, and ask where judging fails.
 
 ### Some gates are always worth stopping at, and some are not
 
