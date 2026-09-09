@@ -200,3 +200,39 @@ func TestTransitionAndRankAreReachableWithoutTheNoun(t *testing.T) {
 		t.Errorf("the top-level form did not write the status:\n%s", out)
 	}
 }
+
+// backlog-move records that nothing captures the reasoning for crossing a gate.
+// A reason is somewhere for it to go when there is some --- optional, because
+// prose demanded of somebody with nothing to say is prose nobody reads.
+func TestTransitionJournalsAReasonWhenGivenOne(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	if code, _, e := run(t, app, "transition", "WORK-0001", "prepared",
+		"--reason", "the outcomes pass their checks"); code != ExitOK {
+		t.Fatalf("transition failed: %s", e)
+	}
+
+	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	if !strings.Contains(journal, "the outcomes pass their checks") {
+		t.Errorf("the reason did not reach the journal:\n%s", journal)
+	}
+	// Which crossing it explains is part of the entry, or a later reader has
+	// prose with nothing to attach it to.
+	if !strings.Contains(journal, "captured → prepared") {
+		t.Errorf("the entry did not say which crossing:\n%s", journal)
+	}
+}
+
+// Absent means nothing extra is written. A journal line on every crossing would
+// be an event log, and the journal is deliberately not one (spec.md §5.5).
+func TestTransitionWithoutAReasonWritesNoJournalLine(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "transition", "WORK-0001", "todo")
+
+	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	if strings.Contains(journal, "→ todo") {
+		t.Errorf("a crossing with no reason wrote to the journal anyway:\n%s", journal)
+	}
+}

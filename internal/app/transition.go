@@ -23,6 +23,15 @@ type TransitionRequest struct {
 	// IfUnchanged is the hash the caller last saw. When set, a write that
 	// would clobber a change it never saw is refused rather than applied.
 	IfUnchanged string
+	// Reason is why, in the caller's words. Optional, and appended to the work
+	// item's journal rather than stored on the record.
+	//
+	// Optional deliberately. Requiring it would make every crossing carry
+	// prose, and prose demanded of somebody who has nothing to say is prose
+	// nobody reads. `backlog-move` records that nothing captures the reasoning
+	// for crossing a gate today; this is somewhere for it to go when there is
+	// some, not an obligation to produce it.
+	Reason string
 }
 
 // TransitionResult describes what was written.
@@ -36,6 +45,8 @@ type TransitionResult struct {
 	// Rank as written. A transition re-enqueues the record at the back of its
 	// destination, so this always changes.
 	Rank string
+	// Journaled is true when a reason was given and written.
+	Journaled bool
 }
 
 // Transition changes a work item's workflow status, writing status and rank
@@ -103,10 +114,26 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 		return nil, FailureError("%w", err)
 	}
 
+	// The reason goes to the journal rather than onto the record. A work item's
+	// journal is already the place reasoning lives, it is append-only so a
+	// second crossing does not overwrite the first, and a field would hold only
+	// the most recent — which is the half of the history worth least.
+	journaled := false
+	if reason := strings.TrimSpace(req.Reason); reason != "" {
+		if _, err := s.Journal(JournalRequest{
+			WorkItem: it.Slug(),
+			Line:     from + " → " + req.To + ": " + reason,
+		}); err != nil {
+			return nil, err
+		}
+		journaled = true
+	}
+
 	return &TransitionResult{
-		Path: it.Path,
-		From: from,
-		To:   req.To,
-		Rank: rank,
+		Path:      it.Path,
+		From:      from,
+		To:        req.To,
+		Rank:      rank,
+		Journaled: journaled,
 	}, nil
 }

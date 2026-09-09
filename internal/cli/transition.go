@@ -8,7 +8,7 @@ import (
 )
 
 func newTransitionCommand(a *App) *cobra.Command {
-	var ifUnchanged string
+	var ifUnchanged, reason string
 
 	cmd := &cobra.Command{
 		Use:   "transition <work-item> <status>",
@@ -38,16 +38,22 @@ func newTransitionCommand(a *App) *cobra.Command {
 				Ref:         args[0],
 				To:          args[1],
 				IfUnchanged: ifUnchanged,
+				Reason:      reason,
 			})
 			if err != nil {
 				return err
 			}
 			fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s (%s)\n",
 				res.Path, res.From, res.To, res.Rank)
+			if res.Journaled {
+				fmt.Fprintf(cmd.OutOrStdout(), "journaled the reason\n")
+			}
 			return nil
 		},
 	}
 
+	cmd.Flags().StringVar(&reason, "reason", "",
+		"why, in your words --- appended to the work item's journal")
 	cmd.Flags().StringVar(&ifUnchanged, "if-unchanged", "",
 		"the hash from show --json; refuses if the record changed since")
 	return cmd
