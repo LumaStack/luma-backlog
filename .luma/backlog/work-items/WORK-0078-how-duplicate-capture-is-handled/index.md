@@ -175,6 +175,21 @@ say what is happening, take the acknowledgement, record which call was made so
 it can be judged later. **So "let them decide, but keep it reviewable" is an
 existing idiom here rather than new machinery.**
 
+### What separates the three modes
+
+**They are not three degrees of thoroughness.** Read that way they are one
+setting on a dial, and the middle one is always the safe answer.
+
+**They differ by which cost the person is refusing to pay — turns, git noise, or
+the risk of the idea being reshaped before it is saved.** Three different costs,
+so a person picks by naming what they will not spend rather than by judging how
+careful to be. That is also why none of them is a degraded version of another:
+whoever refuses to spend turns is not doing a worse capture, they are paying with
+something else.
+
+**And it says what the modes are missing.** Any fourth mode has to name a fourth
+cost, or it is one of these three under a new name.
+
 ### The three modes map onto what already exists, except one
 
 **Mode 1 is shipped.** It is `backlog-capture`'s quick path, and its stated
