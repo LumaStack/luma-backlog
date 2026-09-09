@@ -65,6 +65,15 @@ One of those sections should be **"In the capturing agent's own words"** — a
 place for the agent to give its interpretation. That will be an interesting and
 valuable thing to have.
 
+## Amending a work item
+
+We need to work out how people amend a work item after it has been captured.
+
+A second pass might want **its own raw entry and its own agent observation
+entry** — two of each, kept in order. Or the new material might **fold into the
+ones already there**. Or something else. Undecided, and part of what the
+template has to answer.
+
 ---
 
 ## Related
@@ -159,15 +168,21 @@ was added by the agent*. Used consistently, specified in no procedure.
 nothing marking the difference."* **A guaranteed separator removes that reason**,
 which would let capture keep its promise never to refuse.
 
-### The template has to survive the record growing
+### On amending: the measurement is already in
 
-**A captured record gets added to.** This one was amended three times within
-twenty minutes of being written, and each amendment had to find a home.
+**This record was amended four times within half an hour of being written**, and
+each amendment had to find a home somebody chose in the moment. That is the
+evidence for the question above rather than an argument about it.
 
-**Fixed sections plus later appends is where the boundary erodes** — a fifth
-addition lands wherever there is room, and the raw half quietly acquires
-sentences nobody said. Worth deciding at design time where an amendment goes,
-including one that revises rather than extends.
+**Two of them extended and two revised**, and those are not the same operation.
+An append can go in a second entry; a revision changes what an earlier entry
+says, and *append-only with two entries* leaves a reader holding two versions
+with nothing saying which is current. **Whichever shape wins has to answer the
+revision case**, not only the addition case.
+
+**And the erosion is quiet.** Where appends land wherever there is room, the raw
+half gradually acquires sentences nobody said — which is the one thing the
+can-and-cannot rules exist to prevent.
 
 ### Interpretation drifting into advocacy would waste the section
 
