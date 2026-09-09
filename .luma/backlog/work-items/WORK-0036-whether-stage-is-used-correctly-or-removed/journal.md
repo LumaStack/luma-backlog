@@ -5,6 +5,12 @@
 
 ---
 
+## ▶ 2026-09-09
+
+PROPOSED 2026-09-09, and it cuts against removal: give stage on an OUTCOME a real vocabulary instead of retiring it — something like workable, bulletproof, flexible, rigid, saying how defined the outcome is and how much it is expected to move
+that is the first concrete job anybody has offered stage on a non-decision record. this record's own evidence for removal is that stage 'is currently doing no work' on work items and outcomes; a proposed job for it on outcomes is exactly the counter-evidence, and it does not extend to work items
+so the answer may be a SPLIT rather than keep-or-remove: stage stays on decisions, gains a vocabulary on outcomes, and goes from work items. worth testing before this is settled either way
+
 ## ▶ 2026-09-08
 
 stage's definition stays as spec 167 has it — how much the record can be relied upon — and the maintainer ruled against replacing it. the sharper reading offered was archived means an agent uses it for historical context while stable means current context, and that is an APPLICATION of reliance rather than a competing definition: an archived record is not unreliable, it is reliable about the past
