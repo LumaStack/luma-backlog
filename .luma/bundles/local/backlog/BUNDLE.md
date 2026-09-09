@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.27.0
+version: 0.30.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,78 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.30.1` — **every gate is crossed; what speed saves is the turn.**
+
+Correcting 0.30.0, which said *skip* where it meant *do not stop to ask*. Where
+you already have the answers **for that gate**, answer it from them and advance.
+Nothing is passed over — a question is simply not asked twice.
+
+Gate by gate, and each on its own answers: having what `preparing` needed says
+nothing about what `todo` asks.
+
+`0.30.0` — **a gate whose question is already answered has been satisfied, not
+skipped.**
+
+Speeding through protocol may pass a gate where the answers are already in
+hand. *Superseded by 0.30.1: it does not pass the gate, it crosses it without
+asking.*
+
+*I already have the answer* is the judgement to be honest about — the one an
+agent makes alone and can be wrong about invisibly — so it has to be given
+rather than asserted.
+
+`0.29.2` — **ordered by speed, with the break last.**
+
+Crawl, then fast within protocol, then fast by abandoning it. Reading down the
+table now reads slowest to fastest, which makes the point the section argues
+visible in its shape: the third row is fastest *because* it stops crossing
+gates.
+
+`0.29.1` — **the skip is journaled so it can be retrospected.**
+
+Naming the purpose in the row rather than only the mechanism. A journal line
+written as a reprimand gets written defensively; one written as evidence for a
+retrospective gets written honestly, and only the second kind is any use months
+later.
+
+`0.29.0` — **fast is not the same as skipping.**
+
+Three things somebody can want: speed without breaking protocol, a crawl for as
+long as it takes, or skipping gates because they think they know best — and
+maybe they do. The first two are compliant and differ only in pace; only the
+third gets a warning and a journal line.
+
+The distinction that earns the version: **speeding through a gate still crosses
+it.** An agent reading *be quick* as *skip preparing* has changed the request
+into something nobody made, and it reads as efficiency afterwards.
+
+`0.28.2` — **the default is to prepare, and owner is the word.**
+
+*Fewest questions* was reading as licence to decide alone — *often none* is
+gone, the burden now sits on skipping rather than on stopping, and a skip is
+never silent. Separately: `owner`, not `assignee`, which is what ADR-0008
+settled. The work-in-progress limit keeps counting workers, because ownership
+does not say who is at the keyboard.
+
+`0.28.1` — **two scenarios, not three.**
+
+A requirement was written up as a case. *Ask the fewest questions that tell
+them apart* governs both scenarios; it is not a third one. Somebody who has not
+thought about it yet is the ordinary case, and the section already says what to
+do about them.
+
+`0.28.0` — **how many rungs at a time, and where to stop.**
+
+Not in one burst, unless somebody said to. `preparing` is the gate worth
+stopping at and `unprepared` is the one to blow past. Fast-tracking is
+legitimate and simplicity is only one of its reasons. Where preparing is plainly
+needed, coach once, accept the answer, and journal the skip — because whether
+the process was wrong, the person was right, or it cost something later is not
+knowable at the moment of the skip.
+
+Written from a measured failure rather than a worry: an agent ran WORK-0074 up
+three rungs in three commands and the maintainer sent it back.
 
 `0.27.0` — **a finished work item is where a session clears.**
 

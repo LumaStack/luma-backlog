@@ -47,6 +47,155 @@ the back of nothing and reads as *first*. That is the design working — an
 unplaced record should not outrank a considered one — but it looks like a bug
 the first time.
 
+## How many rungs at a time, and where to stop
+
+**Do not run a work item up the ladder in one burst — unless somebody said
+to.** Each rung is a claim about the present and each gate is a question
+somebody answers. Issuing the moves in order satisfies the sequence and answers
+nothing, and what comes out is a record that lies about its own state.
+
+**Measured here, twice in one session on 2026-09-09.** An agent took WORK-0074
+from `preparing` to `in_progress` in three consecutive commands, and the
+maintainer sent it back to `todo` because no work had been done on it. **This
+procedure already said not to**, which is the evidence that saying it is not
+enough — see the note at the end of this section.
+
+### Three things somebody wants, and the fewest questions that tell them apart
+
+| what somebody wants | what to do |
+| --- | --- |
+| **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it — advancing without spending a turn wherever you already have the answers for that gate |
+| **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
+
+**They are ordered by speed, and the break comes last.** Reading down the table
+is reading from slowest to fastest — and the third row is fastest **because it
+stops answering the questions**, which is the whole distinction the rest of this
+section turns on. The other two both answer them; they differ only in how long
+they take about it.
+
+**Every gate is crossed. What speed saves is the turn, not the gate.** Where you
+already have the answers **for that gate**, answer it from them and advance —
+do not stop to ask a question you can already answer. **Nothing is passed over;
+a question is simply not asked twice.**
+
+**Gate by gate, and each one on its own answers.** Having what `preparing`
+needed says nothing about what `todo` asks — the two gates ask different
+questions, and one being answered is not evidence about the next.
+
+**Fast is not the same as skipping, and confusing the two is how a gate goes
+missing.** An agent reading *be quick* as *skip preparing* has turned what was
+asked for into something nobody said, and it will look like efficiency in the
+transcript.
+
+**Which makes *I already have the answer* the thing to be honest about.** It is
+the one judgement in this section an agent makes alone and can be wrong about
+invisibly, so give the answer rather than assert that one exists — a sentence,
+and where it came from. **Not having it is not a reason to stay put either:**
+that is the moment to ask, which is the one turn worth spending.
+
+**Only the third row breaks protocol**, which is why it alone gets a warning and
+a journal line. The first two are both compliant and differ only in pace — so
+getting them the wrong way round costs somebody time, while mistaking either for
+the third costs the record its truth.
+
+**The default is protocol.** Preparing is not skipped unless something says to
+skip it — somebody said so, or the work itself says so plainly enough that you
+can give the reason in a sentence. **Where nothing has said the gates are
+worthless for this one, they are not.**
+
+**Fewest questions is about cost, not licence.** Establish which of the three
+you are in as cheaply as you can: a question you could have answered from the
+record is waste, and an answer you assumed and had no way to know is worse.
+Where it is genuinely unclear, ask — one question, not a survey.
+
+**Never skip silently.** Say which of the three you took this to be, and why,
+before crossing. That is what makes a wrong call correctable while it is cheap
+instead of at a retrospective.
+
+**Somebody who has not thought about it yet is not a fourth.** They are the
+ordinary case, and the rest of this section is what to do about them — judge it,
+coach where it is worth coaching, and ask where judging fails.
+
+### Some gates are always worth stopping at, and some are not
+
+**`preparing` is the one to stop at**, unless the work is obviously trivial.
+That is where done gets defined, and it is the only rung with a natural stopping
+point — outcome refinement ends when the outcome passes.
+
+**`unprepared` is the one to blow past.** Somebody looking at a `captured`
+record and saying *I want to work on this* has just made the first gate's
+decision out loud. Recording the rung it passed through adds nothing.
+
+**Do not stop at a gate just because it is there.** A gate that always asks
+teaches people to answer it without reading, which costs more than the gate was
+worth.
+
+### From captured, straight to work
+
+**When somebody wants to work on something captured:**
+
+1. **Skip `unprepared`.** They already chose.
+2. **Prepare it, unless something plainly says not to.** That is the default and
+   the burden sits on skipping. Where it is unclear, ask — and when asking,
+   **show what good looks like** rather than asking a bare question. A person who has seen an outcome with a real `verify_by` can answer
+   in one word; a person asked *do you want to prepare this?* is being asked to
+   guess what preparing would produce.
+3. **Then place it by when**, not by how ready it is:
+
+| they want it | it becomes | and |
+| --- | --- | --- |
+| **now** | `in_progress` | with an owner set |
+| **soon** | `todo` | with an owner — **ask who**, because it may not be them |
+
+> **Owner, not assignee, and that is the settled word.** ADR-0008 decided a work
+> item is owned by whoever is accountable **even while somebody else does the
+> work**, and taking a task expires where ownership does not. Its own section is
+> titled *"A work item is owned, and ownership is not modelled yet"* — so the
+> concept is in force and **the field does not exist**. Say who owns it anyway;
+> the gap is worth being visible. Assignees are a later question
+> ([[work-items/WORK-0063-an-algorithm-for-assigning-work-to-assignees]]).
+
+### Fast-tracking is legitimate
+
+**Some work should not be walked.** A typo fix, and plenty else — **simplicity
+is one reason among several, not the test.** Making somebody clear four rungs to
+change a word is how a tool becomes something people work around, and the
+routing-around is invisible where the ceremony is not.
+
+### Coach once, then accept
+
+**Where the work plainly needs preparing and somebody is heading for
+`in_progress`, say so — once.** Name what preparing would produce for this
+particular work item, not what preparing is.
+
+**Then accept the answer.** This is *observed, never refused*: warning somebody
+twice is arguing, and refusing them is the thing that teaches people to route
+around the tool.
+
+**And journal the skip, so the decision can be retrospected.** Not as a
+reprimand — the entry is the only thing that lets anybody later establish which
+of three things happened:
+
+- **the process is broken** for work of this shape, and the gate should not have
+  been there;
+- **they knew best**, and the work landed fine;
+- **it cost something**, and the problems that showed up later are ones
+  preparing would have caught.
+
+**None of those is knowable at the moment of the skip**, which is exactly why
+the record has to be written then and read afterwards. **A skip nobody wrote
+down teaches nothing**, and the third case is the one that never gets attributed
+without it.
+
+> **This section is prose holding an invariant, which is the shape that fails.**
+> `CLAUDE.md` names the promotion driver — *measured compliance with
+> prose-only rules runs far below what a guarantee requires* — and the
+> measurement above is exactly that. **The durable form is the move command
+> carrying the gate's answer**, tracked as
+> [[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]. Until then this
+> is what there is, and it is known to be insufficient.
+
 ## The ladder is a narrowing of what can block
 
 **Not bookkeeping.** Each rung removes a class of blocker, and that is what
@@ -240,9 +389,14 @@ since one agent can hold many sessions at once. A team of ten with ten items in
 flight is healthy; one worker holding three is context-switching, and more was
 started than gets finished (ADR-0010).
 
-**Nothing can check this yet.** It needs an assignee, and the actor format
-cannot name a session — so today the tool cannot tell two concurrent workers
-apart.
+**Nothing can check this yet.** It needs to know who is working, and the actor
+format cannot name a session — so today the tool cannot tell two concurrent
+workers apart.
+
+> **This one is deliberately not `owner`.** ADR-0008 puts ownership on whoever
+> is accountable *even while somebody else does the work*, so an owner does not
+> say who is at the keyboard. The limit above counts workers, and that is a
+> different field nobody has.
 
 ## Closing
 
@@ -364,7 +518,7 @@ false statuses on the way.
 | `todo` | outcomes exist | checked at the gate |
 | `todo` | no longer a draft | warned |
 | `in_progress` | `stage` is at least `provisional` | written by the move |
-| `in_progress` | an assignee | *settled, unbuilt — ADR-0008 ships no `take`* |
+| `in_progress` | an owner | *settled by ADR-0008, unbuilt — no field, and no `take`* |
 | `closed` as `completed` | every live outcome proven | refused otherwise |
 | `closed` | every task resolved | warned |
 | `closed` | `stage` becomes `stable` | written by the move |

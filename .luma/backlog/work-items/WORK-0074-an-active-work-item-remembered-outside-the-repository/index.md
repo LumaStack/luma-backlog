@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0074
 title: An active work item, remembered outside the repository
-workflow_status: in_progress
+workflow_status: todo
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:36:09Z'}
 description: what somebody is working on right now, so commands stop needing -w on every call. not in git — it is per actor rather than per corpus, and two agents in worktrees would clobber one pointer. per machine to begin with, per user eventually.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:15:18Z'}
-rank: 060.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:04:24Z'}
+rank: 050.0010.000
 ---
 
 # An active work item, remembered outside the repository
