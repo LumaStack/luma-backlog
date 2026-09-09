@@ -21,6 +21,8 @@ GAP FOUND AT THE GATE and it is in the outcomes, not the code: the store is keye
 so 'keyed by corpus' is ambiguous where it matters most — corpus meaning the repository gives two concurrent agents one shared pick, which is the clobbering the design set out to avoid; corpus meaning the worktree gives them two, and that is almost certainly what is wanted
 not blocking the start, but this is the last cheap moment to fix an outcome — after this it is Redefine, which is where goalposts move (WORK-0032)
 the move wrote workflow_status and rank and nothing else — internal/app/status.go:21 does exactly that and no more, so backlog-move's guarantee table is unkept in more rows than WORK-0075 names
+SENT BACK to todo on 2026-09-09 — it was moved to in_progress and no work was done on it, so the status was a claim about the present that was not true. sending it back is the record correcting itself, not a failure
+note for whoever starts it: the gate finding still stands and is unresolved — 'keyed by corpus' does not say what happens with two worktrees of one corpus on one machine, which is the exact case the description gives as the reason this cannot live in git
 
 ## ▶ 2026-09-08
 
