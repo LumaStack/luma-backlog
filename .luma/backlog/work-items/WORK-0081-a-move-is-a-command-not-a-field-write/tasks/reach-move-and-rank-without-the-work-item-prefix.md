@@ -3,9 +3,10 @@ type: task
 title: Reach transition and rank without the work-item prefix
 description: rank exists only as work-item rank today, which is why it reads as missing. Aliases at the top level, not a second implementation.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'
-workflow_status: todo
+workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:06:14Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T00:23:42Z'}
 ---
 
 # Reach transition and rank without the work-item prefix

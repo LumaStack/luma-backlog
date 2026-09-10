@@ -6,8 +6,8 @@ workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:36:20Z'}
-description: a task is defined as an attempt at part of the work, but there is no task close and no disposition vocabulary — a task ends by transitioning it to closed and the record cannot say whether it succeeded, was tried and failed, or was dropped; the history of attempts loses the half that is worth keeping
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:36:20Z'}
+description: 'a task is defined as an attempt at part of the work, but there is no task close and no disposition vocabulary — a task ends by transitioning it to closed and the record cannot say whether it succeeded, was tried and failed, or was dropped; the history of attempts loses the half that is worth keeping. it now blocks a warning close needs: warn on a completed close if any task was not successful, which has to tell failed from cancelled or found-unnecessary and so cannot be a boolean.'
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T00:24:27Z'}
 ---
 
 # A task cannot record why it ended
@@ -27,6 +27,25 @@ found unnecessary — all of them look identical afterwards.
 prevent.** Its test — *the enum carries what the record cannot* — applies
 unchanged here: nothing elsewhere on a closed task reconstructs whether it
 worked.
+
+## What it has to enable
+
+**Warn on a completed close if any task was not successful.** Added
+2026-09-09, when `close … completed` began refusing while any task is open and
+this was the half that could not be built.
+
+**It is a warning and not a bar**, deliberately. Attempting a task several times
+is ordinary and some attempts fail — a person needs to see that and decide
+whether it points at a problem, rather than be stopped by it.
+
+**Which sets the shape of the disposition.** A boolean will not do: the warning
+has to tell a task that **failed** from one **cancelled** or **found
+unnecessary**, because only the first is worth looking at. That is the same
+argument ADR-0007 made for the work item's four dispositions, and the same test
+— *the enum carries what the record cannot*.
+
+**`backlog-move` 0.33.0 carries the row already**, marked unbuilt against this
+record, so the promise is visible rather than quietly missing.
 
 ## Why it went unnoticed
 
