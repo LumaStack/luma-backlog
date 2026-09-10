@@ -5,6 +5,11 @@
 
 ---
 
+## ▶ 2026-09-10
+
+sent back to captured on 2026-09-10, from todo. it had been selected twice — once all the way to in_progress before being returned for never having been worked — and nothing was done on it either time
+the transition crossed both gates backwards and said nothing, which is backlog-move 0.35.0 working as written: going down replays nothing, because the rungs below are ones the record already satisfied
+
 ## ▶ 2026-09-09
 
 DECIDED: pick. 'backlog pick <ref>' makes a work item active, bare 'pick' reports which one
