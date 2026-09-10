@@ -6,7 +6,7 @@ workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:36:20Z'}
-description: a task is defined as an attempt at part of the work, but there is no task close and no disposition vocabulary — a task ends by setting workflow_status=closed and the record cannot say whether it succeeded, was tried and failed, or was dropped; the history of attempts loses the half that is worth keeping
+description: a task is defined as an attempt at part of the work, but there is no task close and no disposition vocabulary — a task ends by transitioning it to closed and the record cannot say whether it succeeded, was tried and failed, or was dropped; the history of attempts loses the half that is worth keeping
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:36:20Z'}
 ---
 
@@ -19,7 +19,7 @@ outright — *"An attempt at part of the work."* An attempt is a thing that can
 fail, and nothing on a task can say that it did.
 
 **There is no `task close`.** `close` is registered on `work-item` only, so a
-task ends with `set <ref> workflow_status=closed` and the record carries no
+task ends with `transition <ref> closed` and the record carries no
 disposition. Succeeded, tried and abandoned, overtaken by a better approach,
 found unnecessary — all of them look identical afterwards.
 
