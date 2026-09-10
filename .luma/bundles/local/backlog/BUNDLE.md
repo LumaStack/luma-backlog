@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.33.0
+version: 0.34.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,18 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.34.0` — **a reason is asked for where nothing else records one.**
+
+Cancelling and rejecting warn without one, because they are the only
+dispositions with no structural evidence behind them. A forced close warns
+whatever its disposition, being the one case where the arithmetic disagrees with
+the ending.
+
+A completed close that was not forced is asked for nothing. The outcomes already
+say why, and prose there is a second copy of a fact the record holds — the
+journal is where anything more belongs, and the closing wrap already requires
+it.
 
 `0.33.0` — **completing requires the tasks to be closed, and `--force` exists.**
 

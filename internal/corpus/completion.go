@@ -250,6 +250,16 @@ func IsCloseReason(s string) bool {
 // ever cancels anything.
 func (r CloseReason) GatedOnCompletion() bool { return r == Completed }
 
+// CarriesItsOwnEvidence reports whether the record already says why, without
+// anybody writing prose.
+//
+// Completed has the outcomes and superseded has its link. Cancelled and
+// rejected have neither, so the prose is the only place their reason can live
+// — which is why those two are the ones worth asking for.
+func (r CloseReason) CarriesItsOwnEvidence() bool {
+	return r == Completed || r == Superseded
+}
+
 // couldBeOutcomeOf reports whether an unreadable file sits where an outcome of
 // this work item would.
 //

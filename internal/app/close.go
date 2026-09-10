@@ -187,6 +187,24 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		}
 		advice = append(advice, "forced: "+f+" --- recorded in the journal")
 	}
+	// Cancelled and rejected are the only dispositions with no structural
+	// evidence behind them, so prose is the only place their reason can live.
+	// Strongly encouraged rather than required: a close that says nothing is
+	// how a backlog loses its own history, and refusing would gate the two
+	// endings that exist precisely because things go wrong.
+	if !corpus.CloseReason(req.As).CarriesItsOwnEvidence() && strings.TrimSpace(req.Reason) == "" {
+		advice = append(advice,
+			"closed "+req.Ref+" as "+req.As+" and nothing records why --- pass --reason; "+
+				"the outcomes say nothing about an ending nobody claimed was success")
+	}
+	// A forced close needs one most of all: it is the case where the record's
+	// own arithmetic disagrees with its ending, and prose is what explains the
+	// gap to whoever finds it.
+	if len(forced) > 0 && strings.TrimSpace(req.Reason) == "" {
+		advice = append(advice,
+			"forced a close on "+req.Ref+" and nothing records why --- pass --reason; "+
+				"the count will disagree with the ending and only prose can explain it")
+	}
 	if open > 0 && len(forced) == 0 {
 		advice = append(advice,
 			plural(open, "task")+" on "+req.Ref+" never reached a terminal status --- "+

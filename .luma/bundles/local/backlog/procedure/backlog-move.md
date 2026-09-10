@@ -477,11 +477,22 @@ arithmetic disagrees with it — which is the truth.
 optional, and free text. The disposition says which ending; this says anything
 the enum cannot.
 
-> **Settled and unbuilt: a cancellation or a rejection should be made to record
-> why.** Those two are the only dispositions with no structural evidence behind
-> them — `completed` has the outcomes and `superseded` has its link — so the
-> prose is the only place their reason can live, and nothing requires it. A
-> forced close needs one most of all.
+**A cancellation or a rejection is asked for a reason; a completion is not.**
+Those two are the only dispositions with no structural evidence behind them —
+`completed` has the outcomes and `superseded` has its link — so prose is the
+only place their reason can live. **Warned, not required:** refusing would gate
+the two endings that exist precisely because things go wrong.
+
+**A forced close is asked most of all**, whatever its disposition. It is the one
+case where the record's own arithmetic disagrees with its ending, and only words
+explain the gap to whoever finds it.
+
+**On a completed close that was not forced, a reason is allowed and should be
+rare.** The outcomes already say why, so prose there is a second copy of a fact
+the record holds — and **the journal is where anything more belongs**, which the
+closing wrap above already requires. Allowed rather than refused, because
+refusing costs a special case in the enum and would block the forced completion
+that genuinely needs it.
 
 ## Sending work back
 

@@ -393,3 +393,58 @@ func TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest(t *testing.T) {
 		t.Error("--force verified the outcome to make the count agree")
 	}
 }
+
+// Cancelled and rejected are the only dispositions with no structural evidence
+// behind them --- completed has the outcomes and superseded has its link --- so
+// prose is the only place their reason can live.
+func TestCancellingWithoutAReasonIsAdvisedAgainst(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+
+	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled")
+	if code != ExitOK {
+		t.Fatalf("cancelling was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "nothing records why") {
+		t.Errorf("a reasonless cancellation was not advised against:\n%s", errOut)
+	}
+}
+
+// With a reason there is nothing to say.
+func TestCancellingWithAReasonIsSilent(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+
+	_, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled",
+		"-r", "the customer withdrew")
+	if strings.Contains(errOut, "nothing records why") {
+		t.Errorf("a cancellation carrying a reason was advised against anyway:\n%s", errOut)
+	}
+}
+
+// Completing says nothing about a missing reason: the outcomes already carry
+// the why, so asking for prose would be asking twice.
+func TestCompletingWithoutAReasonIsSilent(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "It holds", "-w", "WORK-0001")
+	run(t, app, "outcome", "verify", "it-holds", "proven", "-e", "ran it")
+
+	_, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed")
+	if strings.Contains(errOut, "nothing records why") {
+		t.Errorf("a completed close was asked for prose it does not need:\n%s", errOut)
+	}
+}
+
+// A forced close is the one completed close that does need prose: the record's
+// own arithmetic disagrees with its ending, and only words explain the gap.
+func TestForcingWithoutAReasonIsAdvisedAgainst(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "It holds", "-w", "WORK-0001")
+
+	_, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed", "--force")
+	if !strings.Contains(errOut, "only prose can explain it") {
+		t.Errorf("a reasonless forced close was not advised against:\n%s", errOut)
+	}
+}
