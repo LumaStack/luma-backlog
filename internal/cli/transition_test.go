@@ -268,7 +268,8 @@ func TestReopeningWithAReasonIsSilent(t *testing.T) {
 // past it.
 func TestAnOrdinaryCrossingIsNotAdvisedAbout(t *testing.T) {
 	app, _ := initialized(t)
-	run(t, app, "work-item", "new", "Alpha")
+	// A kind, or leaving the pile warns about its absence --- its own test.
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
 
 	_, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
 	if strings.TrimSpace(errOut) != "" {
@@ -488,5 +489,80 @@ func TestAnOutcomeCannotTransition(t *testing.T) {
 	}
 	if !strings.Contains(errOut, "outcome") {
 		t.Errorf("the refusal did not say what the record is:\n%s", errOut)
+	}
+}
+
+// A missing kind is a different thing from `idea`: nobody has classified it,
+// rather than somebody having classified it as not-yet-classifiable. Warned,
+// because the gate criterion is about the problem being understood, not filed.
+func TestLeavingThePileWithNoKindWarns(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+
+	code, _, errOut := run(t, app, "transition", "WORK-0001", "unprepared")
+	if code != ExitOK {
+		t.Fatalf("a kindless work item was refused: %s", errOut)
+	}
+	if !strings.Contains(errOut, "no kind") {
+		t.Errorf("a missing kind was not warned about:\n%s", errOut)
+	}
+}
+
+// spec.md §5.2: an outcome with no verify_by is outcome.unmeasured. Without a
+// check no task can be the last one.
+func TestLeavingPreparingWithAnUnmeasuredOutcomeWarns(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "transition", "WORK-0001", "preparing")
+
+	_, _, errOut := run(t, app, "transition", "WORK-0001", "prepared")
+	if !strings.Contains(errOut, "cannot be checked") {
+		t.Errorf("an unmeasured outcome was not warned about:\n%s", errOut)
+	}
+	// The shaping warning is separate and must not fire: both exist here.
+	if strings.Contains(errOut, "no outcomes") {
+		t.Errorf("it complained about outcomes that exist:\n%s", errOut)
+	}
+}
+
+// Queuing says: you are promising to start something nobody can tell is
+// finished. A different message from leaving preparing, at a different moment.
+func TestQueuingWithNoOutcomesWarns(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+
+	code, out, errOut := run(t, app, "transition", "WORK-0001", "todo")
+	if code != ExitOK {
+		t.Fatalf("queuing was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "whoever picks it up") {
+		t.Errorf("queuing without outcomes was not warned about:\n%s", errOut)
+	}
+	if strings.Contains(out, "whoever picks it up") {
+		t.Errorf("the warning reached stdout:\n%s", out)
+	}
+}
+
+// A task left open under a closed work item advertises work nobody can pick up.
+// Warned, never refused, and never auto-closed --- that would invent a
+// disposition nobody chose.
+func TestClosingWithOpenTasksWarnsAndDoesNotCloseThem(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+
+	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled")
+	if code != ExitOK {
+		t.Fatalf("closing was refused: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "advertise work nobody can pick up") {
+		t.Errorf("an open task was not warned about:\n%s", errOut)
+	}
+
+	_, task, _ := run(t, app, "show", "do-the-thing", "--json")
+	if strings.Contains(task, `"workflow_status": "closed"`) {
+		t.Error("closing the work item closed its task, inventing a disposition")
 	}
 }

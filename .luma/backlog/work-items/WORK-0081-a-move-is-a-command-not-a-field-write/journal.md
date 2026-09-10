@@ -5,6 +5,12 @@
 
 ---
 
+## ▶ 2026-09-10
+
+CORRECTION to a verification entry, made minutes after writing it: the evidence said grep for RefusedError returns exactly three sites. it returns five — two in transition, three in close
+the conclusion survives: close's three are one refusal in three shapes, all reachable only when the disposition is gated on completion — unreadable outcomes, no outcomes, unproven outcomes. so the surface is still three refusals, and the check was counting the wrong thing
+worth the retro: an evidence line that cites a command and a number is checkable, which is why it got caught in the same session. one that had said 'the refusal surface is small' would have passed unexamined forever
+
 ## ▶ 2026-09-09
 
 FIRST GATE crossed: kind is change, the problem is stated in one sentence two readers would agree on — set is a field write and a move is an operation — and we intend to do the work now
@@ -102,3 +108,7 @@ NOT VERIFIED, three of five, and reading every check is what found it — the co
 'rank and move are reachable' — check 3 says a listing sorted in reverse does not change what --before means. there is no reverse listing and no sort flag, so the check cannot be run. the property is true by construction, since before and after are computed from stored rank rather than from display order, but that is an argument and not a check
 'every check has one strength' — this one genuinely FAILS, on both its checks. check 1 wants every table row to name one of the three strengths and five rows do not: strongly encouraged, the gate criterion, written by the move twice, settled by ADR. check 2 wants a transition to todo with no outcomes to do what the table says, and the table says warned while the code does nothing — the warning went to leaving preparing instead
 so WORK-0081 CANNOT close as completed, and that is the arithmetic working rather than a setback. two outcomes hold, two need their checks rewritten to say what was actually meant, and one names a real gap
+REWROTE the closing outcome's second check, and recorded why rather than editing quietly: it asserted that a work item with no outcomes could not reach closed except by force, which named a property spec 5.3.1 deliberately does not have. cancelling is ungated on purpose
+the replacement says what was meant — set and transition cannot reach the terminal status, cancel works with no outcomes, and completed with no outcomes is refused. three runnable statements instead of one wrong one
+the --force half is deliberately NOT in the check, because close --force does not exist (WORK-0086) and an outcome written to pass on a missing flag would be a check that can never run
+VERIFIED proven after the rewrite: all four checks run against a scratch corpus, including the one that says cancelling works — which is the behaviour the old check had asserted was impossible

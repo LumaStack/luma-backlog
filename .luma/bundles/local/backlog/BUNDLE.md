@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.31.0
+version: 0.32.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,17 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.32.0` — **warnings are many, refusals are few.**
+
+Four more checks built: a missing `kind` leaving the pile, an outcome with no
+`verify_by` leaving `preparing`, no outcomes reaching `todo`, and unresolved
+tasks at close. Nine of nineteen rows are now checks the tool runs.
+
+The other ten say which kind of not-a-check they are — a judgement nobody can
+automate, or a field write the move owes and does not make. Neither is a
+strength, and marking them as one would put a promise in the column that holds
+guarantees.
 
 `0.31.0` — **the ladder has a command, and the strengths are real.**
 

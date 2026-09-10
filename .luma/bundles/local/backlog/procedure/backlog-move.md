@@ -521,17 +521,34 @@ takes `--force`, and forcing is recorded.
 | leaving or reaching | what | how hard | built |
 | --- | --- | --- | --- |
 | leaving `captured` | `kind` is not `idea` | **refused** — `--force` | ✔ |
-| leaving `captured` | two readers share one understanding | the gate criterion — no machine can check it | — |
+| leaving `captured` | `kind` is set at all | **warned** | ✔ |
+| leaving `captured` | two readers share one understanding | *the gate criterion — no machine can check it* | — |
 | leaving `preparing` | outcomes and tasks exist | **warned** | ✔ |
-| `prepared` | outcomes exist and are effective | strongly encouraged | — |
-| `todo` | outcomes exist | **warned** — committing before defining is a bad habit, not a thing to be stopped from doing | — |
+| leaving `preparing` | every outcome has a `verify_by` — `outcome.unmeasured` | **warned** | ✔ |
+| leaving `preparing` | no outcome is unbounded — it has an edge | *judgement* | — |
+| reaching `prepared` | every reason it cannot start is scheduling or capacity | *judgement* | — |
+| reaching `prepared` | de-risking has happened | *judgement* | — |
+| reaching `todo` | outcomes exist | **warned** | ✔ |
+| reaching `todo` | scheduling is resolved | *judgement* | — |
 | reaching `in_progress` | at least one outcome exists | **refused** — `--force` | ✔ |
-| reaching `in_progress` | `stage` is at least `provisional` | written by the move | ✘ WORK-0075 |
-| reaching `in_progress` | an owner | *settled by ADR-0008, unbuilt — no field, and no `take`* | ✘ |
-| leaving `closed` | a reason is given | **warned** — nothing else records a reopen | ✔ |
+| reaching `in_progress` | `stage` is at least `provisional` | *written by the move* | ✘ WORK-0075 |
+| reaching `in_progress` | an owner | *settled by ADR-0008* | ✘ no field, no `take` |
+| reaching `in_progress` | one per worker (ADR-0010) | *needs a worker field* | ✘ WORK-0066 |
+| leaving `closed` | a reason is given | **warned** | ✔ |
+| leaving `closed` | `stage` resets, never to `stable` | *written by the move* | ✘ WORK-0075 |
 | `closed` as `completed` | every live outcome proven | **refused** — `--force` | ✔ refusal, ✘ force (WORK-0086) |
-| `closed` | every task resolved | warned | ✘ |
-| `closed` | `stage` becomes `stable` | written by the move | ✘ WORK-0075 |
+| `closed` | every task resolved | **warned** | ✔ |
+| `closed` | `stage` becomes `stable` | *written by the move* | ✘ WORK-0075 |
+
+**Nine rows are checks the tool runs. Ten are not**, and the italics say which
+kind: a **judgement** nobody can automate, or a **field write** the move owes and
+does not yet make. **Neither is a strength**, and marking them as one would put a
+promise in a column that is supposed to hold guarantees.
+
+**Warnings are many and refusals are few, on purpose.** A warning names
+something the record cannot say about itself yet; a refusal stops a record
+saying something untrue. There is room for more of the first and almost none for
+the second.
 
 **The refusal surface is three checks and one judgement call**, and it is
 deliberately small: leaving the pile as an idea, starting with no outcomes,

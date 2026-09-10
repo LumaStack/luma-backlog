@@ -41,6 +41,9 @@ func newCloseCommand(a *App) *cobra.Command {
 			}
 
 			observe(cmd.ErrOrStderr(), res.Observations)
+			for _, a := range res.Advice {
+				fmt.Fprintf(cmd.ErrOrStderr(), "luma-backlog: %s\n", a)
+			}
 
 			out := cmd.OutOrStdout()
 			fmt.Fprintf(out, "closed  %s (%s)\n", res.Path, res.Reason)

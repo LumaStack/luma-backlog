@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/lumastack/luma-backlog/internal/corpus"
@@ -116,10 +117,10 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// Two refusals, both narrow, and both take --force. A refusal that cannot
 	// be overridden is the tool holding an opinion; one that can is the tool
 	// making somebody say they meant it (spec.md §5.0).
-	counts, kind := 0, ""
+	counts, unmeasured, kind := 0, 0, ""
 	if isWorkItem {
 		var err error
-		if counts, err = s.outcomeCounts(it); err != nil {
+		if counts, unmeasured, err = s.outcomeShape(it); err != nil {
 			return nil, err
 		}
 		kind, _ = it.Record.Get("kind")
@@ -140,6 +141,16 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 			"selected while still an idea --- unformed work is now queued beside formed work")
 	}
 
+	// A missing `kind` is a different thing from `idea`: nobody has classified
+	// it, rather than somebody having classified it as not-yet-classifiable.
+	// Strongly encouraged and never blocked --- the procedure says so, and the
+	// gate criterion here is about the problem being understood, not filed.
+	if isWorkItem && s.leavesThePile(it, from, req.To) && kind == "" {
+		advice = append(advice,
+			"selected "+req.Ref+" with no kind --- nobody has said what sort of work this is, "+
+				"and the kind is what says how much vetting it is owed")
+	}
+
 	// Starting work nobody can tell is finished. Deliberately "does one exist"
 	// rather than "are they good": any opinion beyond zero would be the tool
 	// holding a view about how work gets defined.
@@ -152,6 +163,26 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 		}
 		forced = append(forced,
 			"started with no outcomes --- nothing says when it is finished")
+	}
+
+	// spec.md §5.2 names it: an outcome with no verify_by is
+	// `outcome.unmeasured`. Without a check no task can be the last one, so
+	// tasks keep being written to be safe --- which is the sprawl
+	// when-a-work-item-splits diagnoses.
+	if isWorkItem && from == s.shapingStatusFor(it) && unmeasured > 0 {
+		advice = append(advice,
+			plural(unmeasured, "outcome")+" on "+req.Ref+" cannot be checked --- "+
+				"no verify_by, so nothing can say when it holds")
+	}
+
+	// Queuing is a promise to start soon, and a work item nobody can tell is
+	// finished is one whoever picks it up pays for. Warned rather than refused:
+	// committing to something before it is defined is a bad habit, and not all
+	// work is equal --- some is trivial and some is urgent.
+	if isWorkItem && req.To == s.queuedStatusFor(it) && counts == 0 {
+		advice = append(advice,
+			"queued "+req.Ref+" with no outcomes --- nobody can tell when it is done, "+
+				"and whoever picks it up inherits that")
 	}
 
 	// Leaving the shaping rung is where the work is supposed to have been
@@ -239,14 +270,37 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	}, nil
 }
 
-// outcomeCounts is how many live outcomes a work item has. Zero is the only
-// number this file cares about.
-func (s *Session) outcomeCounts(it corpus.Item) (int, error) {
-	c, err := corpus.CompletionOf(s.Backlog, it.Slug())
-	if err != nil {
-		return 0, FailureError("%w", err)
+// outcomeShape is how many live outcomes a work item has, and how many of them
+// carry no `verify_by` --- `outcome.unmeasured` in spec.md §5.2.
+func (s *Session) outcomeShape(it corpus.Item) (live, unmeasured int, err error) {
+	c, cerr := corpus.CompletionOf(s.Backlog, it.Slug())
+	if cerr != nil {
+		return 0, 0, FailureError("%w", cerr)
 	}
-	return c.Counts().Live, nil
+	for _, o := range c.Live {
+		if v, ok := o.Record.Get("verify_by"); !ok || strings.TrimSpace(v) == "" {
+			unmeasured++
+		}
+	}
+	return c.Counts().Live, unmeasured, nil
+}
+
+// queuedStatusFor is the rung where work waits to be picked up --- the one
+// before started. Positional, and carrying the same weakness as the other two.
+func (s *Session) queuedStatusFor(it corpus.Item) string {
+	l := s.Config.LadderFor(it.Type())
+	if len(l.Statuses) < 3 {
+		return ""
+	}
+	return l.Statuses[len(l.Statuses)-3]
+}
+
+// plural renders a count with its noun, so a message reads in English.
+func plural(n int, noun string) string {
+	if n == 1 {
+		return "1 " + noun
+	}
+	return fmt.Sprintf("%d %ss", n, noun)
 }
 
 // startedStatusFor is the rung that means somebody is working on it.

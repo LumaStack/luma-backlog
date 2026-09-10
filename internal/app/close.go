@@ -26,6 +26,8 @@ type CloseResult struct {
 	// archived. Worth saying: it explains a count that would otherwise look
 	// wrong.
 	Retired int
+	// Advice is what the caller should hear but is not stopped by.
+	Advice []string
 	Observations
 }
 
@@ -128,10 +130,27 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		return nil, FailureError("%w", err)
 	}
 
+	// A task left open and ready to start under a closed work item advertises
+	// work nobody can pick up. Warned, never refused, and never auto-closed:
+	// closing the stragglers would invent a disposition nobody chose, which is
+	// exactly what --force refuses to do to outcomes. A work item is judged on
+	// its outcomes and on nothing else (spec.md §2.4).
+	open, err := s.openTaskCount(it)
+	if err != nil {
+		return nil, err
+	}
+	var advice []string
+	if open > 0 {
+		advice = append(advice,
+			plural(open, "task")+" on "+req.Ref+" never reached a terminal status --- "+
+				"they now advertise work nobody can pick up, and nothing here closed them")
+	}
+
 	return &CloseResult{
 		Path:    it.Path,
 		Reason:  req.As,
 		Retired: len(c.Retired),
+		Advice:  advice,
 		Observations: Observations{
 			// Only on a path that did not refuse. A refusal already names the
 			// files it refused over, and saying the same path twice teaches a
@@ -159,4 +178,21 @@ func reasonList() string {
 // explaining a refusal.
 func yamlQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
+
+// openTaskCount is how many of a work item's tasks have not reached the
+// terminal rung of their own ladder.
+func (s *Session) openTaskCount(it corpus.Item) (int, error) {
+	items, _, err := corpus.List(s.Backlog, corpus.Filter{Unit: corpus.Task, WorkItem: it.Slug()})
+	if err != nil {
+		return 0, FailureError("%w", err)
+	}
+	terminal := s.Config.TerminalStatusFor(corpus.Task)
+	open := 0
+	for _, t := range items {
+		if t.Status(s.Config.DefaultStatusFor(corpus.Task)) != terminal {
+			open++
+		}
+	}
+	return open, nil
 }
