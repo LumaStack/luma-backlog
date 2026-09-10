@@ -54,10 +54,17 @@ the first time.
 
 ## How many rungs at a time, and where to stop
 
-**Do not run a work item up the ladder in one burst — unless somebody said
-to.** Each rung is a claim about the present and each gate is a question
-somebody answers. Issuing the moves in order satisfies the sequence and answers
-nothing, and what comes out is a record that lies about its own state.
+**Advance until a check refuses you, then stop at that rung and work there.**
+Not a number of rungs and not a rung by name: how far you get is whatever
+[[#what-each-rung-asks-for]] produces for this record today, and that table
+changes. Any sentence here claiming *this is the one to stop at* would be a
+second copy of it, and two copies of one fact eventually disagree
+(ADR-0003).
+
+**A check is satisfied three ways, and only three.** A field on the record; a
+thing somebody said; or something entailed by what they said. Nothing else
+counts — not that the work is obviously fine, not that you understand it well,
+not that you just spent an afternoon on it.
 
 **Measured here, twice in one session on 2026-09-09.** An agent took WORK-0074
 from `preparing` to `in_progress` in three consecutive commands, and the
@@ -70,8 +77,8 @@ enough — see the note at the end of this section.
 | what somebody wants | what to do |
 | --- | --- |
 | **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
-| **speed through the gates as fast as possible, without breaking protocol** | cross every one, and answer each in the fewest words that actually answer it — advancing without spending a turn wherever you already have the answers for that gate |
-| **skip gates with abandon, because they think they know best — and maybe they do** | warn once, take them there, journal the skip so we can retro the decision |
+| **speed through the gates as fast as possible, without breaking protocol** | cross every one, answering each in the fewest words that answer it. **Fewer words, never fewer turns** — where a check refuses you, that is where you stop, whatever pace was asked for |
+| **override a gate deliberately** — the work is trivial, or something is on fire | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
 
 **They are ordered by speed, and the break comes last.** Reading down the table
 is reading from slowest to fastest — and the third row is fastest **because it
@@ -99,6 +106,29 @@ invisibly, so give the answer rather than assert that one exists — a sentence,
 and where it came from. **Not having it is not a reason to stay put either:**
 that is the moment to ask, which is the one turn worth spending.
 
+#### What makes an inference safe enough to spend at a gate
+
+**Entailment, not confidence. An inference is safe when denying it would
+contradict what they said.** *Take it to `in_progress`* entails capacity and
+scheduling, because `in_progress` **means** work is happening now — you cannot
+want that and also not have it. *We had a long design discussion* entails
+nothing about whether done is defined; nobody said the discussion was the
+preparation.
+
+**The checkable form: an inference is safe when they would know they made it.**
+If somebody reading their own message back cannot see the claim being made, the
+claim is not theirs, and a gate crossed on it was crossed on nothing. That holds
+even when the inference turns out to be right — what makes it unsafe is that it
+was invisible to the only person who could have corrected it.
+
+**If you are unsure whether an inference is safe, it is not.** Asking costs a
+turn; a wrong inference costs a record asserting something nobody said.
+
+**Say which words paid for it, at the moment you spend it.** *You said take it
+to `in_progress`, so I am treating scheduling and capacity as answered.* That is
+the difference between evidence and a guess: evidence has a source you can name,
+and naming it is what makes a wrong one cheap to correct.
+
 **Only the third row breaks protocol**, which is why it alone gets a warning and
 a journal line. The first two are both compliant and differ only in pace — so
 getting them the wrong way round costs somebody time, while mistaking either for
@@ -122,19 +152,61 @@ instead of at a retrospective.
 ordinary case, and the rest of this section is what to do about them — judge it,
 coach where it is worth coaching, and ask where judging fails.
 
-### Some gates are always worth stopping at, and some are not
-
-**`preparing` is the one to stop at**, unless the work is obviously trivial.
-That is where done gets defined, and it is the only rung with a natural stopping
-point — outcome refinement ends when the outcome passes.
-
-**`unprepared` is the one to blow past.** Somebody looking at a `captured`
-record and saying *I want to work on this* has just made the first gate's
-decision out loud. Recording the rung it passed through adds nothing.
+### Where you stop is the table's answer, not yours
 
 **Do not stop at a gate just because it is there.** A gate that always asks
 teaches people to answer it without reading, which costs more than the gate was
-worth.
+worth. Equally, do not decide in advance which gates matter — that is the
+table's job, and it is the only place the strengths live.
+
+**Most gates are answered by the request, because a crossing is an
+authorization.** That is what each named move *is*: `captured → unprepared`
+authorizes preparing the work — selection means nothing else —
+`preparing → prepared` authorizes that the outcomes are good enough, and
+`prepared → todo` authorizes starting soon.
+
+**So a destination carries every authorization on the way that intent can
+give.** Somebody saying *I want to work on this* has made the first gate's
+decision out loud; naming `in_progress` says they want it prepared, scheduled
+and underway, because you cannot want work in flight and not want it prepared.
+Those are entailments rather than guesses, and they cross without a turn.
+
+**The whole procedure reduces to one thing, asked once per rung: which of this
+rung's checks do you not hold the authorization for?** Hold them all and
+proceed. Hold some and stop — with **every** unmet check of that rung in one
+ask. **One or more questions, asked once**: a rung may need three things, and it
+needs them in a single stop, not three. Going back for a second thing the same
+rung already wanted is the interrogation that makes people stop answering.
+
+**What a request cannot answer is anything about content that did not exist when
+they spoke.** Nobody can accept a definition of done before it is written. That
+is not a rule about `preparing` in particular — it is why a check with a
+standing requirement cannot be pre-satisfied by intent, only by somebody with
+standing acting after the thing exists.
+
+**Where you are refused, stop there and do the work of that rung.** Say what is
+missing, what it costs to go without it, and what you recommend — then ask.
+
+**Two different stops can live at one rung, and which you hit depends on what
+you can supply.** Where outcomes are missing: if you have enough to draft them,
+draft them — and stop anyway, because you cannot accept your own. If you do not
+have enough to draft them, stop earlier and say what you would need. Both are
+the same gate refusing and they ask for different things.
+
+**That is not two trips to the same well.** The acceptance question cannot be
+asked until the outcomes exist, so it is a new question rather than one you
+should have asked the first time. **The test for whether a second stop at one
+rung is honest: could it have been asked at the first stop?** If yes, you owed
+it then. In
+most cases the answer fills it in properly, which is the gate working. Sometimes
+the answer is *skip it*, and that is a forced crossing: legitimate, recorded,
+and never silent.
+
+**Authorization given in advance is given.** *Take this to `in_progress` and
+skip outcomes* leaves nothing missing — the destination answers scheduling and
+capacity, and the override is stated rather than inferred. Do not stop to ask a
+question they have already answered. **Say the cost anyway and journal the
+force**: they get told, not asked.
 
 ### From captured, straight to work
 
@@ -571,49 +643,116 @@ false statuses on the way.
 
 ## What each rung asks for
 
-**Three strengths and nothing else: allowed, warned, refused.** A refusal always
-takes `--force`, and forcing is recorded.
+**Three strengths: allowed, warned, refused.** A refusal always takes `--force`,
+and forcing is recorded.
 
-| leaving or reaching | what | how hard | built |
-| --- | --- | --- | --- |
-| leaving `captured` | `kind` is not `idea` | **refused** — `--force` | ✔ |
-| leaving `captured` | `kind` is set at all | **warned** | ✔ |
-| leaving `captured` | two readers share one understanding | *the gate criterion — no machine can check it* | — |
-| leaving `preparing` | outcomes and tasks exist | **warned** | ✔ |
-| leaving `preparing` | every outcome has a `verify_by` — `outcome.unmeasured` | **warned** | ✔ |
-| leaving `preparing` | no outcome is unbounded — it has an edge | *judgement* | — |
-| reaching `prepared` | every reason it cannot start is scheduling or capacity | *judgement* | — |
-| reaching `prepared` | de-risking has happened | *judgement* | — |
-| reaching `todo` | outcomes exist | **warned** | ✔ |
-| reaching `todo` | scheduling is resolved | *judgement* | — |
-| reaching `in_progress` | at least one outcome exists | **refused** — `--force` | ✔ |
-| reaching `in_progress` | `stage` is at least `provisional` | *written by the move* | ✘ WORK-0075 |
-| reaching `in_progress` | an owner | *settled by ADR-0008* | ✘ no field, no `take` |
-| reaching `in_progress` | one per worker (ADR-0010) | *needs a worker field* | ✘ WORK-0066 |
-| leaving `closed` | a reason is given | **warned** | ✔ |
-| leaving `closed` | `stage` resets, never to `stable` | *written by the move* | ✘ WORK-0075 |
-| `closed` as `completed` | every live outcome proven | **refused** — `--force` | ✔ refusal, ✘ force (WORK-0086) |
-| `closed` as `completed` | every task has reached a terminal rung — any reason | **refused** — `--force` | ✔ |
-| `closed`, other dispositions | every task resolved | **warned** | ✔ |
-| `closed` as `completed` | every task that ran, succeeded | **warned** | ✘ WORK-0064 — a task cannot record how it ended |
-| `closed` | `stage` becomes `stable` | *written by the move* | ✘ WORK-0075 |
+**And a second axis: some rows are checks, some are authorizations.**
 
-**Nine rows are checks the tool runs. Ten are not**, and the italics say which
-kind: a **judgement** nobody can automate, or a **field write** the move owes and
-does not yet make. **Neither is a strength**, and marking them as one would put a
-promise in a column that is supposed to hold guarantees.
+A **check** is a fact about the record. You satisfy it by making the record
+true — most are evaluated by the tool, and a few are judgements of fact somebody
+has to make by reading.
+
+An **authorization** is a decision. Nothing about it is true or false until
+somebody with standing says so, so no amount of reading the record answers it —
+which is why these resisted automation and sat in the table as *judgement*. A
+decision is not computed; it is **made, by someone, and recorded**.
+
+**An authorization always needs a second party.** The doer is not the checker —
+ADR-0007's shape for an outcome's verdict, and the same shape here for its
+definition. That is not a rule about humans; it is a rule about independence.
+
+**Who has standing, for the minimum viable product: people and orchestrating
+agents.** Not the agent doing the work, and **not a peer working agent either**
+— a second worker checking the first is two workers agreeing, which is not
+independence. An orchestrating agent stands in a person's place because it is
+the thing that dispatched the work rather than the thing that did it.
+
+**Nothing in the actor format says which one an agent is.** `agent:<model>/<project>`
+names a model, not a role, so an orchestrating agent and a working one are
+indistinguishable on the record (WORK-0066). Until that changes, standing is
+**asserted rather than proven** — and a false assertion here is a false
+attribution, which `CLAUDE.md` already calls worse than no attribution at all.
+
+**Which is why an authorization with nowhere to be recorded is not enforceable
+at all.** A check with no code is a check nobody runs; an authorization with no
+field is a decision nobody can prove was made.
+
+| leaving or reaching | what | kind | how hard | built |
+| --- | --- | --- | --- | --- |
+| leaving `captured` | `kind` is not `idea` | check | **refused** — `--force` | ✔ |
+| leaving `captured` | `kind` is set at all | check | **warned** | ✔ |
+| leaving `captured` | two readers share one understanding | check — *no machine can run it* | — | — |
+| leaving `captured` | we intend to prepare this | **authorization** | *the crossing is the act* | ✔ implicitly |
+| leaving `preparing` | outcomes exist | check | **refused** — `--force` | ✘ warns today |
+| leaving `preparing` | tasks exist | check | **warned** | ✔ |
+| leaving `preparing` | every outcome has a `verify_by` — `outcome.unmeasured` | check | **warned** | ✔ |
+| leaving `preparing` | no outcome is unbounded — it has an edge | check — *judgement of fact* | — | — |
+| leaving `preparing` | **the outcomes are good enough** | **authorization** | **refused** — `--force` | ✘ nowhere to record it |
+| reaching `prepared` | every reason it cannot start is scheduling or capacity | check — *judgement of fact* | — | — |
+| reaching `prepared` | de-risking has happened | check — *judgement of fact* | — | — |
+| reaching `todo` | outcomes exist | check | **warned** | ✔ |
+| reaching `todo` | **we commit to starting this soon** | **authorization** | *the crossing is the act* | ✘ nowhere to record it |
+| reaching `in_progress` | at least one outcome exists | check | **refused** — `--force` | ✔ |
+| reaching `in_progress` | **there is capacity to start now** | **authorization** | *the crossing is the act* | ✘ nowhere to record it |
+| reaching `in_progress` | `stage` is at least `provisional` | *field write the move owes* | — | ✘ WORK-0075 |
+| reaching `in_progress` | an owner | *settled by ADR-0008* | — | ✘ no field, no `take` |
+| reaching `in_progress` | one per worker (ADR-0010) | check | — | ✘ WORK-0066 |
+| leaving `closed` | a reason is given | check | **warned** | ✔ |
+| leaving `closed` | `stage` resets, never to `stable` | *field write the move owes* | — | ✘ WORK-0075 |
+| `closed` as `completed` | every live outcome proven | check | **refused** — `--force` | ✔ |
+| `closed` as `completed` | every task has reached a terminal rung | check | **refused** — `--force` | ✔ |
+| `closed`, other dispositions | every task resolved | check | **warned** | ✔ |
+| `closed` as `completed` | every task that ran, succeeded | check | **warned** | ✘ WORK-0064 |
+| `closed` | `stage` becomes `stable` | *field write the move owes* | — | ✘ WORK-0075 |
+| `closed` | **forcing it, whatever the disposition** | **authorization** | *the owner's, never assumed* | ✘ no owner field |
+
+**Some checks you can satisfy yourself, and some you cannot — which is not a
+property of the check.** A `kind: idea` you can resolve and say so. A missing
+`verify_by` you can write. Missing outcomes you can draft, *if you have enough
+to draft them*. Whether you are able is a question about this record and what
+you know, so it is not a column here: **the table says what must be true, and
+making it true is yours wherever you can.**
+
+**Fix what you can, make it visible, and carry on.** A check you satisfied is
+not a stop — but a silent fix looks exactly like a gate that never fired, so say
+what you did.
+
+**Everything left — checks you cannot satisfy and authorizations you do not
+hold — goes into one ask, at that rung.**
+
+**Where the crossing is the act**, the authorization is given by somebody asking
+for that rung and needs nothing else — which is why a stated destination carries
+them and why they never stop an agent that was told where to go. **The one that
+cannot work that way is the outcomes**, because nobody can approve a definition
+of done that did not exist when they spoke.
+
+**The italics say which kind of not-a-check a row is**: a **judgement** nobody
+can automate, or a **field write** the move owes and does not yet make.
+**Neither is a strength**, and marking them as one would put a promise in a
+column that is supposed to hold guarantees. How many of each there are is read
+off the table, and is deliberately not written down anywhere else.
+
+**Authorization is what a crossing records.** Where a check is satisfied, the
+record says who satisfied it. Where it is waived, `--force` says who authorized
+the waiver and why — and that entry is the only thing that lets anybody ask
+later whether the gate was worth having.
+
+**Pre-authorization counts, and it has to be stated rather than inferred.**
+*Take this to `in_progress` and skip outcomes* authorizes the crossing before it
+is reached: nothing is missing, so there is nothing to stop for. **Say the cost
+anyway and journal the force** — they get told, not asked. What cannot be
+pre-authorized is a check with a standing requirement, because nobody can accept
+a thing that does not exist yet.
 
 **Warnings are many and refusals are few, on purpose.** A warning names
 something the record cannot say about itself yet; a refusal stops a record
 saying something untrue. There is room for more of the first and almost none for
 the second.
 
-**The refusal surface is three checks and one judgement call**, and it is
-deliberately small: leaving the pile as an idea, starting with no outcomes,
-closing as completed over an unproven one — plus proceeding where compliance or
-security exposure makes the cost unbounded. **Everything else observes.**
+**The refusal surface is deliberately small, and the table is where its size is
+read.** Everything else observes.
 
-**Why those three and nothing more.** Each one stops a record that would
+**Why so few.** Each refusal stops a record that would
 otherwise say something untrue about itself: an idea filed as chosen work, work
 in flight that nobody can tell is finished, and a completion the evidence
 contradicts. **A refusal on anything less than that is the tool holding an
