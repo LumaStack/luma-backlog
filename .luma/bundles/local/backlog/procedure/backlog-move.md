@@ -21,8 +21,22 @@ it unchanged.
 
 ## Always true
 
-**Five invariants. They hold on every move, including ones this procedure does
-not name, and none of them is advice.**
+**These hold on every move, including ones this procedure does not name, and
+none of them is advice.** How many there are is read by counting them.
+
+**Every crossing is announced as it is made.** Which gate, what satisfied it,
+and where that came from — a line per rung, at the moment you cross it.
+
+**Fast-tracking removes stops. It never removes visibility.** A stop hands the
+turn back; an announcement hands nothing back and costs nothing, so there is
+never a pace that justifies crossing quietly. **A silent crossing is what makes
+a wrong inference expensive** — the person who could have said *no, wait* finds
+out when the record is already several rungs downstream, and correcting it is a
+reversal rather than a redirection.
+
+**A summary afterwards is not this.** By the time it is written the record says
+what it says. Real-time is the whole value: the crossings a person would have
+questioned are exactly the ones an agent was most sure about.
 
 **The status must be true.** Every rung is a claim about the present, and the
 only thing this procedure is really enforcing is that the claim holds. Every
