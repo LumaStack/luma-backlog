@@ -27,9 +27,10 @@ none of them is advice.** How many there are is read by counting them.
 **Every crossing is announced as it is made.** Which gate, what satisfied it,
 and where that came from — a line per rung, at the moment you cross it.
 
-**Fast-tracking removes stops. It never removes visibility.** A stop hands the
-turn back; an announcement hands nothing back and costs nothing, so there is
-never a pace that justifies crossing quietly. **A silent crossing is what makes
+**Nothing removes visibility, at any pace.** A stop hands the turn back and is
+the expensive thing — which is why crawling adds them deliberately and
+fast-tracking adds none. An announcement hands nothing back and costs nothing,
+so no pace ever reaches it. **A silent crossing is what makes
 a wrong inference expensive** — the person who could have said *no, wait* finds
 out when the record is already several rungs downstream, and correcting it is a
 reversal rather than a redirection.
@@ -91,19 +92,23 @@ maintainer sent it back to `todo` because no work had been done on it. **This
 procedure already said not to**, which is the evidence that saying it is not
 enough — see the note at the end of this section.
 
-### Three things somebody wants, and the fewest questions that tell them apart
+### Three ways to walk the ladder, and only two of them are asked for
 
 | what somebody wants | what to do |
 | --- | --- |
 | **crawl** — stop at every stop, whether or not it is required | take the time; do not hurry somebody who came for thoroughness. An optional stop taken is never wrong, only slower |
-| **fast-track** — skip every stop you are allowed to skip, and never one you must make | answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **A mandatory stop is not one of the ones you get to save**, and no check is answered more thinly to save one |
+| **fast-track** — stop where you must and nowhere else | the protocol with nothing added: answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **A mandatory stop is not one of the ones you get to save**, and no check is answered more thinly to save one |
 | **override** — run past a stop you must make | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
 
-**Same ladder. `crawl` and `fast-track` differ only in what they do with the
-optional stops — take them all, or take none.** Both are compliant and neither
-skips anything it had to make. **`override` is the only one that touches a
-mandatory stop**, which is why it alone owes a cost, an authorization and a
-journal line.
+**Fast-tracking is not a discount on something fuller. It is the protocol.** The
+mandatory stops *are* the rules, so stopping where the table stops you and
+nowhere else is compliance, not economy. **`crawl` adds optional stops;
+`override` passes a mandatory one.** Both are departures, in opposite
+directions, and only the second one breaches anything.
+
+**Which makes fast-track the default.** Crawling and overriding are requests —
+somebody asks for them. Where nobody has said which they want, stop where the
+table stops you and nowhere else.
 
 **Every gate is crossed. What speed saves is the turn, not the gate.** Where you
 already have the answers **for that gate**, answer it from them and advance —
@@ -169,18 +174,23 @@ small, not because the gate looks unnecessary here — somebody said so, or the
 work itself says so plainly enough that you can give the reason in a sentence.
 **Where nothing has said a stop is worthless for this one, it is not.**
 
-**Working out which of the three you are in is cheap or it is not worth doing.**
+**You are in fast-track unless somebody moved you.** So there is usually nothing
+to work out: no question, no judgement, no asking which they meant. Where
+something in the request does point at `crawl` or `override` and you cannot tell
+which, ask — and ask it alongside whatever else that rung needs, not on its own.
 A question you could have answered from the record is waste, and an answer you
-assumed and had no way to know is worse. Where it is genuinely unclear, ask —
-and ask it alongside whatever else that rung needs, not on its own.
+assumed and had no way to know is worse.
 
 **Never override silently.** Say which of the three you took this to be, and
 why, before crossing. That is what makes a wrong call correctable while it is cheap
 instead of at a retrospective.
 
-**Somebody who has not thought about it yet is not a fourth.** They are the
-ordinary case, and the rest of this section is what to do about them — judge it,
-coach where it is worth coaching, and ask where judging fails.
+**Somebody who has not thought about it yet is not a fourth, and needs no
+judging.** They are the ordinary case and the ordinary case is fast-track: stop
+where the table stops you and nowhere else. **Do not read a silence as a
+preference for one of the others** — crawling because the work feels weighty is
+adding stops nobody asked for, and overriding because it feels trivial is
+passing one nobody waived.
 
 ### Where you stop is the table's answer, not yours
 
