@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Capture something into the backlog
-description: Write something down as a work item so it is not lost — thoughtfully by default, or mechanically when speed is explicitly asked for. Use when something surfaces that should not be lost, when the user says "we should probably…", "at some point…", "capture this", "write this down", "remember to do this later" or describes a problem worth doing something about. Only the words "quick", "quickly" or "fast" skip the discussion. Do NOT use to write outcomes or tasks (backlog-refine), or to change a status (backlog-move).
+description: Write something down as a work item so it is not lost — thoughtfully by default, or mechanically when speed is explicitly asked for. Use when something surfaces that should not be lost, when the user says "we should probably…", "at some point…", "capture this", "write this down", "remember to do this later" or describes a problem worth doing something about. Only the words "quick", "quickly" or "fast" skip the discussion. Do NOT use to write outcomes or tasks (backlog-refine), or to change a status (backlog-transition).
 ---
 
 # Capture something into the backlog
@@ -377,5 +377,5 @@ substance is not:
 ## Either way
 
 **The record lands at `captured`**, which is what it is: something nobody has
-committed to. Moving it along is [[backlog-move]], and it is a separate
+committed to. Moving it along is [[backlog-transition]], and it is a separate
 decision made by a person, not a courtesy you extend on the way out.

@@ -1,23 +1,49 @@
 ---
 type: procedure
-title: Move a work item along the workflow
-description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, reopen it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready". Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
+title: Transition a work item along the workflow
+description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, reopen it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready" --- and on "move" where the destination is a rung ("move it to in progress", "move it back"), but not where it is a position among peers ("move it to the top"), which is the rank command. Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
 ---
 
-# Move a work item along the workflow
+# Transition a work item along the workflow
 
 ```
 luma-backlog transition <ref> <status>
 ```
+
+## `move` is ambiguous, and the object settles it
+
+**"Move" is a word people say for both of the things that can be done to a work
+item**, so it cannot route on its own. **What follows it decides:**
+
+| they said | it means | because the object is |
+| --- | --- | --- |
+| *move it to in progress* · *move it back* · *move it along* · *move it to done* | **this procedure** | a rung on the ladder |
+| *move it to the top* · *move it above WORK-0031* · *move it up the list* · *make it next* | **the `rank` command** | a position among peers at one rung |
+
+**Where nothing names either, ask — one question, and a cheap one.** *"Move
+WORK-0095"* and *"move it up"* are genuinely ambiguous: up the ladder and up the
+list are both ordinary things to want, and guessing wrong writes the wrong field
+on a record somebody is watching.
+
+**Do not resolve it by what seems more likely.** The two are not
+interchangeable: a transition rewrites `workflow_status` and re-enqueues the
+record at the back of a different rung, and a rank leaves the status alone. A
+wrong guess is not a slower answer, it is a different act.
+
+> **`rank` has a command and no procedure yet.** When one arrives it will carry
+> the other half of this table, and "move" will trigger both — which is why the
+> rule is written here now rather than left until the collision is live.
 
 **`set` no longer accepts `workflow_status`**, and refuses it naming this
 command. A status change writes rank too, and the destination rung may require
 things a field write cannot check — so it is an operation, the way `rank`
 already is. `move` is an alias and never a name (`spec.md` §9.2).
 
-**That is every move except closing.** Closing is a different command with its
-own refusals and its own vocabulary — it is below, and nothing here applies to
-it unchanged.
+**Closing and reopening are transitions too.** Closing has a command of its own
+because reaching the terminal rung must not happen by accident — `transition`
+refuses that destination and names `close` instead — but it is a crossing on
+this same ladder, with the same authorizations, and everything here applies to
+it. What differs is the command and the extra refusals it carries.
 
 ## Always true
 

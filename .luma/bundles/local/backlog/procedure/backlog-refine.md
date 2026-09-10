@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Work out what a work item is
-description: Say what done means and how the work will be attempted — write a work item's outcomes, classify what kind of thing it is, and decompose it into tasks where that earns its place. Use when something captured is being worked out, when asked "what does done look like", when a work item is too vague to start, or before selecting work to do. Do NOT use to change a workflow status (backlog-move) or to record evidence that an outcome holds (backlog-verify).
+description: Say what done means and how the work will be attempted — write a work item's outcomes, classify what kind of thing it is, and decompose it into tasks where that earns its place. Use when something captured is being worked out, when asked "what does done look like", when a work item is too vague to start, or before selecting work to do. Do NOT use to change a workflow status (backlog-transition) or to record evidence that an outcome holds (backlog-verify).
 ---
 
 # Work out what a work item is
@@ -14,7 +14,7 @@ luma-backlog set <ref> kind=<kind>
 
 **The command scaffolds the record. What goes in it is the work.**
 
-Moving the item to `prepared` afterwards is [[backlog-move]] — refining and
+Moving the item to `prepared` afterwards is [[backlog-transition]] — refining and
 saying it is refined are separate acts, and conflating them is how something
 gets marked ready because somebody spent time on it.
 

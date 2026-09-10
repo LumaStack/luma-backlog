@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.41.0
+version: 0.42.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -56,7 +56,7 @@ judgment and calls the command for everything else.
   record, which is never the quick path.
 - [[backlog-refine]] — works out what a work item is: what done means, what kind
   of thing it is, and whether it needs stored tasks at all.
-- [[backlog-move]] — moves a work item along the ladder, in either direction,
+- [[backlog-transition]] — moves a work item along the ladder, in either direction,
   including closing it. The two selection gates are where its judgment sits.
 - [[backlog-verify]] — records evidence that an outcome holds, and what does not
   count as evidence.
@@ -68,6 +68,49 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.42.0` — **`backlog-move` is renamed `backlog-transition`.** Breaking: the
+document ID changed, so anything that linked to the old one no longer resolves.
+
+**`move` is not a verb this interface has.** ADR-0005 settled that a status
+change is a `transition` and repositioning a file on disk is a `relocation`, and
+the procedure itself carried the line *"`move` is an alias and never a name"*
+while being named after it.
+
+**Closing and reopening are transitions**, so the name covers the whole
+document. `close` is a separate command because reaching the terminal rung must
+not happen by accident — a safeguard, not a different kind of act.
+
+**Ranking was never in here** and is not affected. The description already
+routed it away: *reordering work at the same status is the `rank` command*.
+
+**For anything citing the old ID:** `procedure/backlog-move` at `0.41.0` and
+earlier is `procedure/backlog-transition` from `0.42.0`. Version-pinned
+citations to the old name are correct as written and resolve through this entry.
+
+`0.37.0`–`0.41.0` — **the transition procedure reworked, after the same gate was
+crossed without an answer twice in two days.** Recorded as one entry because it
+was one continuous piece of work.
+
+A rung's rows split into **checks** — facts about the record, often satisfiable
+by the agent itself — and **authorizations** — decisions that are not true until
+somebody with standing says so, which is why they had sat as *judgement* and why
+no machine could run them. Standing for now is people and orchestrating agents,
+never the working agent. Most authorizations are given by the crossing being
+asked for; the one that cannot be is *the outcomes are good enough*, since
+nobody approves a definition of done that did not exist when they spoke.
+
+Every derived claim was deleted rather than reworded — *preparing is the one to
+stop at*, *the refusal surface is three checks*, *five invariants*, *a check is
+satisfied three ways and only three*. All were second copies of a table that
+changes, and the last also argued against its own maintainer.
+
+The pace table became **crawl · fast-track · override**: crawl adds optional
+stops, fast-track is the procedure working and is the default, override passes a
+mandatory stop and is the only one that breaches anything. Crawl can be
+triggered by the work rather than asked for, and six triggers are drafted for
+tuning against the violation register. Every crossing is announced as it is
+made, at any pace.
 
 `0.36.0` — **a key on its own asks the reader to memorise the corpus.**
 
@@ -283,7 +326,7 @@ the wrong work item is nearly unfindable later; a reader told at the time says
 Where, not what — the reply already said the thing, and repeating it as a
 summary grows until the report is longer than the work.
 
-`0.23.0` — **the lag [[backlog-move]] documented is gone.**
+`0.23.0` — **the lag [[backlog-transition]] documented is gone.**
 
 It carried a blockquote apologising for the binary: the disposition was settled
 as positional and `--reason` as prose, and the tool still spelled `--reason
@@ -334,7 +377,7 @@ at all.
 `ADR-0010` makes a team of people and a team of agents the default shape, and
 two lines here were fossils of the exception: *several things `in_progress` is
 itself the finding* is only true where one worker exists, since a team of ten
-with ten in flight is healthy. Both [[backlog-move]] and [[backlog-rundown]] now
+with ten in flight is healthy. Both [[backlog-transition]] and [[backlog-rundown]] now
 say **one worker** — a human assignee or an agent session, because one agent can
 hold many sessions at once — and both say plainly that **nothing can check it
 yet**, since the actor format cannot name a session. A rule that quietly never
@@ -354,7 +397,7 @@ states the vocabulary; it does not defend the absence of a value. The only
 reader who could be confused is one who ran `--help` and saw the binary still
 offering it, which the note about the binary's lag already covers.
 
-`0.20.0` — **[[backlog-move]] is rewritten from a rung-by-rung interview.**
+`0.20.0` — **[[backlog-transition]] is rewritten from a rung-by-rung interview.**
 
 It was the least examined procedure in the bundle — two commits, written in one
 pass, never reopened — while carrying both selection gates, which is where the
@@ -388,7 +431,7 @@ they work: the positional disposition, a required reason on a cancellation, an
 assignee at `in_progress`. A procedure that describes a tool it does not have is
 the drift this bundle exists to prevent.
 
-`0.19.0` — **[[backlog-move]] stops teaching a vocabulary a decision replaced.**
+`0.19.0` — **[[backlog-transition]] stops teaching a vocabulary a decision replaced.**
 
 Its disposition table said `delivered` and `abandoned`, and spent a paragraph
 arguing the `canceled` versus `abandoned` distinction. ADR-0007 is in force and

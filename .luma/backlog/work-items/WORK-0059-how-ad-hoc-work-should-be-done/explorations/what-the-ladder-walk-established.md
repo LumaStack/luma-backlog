@@ -12,7 +12,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T01:22:08Z'}
 
 **Which moves on the workflow ladder are trivial and which carry checks and
 balances**, walked rung by rung with the maintainer. The rung-specific answers
-went into [[backlog-move]]. **What is here is what did not fit in any one
+went into [[backlog-transition]]. **What is here is what did not fit in any one
 section** — the findings that recurred, and are worth more than the rungs that
 produced them.
 

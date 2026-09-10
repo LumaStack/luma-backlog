@@ -1,6 +1,6 @@
 ---
 name: backlog-capture
-description: Write something down as a work item so it is not lost — thoughtfully by default, or mechanically when speed is explicitly asked for. Use when something surfaces that should not be lost, when the user says "we should probably…", "at some point…", "capture this", "write this down", "remember to do this later" or describes a problem worth doing something about. Only the words "quick", "quickly" or "fast" skip the discussion. Do NOT use to write outcomes or tasks (backlog-refine), or to change a status (backlog-move).
+description: Write something down as a work item so it is not lost — thoughtfully by default, or mechanically when speed is explicitly asked for. Use when something surfaces that should not be lost, when the user says "we should probably…", "at some point…", "capture this", "write this down", "remember to do this later" or describes a problem worth doing something about. Only the words "quick", "quickly" or "fast" skip the discussion. Do NOT use to write outcomes or tasks (backlog-refine), or to change a status (backlog-transition).
 ---
 
 <!-- luma-foreman:generated from local/backlog procedure/backlog-capture. Regenerate with `luma-foreman apply`; edits are lost. -->
