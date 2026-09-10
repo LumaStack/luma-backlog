@@ -100,28 +100,40 @@ func newRootCommand(app *App) *cobra.Command {
 			return cmd.Help()
 		},
 	}
+	// Cobra sorts commands alphabetically, which throws away two orderings the
+	// code already states: the core verbs are listed by how often they are
+	// reached for, and `corpus.Units` is the model's own hierarchy with the
+	// primary unit first. Alphabetical is a third ordering that means nothing
+	// and silently overrules both.
+	cobra.EnableCommandSorting = false
+
 	addGroups(root)
 
 	root.AddCommand(inGroup(newInitCommand(app), groupExtra))
 	addNouns(root, app)
 
+	// Ordered by how often each is reached for, not alphabetically. `list` and
+	// `show` are the two reads and belong together; `set` writes fields; `rank`
+	// and `transition` are the two operations, which is also the order somebody
+	// meets them in.
+	//
 	// show and set are top-level while the cross-type question is unsettled.
 	// See nouns.go.
-	root.AddCommand(inGroup(newShowCommand(app), groupCore))
-	root.AddCommand(inGroup(newSetCommand(app), groupCore))
-
-	// `transition` and `rank` are `work-item transition` and `work-item rank`,
-	// for the same reason `list` is below: only work items carry a workflow
-	// status or a rank, so the noun adds a word and removes no ambiguity. It is
-	// also the pair typed most often, and `rank` reading as absent because it
-	// was only reachable under the noun is the observed cost of not doing this.
-	root.AddCommand(inGroup(newTransitionCommand(app), groupCore))
-	root.AddCommand(inGroup(newRankCommand(app), groupCore))
-
+	//
 	// `list` is `work-item list`. The tool is called backlog; listing the
 	// backlog means listing work items, which is the reading of the command
 	// name and the overwhelmingly common case.
 	root.AddCommand(inGroup(newListCommand(app, backlogUnit), groupCore))
+	root.AddCommand(inGroup(newShowCommand(app), groupCore))
+	root.AddCommand(inGroup(newSetCommand(app), groupCore))
+
+	// `transition` and `rank` are `work-item transition` and `work-item rank`,
+	// for the same reason: only work items carry a workflow status or a rank,
+	// so the noun adds a word and removes no ambiguity. It is also the pair
+	// typed most often, and `rank` reading as absent because it was only
+	// reachable under the noun is the observed cost of not doing this.
+	root.AddCommand(inGroup(newRankCommand(app), groupCore))
+	root.AddCommand(inGroup(newTransitionCommand(app), groupCore))
 
 	applyHelp(root)
 	return root

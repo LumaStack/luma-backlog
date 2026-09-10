@@ -55,6 +55,30 @@ removing one breaking, so six is the reversible direction.
 The test each survivor passes is **does an actor behave differently** — and `4`
 is the one that matters most, being the only code where retrying is correct.
 
+### Listing order is by use, never alphabetical
+
+**Core verbs: `list`, `show`, `set`, `rank`, `transition`.** The two reads
+first and together, then the field write, then the two operations.
+
+**Record commands follow `corpus.Units`** — `work-item`, `outcome`, `task`,
+`decision`, `exploration` — which is the model's own hierarchy with the primary
+unit first.
+
+**`cobra.EnableCommandSorting` is off.** The default sorts alphabetically, which
+is a third ordering that means nothing and silently overruled the two the code
+already stated: it put `decision` above `work-item` in a tool whose unit is the
+work item, and `completion` above `init` in a listing somebody reads before
+their first run.
+
+**This is one of the choices CLIG deliberately leaves open** — *whether verbs
+sort by frequency or by kind* — and the adopted policy's step three requires it
+be recorded or it does not bind.
+
+> **Corrected 2026-09-09**, when the listing was first read closely. The
+> position is new rather than changed: nothing had chosen alphabetical, it was
+> the default arriving unexamined, which is exactly what *precedent is not a
+> decision* names.
+
 ### Commands do not prompt
 
 Missing input is a usage error naming what was needed. **No `--prompt`, no

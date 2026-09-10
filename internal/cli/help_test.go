@@ -133,3 +133,28 @@ func section3(out, name string) string {
 	}
 	return rest
 }
+
+// Cobra sorts alphabetically, which throws away two orderings the code already
+// states: the core verbs by how often they are reached for, and corpus.Units by
+// the model's hierarchy. Alphabetical is a third ordering that means nothing.
+func TestCommandsListInTheOrderTheyAreDeclared(t *testing.T) {
+	app, _ := initialized(t)
+	_, out, _ := run(t, app, "--help")
+
+	for _, group := range [][]string{
+		{"list", "show", "set", "rank", "transition"},
+		{"work-item", "outcome", "task", "decision", "exploration"},
+	} {
+		at := -1
+		for _, name := range group {
+			i := strings.Index(out, "\n  "+name+" ")
+			if i < 0 {
+				t.Fatalf("%q missing from the listing:\n%s", name, out)
+			}
+			if i < at {
+				t.Errorf("%q listed out of order:\n%s", name, out)
+			}
+			at = i
+		}
+	}
+}
