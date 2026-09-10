@@ -8,6 +8,7 @@
 ## ▶ 2026-09-10
 
 WORK-0022-migrate-a-corpus-when-the-vocabulary-changes unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+NEIGHBOURING CASE to WORK-0089, 2026-09-09: that record renames the FIELD workflow_status to status, this one renames a VALUE like todo to next. different migrations, same machinery, worth designing together so it carries both
 
 ## ▶ 2026-09-06
 

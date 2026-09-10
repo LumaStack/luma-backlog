@@ -8,6 +8,8 @@
 ## ▶ 2026-09-10
 
 WORK-0037-old-records-get-migrated-as-the-system-improves unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+FIRST CONSUMER, 2026-09-09: WORK-0089 renames workflow_status to status across every record, and depends on this mechanism rather than hand-editing. that would be the fourth hand-migration, and this record already notes the first three
+recorded here as well as there because the tool cannot express the dependency — depends_on lives on the task and blocked names no target, so WORK-0089 pointing at this record is invisible from this side. that is WORK-0025's cost, paid
 
 ## ▶ 2026-09-08
 
