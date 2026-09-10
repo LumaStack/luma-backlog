@@ -30,6 +30,7 @@ func TestNoCommandWritesOutsideTheBacklog(t *testing.T) {
 		{"work-item", "transition", "payments-v2", "in_progress"},
 		{"work-item", "journal", "a line worth keeping"},
 		{"outcome", "verify", "the-queue-drains", "proven", "-e", "ran it"},
+		{"transition", "add-the-queue", "closed"},
 		{"work-item", "close", "payments-v2", "completed"},
 		{"list"},
 		{"show", "payments-v2"},

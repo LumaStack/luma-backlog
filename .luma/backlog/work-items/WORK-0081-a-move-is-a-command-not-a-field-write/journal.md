@@ -16,6 +16,9 @@ and it is invisible by construction. nothing notices a task sitting at todo whos
 which is close to work-item.drifted — 'work happened, but no outcome was verified or revised' — except drift is about outcomes and this is about tasks. no condition names it, and WORK-0046 is where the set gets evaluated
 the cheap tell existed the whole time and nobody was looking: a work item at in_progress with twelve tasks at todo and eleven commits against it. the numbers disagreed for hours in a corpus being read constantly
 third instance today of the same shape — race the ladder, skip the confirmation, work without moving the tasks. all three are the record and the world disagreeing, all three were found by the maintainer rather than by the tool, and the tool now warns about none of them
+close now REFUSES a completed close while any task is open, for any reason — closed is the bar, not successful. only completed is gated; cancelling warns and proceeds, because open tasks are what being cancelled means
+refusal ORDER matters and was wrong at first: the task check ran before the outcome checks, so a work item with an unreadable outcome AND an open task was told about the task. outcomes come first — they are about whether the work is done at all, where tasks are bookkeeping
+NOT BUILT, and it cannot be: warn if any task was unsuccessful. a task has no way to record how it ended — assert refuses anything that is not an outcome — so there is nothing to read. that is WORK-0064, and the table row says so rather than omitting the promise
 
 ## ▶ 2026-09-09
 

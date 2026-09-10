@@ -13,6 +13,11 @@ type CloseRequest struct {
 	Ref string
 	// As is how the work ended — one of corpus.CloseReasons.
 	As string
+	// Force closes past every refusal. It never touches the outcomes: the
+	// count still computes what it computed, so a reader sees a completed
+	// record whose own arithmetic disagrees with it --- which is the truth.
+	// Announced, and written to the journal.
+	Force bool
 	// Reason is prose: why, in the closer's words. Optional, and free text —
 	// the enum says which ending, this says anything the enum cannot.
 	Reason string
@@ -58,6 +63,11 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		return nil, FailureError("%w", err)
 	}
 
+	// Only a disposition that claims success is gated. Cancelling a work item
+	// with open tasks is the ordinary case --- it is what being cancelled
+	// means --- and gating it would make it impossible to stop work for being
+	// unfinished (spec.md §5.3.1).
+	var forced []string
 	if corpus.CloseReason(req.As).GatedOnCompletion() {
 		// Refused for want of an answer rather than on an opinion. An outcome
 		// that cannot be read is missing from the count, so it can never be
@@ -68,7 +78,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		// Every other reason closes freely. None of them claims the work
 		// succeeded, so none of them needs a count — which is also the way out
 		// when a file is beyond repair.
-		if len(c.Skipped) > 0 {
+		if len(c.Skipped) > 0 && !req.Force {
 			var b strings.Builder
 			fmt.Fprintf(&b, "%s cannot be completed: %d outcome(s) could not be read, so there is no count.\n",
 				it.Slug(), len(c.Skipped))
@@ -80,12 +90,18 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 			return nil, RefusedError("%s", b.String())
 		}
 
-		if !c.Complete() && len(c.Live) == 0 {
+		if len(c.Skipped) > 0 {
+			forced = append(forced, plural(len(c.Skipped), "outcome")+" could not be read")
+		}
+		if !c.Complete() && len(c.Live) == 0 && !req.Force {
 			return nil, RefusedError(
 				"%s has no outcomes, so there is nothing that says it was completed.\n"+
 					"Declare what done means, or close with a different disposition.", it.Slug())
 		}
-		if len(c.Unpassing) > 0 {
+		if len(c.Live) == 0 {
+			forced = append(forced, "no outcomes at all")
+		}
+		if len(c.Unpassing) > 0 && !req.Force {
 			var names []string
 			for _, o := range c.Unpassing {
 				names = append(names, "  "+o.Slug())
@@ -96,6 +112,28 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 					"records why it is unmet and does not clear this — a completed close\n"+
 					"over an unmet outcome needs --force, and the count will say so.",
 				it.Slug(), len(c.Unpassing), len(c.Live), strings.Join(names, "\n"))
+		}
+		if len(c.Unpassing) > 0 {
+			forced = append(forced,
+				fmt.Sprintf("%d of %d outcomes not proven", len(c.Unpassing), len(c.Live)))
+		}
+
+		// Last, because it is bookkeeping where the checks above are about
+		// whether the work is done at all. A caller with both problems should
+		// hear about the outcomes first.
+		openTasks, terr := s.openTaskCount(it)
+		if terr != nil {
+			return nil, terr
+		}
+		if openTasks > 0 {
+			if !req.Force {
+				return nil, RefusedError(
+					"%s cannot be completed: %s never reached a terminal status.\n\n"+
+						"Close them --- any reason is fine, they may have failed or been\n"+
+						"cancelled --- or pass --force.",
+					req.Ref, plural(openTasks, "task"))
+			}
+			forced = append(forced, plural(openTasks, "task")+" still open")
 		}
 	}
 
@@ -140,7 +178,16 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		return nil, err
 	}
 	var advice []string
-	if open > 0 {
+	for _, f := range forced {
+		if _, jerr := s.Journal(JournalRequest{
+			WorkItem: it.Slug(),
+			Line:     "FORCED close as " + req.As + ": " + f,
+		}); jerr != nil {
+			return nil, jerr
+		}
+		advice = append(advice, "forced: "+f+" --- recorded in the journal")
+	}
+	if open > 0 && len(forced) == 0 {
 		advice = append(advice,
 			plural(open, "task")+" on "+req.Ref+" never reached a terminal status --- "+
 				"they now advertise work nobody can pick up, and nothing here closed them")

@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+BUILT 2026-09-09: close --force exists. it proceeds past every refusal, announces which ones on stderr, writes a FORCED line per override to the journal, and never touches the outcomes — so a forced completed close leaves 0 proven of 1 live, which backlog-move calls the truth
+
 ## ▶ 2026-09-09
 
 found 2026-09-09 while wiring force-tracking on transition: close's refusal message names --force, backlog-move devotes four paragraphs to how it behaves, and the flag was never built

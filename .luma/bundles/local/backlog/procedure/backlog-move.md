@@ -440,10 +440,17 @@ their own work.
 **Closing sets `stage` to `stable`.** The content is not expected to change much
 afterwards.
 
-**Tasks should be resolved, and need not be successful.** A task left *open and
-ready to start* under a closed work item advertises work nobody can pick up. It
-does not have to have worked — `spec.md` §2.4 is explicit that a work item is
-judged on its outcomes and on nothing else — so this is a warning, not a refusal.
+**Tasks must be resolved to complete, and need not be successful.** A task left
+*open and ready to start* under a completed work item advertises work nobody can
+pick up, so `close … completed` refuses until every task has reached a terminal
+rung — **failed, cancelled, abandoned, any reason at all.** Only *completed* is
+gated; every other disposition warns and proceeds, because open tasks are what
+being cancelled means.
+
+**Whether they succeeded is a warning and not a bar.** Attempting a task several
+times is ordinary and some attempts fail; a person needs to see that and decide
+whether it points at a problem. *Unbuilt — a task cannot record how it ended
+([[work-items/WORK-0064-a-task-cannot-record-why-it-ended]]).*
 **Never auto-close the stragglers**: that invents a disposition nobody chose,
 which is exactly what `--force` refuses to do to outcomes.
 
@@ -537,7 +544,9 @@ takes `--force`, and forcing is recorded.
 | leaving `closed` | a reason is given | **warned** | ✔ |
 | leaving `closed` | `stage` resets, never to `stable` | *written by the move* | ✘ WORK-0075 |
 | `closed` as `completed` | every live outcome proven | **refused** — `--force` | ✔ refusal, ✘ force (WORK-0086) |
-| `closed` | every task resolved | **warned** | ✔ |
+| `closed` as `completed` | every task has reached a terminal rung — any reason | **refused** — `--force` | ✔ |
+| `closed`, other dispositions | every task resolved | **warned** | ✔ |
+| `closed` as `completed` | every task that ran, succeeded | **warned** | ✘ WORK-0064 — a task cannot record how it ended |
 | `closed` | `stage` becomes `stable` | *written by the move* | ✘ WORK-0075 |
 
 **Nine rows are checks the tool runs. Ten are not**, and the italics say which

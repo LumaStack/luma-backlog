@@ -312,3 +312,84 @@ func TestTheLatestVerdictWins(t *testing.T) {
 		t.Errorf("a later proven verdict did not supersede an earlier disproven one: %s", e)
 	}
 }
+
+// Only a disposition that claims success is gated. Tasks must be closed ---
+// any reason is fine, they may have failed or been cancelled --- because a task
+// left open under a completed work item advertises work nobody can pick up.
+func TestCompletingWithAnOpenTaskIsRefused(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
+
+	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed")
+	if code != ExitRefused {
+		t.Errorf("exit = %d, want %d", code, ExitRefused)
+	}
+	if !strings.Contains(errOut, "any reason is fine") {
+		t.Errorf("the refusal did not say that a failed task counts:\n%s", errOut)
+	}
+}
+
+// A closed task satisfies it however it got there. Cancelling is not success.
+func TestCompletingWithACancelledTaskIsAllowed(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
+	run(t, app, "transition", "do-the-thing", "closed")
+
+	if code, _, e := run(t, app, "work-item", "close", "WORK-0001", "completed"); code != ExitOK {
+		t.Fatalf("a closed task did not satisfy the check: %s", e)
+	}
+}
+
+// Cancelling with open tasks is the ordinary case --- it is what being
+// cancelled means --- so it warns and proceeds (spec.md §5.3.1).
+func TestCancellingWithAnOpenTaskIsNotGated(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+
+	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled")
+	if code != ExitOK {
+		t.Fatalf("cancelling was gated: exit %d, %s", code, errOut)
+	}
+	if !strings.Contains(errOut, "advertise work nobody can pick up") {
+		t.Errorf("the open task was not mentioned:\n%s", errOut)
+	}
+}
+
+// --force proceeds past every refusal, says which ones, writes them down, and
+// never touches the outcomes --- so the count still disagrees with the close,
+// which is the truth.
+func TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest(t *testing.T) {
+	app, project := initialized(t)
+	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+
+	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed", "--force")
+	if code != ExitOK {
+		t.Fatalf("--force did not proceed: exit %d, %s", code, errOut)
+	}
+	for _, want := range []string{"1 task still open", "1 of 1 outcomes not proven"} {
+		if !strings.Contains(errOut, want) {
+			t.Errorf("a forced close did not announce %q:\n%s", want, errOut)
+		}
+	}
+
+	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	if strings.Count(journal, "FORCED close as completed") != 2 {
+		t.Errorf("both overrides were not written down:\n%s", journal)
+	}
+
+	// The outcome is untouched: marking it verified so the arithmetic came out
+	// clean would destroy the record.
+	o := readRecord(t, project, wiPath(t, project, "alpha", "outcomes", "the-queue-drains.md"))
+	if o.Has("verified") {
+		t.Error("--force verified the outcome to make the count agree")
+	}
+}

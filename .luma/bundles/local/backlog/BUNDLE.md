@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.32.0
+version: 0.33.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,17 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.33.0` — **completing requires the tasks to be closed, and `--force` exists.**
+
+Only *completed* is gated: every task must have reached a terminal rung, for any
+reason at all — failed, cancelled, whatever. Every other disposition warns and
+proceeds, because open tasks are what being cancelled means.
+
+`close --force` is built, which the refusals had been promising and nothing
+provided. It proceeds past every one, announces which, writes each to the
+journal, and never touches the outcomes — so the count still disagrees with the
+close, which is the truth.
 
 `0.32.0` — **warnings are many, refusals are few.**
 

@@ -8,6 +8,7 @@ import (
 )
 
 func newCloseCommand(a *App) *cobra.Command {
+	var force bool
 	var reason string
 
 	cmd := &cobra.Command{
@@ -35,7 +36,8 @@ func newCloseCommand(a *App) *cobra.Command {
 			if len(args) == 2 {
 				as = args[1]
 			}
-			res, err := s.CloseWorkItem(app.CloseRequest{Ref: args[0], As: as, Reason: reason})
+			res, err := s.CloseWorkItem(app.CloseRequest{
+				Ref: args[0], As: as, Reason: reason, Force: force})
 			if err != nil {
 				return err
 			}
@@ -55,5 +57,7 @@ func newCloseCommand(a *App) *cobra.Command {
 	}
 	cmd.Flags().StringVarP(&reason, "reason", "r", "",
 		"why, in your words — free prose, not one of the dispositions")
+	cmd.Flags().BoolVar(&force, "force", false,
+		"close as completed anyway — announced, and written to the journal")
 	return cmd
 }
