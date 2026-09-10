@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.37.0
+version: 0.37.1
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
