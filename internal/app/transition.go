@@ -324,7 +324,6 @@ func (s *Session) startedStatusFor(it corpus.Item) string {
 	return l.Statuses[len(l.Statuses)-2]
 }
 
-
 // leavesThePile reports a crossing of the first gate: out of the rung where
 // things wait to be judged, into the pipeline where they have been chosen.
 func (s *Session) leavesThePile(it corpus.Item, from, to string) bool {
