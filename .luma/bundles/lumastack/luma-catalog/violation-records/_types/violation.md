@@ -5,15 +5,19 @@ fields:
   violation_id:
     field_presence: required
     field_type: text
-    desc: "the record's directory name — `2026-09-08-wikilink-across-bundles`. Derived from the date and what was breached, so two filings of one breach collide rather than being counted twice"
-  occurred_at:
-    field_presence: required
-    field_type: timestamp
-    desc: "when the breach happened. Usually knowable to the turn, because the work that contains it is still open"
+    desc: "the record's directory name — `2026-09-08-031200-wikilink-across-bundles`. Derived from when it was filed and what was breached; nothing is appended to break ties, so two filings of one breach collide rather than being counted twice"
   violating_commit:
     field_presence: optional
     field_type: text
     desc: "the commit the breach is embodied in — a bare SHA, short or full. **A violation has two commits and this is not the other one**: the commit that *carries* this record is later, and naming it here would say nothing. Absent where no commit contains the breach"
+  violating_actor:
+    field_presence: required
+    field_type: actor
+    desc: "who or what breached. Almost always an `agent:`, and naming the model matters because the aggregate is read per model. **Not `noticed_by`** — a record names two actors and only one of them violated anything"
+  occurred_at:
+    field_presence: required
+    field_type: timestamp
+    desc: "when the breach happened. Usually knowable to the turn, because the work that contains it is still open"
   noticed_at:
     field_presence: recommended
     field_type: timestamp
@@ -22,10 +26,6 @@ fields:
     field_presence: required
     field_type: actor
     desc: "who or what caught it. A `human:` here rather than an `agent:` is the finding — it means nothing self-reported and nothing mechanical fired"
-  actor:
-    field_presence: required
-    field_type: actor
-    desc: "who or what breached. Almost always an `agent:`, and naming the model matters because the aggregate is read per model"
   delivery:
     field_presence: required
     field_type: enum

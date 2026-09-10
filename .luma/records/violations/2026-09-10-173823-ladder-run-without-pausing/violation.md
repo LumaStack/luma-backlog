@@ -1,11 +1,11 @@
 ---
 type: violation
-violation_id: 2026-09-10-ladder-run-without-pausing
-occurred_at: 2026-09-10T16:31:16Z
+violation_id: 2026-09-10-173823-ladder-run-without-pausing
 violating_commit: 8588478
+violating_actor: agent:claude-opus-5/luma-backlog
+occurred_at: 2026-09-10T16:31:16Z
 noticed_at: 2026-09-10T17:45:00Z
 noticed_by: human:luma-foundry
-actor: agent:claude-opus-5/luma-backlog
 delivery: delivered
 expectation: A work item pauses at `preparing` until the preparing work has actually been done, however far along it was asked to be taken.
 policy: local/backlog procedure/backlog-move 0.36.0

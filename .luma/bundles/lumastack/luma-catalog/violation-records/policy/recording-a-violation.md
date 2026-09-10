@@ -59,8 +59,8 @@ lines.
 ## How one is named
 
 ```
-<YYYY-MM-DD>-<short-name>
-2026-09-08-wikilink-across-bundles
+<YYYY-MM-DD>-<HHMMSS>-<short-name>
+2026-09-08-031200-wikilink-across-bundles
 ```
 
 **No sequential number, deliberately.** `VIO-0007` requires knowing `VIO-0006`
@@ -68,41 +68,72 @@ exists, so two actors filing at the same moment collide and a coordinator is
 needed. **This register is meant to be written often, in parallel, sometimes by
 agents** — an identifier that needs no coordination is what makes that safe.
 
-**Date first**, so a directory listing sorts chronologically without a tool.
-**Name second**, because scanning goes date-then-subject and the subject has to
-be adjacent to the date to be read.
+**Time first, to the second.** Two reasons, and the second is the one that
+would bite.
 
-**And nothing after it. Two records that would take the same name are meant to
-collide**, which is the part that looks like a defect and is not.
+**A listing sorts chronologically without a tool** — which the day alone gives
+across days and not within one, and a register written this often lives inside a
+day far more than across them.
+
+**And recurrence has to be filable.** *The same step skipped forty times* is what
+this register is for, and several of those forty land in one afternoon. Wherever
+the name resolves more coarsely than breaches actually happen, the second
+occurrence cannot be written down at all — the filer is sent to the record
+already there, and the count loses the very repetition it exists to show.
+**Same name and same instant is a duplicate; same name an hour apart is
+recurrence, and the register needs both filable and told apart.**
+
+**So the resolution has to be finer than the rate at which distinct violations
+occur.** This register's subject is agents, which act at machine speed: an agent
+can breach the same rule twice inside a minute without trying.
+
+**The case that settles it is the one where the count matters most — a fix that
+is not working.** Somebody changes a rule, or a procedure, or a prompt, and the
+same breach happens again; they change something else, and it happens again.
+Those attempts are seconds apart, not minutes, and **every one of them has to be
+filable, because the sequence is the entire evidence about whether the remedy
+worked.** A resolution that swallows the second attempt hides exactly the failure
+being investigated.
+
+Seconds are that resolution and are where it stops — two records inside one
+second means something automated is filing, and that wants a command rather than
+more digits.
+
+**Name second**, because scanning goes time-then-subject and the subject has to
+be adjacent to the time to be read.
+
+**And nothing after it.** No random suffix, no counter. Two records that would
+take the same name are meant to **collide**, which is the part that looks like a
+defect and is not.
 
 The register's product is a count, so its worst failure is a **silent
 duplicate** — two records of one event, merging cleanly, inflating the only
-number this exists to produce. Two actors filing the same breach on the same day
-under the same name are far more likely to be one event witnessed twice than two
-distinct breaches, and a disambiguating suffix converts that catch into exactly
-the silent double-count the register cannot afford.
-
-**Git already does the right thing at both ends.** Identical content at one path
-merges to one record, silently and correctly, because it *is* one record.
-Different content at one path is a conflict git refuses to resolve, so a person
-decides whether that is one violation or two. A suffix defeats both behaviours.
-
-**Within one filesystem it is caught earlier still**, by exclusive-create: the
-directory already exists, so the filer sees it before writing anything.
+number this exists to produce. **Git already does the right thing at both ends.**
+Identical content at one path merges to one record, correctly, because it *is*
+one record; different content at one path is a conflict git refuses to resolve,
+so a person decides whether that is one violation or two. **Within one
+filesystem it is caught earlier still**, by exclusive-create. A disambiguating
+suffix defeats all three, and converts the catch into exactly the silent
+double-count this cannot afford.
 
 > **This is the opposite of the rule for allocated identifiers, and both are
 > right.** A key like `WORK-0013` is *allocated* — two records sharing one is a
-> race, and corruption. A violation id is *derived from content*: the day, and
-> what was breached. **A derived id colliding is evidence of duplicate content;
-> an allocated id colliding is evidence of a race.** Different propositions,
+> race, and corruption. A violation id is *derived from content*: when, and what
+> was breached. **A derived id colliding is evidence of duplicate content; an
+> allocated id colliding is evidence of a race.** Different propositions,
 > opposite correct responses — so do not "fix" this by adding uniqueness back.
 
-**It is not deduplication, and should not be mistaken for it.** Collision
-catches duplicates filed on the same day under the same name and nothing else.
-Filing twice a week apart produces two records. Proper deduplication would mean
-checking for an existing violation with the same `expectation` near the same
-`occurred_at`, which is a command doing it rather than a naming scheme. The name
-merely stops working against you.
+**But do not mistake any of that for deduplication.** At minute resolution a
+collision is rare, so the naming catches almost nothing: two people filing one
+breach ten minutes apart produce two records and always will. The absent suffix
+is not a dedup mechanism — it is the removal of something that would have worked
+against one. **Real deduplication means checking, at filing, for an existing
+violation with the same `expectation` near the same `occurred_at`**, and that is
+a command doing it rather than a naming scheme.
+
+**And a resolution coarse enough to catch duplicates reliably would block
+recurrence**, which costs more. Prefer filing the same breach twice over being
+unable to file it the second time.
 
 ## Who files one
 

@@ -1,11 +1,11 @@
 ---
 type: violation
-violation_id: 2026-09-10-check-skipped-before-commit
-occurred_at: 2026-09-09T22:48:41Z
+violation_id: 2026-09-10-172003-check-skipped-before-commit
 violating_commit: 70eb7cd
+violating_actor: agent:claude-opus-5/luma-backlog
+occurred_at: 2026-09-09T22:48:41Z
 noticed_at: 2026-09-10T17:19:42Z
 noticed_by: human:luma-foundry
-actor: agent:claude-opus-5/luma-backlog
 delivery: unwritten
 expectation: A commit does not land unless `scripts/check` passes.
 created_using: lumastack/luma-catalog/violation-records 0.1.0
