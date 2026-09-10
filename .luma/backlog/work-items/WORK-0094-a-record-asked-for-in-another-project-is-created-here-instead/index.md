@@ -36,6 +36,12 @@ a missed inference.
 **What should happen if the receiving project does not have luma-backlog set up
 yet?**
 
+**First best guess: error or warn, and ask.**
+
+1. **Do you want to install luma-backlog in the receiving project?**
+2. **Do you want to create the backlog item here for now and migrate it over
+   later?**
+
 ---
 
 *Everything above is the maintainer\'s, with wording improved and intent
