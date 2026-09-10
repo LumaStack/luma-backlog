@@ -43,7 +43,7 @@ different question, and building it as an abbreviation would produce a worse
 version of a thing that already works.
 
 **The two selection gates.** Recommending is not selecting; moving anything is
-still [[backlog-move]].
+still [[backlog-transition]].
 
 ## Constraints
 

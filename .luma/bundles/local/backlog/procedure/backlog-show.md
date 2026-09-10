@@ -166,7 +166,7 @@ catching:
 
 **Name which rung it is against, and what it would take to cross.** Work sits at
 a gate for a reason — usually that a decision is missing, not that effort is.
-See [[backlog-move]] for what each gate asks.
+See [[backlog-transition]] for what each gate asks.
 
 **If nothing can move it, say that and say why.** Blocked on a decision nobody
 has made is a real answer and a more useful one than inventing a task.
