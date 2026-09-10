@@ -59,8 +59,8 @@ lines.
 ## How one is named
 
 ```
-<YYYY-MM-DD>-<HHMMSS>-<short-name>-<sha6>
-2026-09-08-031200-wikilink-across-bundles-a3f9c1
+<YYYY-MM-DD>-<short-name>
+2026-09-08-wikilink-across-bundles
 ```
 
 **No sequential number, deliberately.** `VIO-0007` requires knowing `VIO-0006`
@@ -68,15 +68,41 @@ exists, so two actors filing at the same moment collide and a coordinator is
 needed. **This register is meant to be written often, in parallel, sometimes by
 agents** — an identifier that needs no coordination is what makes that safe.
 
-**Timestamp first**, so a directory listing sorts chronologically without a tool.
-
+**Date first**, so a directory listing sorts chronologically without a tool.
 **Name second**, because scanning goes date-then-subject and the subject has to
 be adjacent to the date to be read.
 
-**The `sha6` last**, where it can be ignored while scanning. It exists to break
-ties, and it belongs at the end for the same reason a footnote marker does. Any
-six hex characters that are not already present will do; content-derived is fine
-and randomness is fine, because nothing reads it.
+**And nothing after it. Two records that would take the same name are meant to
+collide**, which is the part that looks like a defect and is not.
+
+The register's product is a count, so its worst failure is a **silent
+duplicate** — two records of one event, merging cleanly, inflating the only
+number this exists to produce. Two actors filing the same breach on the same day
+under the same name are far more likely to be one event witnessed twice than two
+distinct breaches, and a disambiguating suffix converts that catch into exactly
+the silent double-count the register cannot afford.
+
+**Git already does the right thing at both ends.** Identical content at one path
+merges to one record, silently and correctly, because it *is* one record.
+Different content at one path is a conflict git refuses to resolve, so a person
+decides whether that is one violation or two. A suffix defeats both behaviours.
+
+**Within one filesystem it is caught earlier still**, by exclusive-create: the
+directory already exists, so the filer sees it before writing anything.
+
+> **This is the opposite of the rule for allocated identifiers, and both are
+> right.** A key like `WORK-0013` is *allocated* — two records sharing one is a
+> race, and corruption. A violation id is *derived from content*: the day, and
+> what was breached. **A derived id colliding is evidence of duplicate content;
+> an allocated id colliding is evidence of a race.** Different propositions,
+> opposite correct responses — so do not "fix" this by adding uniqueness back.
+
+**It is not deduplication, and should not be mistaken for it.** Collision
+catches duplicates filed on the same day under the same name and nothing else.
+Filing twice a week apart produces two records. Proper deduplication would mean
+checking for an existing violation with the same `expectation` near the same
+`occurred_at`, which is a command doing it rather than a naming scheme. The name
+merely stops working against you.
 
 ## Who files one
 

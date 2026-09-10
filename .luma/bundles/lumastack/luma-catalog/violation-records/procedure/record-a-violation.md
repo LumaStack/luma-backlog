@@ -13,14 +13,18 @@ register, which is the only way this fails.
 ## 1. Make the directory
 
 ```sh
-mkdir -p .luma/records/violations/$(date -u +%Y-%m-%d-%H%M%S)-<short-name>-<sha6>
+mkdir -p .luma/records/violations
+mkdir .luma/records/violations/$(date -u +%Y-%m-%d)-<short-name>
 ```
 
 `<short-name>` is two to five words, kebab-case, naming **what was breached**
 rather than what happened — `wikilink-across-bundles`, not `agent-made-mistake`.
 
-`<sha6>` is any six hex characters not already used. Nothing reads it; it exists
-so two records filed in the same second do not collide.
+**The second `mkdir` has no `-p`, deliberately.** If that directory exists,
+somebody has already filed this breach today and the create must fail rather
+than succeed silently — the policy explains why a collision here is the feature
+and not a defect. Add nothing to the name to get past it; go and read the record
+that is already there.
 
 ## 2. Answer the one question that matters
 
@@ -53,6 +57,24 @@ not *the agent linked wrongly*.
 
 **`actor` names the model**, not just `agent:`. The register is read per model,
 and a version that behaves differently is a thing worth seeing.
+
+**`policy` carries the version that was in force**, not just the document —
+`local/backlog procedure/backlog-move 0.36.0`. A citation without one points at
+a moving target, and stops being checkable the first time somebody rewords the
+rule. Take it from the bundle's own `BUNDLE.md`.
+
+**`violating_commit` is the commit the breach is embodied in** — a bare SHA.
+**A violation has two commits**, and this is not the other one: the commit that
+carries this record is later, and naming it here would say nothing.
+
+The act itself is usually invisible — nobody can see a check that was not run —
+so the commit is where it becomes reviewable, which is what makes it worth
+citing. Leave it out where no commit contains the breach.
+
+**Where the breach is visible in work you are about to commit, commit that
+first, separately.** Step 5 says to commit a violation with the work that
+produced it; where the work *is* the breach, following that would make this
+field point at its own record.
 
 **`noticed_by` is honest about who caught it.** If you are the actor recording
 your own, say so — a register where nothing external ever appears is itself the
