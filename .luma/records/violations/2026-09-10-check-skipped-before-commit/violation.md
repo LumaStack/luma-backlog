@@ -1,7 +1,8 @@
 ---
 type: violation
-violation_id: 2026-09-10-172003-check-skipped-before-commit-7f3a91
+violation_id: 2026-09-10-check-skipped-before-commit
 occurred_at: 2026-09-09T22:48:41Z
+violating_commit: 70eb7cd
 noticed_at: 2026-09-10T17:19:42Z
 noticed_by: human:luma-foundry
 actor: agent:claude-opus-5/luma-backlog
