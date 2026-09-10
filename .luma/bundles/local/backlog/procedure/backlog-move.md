@@ -81,15 +81,15 @@ enough — see the note at the end of this section.
 
 | what somebody wants | what to do |
 | --- | --- |
-| **crawl through the gates and be as thorough as possible, spending time on each one, for as long as is necessary** | take the time; do not hurry somebody who came for thoroughness |
-| **speed through the gates as fast as possible, without breaking protocol** | cross every one, answering each in the fewest words that answer it. **Fewer words, never fewer turns** — where a check refuses you, that is where you stop, whatever pace was asked for |
-| **override a gate deliberately** — the work is trivial, or something is on fire | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
+| **crawl** — stop at every stop, whether or not it is required | take the time; do not hurry somebody who came for thoroughness. An optional stop taken is never wrong, only slower |
+| **fast-track** — skip every stop you are allowed to skip, and never one you must make | answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **A mandatory stop is not one of the ones you get to save**, and no check is answered more thinly to save one |
+| **override** — run past a stop you must make | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
 
-**They are ordered by speed, and the break comes last.** Reading down the table
-is reading from slowest to fastest — and the third row is fastest **because it
-stops answering the questions**, which is the whole distinction the rest of this
-section turns on. The other two both answer them; they differ only in how long
-they take about it.
+**Same ladder. `crawl` and `fast-track` differ only in what they do with the
+optional stops — take them all, or take none.** Both are compliant and neither
+skips anything it had to make. **`override` is the only one that touches a
+mandatory stop**, which is why it alone owes a cost, an authorization and a
+journal line.
 
 **Every gate is crossed. What speed saves is the turn, not the gate.** Where you
 already have the answers **for that gate**, answer it from them and advance —
@@ -104,6 +104,17 @@ questions, and one being answered is not evidence about the next.
 missing.** An agent reading *be quick* as *skip preparing* has turned what was
 asked for into something nobody said, and it will look like efficiency in the
 transcript.
+
+**Fewer stops is the goal, and mandatory stops are the floor.** Going fast means
+removing the stops that were yours to remove — a question you could have
+answered from what they said, a check you could have satisfied yourself, a
+second visit to a rung that should have asked everything the first time. It
+never means removing one the table produced.
+
+**And no check is answered more thinly to save a stop.** Outcomes drafted
+quickly are not outcomes drafted worse: a check answered thinly is a gate that
+fired and caught nothing, which costs more than the time it saved and hides the
+cost inside a record that looks complete.
 
 **Which makes *I already have the answer* the thing to be honest about.** It is
 the one judgement in this section an agent makes alone and can be wrong about
@@ -134,23 +145,23 @@ to `in_progress`, so I am treating scheduling and capacity as answered.* That is
 the difference between evidence and a guess: evidence has a source you can name,
 and naming it is what makes a wrong one cheap to correct.
 
-**Only the third row breaks protocol**, which is why it alone gets a warning and
-a journal line. The first two are both compliant and differ only in pace — so
-getting them the wrong way round costs somebody time, while mistaking either for
-the third costs the record its truth.
+**Confusing `crawl` with `fast-track` costs somebody time. Confusing either with
+`override` costs the record its truth.** That asymmetry is why the first
+distinction is worth getting roughly right and the second is worth getting
+exactly right.
 
-**The default is protocol.** Preparing is not skipped unless something says to
-skip it — somebody said so, or the work itself says so plainly enough that you
-can give the reason in a sentence. **Where nothing has said the gates are
-worthless for this one, they are not.**
+**Nothing is overridden unless something said to.** Not because the work looks
+small, not because the gate looks unnecessary here — somebody said so, or the
+work itself says so plainly enough that you can give the reason in a sentence.
+**Where nothing has said a stop is worthless for this one, it is not.**
 
-**Fewest questions is about cost, not licence.** Establish which of the three
-you are in as cheaply as you can: a question you could have answered from the
-record is waste, and an answer you assumed and had no way to know is worse.
-Where it is genuinely unclear, ask — one question, not a survey.
+**Working out which of the three you are in is cheap or it is not worth doing.**
+A question you could have answered from the record is waste, and an answer you
+assumed and had no way to know is worse. Where it is genuinely unclear, ask —
+and ask it alongside whatever else that rung needs, not on its own.
 
-**Never skip silently.** Say which of the three you took this to be, and why,
-before crossing. That is what makes a wrong call correctable while it is cheap
+**Never override silently.** Say which of the three you took this to be, and
+why, before crossing. That is what makes a wrong call correctable while it is cheap
 instead of at a retrospective.
 
 **Somebody who has not thought about it yet is not a fourth.** They are the
@@ -238,12 +249,16 @@ force**: they get told, not asked.
 > the gap is worth being visible. Assignees are a later question
 > ([[work-items/WORK-0063-an-algorithm-for-assigning-work-to-assignees]]).
 
-### Fast-tracking is legitimate
+### Overriding is legitimate
 
 **Some work should not be walked.** A typo fix, and plenty else — **simplicity
 is one reason among several, not the test.** Making somebody clear four rungs to
 change a word is how a tool becomes something people work around, and the
 routing-around is invisible where the ceremony is not.
+
+**This is `override`, not `fast-track`.** Fast-tracking skips stops that were
+optional and breaches nothing. Overriding passes a stop that was mandatory, and
+that is the one that owes a cost, an authorization and a journal entry.
 
 ### Coach once, then accept
 
