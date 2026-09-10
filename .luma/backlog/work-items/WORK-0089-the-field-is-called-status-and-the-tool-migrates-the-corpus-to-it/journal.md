@@ -9,3 +9,4 @@
 
 scope narrowed on the maintainer's instruction: this does NOT build the migration mechanism, it depends on WORK-0037 and is its first consumer. the third outcome changed from 'migrating is something the tool does' to 'this rename is carried by a migration, not by hand'
 and the dependency is prose because it cannot be anything else — a work item has no way to point at another work item, so a reader opening WORK-0037 does not learn that this waits on it. journaled on both sides as the workaround
+the survey of what other tools call this field is now in the record body rather than only in a conversation — twenty tools, and the finding that matters is that the CATEGORY above the value is the integration surface, not the value or its field name

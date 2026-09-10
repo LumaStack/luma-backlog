@@ -97,6 +97,50 @@ above it --- To Do / In Progress / Done. **That category is the integration
 surface**, not the value, which is why the name can change without breaking
 anything downstream (`spec.md` §10.4).
 
+### What the field is called elsewhere
+
+**Surveyed 2026-09-09. High confidence on the first group, good on the rest;
+the exact category names for the smaller tools are worth re-checking before
+quoting.**
+
+| tool | word | notes |
+| --- | --- | --- |
+| Jira | `status` | the set of statuses plus the allowed moves is the **workflow**; every status has a **status category** (To Do / In Progress / Done); `resolution` is separate |
+| ClickUp | `status` | grouped: Not Started / Active / Done / Closed |
+| Monday | `Status` column | one column type among many; **groups** are sections rather than states |
+| Linear | `state` | states carry a **type**: backlog, unstarted, started, completed, canceled |
+| Azure DevOps | `State` | plus **`Reason`** --- why it entered that state |
+| Shortcut | `workflow state` | with state **types**: unstarted / started / done |
+| Pivotal Tracker | `state` | unscheduled → unstarted → started → finished → **delivered** → accepted / rejected |
+| YouTrack | `State` | customizable, state-machine workflows |
+| Redmine | `status` | transitions per role and tracker |
+| Bugzilla, Trac | `status` + `resolution` | the split this project makes with `closed` + disposition |
+| Notion | `Status` property | groups: To-do / In progress / Complete |
+| Wrike | `Status` | groups: Active / Completed / Deferred / Cancelled |
+| Aha!, Productboard, Taiga, Height | `status` | |
+| Targetprocess | `EntityState` | |
+| Rally | `ScheduleState` | the one genuinely different word found |
+| Zenhub | `pipeline` | for a board column |
+| MS Planner | `bucket` | for a board column |
+| Trello | `list` | **no status field** --- the list is the state |
+| GitLab boards | `label` | **no status field** --- the label is the column |
+| Asana | `section` | no per-task status |
+
+**Three findings, in the order they matter.**
+
+**The category above the value is the integration surface.** Almost every
+serious tool has a small fixed set --- status category, state type, status group
+--- sitting over a configurable list of values. **Nobody maps seven values to
+seven.** They map yours onto *to-do / in-progress / done*, which is what
+`spec.md` §10.4 already describes. **So the field name is not the integration
+surface and renaming it breaks nothing downstream.**
+
+**The domain has converged on two words.** `status` in most, `state` in the
+rest. Anything else is a departure rather than an alternative.
+
+**And several tools have no status field at all.** The list, the label or the
+section carries it. Worth knowing the field is not load-bearing everywhere.
+
 ### Why bare `status` rather than a prefix
 
 **`work_status` stutters on a work item**, and the stutter follows it everywhere
