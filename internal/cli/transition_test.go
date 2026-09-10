@@ -135,7 +135,6 @@ func TestTransitionOnAMissingRecordExitsNotFound(t *testing.T) {
 	}
 }
 
-
 // The optimistic-concurrency contract `set` offers is offered here too: a write
 // that would clobber a change it never saw is refused rather than applied
 // (spec.md §6.3), and conflict is its own exit code because retrying is correct.
