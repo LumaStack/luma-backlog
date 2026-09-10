@@ -201,6 +201,37 @@ without it.
 > [[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]. Until then this
 > is what there is, and it is known to be insufficient.
 
+## What a transition actually does
+
+**There is no leaping over a rung.** `transition <ref> in_progress` from
+`captured` does not skip the rungs between — **it passes through every one of
+them**, and each rung's rules apply as it passes. Asking for a distant rung is
+asking to be taken through the ladder quickly, not around it.
+
+**So fast-tracking means following the rules as lightly as possible without
+breaking protocol.** Every check still runs. What changes is how much time is
+spent at each rung, not how many of them are answered.
+
+**Breaking protocol is a separate act, and it is allowed.** `--force` is how,
+and it is never quiet: it says what it overrode in the terminal, and writes a
+line per override to the work item's journal so somebody can ask later how often
+this happens and what it cost.
+
+**Which rules apply is [[#what-each-rung-asks-for]]**, below — one row per rung,
+and **the rows fire for every rung traversed rather than only for the two ends.**
+That is the sentence the table has been missing.
+
+**Going backwards is the exception**, and does little today. A record sent back
+lands at the rung named and nothing in between is replayed — there is nothing
+sensible to re-check on the way down, since the rungs below are ones it has
+already satisfied.
+
+> **Not built.** A multi-rung transition currently jumps: `captured → prepared`
+> in one call is silent, where walking the same distance one rung at a time
+> warns that `preparing` was left without outcomes or tasks. **The command
+> implements a leap and this section describes a walk**, which is the gap, not a
+> difference of opinion.
+
 ## The ladder is a narrowing of what can block
 
 **Not bookkeeping.** Each rung removes a class of blocker, and that is what
@@ -247,6 +278,13 @@ prepare it. **Not to doing it** — that is the second gate.
 **Crossing costs nothing later; not crossing costs nothing now.** A record left
 at `captured` is not neglected. The pile is where things wait without implying
 anybody owes them attention.
+
+**`unprepared` is a resting place, and work is meant to sit there.** It holds
+what has been chosen and not yet shaped, waiting for somebody to have the
+capacity to shape it — which is the state the ladder was built to make sayable
+(ADR-0002). **A populated `unprepared` is the design working, not a queue to
+drain**, and moving records out of it to tidy the listing throws away the
+selection decision that put them there.
 
 **The record has to be understandable before it crosses.** The test: **two
 independent readers arrive at the same understanding of the problem.** They may

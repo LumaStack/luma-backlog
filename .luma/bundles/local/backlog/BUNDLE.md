@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.34.0
+version: 0.35.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,16 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.35.0` — **a transition walks the rungs; it does not leap them.**
+
+Asking for a distant rung is asking to be taken through the ladder quickly, not
+around it, so every rung's rules apply as it passes. Fast-tracking changes how
+long is spent at each rung, never how many are answered. Breaking protocol is a
+separate act, allowed, and never quiet.
+
+Also: `unprepared` is a resting place and work is meant to sit there. A
+populated rung is the design working, not a queue to drain.
 
 `0.34.0` — **a reason is asked for where nothing else records one.**
 
