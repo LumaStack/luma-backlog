@@ -164,7 +164,7 @@ catching:
 **One next step, not a plan.** The question behind the question is almost always
 *what do I do now*, and a list of five things is an answer nobody acts on.
 
-**Name which rung it is against, and what it would take to cross.** Work sits at
+**Name which work status it is against, and what it would take to cross.** Work sits at
 a gate for a reason — usually that a decision is missing, not that effort is.
 See [[backlog-transition]] for what each gate asks.
 

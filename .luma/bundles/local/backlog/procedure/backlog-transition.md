@@ -1,7 +1,7 @@
 ---
 type: procedure
 title: Transition a work item along the workflow
-description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, reopen it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready" --- and on "move" where the destination is a rung ("move it to in progress", "move it back"), but not where it is a position among peers ("move it to the top"), which is the rank command. Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
+description: Change where a work item sits on the workflow ladder — select it for preparation, select it for work, start it, close it, reopen it, or send it back. Use when work is picked up, started, finished, cancelled, superseded, reopened, or turns out not to be ready after all. Triggers on "start this", "I'm working on X", "that's done", "close it", "we're not doing that", "reopen it", "this isn't ready" --- and on "move" where the destination is a work status ("move it to in progress", "move it back"), but not where it is a position among peers ("move it to the top"), which is the rank command. Do NOT use to write outcomes or tasks (backlog-refine), or to reorder work at the same status (that is the rank command).
 ---
 
 # Transition a work item along the workflow
@@ -17,8 +17,8 @@ item**, so it cannot route on its own. **What follows it decides:**
 
 | they said | it means | because the object is |
 | --- | --- | --- |
-| *move it to in progress* · *move it back* · *move it along* · *move it to done* | **this procedure** | a rung on the ladder |
-| *move it to the top* · *move it above WORK-0031* · *move it up the list* · *make it next* | **the `rank` command** | a position among peers at one rung |
+| *move it to in progress* · *move it back* · *move it along* · *move it to done* | **this procedure** | a work status on the ladder |
+| *move it to the top* · *move it above WORK-0031* · *move it up the list* · *make it next* | **the `rank` command** | a position among peers at one work status |
 
 **Where nothing names either, ask — one question, and a cheap one.** *"Move
 WORK-0095"* and *"move it up"* are genuinely ambiguous: up the ladder and up the
@@ -27,7 +27,7 @@ on a record somebody is watching.
 
 **Do not resolve it by what seems more likely.** The two are not
 interchangeable: a transition rewrites `workflow_status` and re-enqueues the
-record at the back of a different rung, and a rank leaves the status alone. A
+record at the back of a different work status, and a rank leaves the status alone. A
 wrong guess is not a slower answer, it is a different act.
 
 > **`rank` has a command and no procedure yet.** When one arrives it will carry
@@ -35,12 +35,12 @@ wrong guess is not a slower answer, it is a different act.
 > rule is written here now rather than left until the collision is live.
 
 **`set` no longer accepts `workflow_status`**, and refuses it naming this
-command. A status change writes rank too, and the destination rung may require
+command. A status change writes rank too, and the destination work status may require
 things a field write cannot check — so it is an operation, the way `rank`
 already is. `move` is an alias and never a name (`spec.md` §9.2).
 
 **Closing and reopening are transitions too.** Closing has a command of its own
-because reaching the terminal rung must not happen by accident — `transition`
+because reaching the terminal work status must not happen by accident — `transition`
 refuses that destination and names `close` instead — but it is a crossing on
 this same ladder, with the same authorizations, and everything here applies to
 it. What differs is the command and the extra refusals it carries.
@@ -51,21 +51,21 @@ it. What differs is the command and the extra refusals it carries.
 none of them is advice.** How many there are is read by counting them.
 
 **Every crossing is announced as it is made.** Which gate, what satisfied it,
-and where that came from — a line per rung, at the moment you cross it.
+and where that came from — a line per work status, at the moment you cross it.
 
 **Nothing removes visibility, at any pace.** A stop hands the turn back and is
 the expensive thing — which is why crawling adds them deliberately and
 fast-tracking adds none. An announcement hands nothing back and costs nothing,
 so no pace ever reaches it. **A silent crossing is what makes
 a wrong inference expensive** — the person who could have said *no, wait* finds
-out when the record is already several rungs downstream, and correcting it is a
+out when the record is already several work statuses downstream, and correcting it is a
 reversal rather than a redirection.
 
 **A summary afterwards is not this.** By the time it is written the record says
 what it says. Real-time is the whole value: the crossings a person would have
 questioned are exactly the ones an agent was most sure about.
 
-**The status must be true.** Every rung is a claim about the present, and the
+**The status must be true.** Every work status is a claim about the present, and the
 only thing this procedure is really enforcing is that the claim holds. Every
 rule below is a consequence: a record at `preparing` with nobody shaping it, at
 `in_progress` with nobody on it, or at `prepared` when a blocker remains, is
@@ -93,11 +93,11 @@ the back of nothing and reads as *first*. That is the design working — an
 unplaced record should not outrank a considered one — but it looks like a bug
 the first time.
 
-## How many rungs at a time, and where to stop
+## How many work statuses at a time, and where to stop
 
-**Advance until a check refuses you, then stop at that rung and work there.**
-Not a number of rungs and not a rung by name: how far you get is whatever
-[[#what-each-rung-asks-for]] produces for this record today, and that table
+**Advance until a check refuses you, then stop at that work status and work there.**
+Not a number of work statuses and not a work status by name: how far you get is whatever
+[[#what-each-work-status-asks-for]] produces for this record today, and that table
 changes. Any sentence here claiming *this is the one to stop at* would be a
 second copy of it, and two copies of one fact eventually disagree
 (ADR-0003).
@@ -123,7 +123,7 @@ enough — see the note at the end of this section.
 | what somebody wants | what to do |
 | --- | --- |
 | **crawl** — stop at every stop, whether or not it is required | slow on purpose. Take the time; do not hurry somebody who came for thoroughness, and do not hurry work that warrants it. An optional stop taken is never wrong, only slower |
-| **fast-track** — the procedure running as intended | stop where the table stops you: answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **Named for being fast, not for leaving anything out** — no check is ever answered more thinly, at any speed |
+| **fast-track** — the procedure running as intended | stop where the table stops you: answer from what you hold rather than asking, fix what you can fix yourself, and put everything a work status needs into a single ask. **Named for being fast, not for leaving anything out** — no check is ever answered more thinly, at any speed |
 | **override** — run past a stop you must make | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
 
 **Fast-tracking omits nothing.** It is this procedure working, and it has a name
@@ -151,7 +151,7 @@ transcript.
 **Fewer stops is the goal, and mandatory stops are the floor.** Going fast means
 removing the stops that were yours to remove — a question you could have
 answered from what they said, a check you could have satisfied yourself, a
-second visit to a rung that should have asked everything the first time. It
+second visit to a work status that should have asked everything the first time. It
 never means removing one the table produced.
 
 **And no check is answered more thinly to save a stop.** Outcomes drafted
@@ -201,7 +201,7 @@ work itself says so plainly enough that you can give the reason in a sentence.
 **You are in fast-track unless somebody moved you.** So there is usually nothing
 to work out: no question, no judgement, no asking which they meant. Where
 something in the request does point at `crawl` or `override` and you cannot tell
-which, ask — and ask it alongside whatever else that rung needs, not on its own.
+which, ask — and ask it alongside whatever else that work status needs, not on its own.
 A question you could have answered from the record is waste, and an answer you
 assumed and had no way to know is worse.
 
@@ -283,12 +283,12 @@ decision out loud; naming `in_progress` says they want it prepared, scheduled
 and underway, because you cannot want work in flight and not want it prepared.
 Those are entailments rather than guesses, and they cross without a turn.
 
-**The whole procedure reduces to one thing, asked once per rung: which of this
-rung's checks do you not hold the authorization for?** Hold them all and
-proceed. Hold some and stop — with **every** unmet check of that rung in one
-ask. **One or more questions, asked once**: a rung may need three things, and it
+**The whole procedure reduces to one thing, asked once per work status: which of this
+work status's checks do you not hold the authorization for?** Hold them all and
+proceed. Hold some and stop — with **every** unmet check of that work status in one
+ask. **One or more questions, asked once**: a work status may need three things, and it
 needs them in a single stop, not three. Going back for a second thing the same
-rung already wanted is the interrogation that makes people stop answering.
+work status already wanted is the interrogation that makes people stop answering.
 
 **What a request cannot answer is anything about content that did not exist when
 they spoke.** Nobody can accept a definition of done before it is written. That
@@ -296,10 +296,10 @@ is not a rule about `preparing` in particular — it is why a check with a
 standing requirement cannot be pre-satisfied by intent, only by somebody with
 standing acting after the thing exists.
 
-**Where you are refused, stop there and do the work of that rung.** Say what is
+**Where you are refused, stop there and do the work of that work status.** Say what is
 missing, what it costs to go without it, and what you recommend — then ask.
 
-**Two different stops can live at one rung, and which you hit depends on what
+**Two different stops can live at one work status, and which you hit depends on what
 you can supply.** Where outcomes are missing: if you have enough to draft them,
 draft them — and stop anyway, because you cannot accept your own. If you do not
 have enough to draft them, stop earlier and say what you would need. Both are
@@ -308,7 +308,7 @@ the same gate refusing and they ask for different things.
 **That is not two trips to the same well.** The acceptance question cannot be
 asked until the outcomes exist, so it is a new question rather than one you
 should have asked the first time. **The test for whether a second stop at one
-rung is honest: could it have been asked at the first stop?** If yes, you owed
+work status is honest: could it have been asked at the first stop?** If yes, you owed
 it then. In
 most cases the answer fills it in properly, which is the gate working. Sometimes
 the answer is *skip it*, and that is a forced crossing: legitimate, recorded,
@@ -348,7 +348,7 @@ force**: they get told, not asked.
 ### Overriding is legitimate
 
 **Some work should not be walked.** A typo fix, and plenty else — **simplicity
-is one reason among several, not the test.** Making somebody clear four rungs to
+is one reason among several, not the test.** Making somebody clear four work statuses to
 change a word is how a tool becomes something people work around, and the
 routing-around is invisible where the ceremony is not.
 
@@ -391,41 +391,41 @@ without it.
 
 ## What a transition actually does
 
-**There is no leaping over a rung.** `transition <ref> in_progress` from
-`captured` does not skip the rungs between — **it passes through every one of
-them**, and each rung's rules apply as it passes. Asking for a distant rung is
+**There is no leaping over a work status.** `transition <ref> in_progress` from
+`captured` does not skip the work statuses between — **it passes through every one of
+them**, and each work status's rules apply as it passes. Asking for a distant work status is
 asking to be taken through the ladder quickly, not around it.
 
 **So fast-tracking means following the rules as lightly as possible without
 breaking protocol.** Every check still runs. What changes is how much time is
-spent at each rung, not how many of them are answered.
+spent at each work status, not how many of them are answered.
 
 **Breaking protocol is a separate act, and it is allowed.** `--force` is how,
 and it is never quiet: it says what it overrode in the terminal, and writes a
 line per override to the work item's journal so somebody can ask later how often
 this happens and what it cost.
 
-**Which rules apply is [[#what-each-rung-asks-for]]**, below — one row per rung,
-and **the rows fire for every rung traversed rather than only for the two ends.**
+**Which rules apply is [[#what-each-work-status-asks-for]]**, below — one row per work status,
+and **the rows fire for every work status traversed rather than only for the two ends.**
 That is the sentence the table has been missing.
 
 **Going backwards is the exception**, and does little today. A record sent back
-lands at the rung named and nothing in between is replayed — there is nothing
-sensible to re-check on the way down, since the rungs below are ones it has
+lands at the work status named and nothing in between is replayed — there is nothing
+sensible to re-check on the way down, since the work statuses below are ones it has
 already satisfied.
 
-> **Not built.** A multi-rung transition currently jumps: `captured → prepared`
-> in one call is silent, where walking the same distance one rung at a time
+> **Not built.** A transition across several work statuses currently jumps: `captured → prepared`
+> in one call is silent, where walking the same distance one work status at a time
 > warns that `preparing` was left without outcomes or tasks. **The command
 > implements a leap and this section describes a walk**, which is the gap, not a
 > difference of opinion.
 
 ## The ladder is a narrowing of what can block
 
-**Not bookkeeping.** Each rung removes a class of blocker, and that is what
+**Not bookkeeping.** Each work status removes a class of blocker, and that is what
 makes a move testable: ask which class this one removed.
 
-| rung | what still blocks it |
+| work status | what still blocks it |
 | --- | --- |
 | `captured` | nobody has decided it is worth understanding |
 | `unprepared` | it is not understood |
@@ -494,7 +494,7 @@ records the reasoning for crossing today, and nothing records a reversal.
 
 ## Preparing
 
-**The `in_progress` of the preparation pipeline.** It is the only other rung
+**The `in_progress` of the preparation pipeline.** It is the only other work status
 that describes activity, so a record sitting here with nobody shaping anything
 is the same lie as a stale `in_progress`.
 
@@ -521,9 +521,9 @@ means `close … completed` checks a set nobody claimed was complete, and
 
 **The outcome test is also the exit condition.** Scoping and breakdown can run
 forever; outcome refinement stops when the outcome passes. It is the only thing
-in this rung with a natural stopping point.
+in this work status with a natural stopping point.
 
-> **Larger organizations will run whole sub-pipelines inside this rung** — product,
+> **Larger organizations will run whole sub-pipelines inside this work status** — product,
 > security, legal, compliance, customer advocacy, operations, QA, engineering,
 > each with its own questions and its own sequence. Two things follow and neither
 > is built: **deciding which of them activate is itself part of preparing**, and
@@ -548,7 +548,7 @@ smell** — that usually wants to be its own work item, an `inquiry`.
 
 **Prepared can never mean risk-free.** Unknown unknowns are undefinable here by
 construction, and their discovery during work is `lifecycle.md` §2.8's
-**Redefine**, not a failure of this rung.
+**Redefine**, not a failure of this work status.
 
 ## Todo - The second gate: are we committing to doing it soon?
 
@@ -669,7 +669,7 @@ afterwards.
 **Tasks must be resolved to complete, and need not be successful.** A task left
 *open and ready to start* under a completed work item advertises work nobody can
 pick up, so `close … completed` refuses until every task has reached a terminal
-rung — **failed, cancelled, abandoned, any reason at all.** Only *completed* is
+work status — **failed, cancelled, abandoned, any reason at all.** Only *completed* is
 gated; every other disposition warns and proceeds, because open tasks are what
 being cancelled means.
 
@@ -750,14 +750,14 @@ every field, including ones nobody has thought of:
 
 **Journal why it is being reopened**, always. Nothing else records it.
 
-**Ask where it is reopening into.** Any rung whose claim is true right now is
+**Ask where it is reopening into.** Any work status whose claim is true right now is
 legal — and that is the whole rule. Recommend `unprepared`, `preparing`, `todo`
 or `in_progress`, but do not force a march up the ladder: a record closed as
 `canceled` for budget, reopened when the budget returns, is genuinely
-`prepared`, and walking it through three rungs to get there would write three
+`prepared`, and walking it through three work statuses to get there would write three
 false statuses on the way.
 
-## What each rung asks for
+## What each work status asks for
 
 **The strengths, as they stand: allowed, warned, refused.** A refusal always
 takes `--force`, and forcing is recorded. Read the count off the table rather
@@ -817,7 +817,7 @@ field is a decision nobody can prove was made.
 | leaving `closed` | a reason is given | check | **warned** | ✔ |
 | leaving `closed` | `stage` resets, never to `stable` | *field write the move owes* | — | ✘ WORK-0075 |
 | `closed` as `completed` | every live outcome proven | check | **refused** — `--force` | ✔ |
-| `closed` as `completed` | every task has reached a terminal rung | check | **refused** — `--force` | ✔ |
+| `closed` as `completed` | every task has reached a terminal work status | check | **refused** — `--force` | ✔ |
 | `closed`, other dispositions | every task resolved | check | **warned** | ✔ |
 | `closed` as `completed` | every task that ran, succeeded | check | **warned** | ✘ WORK-0064 |
 | `closed` | `stage` becomes `stable` | *field write the move owes* | — | ✘ WORK-0075 |
@@ -835,10 +835,10 @@ not a stop — but a silent fix looks exactly like a gate that never fired, so s
 what you did.
 
 **Everything left — checks you cannot satisfy and authorizations you do not
-hold — goes into one ask, at that rung.**
+hold — goes into one ask, at that work status.**
 
 **Where the crossing is the act**, the authorization is given by somebody asking
-for that rung and needs nothing else — which is why a stated destination carries
+for that work status and needs nothing else — which is why a stated destination carries
 them and why they never stop an agent that was told where to go. **The one that
 cannot work that way is the outcomes**, because nobody can approve a definition
 of done that did not exist when they spoke.

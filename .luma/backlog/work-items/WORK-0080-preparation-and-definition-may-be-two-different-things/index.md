@@ -48,10 +48,10 @@ gates section, so the test decides the design rather than merely framing it:
 
 | if preparation must finish first | if it need not |
 | --- | --- |
-| **Sequential.** *"Fits the ladder as it stands — more rungs in order, grouped under one column heading. **Configuration, no code**."* | **Parallel.** *"Does not [fit], and that is the constraint worth recording. **A record holds one `workflow_status`**… a single ordered value cannot say so."* |
+| **Sequential.** *"Fits the ladder as it stands — more work statuses in order, grouped under one column heading. **Configuration, no code**."* | **Parallel.** *"Does not [fit], and that is the constraint worth recording. **A record holds one `workflow_status`**… a single ordered value cannot say so."* |
 
 **So the two answers are not equally expensive, and the cheap one is the split.**
-Separate rungs, if the sequence is real, cost nothing but words in a config file.
+Separate work statuses, if the sequence is real, cost nothing but words in a config file.
 
 **And *distinct somehow within each work item* already has a precedent.** If the
 two run at once, whatever distinguishes them has to travel **alongside** the
@@ -129,12 +129,12 @@ is the record it came from.
 
 **`backlog-move` says outcome refinement is the only part of `preparing` that
 knows when it is finished:** *"Scoping and breakdown can run forever; outcome
-refinement stops when the outcome passes. **It is the only thing in this rung
+refinement stops when the outcome passes. **It is the only thing in this work status
 with a natural stopping point.**"*
 
 **That is an argument for the split on its own terms.** Definition has a
 testable exit — the outcomes pass their checks. Preparation does not. Merged,
-the rung borrows its stopping point from half its content, which is why the
+the work status borrows its stopping point from half its content, which is why the
 other half can run forever without anybody noticing.
 
 ### What it conflicts with, and both are in force
@@ -160,23 +160,23 @@ One of them should not be built.
 
 ### The cumbersomeness worry is already argued, and it has a number
 
-**`workflow-status.md`:** *"**Seven rungs is expected to be enough**, even in a
+**`workflow-status.md`:** *"**Seven work statuses is expected to be enough**, even in a
 complicated organization. What grows is not the ladder — it is the **decision
-logic inside three of the rungs**."*
+logic inside three of the work statuses**."*
 
-**A third pipeline adds rungs and a third gate**, which is growth of exactly the
+**A third pipeline adds work statuses and a third gate**, which is growth of exactly the
 kind that section says is not where complexity should land. **So the instinct
 about cumbersomeness is not a vague hesitation — it is the same argument the
 document already makes, felt from the inside.**
 
 **Which does not settle it.** The counter is that the ladder is currently seven
-rungs where one of them is doing two jobs, and hiding a split inside a rung is
+work statuses where one of them is doing two jobs, and hiding a split inside a work status is
 not obviously cheaper than showing it.
 
 ## References
 
 - `docs/workflow-status.md` — the shape, what configuration may change, the
-  gates-inside-preparing proposal, and the seven-rungs argument.
+  gates-inside-preparing proposal, and the seven-status argument.
 - `docs/spec.md` §2.2.1 — *preparing covers every activity and names none*, and
   why a more specific name was refused.
 - [[records/decisions/ADR-0002-the-workflow-ladder-is-two-pipelines-behind-two-gates]]

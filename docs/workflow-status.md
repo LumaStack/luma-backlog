@@ -1,6 +1,6 @@
 # Workflow status
 
-**Status: draft.** The shape and the seven rung names are settled as of
+**Status: draft.** The shape and the seven work status names are settled as of
 2026-09-04 and are what the tool ships. What remains open is listed at the end.
 
 `workflow_status` says where a piece of work sits. It is **declared** —
@@ -35,10 +35,10 @@ has the same three states: not started, under way, finished.
 └──────────────────────────────────────────────┘
 ```
 
-**Both gates are a selection**, which is why no rung is called *selected*: the
-word names the gate, and there are two of them. It is also why a rung cannot be
-named for having been chosen — every rung below a gate has been chosen, so the
-word would describe all of them equally. **A rung is named for the pipeline it
+**Both gates are a selection**, which is why no work status is called *selected*: the
+word names the gate, and there are two of them. It is also why a work status cannot be
+named for having been chosen — every work status below a gate has been chosen, so the
+word would describe all of them equally. **A work status is named for the pipeline it
 is queued for, or for the state it has reached in one.**
 
 **The first gate is the more interesting one.** Above it, a pile that may or may
@@ -47,15 +47,15 @@ obliged to cross it, and most things should not.
 
 **The pile holds every kind, not only ideas.** A bug, an issue, a request and a
 half-formed thought all arrive the same way and all sit there until somebody
-looks at them and selects them for preparation. That is why the rung is not
-called `idea`: an idea is one **kind** of thing in the pile, and naming the rung
+looks at them and selects them for preparation. That is why the work status is not
+called `idea`: an idea is one **kind** of thing in the pile, and naming the work status
 after it would oblige a bug to be filed as an idea. Kinds classify a work item
-and are never rungs or record types — see
+and are never work statuses or record types — see
 `records/decisions/ADR-0001-the-backlog-unit-is-a-work-item.md`.
 
-## The rungs
+## The work statuses
 
-| Rung | Means |
+| Work status | Means |
 | --- | --- |
 | `captured` | Written down so it is not lost. Might become work; nobody has decided. Holds work of every kind, bugs and requests alongside things nobody has classified. |
 | `unprepared` | Will become work, and nothing has been worked out yet. The top of the preparation pipeline. |
@@ -69,7 +69,7 @@ and are never rungs or record types — see
 named for what the queue is for. `todo` is queued for doing; `unprepared` is
 queued for preparing.
 
-**`preparing` is the only rung that describes activity rather than position**,
+**`preparing` is the only work status that describes activity rather than position**,
 and that is deliberate: shaping is work somebody does, and a record sitting in
 it with nobody shaping anything is a signal worth seeing.
 
@@ -78,8 +78,8 @@ it with nobody shaping anything is a signal worth seeing.
 
 ## Kinds
 
-**A kind classifies a work item; a rung says where it is.** They are orthogonal —
-a defect can sit at any rung, and a rung holds every kind at once. Kinds are
+**A kind classifies a work item; a work status says where it is.** They are orthogonal —
+a defect can sit at any work status, and a work status holds every kind at once. Kinds are
 never record types, which ADR-0001 settled: promoting a record to a different
 type mid-life would change its path-based identity and break every inbound link.
 
@@ -131,11 +131,11 @@ start at the top, and should not be made to.
 
 **Imported work has already been through this elsewhere.** A record synced from
 an upstream system of record was captured and selected there, by whatever
-process that organization runs. Landing it at the first rung would reopen a
+process that organization runs. Landing it at the first work status would reopen a
 question somebody already answered.
 
 **Work is often created further down the ladder** — straight into `todo`, say —
-because it is urgent, or because it arrives already well-formed. Any rung is a
+because it is urgent, or because it arrives already well-formed. Any work status is a
 legitimate entry point. Neither case is a shortcut somebody is getting away
 with.
 
@@ -152,7 +152,7 @@ One rule, and it is the specification's rather than this document's
 
 Closing as *delivered* while an outcome is unverified is refused because **the
 team wrote that outcome**. The tool holds a caller to their own words, never to
-an opinion of its own. Skipping rungs contradicts nothing anybody declared, so
+an opinion of its own. Skipping work statuses contradicts nothing anybody declared, so
 there is nothing there to refuse.
 
 **The asymmetry is deliberate.** A wrong observation gets ignored; a wrong
@@ -161,7 +161,7 @@ guardrail. Observe liberally, refuse narrowly.
 
 **So where somebody is working in a way the system handles badly, say so and
 continue.** `work-item.formation-disputed` already does exactly this — a
-work item whose declared rung its own structure contradicts, a one-line item
+work item whose declared work status its own structure contradicts, a one-line item
 claiming to be fully shaped, is reported as a condition and not blocked.
 Name the better path, and let them past. Somebody who knows they are cutting a
 corner and has decided it is worth it is usually right about their own
@@ -186,15 +186,15 @@ columns group them (`spec.md` §11) and completion is computed from evidence
 rather than from position (`spec.md` §2.4).
 
 **Absence means the first configured value** (`spec.md` §4.2). That is why the
-first rung has to be honest about what creating a record means, and why `idea`
+first work status has to be honest about what creating a record means, and why `idea`
 is wrong as a default for a *work item*: creating one is an act of intent, and
 recording it as doubt makes the field say something nobody chose.
 
 ## Where complexity actually lands
 
-**Seven rungs is expected to be enough, even in a complicated organization.**
+**Seven work statuses is expected to be enough, even in a complicated organization.**
 What grows is not the ladder — it is the **decision logic inside three of the
-rungs**.
+work statuses**.
 
 **Three of them are activities; four are resting points.**
 
@@ -212,7 +212,7 @@ validating it, quantifying the pain, measuring the value, checking strategic
 alignment, exploring solutions, estimating cost and risk, weighing one against
 the other. All of it before anybody has committed to anything.
 
-**Subdividing a rung is possible and not the expected shape.** A team can name
+**Subdividing a work status is possible and not the expected shape.** A team can name
 its own steps — analysis, design, approval inside *preparing*; development,
 review, quality assurance inside *in progress* — and nothing stops them. But
 most organizations will keep the seven and want richer decisions inside three of
@@ -240,7 +240,7 @@ serves without special handling.
 **What survives all of it is that there are two gates, not where they fall.**
 However an organization arranges its steps, they resolve into three zones:
 before anybody has committed, after committing and before starting, and under
-way. The zones are the model; the rungs, and which side of a gate each sits on,
+way. The zones are the model; the work statuses, and which side of a gate each sits on,
 are vocabulary.
 
 **Which is the argument for shipping these seven and no more.** A default a team
@@ -316,7 +316,7 @@ may have to clear something before engineering shapes it, or the two may run
 together and both have to finish. Both are ordinary, and they are not the same
 shape.
 
-**Sequential fits the ladder as it stands** — more rungs in order, grouped under
+**Sequential fits the ladder as it stands** — more work statuses in order, grouped under
 one column heading. Configuration, no code.
 
 **Parallel does not, and that is the constraint worth recording.** A record holds
@@ -331,7 +331,7 @@ not a place in the sequence.
 One change needs legal signoff and the next does not; a security review matters
 for anything touching authentication and nowhere else. So the set of gates a
 record passes through is computed per record rather than fixed by the
-vocabulary — which is a larger departure than adding rungs, because two work
+vocabulary — which is a larger departure than adding work statuses, because two work
 items in the same repository no longer take the same path.
 
 **Most of them should advise rather than stop.** *Development should not start
@@ -342,7 +342,7 @@ it (`spec.md` §5.4). Shipping every gate as a refusal is the fastest way to
 teach people to route around the tool.
 
 **And either way, the gate itself is not modeled.** Gates are implicit today,
-nothing more than the transition between two rungs. **Who owns one**, **what it
+nothing more than the transition between two work statuses. **Who owns one**, **what it
 requires** before work may cross, and **whether it applies at all** are three
 things that do not exist — which is why this is a direction rather than a
 feature.
@@ -352,7 +352,7 @@ to build any of it.
 
 ## Settled, and the arguments that settled them
 
-**The seven rungs are adopted as the shipped default** (2026-09-04). The
+**The seven work statuses are adopted as the shipped default** (2026-09-04). The
 arguments are kept because a name that survives an argument is worth more than
 one nobody examined.
 
@@ -360,7 +360,7 @@ one nobody examined.
 names an absence, which is the objection — blunted by this tool already using one
 that nobody reads as criticism, since an outcome starts `unverified`.
 Alternatives that name the gate instead — `accepted`, `queued`, `selected` — all
-fail, because they are equally true of `todo` and of every rung below it.
+fail, because they are equally true of `todo` and of every work status below it.
 
 **`prepared`** over `ready`, which is what the major trackers call it and does not
 say *how* it is ready. `prepared` answers that by pointing back at the process
@@ -372,27 +372,27 @@ would quietly take on semantics that were left undecided.
 describes the arc as *raw capture, preparation, in progress, delivered*, and
 *capture costs one command* is a verified outcome of the first build. It names
 how the record got there rather than what kind of thing it is, which is what lets
-one rung hold ideas and bugs alike.
+one work status hold ideas and bugs alike.
 
 **The argument against `captured` is recorded rather than resolved.** It names a
 moment, and the zone is not a moment: where an organization runs a real
 evaluation pipeline there, a record several steps into being valued and costed
-has not been merely captured for some time. No other rung has this problem — the
+has not been merely captured for some time. No other work status has this problem — the
 rest name states that hold for as long as the record sits in them. It is adopted
 anyway, because nothing proposed is true of the whole width of the zone either,
 and a name that is right at the entry beats one that is wrong everywhere.
 
 **Seven is expected to be enough**, including in a complicated organization. What
 grows is the decision logic inside `captured`, `preparing` and `in_progress`, not
-the number of rungs — see *Where complexity actually lands*.
+the number of work statuses — see *Where complexity actually lands*.
 
 ## What is not settled
 
-**Where the pile lives.** Whether `captured` stays a rung on this ladder or moves
+**Where the pile lives.** Whether `captured` stays a work status on this ladder or moves
 out of the backlog into a tier of its own is open. Bugs and issues sitting in it
-is evidence for the rung: a bug is unambiguously work, so a tier called *ideas*
+is evidence for the work status: a bug is unambiguously work, so a tier called *ideas*
 could not hold one without lying about it. The shape does not depend on the
-answer — if the pile moves out, the rung is simply never used.
+answer — if the pile moves out, the work status is simply never used.
 
 **`kind` is settled as a concept and unbuilt as a field.** ADR-0001 says kinds
 classify a work item and are never record types; nothing declares or stores one.

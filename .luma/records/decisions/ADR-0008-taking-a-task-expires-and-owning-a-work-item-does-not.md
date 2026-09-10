@@ -88,7 +88,7 @@ structurally dangerous"* here.
 **The expiry test separates them cleanly**, and the specification already knew
 it in two places.
 
-`workflow-status.md`, on the `in_progress` rung: *"Somebody **owns** it and is
+`workflow-status.md`, on the `in_progress` work status: *"Somebody **owns** it and is
 working on it **or delegating it**. Either way they are responsible."* Ownership
 survives delegation, so it cannot be the same as the executor's grip.
 
@@ -157,6 +157,6 @@ turns out to be."* One maintainer, agents mostly working separate things.
 
 - `docs/spec.md` §2.5, §4.5, §5.2, §6.5–6.8, §9.2, §10.4 — every section that
   says "claim".
-- `docs/workflow-status.md` — the `in_progress` rung, on owning and delegating.
+- `docs/workflow-status.md` — the `in_progress` work status, on owning and delegating.
 - `docs/open-questions.md` §8 — worktrees, and the proposal to move this state
   into git refs.

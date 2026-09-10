@@ -121,7 +121,7 @@ That is not because tasks specify nothing. **They specify a different thing:** o
 
 A backlog is only useful if **capturing something is cheap**. But a board of half-thoughts is useless in a different way, so the difference has to be visible at a glance — and *stay* visible, or unformed things quietly accumulate the authority of planned work simply by sitting there long enough.
 
-Formation lives in **`workflow_status`** rather than a field of its own. The lowest rungs describe how far the *thinking* has gone; the rest describe where the *work* is.
+Formation lives in **`workflow_status`** rather than a field of its own. The lowest work statuses describe how far the *thinking* has gone; the rest describe where the *work* is.
 
 **The default vocabulary, and the model behind it, are in [`workflow-status.md`](workflow-status.md)** — normative, and not restated here. In outline: a pile that may or may not become work, a preparation pipeline, and a work pipeline, with a selection gate before each of the last two.
 
@@ -135,7 +135,7 @@ A team wanting to distinguish a spike from an estimate has dimensions (§2.7) an
 
 **`ready` is named for the decision it enables, not the state it describes.** Someone scanning a backlog is not asking *is this planned* — they are asking *can I pull this*. The word answers the question actually being asked.
 
-##### Confirmation tightens `ready` rather than adding a rung
+##### Confirmation tightens `ready` rather than adding a work status
 
 Planning is not agreement. Work is often specified thoroughly and never shown to the person who asked for it, and a backlog that cannot distinguish those makes the same mistake every time.
 
@@ -1361,7 +1361,7 @@ Universal across record types:
 | `edit` | Open in an editor — the verb people use. |
 | `archive` | Retire. **Never deletes**, and never relocates the record (§7.1). |
 
-**`move` is not a verb this interface has.** It reads as `mv` in a tool whose records are files in a git repository, which is the one reading a user is most primed for and the wrong one. A status change is a **transition** — a guarded step between two rungs, which is what the model actually is (`workflow-status.md`) — and repositioning a file on disk is a **relocation**. Ordinary speech may still call a transition a move, and a skill's trigger words should include it because that is what people type.
+**`move` is not a verb this interface has.** It reads as `mv` in a tool whose records are files in a git repository, which is the one reading a user is most primed for and the wrong one. A status change is a **transition** — a guarded step between two work statuses, which is what the model actually is (`workflow-status.md`) — and repositioning a file on disk is a **relocation**. Ordinary speech may still call a transition a move, and a skill's trigger words should include it because that is what people type.
 
 **One exception, and only one: `move` may be an alias for `transition` on the command line.** An alias is a door, not a name — it resolves to the same operation, help and output still call it `transition`, and **nothing else in the system may be named after it**: no flag, no field, no status value, no identifier in the code. Everywhere except that one door, the word does not exist.
 
@@ -1369,7 +1369,7 @@ Domain verbs, on the types they belong to:
 
 | Verb | On | Does |
 |---|---|---|
-| `transition` | work item | Change `workflow_status`, in either direction, running whatever the destination rung requires. `set` refuses the field. **Not `move`** — see below. |
+| `transition` | work item | Change `workflow_status`, in either direction, running whatever the destination work status requires. `set` refuses the field. **Not `move`** — see below. |
 | `rank` | work item | Reorder relative to another — `--before`, `--after`, `--first`, `--last`. The caller never computes an ordering key (§9.6), and `set` refuses the field. Ranking and transitioning are two axes, and `workflow_status` dominates `rank` (ADR-0005), so the two verbs stay distinct. |
 | `take` / `release` / `steal` | task | Take, give up, or take over a task (§6.5). Stealing is explicit and recorded. Not `claim`, which this design spends on assertions about truth (ADR-0008). |
 | `verify` | outcome | Record evidence that the desired state holds (§4.7). |

@@ -9,7 +9,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:04:31Z'}
 description: 'transition becomes how a work item changes workflow_status, and set stops accepting the field — the way it already refuses rank. workflows will run during a transition and set should not be carrying those; eventually a transition may commit, branch, or talk to a database, all of which are wrong inside a field write. move is not a verb this interface has, except possibly as an alias. rank is already this shape and needs finishing: --top and --bottom become --first and --last, and it should be reachable without typing work-item first.'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T00:24:36Z'}
 rank: 070.0050.000
-closed: {on: 2026-09-10, as: completed, by: 'agent:claude-opus-5/luma-backlog', reason: 'transition ships, set refuses the field, and the strengths in backlog-move''s table are behaviour rather than prose. Five outcomes proven, twelve tasks closed. It found three of its own follow-ons — close --force never existed, a task cannot say how it ended, and rungs have no identity beyond position.'}
+closed: {on: 2026-09-10, as: completed, by: 'agent:claude-opus-5/luma-backlog', reason: 'transition ships, set refuses the field, and the strengths in backlog-move''s table are behaviour rather than prose. Five outcomes proven, twelve tasks closed. It found three of its own follow-ons — close --force never existed, a task cannot say how it ended, and work statuses have no identity beyond position.'}
 ---
 
 # A transition is a command, not a field write
@@ -124,7 +124,7 @@ preparation rather than discovering in review.
 **Both halves exist. Neither is wired to a transition, because there is no
 transition command.**
 
-**The rules are `backlog-move`'s "What each rung asks for" table**, whose third
+**The rules are `backlog-move`'s "What each work status asks for" table**, whose third
 column is the strength — and that is the checks-and-balances definition this
 work has to implement. **It uses six wordings, not three:**
 
@@ -162,7 +162,7 @@ usage, `3` not found, `4` conflict, `5` refused.
 ### Making it harder to skip steps: syntax is the wrong lever
 
 **The want is real and the obvious mechanisms do not serve it.** Two shapes were
-raised --- `transition <ref> --advance`, which can only go one rung, and
+raised --- `transition <ref> --advance`, which can only go one work status, and
 `transition <ref> <status>`, which names a destination and can therefore jump
 four.
 
@@ -173,9 +173,9 @@ work back* section --- a `prepared` item that is not prepared returns to
 `<status>` exists whatever else does.
 
 **And neither shape catches the failure this is aimed at.** On 2026-09-09 an
-agent took WORK-0074 from `preparing` to `in_progress` **one rung at a time**,
-in rung order, and did no preparation. `--advance` would have permitted every
-one of those. A refusal on multi-rung jumps would have permitted every one of
+agent took WORK-0074 from `preparing` to `in_progress` **one work status at a time**,
+in work status order, and did no preparation. `--advance` would have permitted every
+one of those. A refusal on jumps across several work statuses would have permitted every one of
 them. **The failure is crossing a gate without answering it, not crossing
 several at once**, and syntax cannot tell those apart.
 
@@ -189,7 +189,7 @@ cannot produce one has not happened. That is a check in the tier system above
 rather than a flag, it fills a gap the procedure already admits to, and it
 records something a reader wants later anyway.
 
-**Scope it to the two gates, not to every rung.** Two prompts per work item is
+**Scope it to the two gates, not to every work status.** Two prompts per work item is
 proportionate --- the gates are where the expensive decisions are --- and
 requiring prose on all six moves is the cumbersomeness that gets a tool routed
 around.

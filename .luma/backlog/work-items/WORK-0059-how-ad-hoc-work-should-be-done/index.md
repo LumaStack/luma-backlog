@@ -141,7 +141,7 @@ selection gates, which is where the whole ladder model lives
 and that is a later decision rather than a widening of this one.
 
 **Changing the ladder.** This finds out what ad hoc work needs. Whether the
-model gains a rung, a flag or nothing is downstream.
+model gains a work status, a flag or nothing is downstream.
 
 ## Constraints
 
@@ -189,7 +189,7 @@ and a real result. There is no record of the policy that permitted it.
 **One risk reported this morning was probably misread**, and this experiment
 should settle it. WORK-0031 closing nine tasks while sitting at `prepared` was
 reported as a status that had stopped being true. It may instead be ad hoc work
-behaving correctly against a ladder that has no rung for it.
+behaving correctly against a ladder that has no work status for it.
 
 **[[work-items/WORK-0029-separate-quick-capture-from-thoughtful-capture]] is the
 same question one level down**, already answered for capture alone, and its

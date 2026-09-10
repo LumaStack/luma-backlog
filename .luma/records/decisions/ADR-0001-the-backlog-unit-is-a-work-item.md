@@ -165,8 +165,8 @@ checkable.
 - The formation bar's semantics are deliberately deferred. Neither `actionable`
   nor `deliverable` is adopted as a defined gate; both candidate meanings are
   shelved in `docs/open-questions.md` §7, to be taken up only when something
-  concrete needs a bar. The `ready` rung that replaced `actionable` in the
-  default vocabulary is a rename of a rung that already existed, not an
+  concrete needs a bar. The `ready` work status that replaced `actionable` in the
+  default vocabulary is a rename of a work status that already existed, not an
   adoption of the shelved semantics.
 
 ## References

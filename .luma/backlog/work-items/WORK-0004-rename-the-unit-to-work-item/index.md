@@ -18,7 +18,7 @@ key: WORK-0004
 
 ## What is being delivered
 
-The vocabulary renamed end to end, case- and plural-preserving: `spec.md` rewritten (§2.1 unit table — task becomes the unit of coordination, freeing *work*; §2.2 reframed around the demoted noun), the type definition moved to `work-item`, the corpus directory to `work-items/`, the record field to `work_item`, the tool's commands and output updated, and the skills brought along. The `ready` rung replaces `actionable` in the default vocabulary — the word the major trackers use.
+The vocabulary renamed end to end, case- and plural-preserving: `spec.md` rewritten (§2.1 unit table — task becomes the unit of coordination, freeing *work*; §2.2 reframed around the demoted noun), the type definition moved to `work-item`, the corpus directory to `work-items/`, the record field to `work_item`, the tool's commands and output updated, and the skills brought along. The `ready` work status replaces `actionable` in the default vocabulary — the word the major trackers use.
 
 ## Still pending
 
@@ -26,7 +26,7 @@ The `effort` field renamed to `estimate`, as §16 records is worth doing regardl
 
 ## Out of scope
 
-The shelved formation-bar *semantics* — `actionable` (work can start) and `deliverable` (done is provable) as defined gates remain captured under `open-questions.md` §7, unadopted. Naming the existing pull rung `ready` does not adopt them; it renames a rung that already existed.
+The shelved formation-bar *semantics* — `actionable` (work can start) and `deliverable` (done is provable) as defined gates remain captured under `open-questions.md` §7, unadopted. Naming the existing pull work status `ready` does not adopt them; it renames a work status that already existed.
 
 ## Constraints
 

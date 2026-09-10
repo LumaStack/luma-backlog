@@ -36,7 +36,7 @@ It is a specification and not an implementation. Nothing is built from it until 
 
 **Building any of it.** This work item ends when the specification is approved.
 
-**Reopening the ladder.** The seven rungs were settled on 2026-09-04 (`workflow-status.md`) and this specification consumes them.
+**Reopening the ladder.** The seven work statuses were settled on 2026-09-04 (`workflow-status.md`) and this specification consumes them.
 
 **The web interface** (`spec.md` §11.7), which is a follow-up and not a co-equal surface.
 

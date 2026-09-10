@@ -1,7 +1,7 @@
 ---
 type: task
 title: Decide what a gate crossing has to carry
-description: The prepared gate asks 'name a reason this cannot start' and nothing records the answer — backlog-move says so explicitly. Making the crossing carry it is the anti-skip mechanism that syntax cannot provide. Two gates only, not every rung.
+description: The prepared gate asks 'name a reason this cannot start' and nothing records the answer — backlog-move says so explicitly. Making the crossing carry it is the anti-skip mechanism that syntax cannot provide. Two gates only, not every work status.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'
 workflow_status: closed
 stage: draft
