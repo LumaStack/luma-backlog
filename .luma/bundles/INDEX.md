@@ -6,7 +6,7 @@ Every container has an index. This is the project's: one entry per bundle, what 
 
 ## Offered — open a bundle's index when its line matches the work
 
-- `local/backlog` 0.27.0 — The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
+- `local/backlog` 0.36.0 — The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
 - `lumastack/luma-catalog/backlog-ideas` 0.14.1 — Ideas as individual files rather than one growing IDEAS.md — what earns a file, how capture stays fast, and how the list gets tended rather than accumulating.
 - `lumastack/luma-catalog/bundle-manager` 0.15.1 — Creating, updating, auditing, repairing, migrating and retiring bundles — the layout they use and which catalog they belong in.
 - `lumastack/luma-catalog/command-line-interface` 0.1.0 — Adopting this declares that a project designs its command line against clig.dev, and follows it unless a decision in force says otherwise.
@@ -20,3 +20,4 @@ Every container has an index. This is the project's: one entry per bundle, what 
 - `lumastack/luma-catalog/luma-types` 0.15.1 — The type definitions more than one luma tool has to agree on — namespaced, vendored, and deliberately not built into the knowledge format.
 - `lumastack/luma-catalog/session-manager` 0.9.1 — Ending an agent session without losing what it learned — checkpoint while working, hand off to a successor, or close for good, each writing for a different reader.
 - `lumastack/luma-catalog/versioning` 0.7.1 — What a version number promises, when to bump which part, and the rules that get decided wrongly — for anything versioned, not only releases.
+- `lumastack/luma-catalog/violation-records` 0.1.0 — Violations as records — an agent did something that was not wanted, filed cheaply and read in aggregate, including when no rule existed to break.

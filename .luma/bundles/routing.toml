@@ -188,3 +188,11 @@ title = "Semantic versioning"
 path = ".luma/bundles/lumastack/luma-catalog/versioning/policy/semantic-versioning.md"
 on_violation = "allow"
 matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/violation-records"
+document = "policy/recording-a-violation"
+title = "Recording a violation"
+path = ".luma/bundles/lumastack/luma-catalog/violation-records/policy/recording-a-violation.md"
+on_violation = "allow"
+matches = ["topic:an agent behaving against what was wanted, or recording that it did", "topic:deciding whether something is a violation or an incident"]
