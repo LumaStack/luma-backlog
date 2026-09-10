@@ -10,6 +10,12 @@
 CORRECTION to a verification entry, made minutes after writing it: the evidence said grep for RefusedError returns exactly three sites. it returns five — two in transition, three in close
 the conclusion survives: close's three are one refusal in three shapes, all reachable only when the disposition is gated on completion — unreadable outcomes, no outcomes, unproven outcomes. so the surface is still three refusals, and the check was counting the wrong thing
 worth the retro: an evidence line that cites a command and a number is checkable, which is why it got caught in the same session. one that had said 'the refusal surface is small' would have passed unexamined forever
+PROCESS FAILURE, raised by the maintainer: twelve tasks were worked and finished and not one was moved to in_progress or closed. eleven still read todo; the twelfth reads in_progress and only because it was the record used to prove the task-transition regression, not because anybody was working it
+so for the whole build the board said nothing had started, while all of it was being done and committed. the same failure as racing the gates — the record not describing the present — and this time in the other direction: the work moved and the record stayed still
+and it is invisible by construction. nothing notices a task sitting at todo whose work is finished, because completion is computed from OUTCOMES and a work item is judged on its outcomes and nothing else (spec 2.4). the task rungs are unwatched, so nothing was ever going to report this
+which is close to work-item.drifted — 'work happened, but no outcome was verified or revised' — except drift is about outcomes and this is about tasks. no condition names it, and WORK-0046 is where the set gets evaluated
+the cheap tell existed the whole time and nobody was looking: a work item at in_progress with twelve tasks at todo and eleven commits against it. the numbers disagreed for hours in a corpus being read constantly
+third instance today of the same shape — race the ladder, skip the confirmation, work without moving the tasks. all three are the record and the world disagreeing, all three were found by the maintainer rather than by the tool, and the tool now warns about none of them
 
 ## ▶ 2026-09-09
 
