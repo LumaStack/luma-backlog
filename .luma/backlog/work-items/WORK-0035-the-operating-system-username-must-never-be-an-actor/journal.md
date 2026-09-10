@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0035-the-operating-system-username-must-never-be-an-actor unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 the principle is narrower than avoiding OS users — never introduce identity the repository does not already carry; git config is on every commit already, an OS username is not

@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0023-refer-to-a-record-by-the-path-a-person-would-type unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 found by handing the maintainer four verify commands that would all have failed — only bare names resolve, and a bare name is not unique

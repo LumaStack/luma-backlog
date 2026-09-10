@@ -4,6 +4,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0002-lint-the-corpus unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-08
 
 fresh instance, 2026-09-08: an agent wrote two conditions into an outcome's verify_by list instead of creating them as outcomes — the maintainer's line was that an outcome which does not exist on disk is not an outcome at all; nothing detected it, and neither an ADR nor the type definition would have, because the agent never opened either

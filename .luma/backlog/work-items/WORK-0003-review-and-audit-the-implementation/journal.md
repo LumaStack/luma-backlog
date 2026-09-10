@@ -4,6 +4,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0003-review-and-audit-the-implementation unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-04
 
 classified as an inquiry — the kind that did not exist when this record was left blank, and the record that argued it into existence

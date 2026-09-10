@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0070-make-the-backlog-usable-in-another-project unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-08
 
 created knowingly in the wrong shape — this is a delivery and work items are all we have, which is what WORK-0069 exists to fix; recorded on the record itself so a reader does not mistake it for a piece of work

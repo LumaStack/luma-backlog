@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0030-an-actor-can-act-on-behalf-of-another unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 raised while deciding who should verify WORK-0017 — the agent did the work and the maintainer made the judgment, and there was no honest way to record both

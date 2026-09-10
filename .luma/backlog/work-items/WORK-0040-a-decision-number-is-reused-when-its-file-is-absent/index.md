@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0040
 title: A decision number is reused when its file is absent
-workflow_status: unprepared
+workflow_status: captured
 kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T17:40:00Z'}
+rank: 010.0120.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
 ---
 
 # A decision number is reused when its file is absent

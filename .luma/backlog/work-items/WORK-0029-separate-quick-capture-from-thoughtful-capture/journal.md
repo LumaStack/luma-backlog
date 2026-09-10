@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0029-separate-quick-capture-from-thoughtful-capture unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 raised from this session — every record written today was a thoughtful capture whether or not one was wanted, and none of them was discussed before being written

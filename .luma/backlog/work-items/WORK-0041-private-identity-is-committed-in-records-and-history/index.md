@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0041
 title: Private identity is committed in records and history
-workflow_status: unprepared
+workflow_status: captured
 kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T17:45:00Z'}
+rank: 010.0130.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
 ---
 
 # Private identity is committed in records and history

@@ -2,11 +2,12 @@
 type: work-item
 key: WORK-0030
 title: An actor can act on behalf of another
-workflow_status: unprepared
+workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T06:45:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T07:00:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
+rank: 010.0080.000
 ---
 
 # An actor can act on behalf of another

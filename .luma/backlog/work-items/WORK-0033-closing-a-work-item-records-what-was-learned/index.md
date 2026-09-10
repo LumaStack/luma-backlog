@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0033
 title: Closing a work item records what was learned
-workflow_status: unprepared
+workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T15:10:00Z'}
+rank: 010.0090.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
 ---
 
 # Closing a work item records what was learned

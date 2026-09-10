@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0057
 title: A fast next, without the rundown
-workflow_status: unprepared
+workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:44:53Z'}
 description: the pick and nothing else — high quality but fastish, so it cannot afford the rundown's expensive considerations; it will definitely exist, in what capacity is unknown
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:46:38Z'}
-rank: 020.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:24Z'}
+rank: 010.0010.000
 ---
 
 # A fast next, without the rundown

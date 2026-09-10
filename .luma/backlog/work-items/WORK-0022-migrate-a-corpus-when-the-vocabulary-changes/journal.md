@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0022-migrate-a-corpus-when-the-vocabulary-changes unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 inserting or reordering a status is a second failure mode alongside renaming one — with ordinals derived from list position it shifts every later ordinal, making the rank prefix wrong on every record at those statuses, and nothing detects it

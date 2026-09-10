@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-10
+
+WORK-0033-closing-a-work-item-records-what-was-learned unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
+
 ## ▶ 2026-09-06
 
 two learnings with different readers — one about the work, found by reading its journal, and one about the system, which nobody finds by reading thirty journals

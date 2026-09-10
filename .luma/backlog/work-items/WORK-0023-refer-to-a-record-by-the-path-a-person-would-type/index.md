@@ -2,10 +2,12 @@
 type: work-item
 key: WORK-0023
 title: Refer to a record by the path a person would type
-workflow_status: unprepared
+workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T03:10:00Z'}
+rank: 010.0060.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
 ---
 
 # Refer to a record by the path a person would type
