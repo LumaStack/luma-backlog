@@ -39,7 +39,7 @@ is owed and of what sort.
 | **`change`** | **None of the above.** Nothing broke, nobody asked, and it is formed enough to judge. Most of what a team builds. |
 | *absent* | **Nobody has classified it.** Not a sixth state — a missing answer. |
 
-**`idea` is not a restatement of `workflow_status: captured`.** The rung says
+**`idea` is not a restatement of `workflow_status: captured`.** The work status says
 nobody has *decided*; the kind says the record is not a complete statement of
 anything yet. A bug at `captured` is fully described and merely unjudged. An idea
 at `captured` is neither.
@@ -280,7 +280,7 @@ Nothing else in the format uses the word, which is why it was free.
 
 **Not `ref`.** In a tool that lives inside git, a ref is a branch or a tag —
 borrowing a word the surrounding system has already claimed is the mistake that
-set aside `change` for a kind and `committed` for a rung.
+set aside `change` for a kind and `committed` for a work status.
 
 ### Written and said as one string
 

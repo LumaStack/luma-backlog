@@ -164,7 +164,7 @@ is the shape of the argument, applied to a mechanism rather than a name.
 done?* — and `backlog-move` already says this is where an uncovered unknown
 lands: *"Unknown unknowns are undefinable here by construction, and their
 discovery during work is `lifecycle.md` §2.8's **Redefine**, not a failure of
-this rung."*
+this work status."*
 
 **So the third direction is not a lesser version of the other two — it is a
 named phase of the loop.** Calling it *less desirable* is right about its
@@ -222,8 +222,8 @@ a capture.
 ### On findings feeding outcomes
 
 **Direction one ends by writing or sharpening outcomes, which is where the
-`preparing` rung already stops.** `backlog-move` names outcome refinement as the
-only thing in that rung with a natural stopping point: *"Scoping and breakdown
+`preparing` work status already stops.** `backlog-move` names outcome refinement as the
+only thing in that work status with a natural stopping point: *"Scoping and breakdown
 can run forever; outcome refinement stops when the outcome passes."*
 
 **So a strategy in direction one has an exit condition already** — it is done

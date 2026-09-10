@@ -237,7 +237,7 @@ statement of intent and cannot be derived, so `rejected` earns its place.
 by the successor (§4.6, §3.2), so the closed record never learns it was
 replaced, and the successor may not exist yet at close time.
 
-**Reject is a disposition, not a rung.** Triage's *reject* closes the record;
+**Reject is a disposition, not a work status.** Triage's *reject* closes the record;
 the ladder is untouched. Triage's *defer* writes nothing at all — it is the
 board moving on, which is view state and not a mutation.
 

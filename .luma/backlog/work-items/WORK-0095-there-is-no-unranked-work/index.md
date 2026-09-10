@@ -2,7 +2,7 @@
 type: work-item
 key: WORK-0095
 title: There is no unranked work
-description: 'Ranking needs to always happen --- there is no unranked stuff, ever. Everything is ranked all the time, and new things just go to the bottom or the top or wherever we want them, but they are always ranked. What has to be decided is where a record lands on each event: creation, advancing, and going backwards --- and whether any rung is special enough to behave differently.'
+description: 'Ranking needs to always happen --- there is no unranked stuff, ever. Everything is ranked all the time, and new things just go to the bottom or the top or wherever we want them, but they are always ranked. What has to be decided is where a record lands on each event: creation, advancing, and going backwards --- and whether any work status is special enough to behave differently.'
 workflow_status: in_progress
 kind: change
 stage: draft
@@ -25,7 +25,7 @@ of every status interleaved by key number.
 rather than out of the status field.** [[records/decisions/ADR-0005-rank-is-work-order-and-workflow-status-dominates-it]]
 says rank orders records *within* a status; the code makes the rank the only
 thing that says which status a record is ordered within. Lose the rank and the
-record loses its rung.
+record loses its work status.
 
 **Two ways records end up with no rank, and only one of them is history.**
 
@@ -52,7 +52,7 @@ sentinel standing in for one.**
 
 **One rule underneath all of it: the back is where arrival goes, the front is
 where judgment goes.** A record that merely turned up says nothing about itself
-relative to the records already at that rung, so it queues behind them. A record
+relative to the records already at that work status, so it queues behind them. A record
 somebody sent backwards is a record somebody examined and rejected, and that is
 a statement about it relative to its new peers.
 
@@ -66,21 +66,21 @@ a statement about it relative to its new peers.
 than two, and it makes a regression indistinguishable from an arrival --- which
 is exactly the information the transition carried.
 
-### No rung behaves differently
+### No work status behaves differently
 
-**Asked deliberately, and the answer is no.** A rung with its own ordering rule
+**Asked deliberately, and the answer is no.** A work status with its own ordering rule
 would mean sorting the rank field requires knowing which rule applies, which
 requires reading configuration --- destroying the one property the prefix exists
 to provide.
 
-**The two rungs that look like exceptions are already right under the general
+**The two work statuses that look like exceptions are already right under the general
 rule.**
 
 - **`in_progress`** --- last-on-advance orders it by when work started, oldest
   first. That is work-in-progress aging: the row at the top has been open
   longest and is the most at risk.
 - **`closed`** --- last-on-close orders it by when things finished. A rank
-  position at a terminal rung is a fossil either way, and *the order things
+  position at a terminal work status is a fossil either way, and *the order things
   ended* is at least a coherent one.
 
 ### The seed makes it free

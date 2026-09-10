@@ -11,9 +11,9 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T01:22:08Z'}
 ## The question
 
 **Which moves on the workflow ladder are trivial and which carry checks and
-balances**, walked rung by rung with the maintainer. The rung-specific answers
+balances**, walked status by status with the maintainer. The work status-specific answers
 went into [[backlog-transition]]. **What is here is what did not fit in any one
-section** — the findings that recurred, and are worth more than the rungs that
+section** — the findings that recurred, and are worth more than the work statuses that
 produced them.
 
 ## One rule underneath all of it
@@ -31,7 +31,7 @@ the same rule as four decisions taken separately earlier the same day:
 | **observed, never refused** | reporting a problem does not require preventing it |
 | **force writes the field, never refuses the move** | the move implies the value; refusing to write it prevents nothing |
 | a deliberately tiny **refusal surface** | only two refusals survive the test |
-| **reopen to any true rung** | marching up the ladder would write false statuses on the way |
+| **reopen to any true work status** | marching up the ladder would write false statuses on the way |
 
 **Each was argued on its own merits and none referenced the others.** Finding
 that they collapse into one sentence is the strongest result of the walk, and it
@@ -39,11 +39,11 @@ gives every future rule a test it can fail.
 
 ## The ladder is a narrowing of what can block
 
-**The document called it bookkeeping.** It is not. Each rung removes a class of
+**The document called it bookkeeping.** It is not. Each work status removes a class of
 blocker, and the maintainer's own definitions supply the frame: `prepared` is
 blocked by scheduling and capacity, `todo` by capacity alone.
 
-That generalizes to every rung and turns *is this move trivial* — the question
+That generalizes to every work status and turns *is this move trivial* — the question
 the walk started from — into something answerable: **ask which class of blocker
 the move removed.** A move that removes none is bookkeeping. A move that removes
 one is where the judgment lives.
@@ -106,7 +106,7 @@ rules**, and each one is a candidate for the same treatment.
 
 Four gaps found by walking, each now a work item:
 
-- **Blocked is orthogonal to the ladder** — it can happen at any rung, so it is a
+- **Blocked is orthogonal to the ladder** — it can happen at any work status, so it is a
   flag rather than a status. Blocked-as-status would cost a record its chosen
   queue position twice, since ADR-0005 re-enqueues on every status change. It is
   also not a `spec.md` §5.2 condition, because conditions are *computed* and
@@ -117,7 +117,7 @@ Four gaps found by walking, each now a work item:
   ([[work-items/WORK-0064-a-task-cannot-record-why-it-ended]])
 - **`todo` is defined by an activity the tool cannot record** — allocation — and
   ADR-0008's `take` does not ship.
-- **Consideration that leaves no trace** appeared twice in one rung — dismissed
+- **Consideration that leaves no trace** appeared twice in one work status — dismissed
   sub-pipelines, and who was considered for involvement. Twice makes it a shape.
 
 ## What running it as itself proved
@@ -146,7 +146,7 @@ evidence.
 
 - **Identified or established?** *Define or establish the dependencies before
   `prepared`* is ambiguous, and it decides whether `prepared` is reachable in a
-  large organization or is the rung where work goes to die. The same ambiguity
+  large organization or is the work status where work goes to die. The same ambiguity
   appeared at `preparing` and again at `prepared`, unresolved both times.
 - **Paused and blocked were raised together and never separated.** Blocked waits
   on something nameable; paused may be a choice with no blocker at all.

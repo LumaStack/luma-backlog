@@ -22,7 +22,7 @@ and thirty-three seconds apart end to end. It should have stopped at
 ## What was wanted
 
 **A work item pauses at `preparing` until the preparing work has actually been
-done, however far along it was asked to be taken.** Each rung is its own act:
+done, however far along it was asked to be taken.** Each work status is its own act:
 show what was captured and where it landed, cross the selection gate as a
 decision somebody makes, then stop.
 

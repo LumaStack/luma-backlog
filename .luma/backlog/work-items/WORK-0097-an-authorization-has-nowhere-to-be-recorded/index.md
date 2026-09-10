@@ -54,7 +54,7 @@ Most likely an `accepted: {by, at}` stamp on an outcome, matching `created` and
   the place to write it; that one makes the value trustworthy.
 - **Whether `preparing` is renamed or split** ---
   [[work-items/WORK-0080-preparation-and-definition-may-be-two-different-things]].
-  Whatever the rung is called, leaving it needs this.
+  Whatever the work status is called, leaving it needs this.
 - **Verification verdicts** ---
   [[work-items/WORK-0072-independent-verdicts-cancel-each-other-out]] is about
   many checkers disagreeing on whether an outcome *held*. This is one acceptance

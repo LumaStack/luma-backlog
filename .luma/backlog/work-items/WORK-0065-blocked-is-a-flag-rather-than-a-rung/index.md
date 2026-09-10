@@ -1,7 +1,7 @@
 ---
 type: work-item
 key: WORK-0065
-title: Blocked is a flag rather than a rung
+title: Blocked is a flag rather than a work status
 workflow_status: captured
 kind: change
 stage: draft
@@ -10,7 +10,7 @@ description: a record can be blocked at any workflow status, so blocked does not
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:52:16Z'}
 ---
 
-# Blocked is a flag rather than a rung
+# Blocked is a flag rather than a work status
 
 ## The problem
 
@@ -19,7 +19,7 @@ that a record is waiting on something, what it is waiting on, or that the wait
 has ended.
 
 **Blocked can happen at any workflow status**, which is what makes it a flag
-rather than a rung. `in_progress` is where it happens most and has nothing to
+rather than a work status. `in_progress` is where it happens most and has nothing to
 do with the shape of it.
 
 ## What is being delivered

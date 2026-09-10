@@ -156,7 +156,7 @@ Only `completed` is gated.
 
 **Advancing is `set`, not a verb of its own.** Workflow status is a field, `set`
 is the field verb, and `--if-unchanged` handles the stale-read race — which is
-the real hazard, not skipping a rung.
+the real hazard, not skipping a work status.
 
 **`--open`** — everything not closed. WORK-0016 records why: it is the first
 question anybody asks and cannot be expressed today.
@@ -297,7 +297,7 @@ is neither.
 | Opening in an editor | `work-item edit <ref>` |
 
 **Moving a card always passes `--if-unchanged`.** The hazard is not skipping a
-rung — nothing forbids that — it is the stale read: the board renders
+work status — nothing forbids that — it is the stale read: the board renders
 `preparing`, computes that the next column is `prepared`, and between those
 moments an agent moves the record to `todo`. Without the hash the card silently
 moves backwards.

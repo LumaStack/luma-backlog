@@ -2,7 +2,7 @@
 type: outcome
 title: The board draws both gates
 desired_state: "The default columns separate the pile from the preparation pipeline and the preparation pipeline from the work pipeline, so both selection gates are visible on a board."
-verify_by: ["the default columns place captured, the preparation rungs, and todo in three different headings"]
+verify_by: ["the default columns place captured, the preparation work statuses, and todo in three different headings"]
 work_item: '[[work-items/WORK-0010-ship-the-documented-ladder]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T17:35:24Z'}

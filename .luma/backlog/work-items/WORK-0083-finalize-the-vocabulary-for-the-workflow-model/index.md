@@ -6,7 +6,7 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:49:00Z'}
-description: 'workflow status, gates, pipelines and rungs are ad hoc terms and they are starting to bleed into everything. two questions: should each step in the workflow status have a gate, and do gates survive an enterprise adding more steps — the hope is yes and the assumption should be play tested rather than argued. the words have to last, must not crash into other frameworks, and there should be as few of them as possible: run, pipeline, gate and workflow are all highly valuable words and should be reserved lightly.'
+description: 'workflow status, gates, pipelines and work statuses are ad hoc terms and they are starting to bleed into everything. two questions: should each step in the workflow status have a gate, and do gates survive an enterprise adding more steps — the hope is yes and the assumption should be play tested rather than argued. the words have to last, must not crash into other frameworks, and there should be as few of them as possible: run, pipeline, gate and workflow are all highly valuable words and should be reserved lightly.'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:49:00Z'}
 ---
 
@@ -14,7 +14,7 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:49:00Z'}
 
 ## The problem
 
-**The terms around `workflow_status` — gates, pipelines, rungs — are ad hoc, and
+**The terms around `workflow_status` — gates, pipelines, work statuses — are ad hoc, and
 they are starting to bleed into everything.** Every new record reaches for one
 of them, and nothing says which is which.
 
@@ -36,7 +36,7 @@ and see what happens to the gates.
 ## What is being delivered
 
 **A settled vocabulary**, and the answer to whether a gate is a thing the model
-holds or a fact about one particular set of rungs.
+holds or a fact about one particular set of work statuses.
 
 ---
 
@@ -87,7 +87,7 @@ to settle before `stage` can be considered for any other job.**
 
 **Gates do not survive more steps, because gates are not modeled at all.**
 `workflow-status.md` says it plainly: *"the gate itself is not modeled. Gates are
-implicit today, nothing more than the transition between two rungs."* And: *"Who
+implicit today, nothing more than the transition between two work statuses."* And: *"Who
 owns one, what it requires before work may cross, and whether it applies at all
 are three things that do not exist."*
 
@@ -105,7 +105,7 @@ count stops being fixed at two and starts being per project.
 **And `workflow-status.md` has already reasoned about the shape that follows**,
 in *Preparing may hold many gates*: which gates apply is *"a fact about the work
 item, not about the repository"*, computed per record — *"a larger departure
-than adding rungs, because two work items in the same repository no longer take
+than adding work statuses, because two work items in the same repository no longer take
 the same path."*
 
 ### On crashing into other frameworks

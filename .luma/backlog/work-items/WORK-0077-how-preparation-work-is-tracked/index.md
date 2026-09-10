@@ -6,7 +6,7 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T16:55:53Z'}
-description: 'preparation steps do not get work done — they prepare the work item so work can start. are they tasks, or their own classification, and if their own thing, what are they called? a default list people add to or remove from: establish who must coordinate and when, establish what deliverables are needed to begin, define the work so outcomes are set, verify outcomes are measurable. a step can also name what it blocks, and not always the same rung. three concepts that may or may not be fleshed out here: whether complete and delivered become two different things; whether outcomes should be complete before a work item is prepared — requirement, recommendation or optional, leaning recommendation; and whether plan-building and work-doing are separated by name as well as by kind.'
+description: 'preparation steps do not get work done — they prepare the work item so work can start. are they tasks, or their own classification, and if their own thing, what are they called? a default list people add to or remove from: establish who must coordinate and when, establish what deliverables are needed to begin, define the work so outcomes are set, verify outcomes are measurable. a step can also name what it blocks, and not always the same work status. three concepts that may or may not be fleshed out here: whether complete and delivered become two different things; whether outcomes should be complete before a work item is prepared — requirement, recommendation or optional, leaning recommendation; and whether plan-building and work-doing are separated by name as well as by kind.'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T16:57:24Z'}
 ---
 
@@ -39,7 +39,7 @@ only one unit for both.
   `todo`? `closed`? Delivery?
 
 **The second list is the one that shows the shape.** A preparation step can name
-what it blocks, and what it blocks is not always the same rung.
+what it blocks, and what it blocks is not always the same work status.
 
 ## Three concepts that may or may not be fleshed out here
 
@@ -105,7 +105,7 @@ it. It draws product, legal, compliance, security and engineering as gates
 
 - **Which gates apply is a fact about the work item, not the repository.** One
   change needs legal signoff and the next does not, so the set is computed per
-  record. It calls this *"a larger departure than adding rungs, because two work
+  record. It calls this *"a larger departure than adding work statuses, because two work
   items in the same repository no longer take the same path."*
 - **Most gates should advise rather than stop.** *"Shipping every gate as a
   refusal is the fastest way to teach people to route around the tool."*
@@ -114,7 +114,7 @@ it. It draws product, legal, compliance, security and engineering as gates
   exist."*
 
 **And it already answers the "what does this block" question structurally.**
-Sequential gates fit the ladder as more rungs — configuration, no code. Parallel
+Sequential gates fit the ladder as more work statuses — configuration, no code. Parallel
 ones do not, because a record holds one `workflow_status` and something waiting
 on legal *while* being shaped by engineering is in two states at once. It points
 at `spec.md` §4.1.1 and `blocked` as the precedent: a thing that travels

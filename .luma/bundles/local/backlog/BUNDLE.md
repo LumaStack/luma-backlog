@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.42.0
+version: 0.43.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -78,7 +78,7 @@ the procedure itself carried the line *"`move` is an alias and never a name"*
 while being named after it.
 
 **Closing and reopening are transitions**, so the name covers the whole
-document. `close` is a separate command because reaching the terminal rung must
+document. `close` is a separate command because reaching the terminal work status must
 not happen by accident — a safeguard, not a different kind of act.
 
 **Ranking was never in here** and is not affected. The description already
@@ -92,7 +92,7 @@ citations to the old name are correct as written and resolve through this entry.
 crossed without an answer twice in two days.** Recorded as one entry because it
 was one continuous piece of work.
 
-A rung's rows split into **checks** — facts about the record, often satisfiable
+A work status's rows split into **checks** — facts about the record, often satisfiable
 by the agent itself — and **authorizations** — decisions that are not true until
 somebody with standing says so, which is why they had sat as *judgement* and why
 no machine could run them. Standing for now is people and orchestrating agents,
@@ -120,15 +120,15 @@ output the key goes alone, because a title written into a record, a procedure, a
 journal or a commit message is frozen at the moment of writing and wrong the
 first time somebody renames the thing.
 
-`0.35.0` — **a transition walks the rungs; it does not leap them.**
+`0.35.0` — **a transition walks the work statuses; it does not leap them.**
 
-Asking for a distant rung is asking to be taken through the ladder quickly, not
-around it, so every rung's rules apply as it passes. Fast-tracking changes how
-long is spent at each rung, never how many are answered. Breaking protocol is a
+Asking for a distant work status is asking to be taken through the ladder quickly, not
+around it, so every work status's rules apply as it passes. Fast-tracking changes how
+long is spent at each work status, never how many are answered. Breaking protocol is a
 separate act, allowed, and never quiet.
 
 Also: `unprepared` is a resting place and work is meant to sit there. A
-populated rung is the design working, not a queue to drain.
+populated work status is the design working, not a queue to drain.
 
 `0.34.0` — **a reason is asked for where nothing else records one.**
 
@@ -144,7 +144,7 @@ it.
 
 `0.33.0` — **completing requires the tasks to be closed, and `--force` exists.**
 
-Only *completed* is gated: every task must have reached a terminal rung, for any
+Only *completed* is gated: every task must have reached a terminal work status, for any
 reason at all — failed, cancelled, whatever. Every other disposition warns and
 proceeds, because open tasks are what being cancelled means.
 
@@ -167,7 +167,7 @@ guarantees.
 `0.31.0` — **the ladder has a command, and the strengths are real.**
 
 `transition` replaces `set workflow_status=`, which now refuses and says so.
-The rung table is rewritten around three strengths — allowed, warned, refused —
+The work status table is rewritten around three strengths — allowed, warned, refused —
 with a column saying which rows are actually built, because six of twelve are
 not.
 
@@ -236,7 +236,7 @@ them apart* governs both scenarios; it is not a third one. Somebody who has not
 thought about it yet is the ordinary case, and the section already says what to
 do about them.
 
-`0.28.0` — **how many rungs at a time, and where to stop.**
+`0.28.0` — **how many work statuses at a time, and where to stop.**
 
 Not in one burst, unless somebody said to. `preparing` is the gate worth
 stopping at and `unprepared` is the one to blow past. Fast-tracking is
@@ -246,7 +246,7 @@ the process was wrong, the person was right, or it cost something later is not
 knowable at the moment of the skip.
 
 Written from a measured failure rather than a worry: an agent ran WORK-0074 up
-three rungs in three commands and the maintainer sent it back.
+three work statuses in three commands and the maintainer sent it back.
 
 `0.27.0` — **a finished work item is where a session clears.**
 
@@ -397,14 +397,14 @@ states the vocabulary; it does not defend the absence of a value. The only
 reader who could be confused is one who ran `--help` and saw the binary still
 offering it, which the note about the binary's lag already covers.
 
-`0.20.0` — **[[backlog-transition]] is rewritten from a rung-by-rung interview.**
+`0.20.0` — **[[backlog-transition]] is rewritten from a status-by-status interview.**
 
 It was the least examined procedure in the bundle — two commits, written in one
 pass, never reopened — while carrying both selection gates, which is where the
 whole ladder model lives. Four of its seven moves had no prose at all.
 
 **The organizing idea replaces "most of the ladder is bookkeeping."** It is not
-bookkeeping: **each rung removes a class of blocker**, and that makes a move
+bookkeeping: **each work status removes a class of blocker**, and that makes a move
 testable by asking which class it removed. `prepared` is blocked by scheduling
 and capacity, `todo` by capacity alone — which also explains why the two gates
 feel different in kind, since `prepared` is a claim about the record and `todo`
@@ -413,7 +413,7 @@ is a claim about the world.
 **And one rule sits under everything:** *a step is worth forcing when it prevents
 a false record; a step that only enforces process is red tape.* Four positions
 taken separately — observed-never-refused, force-writes-rather-than-refuses, a
-tiny refusal surface, and reopening to any true rung — turn out to be that one
+tiny refusal surface, and reopening to any true work status — turn out to be that one
 sentence. The refusal surface is now stated outright, and it has two members.
 
 **`rejected` and `canceled` became positional.** ADR-0007 distinguishes them by
@@ -422,9 +422,9 @@ lookup, and says the same thing, because crossing the first gate **is** the act
 of considering it. That is an amendment to a decision in force and its table
 wants the positional wording.
 
-**Every rung gained what it was missing** — `preparing` and `prepared` had none
-— plus a table of what each rung asks for and how hard it asks, and a `Blocked`
-section for a state that is a flag rather than a rung.
+**Every work status gained what it was missing** — `preparing` and `prepared` had none
+— plus a table of what each work status asks for and how hard it asks, and a `Blocked`
+section for a state that is a flag rather than a work status.
 
 **Things settled but unbuilt are marked as such** rather than written as though
 they work: the positional disposition, a required reason on a cancellation, an
@@ -495,7 +495,7 @@ costly, rather than it simply looking in more places.
 `next` already does. `survey`, `scan` and `sweep` name how you move over the
 ground; `bearings`, `digest` and `rundown` name what you end up holding. Of
 those, `rundown` is the one somebody says out loud and the only plain candidate
-nothing here had claimed — `status` is a rung, `state` is on every outcome,
+nothing here had claimed — `status` is a work status, `state` is on every outcome,
 `position` is rank ordering, `standing` is §5.2's standing conditions, `view`
 belongs to `record-view` and §11.2, and `take` is ADR-0008's.
 
@@ -637,7 +637,7 @@ literally the directory's name, and a **title** is prose for a person.
 
 It was `ref`, which was a poor choice: in a tool that lives inside git a ref is a
 branch or a tag, and borrowing a word the surrounding system has claimed is the
-mistake that set aside `change` for a kind and `committed` for a rung. `name` is
+mistake that set aside `change` for a kind and `committed` for a work status. `name` is
 free, plain, and true — the model and the filesystem now agree on what a record
 is called.
 
@@ -886,7 +886,7 @@ into a bug, a request, or ordinary work.
 
 The `workflow_status` values were still the retired ladder — `idea, preparing,
 ready` — two days after the corpus moved off them. That was a stale copy rather
-than a decision, and it is corrected to the seven rungs in
+than a decision, and it is corrected to the seven work statuses in
 `docs/workflow-status.md`.
 
 Minor: new content, and nothing an existing record has to change. A record with

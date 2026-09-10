@@ -50,7 +50,7 @@ edited and hoped over.
 ## Constraints
 
 - **This is not a rewrite of the ladder.** `unprepared` is a resting place and
-  is not in question; the rungs are settled by
+  is not in question; the work statuses are settled by
   [[records/decisions/ADR-0002-the-workflow-ladder-is-two-pipelines-behind-two-gates]].
   What is in question is where the rules are written and whether the system
   agrees with them.
@@ -61,7 +61,7 @@ edited and hoped over.
 
 ## Out of scope
 
-**Changing what the rungs mean, or how many there are.**
+**Changing what the work statuses mean, or how many there are.**
 
 **Solving document synchronisation in general.** A source of truth reduces it;
 keeping many documents honest as the system changes is a standing problem and a
@@ -80,17 +80,17 @@ unchanged. Everything below was added by the agent while capturing it.*
 found by using the system today.
 
 - **A transition leaps rather than walks.** `captured → prepared` in one call is
-  silent; the same distance walked one rung at a time warns that `preparing` was
+  silent; the same distance walked one work status at a time warns that `preparing` was
   left without outcomes or tasks. `backlog-move` 0.35.0 now describes a walk and
   the command implements a leap.
-- **Six of nineteen rows in the rung table are not built** — two `stage` writes
+- **Six of nineteen rows in the work status table are not built** — two `stage` writes
   ([[work-items/WORK-0075-a-move-does-not-write-the-stage-it-promises]]), an
   owner and a per-worker limit
   ([[work-items/WORK-0066-an-actor-cannot-name-a-session]]), an unsuccessful-task
   warning ([[work-items/WORK-0064-a-task-cannot-record-why-it-ended]]), and
   tasks resolved on a non-completed close.
-- **Three rungs are recognised by position, not by name.** The pile, the shaping
-  rung and the started rung are derived by counting, so an organization
+- **Three work statuses are recognised by position, not by name.** The pile, the shaping
+  work status and the started work status are derived by counting, so an organization
   inserting a step moves all three silently
   ([[work-items/WORK-0083-finalize-the-vocabulary-for-the-workflow-model]]).
 - **Records cite commands that no longer exist.** `set <ref>

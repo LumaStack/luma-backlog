@@ -13,7 +13,7 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:36:38Z'}
 ## Summary
 
 The default `workflow_status` vocabulary is modeled as two pipelines separated
-by two selection gates, and every rung is named for the pipeline it is queued
+by two selection gates, and every work status is named for the pipeline it is queued
 for or the state it reached in one.
 
 ## Problem
@@ -28,9 +28,9 @@ in the conversation that created them. The label carried no information: it mean
 
 **The pile it named holds more than ideas.** A bug or an issue waits for
 attention exactly as an idea does, and filing a bug as an `idea` is the
-kind-versus-rung confusion that
+kind-versus-status confusion that
 [[records/decisions/ADR-0001-the-backlog-unit-is-a-work-item]] already settled —
-kinds classify a work item and are never rungs or record types.
+kinds classify a work item and are never work statuses or record types.
 
 **Nothing separated *chosen* from *being shaped*.** `idea` sat directly below
 `preparing`, so the ladder had no way to say *we will do this and nobody has
@@ -62,10 +62,10 @@ Work moves through two pipelines, each with a selection gate in front of it:
 └──────────────────────────────────────────────┘
 ```
 
-**A rung is named for the pipeline it is queued for, or the state it has reached
+**A work status is named for the pipeline it is queued for, or the state it has reached
 in one.** Never for the gate it passed.
 
-The seven rungs are `captured`, `unprepared`, `preparing`, `prepared`, `todo`,
+The seven work statuses are `captured`, `unprepared`, `preparing`, `prepared`, `todo`,
 `in_progress` and `closed`, adopted as the shipped default on 2026-09-04 —
 three of them were still open when this record was first written.
 [`workflow-status.md`](../../../docs/workflow-status.md) is the normative source
@@ -74,11 +74,11 @@ restating it.
 
 ## Why
 
-**Both gates are a selection, so no rung can be named for being selected.** That
+**Both gates are a selection, so no work status can be named for being selected.** That
 single observation does most of the work here. `selected`, `accepted`, `queued`
 and `approved` all name the act of choosing — and everything below a gate has
 been chosen, so each of those words is equally true of `todo`, `in_progress` and
-every other rung beneath it. A name that describes seven states distinguishes
+every other work status beneath it. A name that describes seven states distinguishes
 none of them.
 
 **Naming for the pipeline instead makes the ladder self-describing.** `todo` is
@@ -88,7 +88,7 @@ without being taught.
 
 **The two pipelines have the same three states** — not started, under way,
 finished — which is why the shape is worth stating separately from the words. A
-team that renames every rung still has this structure, and a team that
+team that renames every work status still has this structure, and a team that
 subdivides `preparing` into four steps has changed its vocabulary and not its
 shape.
 
@@ -116,7 +116,7 @@ chose.
 | **`triaged`** | Names sorting rather than choosing. Something can be triaged and declined. |
 | **`planned`** | False by construction: it sits before preparation, so nothing has been planned. |
 | **`backlog`** | The industry's own answer to this split, and calibrated by ubiquity — but it names the pile rather than the state, and collides with the product's name. |
-| **keeping `idea` as the first rung** | Names one kind of thing in a pile that holds several, and asserts doubt about work somebody just decided to do. |
+| **keeping `idea` as the first work status** | Names one kind of thing in a pile that holds several, and asserts doubt about work somebody just decided to do. |
 
 ## Tradeoffs
 
@@ -128,7 +128,7 @@ chose.
 
 **Cons**
 
-- **Seven rungs.** More than the default needs on day one, and two pairs sit close enough to read as indecision in use.
+- **Seven work statuses.** More than the default needs on day one, and two pairs sit close enough to read as indecision in use.
 - **`unprepared` names an absence**, which reads faintly like criticism. Mitigated by precedent — an outcome starts `unverified` and nobody reads that as a failing — but not removed.
 - **A rename is owed.** `ready` and `idea` are in the shipped configuration, the board columns and the corpus, and none of this is implemented yet.
 
@@ -159,8 +159,8 @@ chose.
 - Shipped 2026-09-04: the vocabulary, the scaffolded configuration, and columns that draw both gates.
 - **`kind` is settled as a concept and unbuilt as a field.** ADR-0001 says kinds classify a work item and are never record types; nothing declares or stores one. Requester data — who asked, and whether they are inside or outside the organization — is a second axis rather than a kind.
 - **An external intake population is ADR-0001's recorded trigger** for reopening the split between requests and work items.
-- Where the pile lives — a rung, or a tier outside the backlog — is open, and bugs sitting in it is evidence for the rung.
-- **Complexity is expected inside `captured`, `preparing` and `in_progress`**, as decision logic rather than as more rungs.
+- Where the pile lives — a work status, or a tier outside the backlog — is open, and bugs sitting in it is evidence for the work status.
+- **Complexity is expected inside `captured`, `preparing` and `in_progress`**, as decision logic rather than as more work statuses.
 
 ## References
 
