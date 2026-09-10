@@ -96,19 +96,17 @@ enough — see the note at the end of this section.
 
 | what somebody wants | what to do |
 | --- | --- |
-| **crawl** — stop at every stop, whether or not it is required | take the time; do not hurry somebody who came for thoroughness. An optional stop taken is never wrong, only slower |
-| **fast-track** — stop where you must and nowhere else | the protocol with nothing added: answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **A mandatory stop is not one of the ones you get to save**, and no check is answered more thinly to save one |
+| **crawl** — stop at every stop, whether or not it is required | slow on purpose. Take the time; do not hurry somebody who came for thoroughness, and do not hurry work that warrants it. An optional stop taken is never wrong, only slower |
+| **fast-track** — the procedure running as intended | stop where the table stops you: answer from what you hold rather than asking, fix what you can fix yourself, and put everything a rung needs into a single ask. **Named for being fast, not for leaving anything out** — no check is ever answered more thinly, at any speed |
 | **override** — run past a stop you must make | say the cost, get it confirmed unless they already authorized it, cross with `--force`, and journal it so the call can be judged later |
 
-**Fast-tracking is not a discount on something fuller. It is the protocol.** The
-mandatory stops *are* the rules, so stopping where the table stops you and
-nowhere else is compliance, not economy. **`crawl` adds optional stops;
-`override` passes a mandatory one.** Both are departures, in opposite
-directions, and only the second one breaches anything.
+**Fast-tracking omits nothing.** It is this procedure working, and it has a name
+only because it is fast. **`crawl` adds optional stops; `override` passes a
+mandatory one.** Those are the two departures, in opposite directions, and only
+the second breaches anything.
 
-**Which makes fast-track the default.** Crawling and overriding are requests —
-somebody asks for them. Where nobody has said which they want, stop where the
-table stops you and nowhere else.
+**Which makes fast-track the default** — not a mode somebody selects, just what
+happens when nobody has moved you off it.
 
 **Every gate is crossed. What speed saves is the turn, not the gate.** Where you
 already have the answers **for that gate**, answer it from them and advance —
@@ -185,12 +183,60 @@ assumed and had no way to know is worse.
 why, before crossing. That is what makes a wrong call correctable while it is cheap
 instead of at a retrospective.
 
-**Somebody who has not thought about it yet is not a fourth, and needs no
-judging.** They are the ordinary case and the ordinary case is fast-track: stop
-where the table stops you and nowhere else. **Do not read a silence as a
-preference for one of the others** — crawling because the work feels weighty is
-adding stops nobody asked for, and overriding because it feels trivial is
-passing one nobody waived.
+**Somebody who has not thought about it yet is not a fourth.** They are the
+ordinary case, and the ordinary case is fast-track.
+
+**But crawling has two ways in: it is asked for, or the work triggers it** — and
+**the second call is yours to make.** Some work warrants thoroughness whether or
+not anybody said so, and an agent that notices should slow down rather than wait
+to be told.
+
+#### What should trigger a crawl
+
+**A first draft, meant to be tuned.** These are the signals worth slowing for,
+written to be checkable rather than felt. Where none of them is present,
+fast-track.
+
+- **Undoing it is expensive.** Reversibility is the test, not size. Anything
+  published outward, a migration touching many records, anything deleted. A work
+  item's outcomes can be rewritten next week; a release cannot be unreleased.
+- **It will be argued from later.** A decision, a type definition, a policy — a
+  record other work is judged against. A wrong work item costs its own work; a
+  wrong decision costs everything cited against it for a year.
+- **Nothing is downstream of you.** Where a review, a check run or a person sits
+  between you and the effect, an error is cheap and gets caught. Where this
+  lands straight into force, the stops you did not take were the only checks
+  there were.
+- **You are several inferences from anything anybody said.** Count them: gates
+  crossed on what was entailed rather than on what was written. One is ordinary;
+  a run of them means errors are multiplying rather than adding.
+- **You have already been surprised once.** The work turned out different from
+  the assumption. A surprise is evidence the model is wrong, and unrequested
+  stops pay exactly when the model is wrong.
+- **Two readings of the request would produce different work.** Not *I am unsure
+  how* — that is a question, and asking it costs one stop. This is both readings
+  being plausible and leading somewhere different.
+
+**What is not a trigger.** The work feeling large, or important, or serious —
+size is not the test. Somebody seeming senior, or impatient, or busy. Not
+knowing how to do something, which is a question rather than a pace.
+
+**Tune these against the register.** A trigger that never fires is noise; a
+breach that a crawl would have caught is a trigger that was missing. That is
+what the violation records are for, and it is the only way this list gets better
+than the afternoon it was written in.
+
+**Say you are making the call, at the moment you make it** — the same rule as
+announcing a crossing, for the same reason. *This looks like work that warrants
+crawling, so I am taking every gate; say if you would rather I did not.* **A
+mode switch nobody saw is a slower session with no explanation**, and the
+correction lands after the time has already been spent.
+
+**You may add stops on your own judgement. You may never pass one.** Adding
+costs time and nothing else, so an agent that crawled where it need not have has
+only been slow. Passing a mandatory stop takes an authorization that is not
+yours to give, however small the work looks — so *it felt trivial* moves you
+toward `crawl` never toward `override`.
 
 ### Where you stop is the table's answer, not yours
 
