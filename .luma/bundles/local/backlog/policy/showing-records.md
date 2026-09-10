@@ -45,6 +45,27 @@ looked is not a bad result, it is no result.
 > pointer once that bundle is adopted at 0.3.0 or later**; the vendored copy
 > here is 0.1.0 and does not carry it.
 
+## Mentioning a record
+
+**In ephemeral output, a key carries its title at least once per turn.** A
+reply, a report, a board — anything shown to somebody now and gone afterwards.
+`WORK-0088` on its own asks the reader to have memorised every key in the
+corpus. It need not be at the first mention, only somewhere in the same turn,
+because forcing it first would fight whatever else is deciding the shape of that
+line.
+
+**Where the key is part of a form being shown — a template, an example, a
+command — the form decides.** A listing is already `mark · key · title`, so it
+satisfies this by construction. `rank WORK-0031 --first` deliberately does not,
+and a title there corrupts the shape being demonstrated. **This rule never edits
+a form; it fills the gap forms do not cover, which is sentences.**
+
+**In durable output, reference the key alone.** A record, a procedure, a
+journal, a commit message. A title written into any of them is frozen at the
+moment of writing and is wrong the first time somebody renames the record. **The
+key does not change; the title does** — and ephemeral output can carry a title
+safely precisely because it does not outlive the question it was answering.
+
 ## A list of records
 
 **Mark, key, title — and the key only when the record has one.**

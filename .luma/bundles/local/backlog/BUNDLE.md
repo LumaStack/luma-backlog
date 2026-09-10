@@ -1,7 +1,7 @@
 ---
 type: bundle
 title: local/backlog
-version: 0.35.0
+version: 0.36.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -68,6 +68,14 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.36.0` — **a key on its own asks the reader to memorise the corpus.**
+
+In ephemeral output a key carries its title at least once per turn; where a
+template, an example or a command is deciding the shape, it wins. In durable
+output the key goes alone, because a title written into a record, a procedure, a
+journal or a commit message is frozen at the moment of writing and wrong the
+first time somebody renames the thing.
 
 `0.35.0` — **a transition walks the rungs; it does not leap them.**
 
