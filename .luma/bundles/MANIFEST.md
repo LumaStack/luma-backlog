@@ -58,7 +58,7 @@
   - catalog: lumastack/luma-catalog
   - commit: ce13c21e65900542c1570a6afdf903d8ac4fbf73
   - sha256: 8377d81d24be0392975f34d13666a460cf5f8d55ad0ff69d32315bb6cb872fda
-- `lumastack/luma-catalog/violation-records` 0.1.0
+- `lumastack/luma-catalog/violation-records` 0.5.0
   - catalog: lumastack/luma-catalog
-  - commit: e73391c82dca929e89bd52167461c97190709772
-  - sha256: 0343049cf0438970446c977b35f9780dedf06f1ab9a586da59db4b94d4010830
+  - commit: 143309102ceadaae336edcf558d969c73fee3f88
+  - sha256: f3bcef14a03981ae100ec5d0d2bf3cedfbf79d9d1cde75b2a0d55eea5e60fdbe

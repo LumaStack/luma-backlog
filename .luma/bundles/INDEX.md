@@ -20,4 +20,4 @@ Every container has an index. This is the project's: one entry per bundle, what 
 - `lumastack/luma-catalog/luma-types` 0.15.1 — The type definitions more than one luma tool has to agree on — namespaced, vendored, and deliberately not built into the knowledge format.
 - `lumastack/luma-catalog/session-manager` 0.9.1 — Ending an agent session without losing what it learned — checkpoint while working, hand off to a successor, or close for good, each writing for a different reader.
 - `lumastack/luma-catalog/versioning` 0.7.1 — What a version number promises, when to bump which part, and the rules that get decided wrongly — for anything versioned, not only releases.
-- `lumastack/luma-catalog/violation-records` 0.1.0 — Violations as records — an agent did something that was not wanted, filed cheaply and read in aggregate, including when no rule existed to break.
+- `lumastack/luma-catalog/violation-records` 0.5.0 — Violations as records — an agent did something that was not wanted, filed cheaply and read in aggregate, including when no rule existed to break.
