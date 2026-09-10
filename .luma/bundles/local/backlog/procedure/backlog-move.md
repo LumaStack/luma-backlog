@@ -61,10 +61,15 @@ changes. Any sentence here claiming *this is the one to stop at* would be a
 second copy of it, and two copies of one fact eventually disagree
 (ADR-0003).
 
-**A check is satisfied three ways, and only three.** A field on the record; a
-thing somebody said; or something entailed by what they said. Nothing else
-counts — not that the work is obviously fine, not that you understand it well,
-not that you just spent an afternoon on it.
+**These are the ways a check is satisfied today.** A field on the record; a
+thing somebody said; or something entailed by what they said.
+
+**The list is closed to you, not closed forever.** Nothing outside it counts
+while you are working — not that the work is obviously fine, not that you
+understand it well, not that you just spent an afternoon on it. **Somebody
+editing this document may add a fourth; an agent reading it may not invent one
+in the moment**, and a procedure that claimed the list was final would be an
+argument against its own maintainer.
 
 **Measured here, twice in one session on 2026-09-09.** An agent took WORK-0074
 from `preparing` to `in_progress` in three consecutive commands, and the
@@ -643,8 +648,9 @@ false statuses on the way.
 
 ## What each rung asks for
 
-**Three strengths: allowed, warned, refused.** A refusal always takes `--force`,
-and forcing is recorded.
+**The strengths, as they stand: allowed, warned, refused.** A refusal always
+takes `--force`, and forcing is recorded. Read the count off the table rather
+than from here, and do not treat the set as sealed — it is what there is now.
 
 **And a second axis: some rows are checks, some are authorizations.**
 
