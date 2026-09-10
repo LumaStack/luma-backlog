@@ -31,6 +31,11 @@ luma-foreman.
 **The destination was stated, in the instruction, and disregarded.** This is not
 a missed inference.
 
+## To explore
+
+**What should happen if the receiving project does not have luma-backlog set up
+yet?**
+
 ---
 
 *Everything above is the maintainer\'s, with wording improved and intent
@@ -78,6 +83,42 @@ speed is the whole feature of the quick path.
 - **No destination was named and the subject is plainly another project.** Then
   ask, once, and cheaply --- and record the answer, because it will come up
   again for the same subject.
+
+### On a receiving project with no backlog
+
+**This is the ordinary case rather than the edge one.** Both siblings checked
+today --- `luma-foreman` and `luma-catalog` --- have `.luma/` and no
+`.luma/backlog/`. **A tool that only works when the destination is already set
+up would not have helped once today.**
+
+**Four shapes, and they differ in who decides:**
+
+- **Refuse and say why.** *That project has no backlog; run `init` there first.*
+  Honest, costs nothing, and leaves the person holding a thought with nowhere to
+  put it --- which is the failure capture exists to prevent.
+- **Offer to initialise it.** One question, then `init` runs and the record
+  lands. **But adopting a backlog is a durable decision about that project**, and
+  the middle of capturing an unrelated idea is a poor moment to make it ---
+  `where-knowledge-goes` says as much about adopting a practice on the way out
+  of a session.
+- **Hold it here, marked for elsewhere.** Create it in this corpus with the
+  destination recorded, so nothing is lost and the move is deferred. **This is
+  what happened four times today by accident**, and the question is whether
+  doing it on purpose, visibly, is better or merely tidier.
+- **Write it somewhere that is not a backlog at all** --- a file in the other
+  repository, an issue, a note. Loses every property a record has, and may still
+  beat losing the thought.
+
+**The third is the only one that keeps capture cheap, and it is also the one
+that quietly builds a pile of records in the wrong place.** Which is the tension
+worth resolving rather than a choice to make quickly.
+
+**And it has a prerequisite either way:** a record held here for elsewhere needs
+somewhere to say so. There is no field for *this belongs to another project*,
+and the same shortfall blocks the move itself ---
+[[work-items/WORK-0025-how-one-work-item-blocking-many-others-is-modeled]] is a
+work item unable to point at a work item; this is a work item unable to point at
+a **project**.
 
 ### It cannot be fully fixed yet, and that should be said out loud
 
