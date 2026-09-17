@@ -621,3 +621,126 @@ makes later convergence between two answers mean anything. And the filing step
 says explicitly not to read the answers while filing them: they should all
 arrive before any is judged, so that reading order decides nothing.
 The runbook's workspace moved out of the home directory to ~/Workspace/scratch, with /tmp and ~/Workspace/tmp named as the alternatives. Nothing belonging to a project gets created loose in ~. A persistent scratch area is the better default here rather than /tmp, because the exercise can span days and /tmp may be cleared on reboot --- though losing the workspace only ever costs unfinished work, since each answer is landed in this work item as soon as it exists.
+### Toward a reusable procedure: what writing the brief actually taught us
+
+**The brief is the artifact; how it got there is the transferable part.** It took
+**eleven corrections** to reach something usable, and **every one came from the
+maintainer.** The agent declared it ready at least three times before it was.
+That is the finding, and everything below is downstream of it.
+
+#### The calibration failure, which is the reason a checklist is needed
+
+**An author cannot see their own anchoring, because the anchoring is their own
+thinking.** Re-reading produced *this looks neutral* every time, while a reader
+who had not written it found direction in eleven places. This is the
+doer-is-not-the-checker rule arriving somewhere nobody had applied it: **a brief
+meant to de-anchor a reader has to be reviewed by somebody who did not write
+it**, and that review is not optional polish.
+
+**Three of the eleven were found by grepping rather than reading** --- searching
+the file for our own vocabulary and for tool-specific nouns. **Mechanical checks
+beat careful re-reading here**, which is itself worth knowing: the leaks were
+invisible to the eye that wrote them and obvious to `grep`.
+
+#### The checklist, in the order the leaks appeared
+
+**Five classes. Each question is checkable and each was missed at least once.**
+
+**1. The brief has no acceptance criteria.**
+- Does it say what a *good* answer looks like, not just a correct one?
+- Are the wants stated as **wants**, or as the mechanisms we imagine
+  implementing them? *(Ours said "sortable by simple commands" when the want was
+  "somebody can order this without our program".)*
+- Is it clear which criteria are **mandatory** and which are **tradeable**?
+- Does anything in the tradeable tier **disqualify** something? If so it is a
+  requirement wearing the wrong label.
+- Is it said out loud that **not all of them can hold**, and that a named
+  sacrifice is a decision while an unnamed one is a defect found later?
+
+**2. The brief teaches the incumbent.**
+- Can the problem be read **without learning our current answer**? *(Ours opened
+  by explaining our own mechanism.)*
+- Is our **vocabulary** in it? Field names, internal nouns, the words we chose.
+- Is any of **our own material on the reading list**? *(Ours listed the
+  specification. It is written around the scheme we have, so it contributes
+  direction and noise and no problem-solving value --- and it turned out to
+  contain two claims our own measurement had disproved.)*
+- Would a reader need **context we have not supplied**? If the brief sends
+  somebody looking, it has failed.
+- Are things we merely **promise** listed separately from things that are
+  **required**? *(A promise presented as a constraint silently deletes a class of
+  answers --- ours nearly excluded every scheme where the order is derived rather
+  than stored.)*
+
+**3. The workload is described rather than enumerated.**
+- Is every failure scenario **named separately**, with its access pattern and
+  what it stresses? *(Ours had three abstract paragraphs where ten scenarios
+  belonged --- a reader got the gist and had nothing to test against.)*
+- Which are **observed** and which are **projected**? Say which.
+- Are the **frequencies** stated? *(Ours never said which end an arriving item
+  lands at, nor that one direction dominates --- and both determine the pattern
+  entirely.)*
+- Is the **quantity** the design must survive given as a number, derived rather
+  than asserted?
+
+**4. Isolation is instructed rather than structural.**
+- Is there anything present that should not be read? **Telling a model not to
+  read something is weaker than there being nothing to read**, and the
+  difference is usually one `cp`.
+- Does each independent agent have its **own** directory?
+- Is the workspace **outside** the repository? Anywhere inside it, an agent can
+  walk up one directory. A worktree is no help --- it contains everything by
+  design.
+
+**5. The output escapes the system.**
+- Where do the answers **live**? *(Ours were going to a scratch directory:
+  no history, reviewable by nobody, gone at the first tidy-up.)*
+- Are they landed in the corpus **before** anything judges them, so reading
+  order decides nothing?
+- Does each carry **provenance** --- which mode produced it, and that it was
+  produced blind? That is the only thing that makes later agreement mean
+  anything.
+- Is the **workspace a means rather than a location**, and deleted?
+
+#### Two things the stages needed that were not obvious
+
+**Blindness has to be explained, not just instructed.** An agent told *do not
+look at the other output* will comply and will not know why. Told that
+**agreement between an independent derivation and the published state of the art
+is evidence, and that if either saw the other first it is only influence**, it
+understands what it is protecting and will protect it in cases the instruction
+did not name.
+
+**Withhold what you already know.** We deliberately did not list the techniques
+we had found. If they matter they resurface; **if they do not resurface, that is
+informative too.** Handing a researcher your reading list converts research into
+verification.
+
+#### What is still unresolved about the method
+
+**It is an untested bet.** Its only evidence is that the failure it guards
+against kept happening here, repeatedly, to people actively watching for it.
+**Judge it on the answer it produces before promoting it.**
+
+**Nobody has priced it honestly.** *The brief is most of the work* undersells it:
+eleven correction cycles and a large part of two sessions, before any of the five
+agents runs. **That cost is the reason this is only worth it for a decision that
+is foundational and hard to reverse** --- and the reason a checklist is worth
+more than the brief.
+
+**And a work item whose deliverable is a decision does not fit the outcome
+model.** WORK-0096 is at `preparing` and cannot advance without outcomes, but
+what is being delivered is *a chosen scheme with its sacrificed goal named* ---
+a state that cannot be checked until the work is finished. **Whether that is a
+gap in the model or a badly-framed work item is unresolved**, and it will
+recur for every inquiry that produces a decision rather than a mechanism.
+
+#### Where this belongs if it proves out
+
+**A procedure in a bundle, with two documents rather than one:** the checklist
+above --- which is reusable immediately and independently of whether the method
+works --- and the staged protocol, which should wait for evidence. **The
+checklist is the part that has already paid for itself**, because it is
+generated from observed failures rather than from reasoning about what might go
+wrong.
+The method and the checklist are now tracked as [[work-items/WORK-0099-turn-the-work-0096-research-strategy-into-something-reusable]], so this journal is the source material rather than the only copy. It records the split that matters: the checklist is ready now because it came out of eleven failures that actually happened, while the staged protocol waits on this work item producing an answer worth judging --- a method whose whole claim is that it produces better answers should not be published before one exists.
