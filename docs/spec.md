@@ -1467,6 +1467,14 @@ Storing it as a string rather than a number is deliberate: floating-point values
 
 **A rebalance is never mandatory**, because the width is a normal form rather than a hard limit — which is what keeps a multi-record write from arriving in the middle of a drag.
 
+> **Corrected 2026-09-17. Both claims above were measured and both are wrong.**
+>
+> **The limit is 204 consecutive insertions between one pair, not roughly fifty** — and the front of a status runs out after 204 while the back runs out after 1,202, because placing at the front subdivides from the very first move.
+>
+> **And a rebalance is now mandatory at exhaustion.** Extending precision indefinitely cannot work: the format writes a position at its natural precision, and a value that cannot terminate in base ten makes that search run forever. Precision is therefore bounded, and allocation **refuses** once a further subdivision would round onto a neighbour — because handing back a position another record already holds loses the order silently, which is worse than a refusal. The remedy is the rebalance, which is why it is no longer optional.
+>
+> **Whether any of this survives is open** — `.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key` is reconsidering the ordering key from the problem rather than from this design, so these numbers are corrected rather than redesigned here.
+
 The caller never sees the key. `rank --before`, `--after`, `--first`, `--last` express intent; the tool chooses the value.
 
 **Some operations are irreducibly multi-record**, and this is where the guarantees have to be stated:
