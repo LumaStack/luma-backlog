@@ -620,3 +620,4 @@ and that it was produced blind, because that provenance is the only thing that
 makes later convergence between two answers mean anything. And the filing step
 says explicitly not to read the answers while filing them: they should all
 arrive before any is judged, so that reading order decides nothing.
+The runbook's workspace moved out of the home directory to ~/Workspace/scratch, with /tmp and ~/Workspace/tmp named as the alternatives. Nothing belonging to a project gets created loose in ~. A persistent scratch area is the better default here rather than /tmp, because the exercise can span days and /tmp may be cleared on reboot --- though losing the workspace only ever costs unfinished work, since each answer is landed in this work item as soon as it exists.
