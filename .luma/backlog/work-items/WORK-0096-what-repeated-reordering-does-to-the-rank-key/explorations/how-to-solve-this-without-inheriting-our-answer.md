@@ -421,16 +421,25 @@ is weaker than there being nothing to read. So **each agent gets its own
 directory holding a copy of this file and nothing else** --- which makes the
 avoid-list below a belt on top of braces rather than the only safeguard.
 
-### Set up, once
+### Set up a scratch workspace, once
+
+**The answers belong in this work item. The workspace does not.** Every answer
+produced below is landed here as an exploration record beside this file, and the
+workspace is deleted --- it exists only to make the isolation real.
+
+**It has to be outside the repository.** An agent working anywhere inside the
+checkout can walk up one directory and read everything, which is the whole thing
+being prevented. A git worktree does not help either: it contains the entire
+repository by design.
 
 ```sh
 cd <this repository>
 BRIEF=.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key/explorations/how-to-solve-this-without-inheriting-our-answer.md
 
-mkdir -p ~/rank-problem
+mkdir -p ~/rank-workspace
 for d in reason-1 reason-2 reason-3 research-1 research-2; do
-  mkdir -p ~/rank-problem/"$d"
-  cp "$BRIEF" ~/rank-problem/"$d"/PROBLEM.md
+  mkdir -p ~/rank-workspace/"$d"
+  cp "$BRIEF" ~/rank-workspace/"$d"/PROBLEM.md
 done
 ```
 
@@ -441,7 +450,7 @@ opinion.
 ### Stage 2 --- each reasoner in its own directory
 
 ```sh
-cd ~/rank-problem/reason-1 && claude
+cd ~/rank-workspace/reason-1 && claude
 ```
 
 Pick the strongest model available with `/model`, then paste:
@@ -465,7 +474,7 @@ session.
 ### Stage 3 --- each researcher in its own directory, at the same time
 
 ```sh
-cd ~/rank-problem/research-1 && claude
+cd ~/rank-workspace/research-1 && claude
 ```
 
 > ultrathink
@@ -484,17 +493,46 @@ cd ~/rank-problem/research-1 && claude
 > Write it to `ANSWER.md`: each approach, what it gives up, and which of the
 > seven requirements it would fail.
 
+### Land every answer in this work item, then throw the workspace away
+
+**Do this before stage 4, and do not read the answers while doing it.** They are
+being filed, not assessed --- and they should all arrive before any of them is
+judged, so that reading order does not decide anything.
+
+For each answer, in the repository:
+
+```sh
+luma-backlog exploration new "Derived independently, <n>" -w WORK-0096
+luma-backlog exploration new "Found in the literature, <n>" -w WORK-0096
+```
+
+Then put the body of that `ANSWER.md` into the record it created, and **say in
+the record which mode produced it and that it was produced blind** --- that
+provenance is what makes convergence between two of them mean anything later.
+
+```sh
+rm -rf ~/rank-workspace
+```
+
+**Now every answer is a record in this work item**, reviewable in the same
+commit history as the question, and nothing of consequence lives outside the
+backlog.
+
 ### Stage 4 --- bring them together, in the repository
 
-**Only once every `ANSWER.md` exists.** A fresh session in this repository:
+**Only once every answer has been landed as a record.** A fresh session in this
+repository:
 
-> Read every `~/rank-problem/*/ANSWER.md`. Then read this work item's journal,
-> its other exploration, and the decision record on ordering --- the material
-> earlier stages were told to avoid.
+> Read every exploration under this work item. Then read its journal and the
+> decision record on ordering --- the material earlier stages were told to
+> avoid.
 >
 > Build one comparison: every candidate, ours included, against every column of
 > *What any answer must come with*. Explain each. **Ours competes on the same
 > terms rather than by incumbency.**
+
+**Write the comparison as an exploration too**, so the reasoning that chose
+between the candidates survives beside the candidates themselves.
 
 ### Stage 5 --- decide
 
