@@ -168,13 +168,18 @@ than discover the trade later.
      nothing to look up.
    - **Acceptable:** a short pipeline over the files that needs no knowledge the
      files do not already carry --- `sort -t`, `awk`, `jq` on `--json`.
-   - **Fails the goal:** needing the binary; needing to read configuration to
-     interpret a stored value; or having to walk records one at a time to
-     reconstruct the sequence, which is what any next-pointer scheme requires.
+   - **Last resort, and avoided:** needing the binary; needing to read
+     configuration to interpret a stored value; or having to walk records one
+     at a time to reconstruct the sequence, which is what any next-pointer
+     scheme requires. **Not disqualifying** --- a scheme that wins everywhere
+     else and costs this may still be the right answer --- but it is the least
+     desirable outcome on the list and should be reached only after the
+     alternatives have been tried and found worse.
 
    **Plain files in git are only worth having if plain tools can read them.**
    The moment the order is knowable only through this tool, the corpus is a
-   database with a worse query language.
+   database with a worse query language --- which is a real cost to weigh, not
+   a rule to obey.
 6. **Remaining room is observable.** The system can say how close a status is to
    needing repair **before** it needs it. **A bigger budget with no warning is
    still a scheme that fails without notice**, which is the shape of the present
