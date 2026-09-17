@@ -102,6 +102,24 @@ func parsePosition(p Position) (*big.Rat, error) {
 	return r, nil
 }
 
+// maxPositionScale bounds the search for an exact scale.
+//
+// **The search only terminates because every position is a finite decimal**, and
+// nothing in the type system says so --- a value whose denominator has a prime
+// factor other than two or five is never exact at any scale, and the loop below
+// would extend precision forever. That is not a slow answer or a wrong one: the
+// process hangs, with no stack and nothing logged.
+//
+// Reached only by a caller doing arithmetic this scheme does not do. Bisection
+// halves and PositionsFor steps by a power of ten, both of which stay finite ---
+// so this bound is a tripwire rather than a working limit, and a value that hits
+// it is rounded and reported by the caller that asked for it. Sixty places is
+// far past any ordering key a corpus produces and far short of spinning.
+//
+// Whether positions stay decimal at all is open
+// (.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key).
+const maxPositionScale = 60
+
 // formatPosition writes a position at its natural precision --- at least three
 // decimals, and more only when the value genuinely needs them.
 //
@@ -111,7 +129,7 @@ func parsePosition(p Position) (*big.Rat, error) {
 // multi-record write arriving mid-drag.
 func formatPosition(r *big.Rat) Position {
 	scale := positionScale
-	for !isExactAt(r, scale) {
+	for !isExactAt(r, scale) && scale < maxPositionScale {
 		scale++
 	}
 	s := r.FloatString(scale)
