@@ -595,3 +595,28 @@ hard-to-reverse decision that a team has already circled.
 **Judge it on the outcome before promoting it.** The method is currently an
 untested bet whose main evidence is that the failure it guards against ---
 anchoring --- was observed repeatedly here, by people who knew to watch for it.
+### The answers live in the work item; the workspace is scratch
+
+**Corrected in the runbook.** It had every answer written to `~/rank-problem`
+and stage 4 reading them from there --- so the substance of the exercise would
+have lived outside the backlog, in a directory with no history, reviewable by
+nobody, and gone the first time somebody tidied their home directory.
+
+**Each answer is now landed as an exploration under this work item** before
+stage 4 runs, and the workspace is deleted. Stage 4 reads records rather than
+files in a scratch directory, so it never reaches outside the repository at all.
+**Stage 4's comparison is a record too**, so the reasoning that chose between
+candidates survives beside the candidates.
+
+**The workspace still has to exist, and it still has to be outside the
+checkout.** An agent working anywhere inside the repository can walk up one
+directory and read everything, which is precisely what the isolation prevents
+--- and a git worktree is no help, because it contains the whole repository by
+design. **So: isolation for working, the corpus for keeping.** The workspace is
+a means, not a location.
+
+**Two smaller things worth keeping.** Each record says which mode produced it
+and that it was produced blind, because that provenance is the only thing that
+makes later convergence between two answers mean anything. And the filing step
+says explicitly not to read the answers while filing them: they should all
+arrive before any is judged, so that reading order decides nothing.
