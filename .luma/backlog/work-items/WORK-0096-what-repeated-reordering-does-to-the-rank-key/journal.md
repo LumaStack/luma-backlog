@@ -390,3 +390,42 @@ who thinks a requirement is really a preference, or an assumption wrong, or the
 wrong thing being ordered, to say so rather than work around it --- because a
 week inside a problem is the worst position from which to notice that the
 question is the wrong shape.
+### A self-contained brief, written so a reasoner needs nothing about this project
+
+**`explorations/how-to-solve-this-without-inheriting-our-answer.md`.** Complete
+and standalone: the problem, the workload, seven requirements, seven goals with
+their conflicts named, the assumptions, what is renegotiable, the hard
+constraints, the one measured result worth carrying, what any answer must come
+with, a five-stage running order, the avoid-list, and our method failures.
+
+**The problem is stated as a kanban board whose cards are text files in git.**
+No project nouns, no `workflow_status`, no field names --- a reader needs to
+know how ordering has to behave and what the constraints are, and nothing else.
+If the brief sends somebody looking for context it has failed.
+
+**It duplicates the parent record deliberately.** Two copies of one fact is
+normally a defect here; this work item closes when the question is settled and
+the duplicate dies with it. Arriving at the right answer beats keeping one copy.
+
+**`docs/` went on the avoid-list rather than the reading list.** It is written
+around the scheme we already have, so it adds direction and noise and no
+problem-solving value --- and it is partly wrong, which is the next entry.
+
+**Stages 2 and 3 run blind to each other, which the brief explains rather than
+just instructing.** Agreement between an independent derivation and the
+published state of the art is evidence; if either saw the other first it is not.
+The literature stage is also told what we are *not* naming, so our pointers have
+to resurface on their own or be absent for a reason.
+
+### spec.md §9.6 carried two claims our own measurement disproved
+
+**Corrected in place, dated.** It said repeated subdivision at one position
+exhausts after *roughly fifty* insertions --- it is **204**, and the front and
+back differ (204 and 1,202) because placing at the front subdivides from the
+first move. And it said **a rebalance is never mandatory**, which stopped being
+true when precision became bounded and allocation started refusing rather than
+rounding onto a neighbour.
+
+**A normative document stating a falsified bound is a trap**, and it is worse
+than an absent one: somebody would have designed against fifty. Corrected rather
+than redesigned, since WORK-0096 may replace the section wholesale.
