@@ -7,7 +7,8 @@ kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T07:08:04Z'}
 description: 'when somebody asks for a backlog item in another repository, it must not be created in the current one. and where the agent does not have enough context to know where it goes, it should ask rather than default to where it happens to be standing. observed 2026-09-10: the maintainer said ''create a new idea in luma-foreman'', the agent created it in luma-backlog, and then wrote inside the record that it belongs to luma-foreman.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T07:08:04Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0760.000
 ---
 
 # A record asked for in another project is created here instead

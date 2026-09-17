@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:43:19Z'}
 description: read WORK-0059's journal and its evidence/ transcript, retro the experiment, and turn what it learned into work items or a report — many things surfaced during the experiment that are recorded as prose and not captured as work
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:43:19Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0510.000
 ---
 
 # Retro WORK-0059 and harvest what it learned

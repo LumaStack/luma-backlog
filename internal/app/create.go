@@ -72,12 +72,18 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 		return nil, UsageError("--kind classifies a work item; %s does not take one", req.Unit)
 	}
 
+	rank, err := s.rankAtCreation(req.Unit)
+	if err != nil {
+		return nil, err
+	}
+
 	res, err := corpus.Create(s.Backlog, s.Config, s.Env, corpus.Spec{
 		Unit:        req.Unit,
 		Title:       req.Title,
 		WorkItem:    workItem,
 		Kind:        req.Kind,
 		Description: req.Description,
+		Rank:        rank,
 	})
 	if err != nil {
 		return nil, UsageError("%w", err)
@@ -103,4 +109,51 @@ func (s *Session) workItemFromWorkingDir() string {
 		return ""
 	}
 	return corpus.WorkItemFromPath(filepath.ToSlash(rel))
+}
+
+// rankAtCreation is the rank a new record is written with.
+//
+// **Every work item carries a rank from the moment it exists.** There is no
+// unranked state: a record with no rank has no position among its peers, and
+// nothing downstream can tell "nobody has placed this" from "placed last" ---
+// so the question is answered once, here, rather than by every reader
+// (.luma/backlog/work-items/WORK-0095-there-is-no-unranked-work).
+//
+// It lands at the back of the default status. Arriving says nothing about a
+// record relative to the ones already there, and an unconsidered record must
+// not outrank a considered one (ADR-0005).
+//
+// **It asks the allocator for a position rather than computing one.** A value
+// derived from the record alone --- its key, its timestamp --- needs no peer
+// read, and cannot place the record behind one somebody ranked `--last`, since
+// an explicit rank allocates from the observed maximum and can exceed any
+// number a key would give. So the peers get read, which is also what makes
+// this survive a change to how positions are allocated: the scheme lives in
+// corpus.Between and this calls it.
+//
+// Two sessions creating at the same moment may compute the same position. That
+// is a tie rather than a collision --- both records exist, neither is lost, and
+// a listing breaks the tie by name (byWorkOrder).
+func (s *Session) rankAtCreation(unit string) (string, error) {
+	if unit != corpus.WorkItem {
+		return "", nil
+	}
+	status := s.Config.DefaultStatusFor(unit)
+	ordinal, ok := s.Config.LadderFor(unit).Ordinal(status)
+	if !ok {
+		// The default status carries no ordinal, which means configuration
+		// somebody is entitled to edit disagrees with itself. Creating an
+		// unranked record is better than refusing to create one at all, and
+		// the drift is reported wherever records are read (spec.md §5.2).
+		return "", nil
+	}
+	peers, err := s.rankedPeers("", status)
+	if err != nil {
+		return "", err
+	}
+	pos, err := corpus.Between(edges(peers, false))
+	if err != nil {
+		return "", FailureError("%w", err)
+	}
+	return string(corpus.MakeRank(ordinal, pos)), nil
 }

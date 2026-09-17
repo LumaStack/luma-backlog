@@ -6,6 +6,8 @@ workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T20:44:00Z'}
+rank: 010.0080.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Rank by position rather than by neighbor

@@ -6,8 +6,9 @@ workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T00:17:27Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T01:45:47Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-05, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
+rank: 070.0100.000
 ---
 
 # Detect two records holding one key

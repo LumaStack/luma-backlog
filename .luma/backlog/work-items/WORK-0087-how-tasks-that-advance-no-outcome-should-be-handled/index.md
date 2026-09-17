@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T22:57:53Z'}
 description: explore how to handle creating tasks that do not advance the outcomes. does it mean we need to add or redefine outcomes; do we warn that it is scope creep; do we allow it at all. what should be the default, what should be configurable, what should be allowed, and what should be considered best practice. the condition already exists as task.advances-nothing and the field it needs is carried by 9 of 51 tasks in this corpus, with no way to set it at creation.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T22:57:53Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0690.000
 ---
 
 # How tasks that advance no outcome should be handled

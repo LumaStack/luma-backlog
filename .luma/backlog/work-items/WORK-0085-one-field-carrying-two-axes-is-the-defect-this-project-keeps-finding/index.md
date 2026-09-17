@@ -7,7 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T22:02:11Z'}
 description: 'four times now the same shape: a field is asked to carry two independent facts and cannot express either. workflow_status vs rank (ADR-0005), the doer''s assertion vs the checker''s verdict (ADR-0007), owner vs worker (found 2026-09-09, unresolved), and an outcome''s definition strength vs how much it is expected to change (found 2026-09-09, unresolved). two are settled decisions and both settled it by splitting. ADR-0003 already states the inverse — two copies of one fact eventually disagree — so the pair of rules may want writing down together, probably in principles.md.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T22:02:11Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0680.000
 ---
 
 # One field carrying two axes is the defect this project keeps finding

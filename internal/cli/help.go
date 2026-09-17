@@ -49,7 +49,8 @@ const learnMore = `  Use ` + "`luma-backlog <command> --help`" + ` for a command
 
 // usageTemplateFor renders one command's usage. Sections a command does not
 // have are omitted rather than printed empty.
-const usageTemplate = `USAGE{{if .HasAvailableSubCommands}}
+const usageTemplate = `USAGE{{if .HasAvailableSubCommands}}{{if takesArgs .}}
+  {{.CommandPath}} {{argsOf .}} [flags]{{end}}
   {{.CommandPath}} <command> <subcommand> [flags]{{else}}
   {{.UseLine}}{{end}}
 {{if .HasAvailableSubCommands}}{{range $g := .Groups}}
@@ -77,6 +78,17 @@ LEARN MORE
 // --- but the root is the only command with groups, and the template has to
 // stay correct for a leaf, which is what the else branches are for.
 func applyHelp(root *cobra.Command) {
+	// A command can take arguments AND carry subcommands --- `rank <work-item>`
+	// also answers `rank repair`. Without these the template would print only
+	// the subcommand form and the command's own arguments would vanish from
+	// its help, which is how somebody learns the argument exists.
+	cobra.AddTemplateFunc("takesArgs", func(c *cobra.Command) bool {
+		return strings.Contains(c.Use, "<")
+	})
+	cobra.AddTemplateFunc("argsOf", func(c *cobra.Command) string {
+		_, args, _ := strings.Cut(c.Use, " ")
+		return args
+	})
 	root.SetUsageTemplate(strings.TrimLeft(usageTemplate, "\n"))
 	root.Example = rootExample
 

@@ -7,7 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:52:16Z'}
 description: a record can be blocked at any workflow status, so blocked does not move it — it stays where it is and stays there when unblocked; blocked names what it is blocked on, and is drawn with the same marks turned from circles to squares
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:52:16Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0490.000
 ---
 
 # Blocked is a flag rather than a work status

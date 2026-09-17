@@ -7,7 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T00:36:20Z'}
 description: 'a task is defined as an attempt at part of the work, but there is no task close and no disposition vocabulary — a task ends by transitioning it to closed and the record cannot say whether it succeeded, was tried and failed, or was dropped; the history of attempts loses the half that is worth keeping. it now blocks a warning close needs: warn on a completed close if any task was not successful, which has to tell failed from cancelled or found-unnecessary and so cannot be a boolean.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T00:24:27Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0480.000
 ---
 
 # A task cannot record why it ended

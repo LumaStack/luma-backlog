@@ -6,8 +6,9 @@ workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:52:00Z'}
-modified: {by: 'human:luma-foundry', at: '2026-09-06T14:14:02Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-06, reason: delivered, by: 'human:luma-foundry'}
+rank: 070.0130.000
 ---
 
 # Extract the application layer

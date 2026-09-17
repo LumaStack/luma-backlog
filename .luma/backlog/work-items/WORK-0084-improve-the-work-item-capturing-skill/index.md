@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:56:27Z'}
 description: always capture the raw idea — spelling, grammar and formatting may be corrected; intent may not be changed and interpretation may not be added, and the details of both need working out. quick capture should link related work items, notice overlap and duplication, and capture observations, context, opinions and recommendations, but only where that does not take a long time or multiple turns. normal capture — stop calling it thorough — holds the raw capture plus everything valuable the agent has, taking as many turns as necessary without accidentally doing preparation work. during capture never stop or say no; observe problems and capture them below to sort out later.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:56:27Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0670.000
 ---
 
 # Improve the work item capturing skill

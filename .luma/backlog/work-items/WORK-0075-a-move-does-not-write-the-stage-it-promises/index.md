@@ -7,6 +7,8 @@ workflow_status: captured
 kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T03:18:43Z'}
+rank: 010.0590.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # A move does not write the stage it promises

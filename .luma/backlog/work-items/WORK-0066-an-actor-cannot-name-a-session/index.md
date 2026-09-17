@@ -7,7 +7,8 @@ kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:18:56Z'}
 description: LUMA_BACKLOG_ACTOR is agent:<model>/<project>, which names a model and a project rather than a worker — two agent sessions running concurrently in two worktrees write identical actor strings, so the corpus cannot tell parallel agents apart
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:18:56Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0500.000
 ---
 
 # An actor cannot name a session

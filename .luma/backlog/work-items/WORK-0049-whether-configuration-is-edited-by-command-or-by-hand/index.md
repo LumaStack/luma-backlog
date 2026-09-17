@@ -7,6 +7,8 @@ kind: inquiry
 stage: draft
 description: config is specified and unbuilt, and a command that writes configuration competes with a file the project promises is hand-editable.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:00:00Z'}
+rank: 010.0340.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Whether configuration is edited by command or by hand

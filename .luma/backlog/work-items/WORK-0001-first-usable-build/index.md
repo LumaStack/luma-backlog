@@ -5,10 +5,11 @@ description: The smallest binary that lets this project keep its own backlog.
 workflow_status: closed
 stage: provisional
 created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 kind: change
 key: WORK-0001
+rank: 070.0010.000
 ---
 
 # First usable build

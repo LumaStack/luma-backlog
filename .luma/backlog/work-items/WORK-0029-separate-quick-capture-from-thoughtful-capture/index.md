@@ -6,8 +6,8 @@ workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T05:50:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
-rank: 010.0070.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0160.000
 ---
 
 # Separate quick capture from thoughtful capture

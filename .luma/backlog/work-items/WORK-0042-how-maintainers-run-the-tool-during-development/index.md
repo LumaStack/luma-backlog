@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T15:49:50Z'}
 closed: {on: 2026-09-06, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:37:25Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 070.0150.000
 ---
 
 # How maintainers run the tool during development

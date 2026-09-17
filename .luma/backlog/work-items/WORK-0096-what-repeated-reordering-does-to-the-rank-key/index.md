@@ -7,6 +7,8 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:37:54Z'}
+rank: 010.0770.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # What repeated reordering does to the rank key

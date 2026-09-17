@@ -6,6 +6,8 @@ workflow_status: captured
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T04:20:00Z'}
+rank: 010.0130.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # What deserves to be a work item

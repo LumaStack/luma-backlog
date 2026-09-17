@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -133,4 +136,83 @@ func order(listing string) string {
 		}
 	}
 	return strings.Join(titles, " ")
+}
+
+// Repair gives every work item a rank, and running it twice changes nothing.
+//
+// Convergence is the property that makes a whole-corpus rewrite safe: the
+// result is a pure function of creation order, so two people repairing the
+// same state produce identical files and the merge resolves itself.
+func TestRepairRanksEveryRecordAndConverges(t *testing.T) {
+	app, project := initialized(t)
+	for _, title := range []string{"Alpha", "Bravo", "Charlie"} {
+		run(t, app, "work-item", "new", title)
+	}
+	// An unranked record, the case this exists for: hand-written records and
+	// everything created before creation wrote a rank.
+	if code, _, e := run(t, app, "set", "WORK-0002", "kind=defect"); code != ExitOK {
+		t.Fatalf("set failed: %s", e)
+	}
+	stripRank(t, app, project, "WORK-0002")
+
+	code, out, e := run(t, app, "rank", "repair")
+	if code != ExitOK {
+		t.Fatalf("repair failed: %s", e)
+	}
+	if !strings.Contains(out, "unranked → ") {
+		t.Errorf("repair did not report filling an absent rank:\n%s", out)
+	}
+	for _, key := range []string{"WORK-0001", "WORK-0002", "WORK-0003"} {
+		_, shown, _ := run(t, app, "show", key)
+		if !strings.Contains(shown, "rank") {
+			t.Errorf("%s still has no rank after repair:\n%s", key, shown)
+		}
+	}
+
+	// Twice is the test. A repair that moves records every time it runs is a
+	// repair nobody can put in a pipeline.
+	_, again, _ := run(t, app, "rank", "repair")
+	if !strings.Contains(again, "already carries the rank it should") {
+		t.Errorf("repair is not idempotent:\n%s", again)
+	}
+}
+
+// Repair writes nothing under --dry-run.
+func TestRepairDryRunWritesNothing(t *testing.T) {
+	app, project := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	stripRank(t, app, project, "WORK-0001")
+
+	_, out, _ := run(t, app, "rank", "repair", "--dry-run")
+	if !strings.Contains(out, "would rank") || !strings.Contains(out, "nothing was written") {
+		t.Errorf("--dry-run did not say it wrote nothing:\n%s", out)
+	}
+	if _, shown, _ := run(t, app, "show", "WORK-0001", "--json"); strings.Contains(shown, `"rank": "0`) {
+		t.Errorf("--dry-run wrote a rank:\n%s", shown)
+	}
+}
+
+// stripRank removes a record's rank on disk, which no command will do --- the
+// whole design writes rank with status and never alone.
+func stripRank(t *testing.T, app *App, project, key string) {
+	t.Helper()
+	_, out, _ := run(t, app, "show", key, "--json")
+	var rec struct{ Path string }
+	if err := json.Unmarshal([]byte(out), &rec); err != nil {
+		t.Fatalf("show --json: %v\n%s", err, out)
+	}
+	full := filepath.Join(project, ".luma", rec.Path)
+	body, err := os.ReadFile(full)
+	if err != nil {
+		t.Fatalf("read %s: %v", full, err)
+	}
+	var kept []string
+	for _, line := range strings.Split(string(body), "\n") {
+		if !strings.HasPrefix(line, "rank: ") {
+			kept = append(kept, line)
+		}
+	}
+	if err := os.WriteFile(full, []byte(strings.Join(kept, "\n")), 0o644); err != nil {
+		t.Fatalf("write %s: %v", full, err)
+	}
 }

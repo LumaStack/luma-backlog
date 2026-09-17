@@ -43,6 +43,38 @@ func MakeRank(ordinal int, p Position) Rank {
 	return Rank(fmt.Sprintf("%0*d.%s", ordinalDigits, ordinal, p))
 }
 
+// PositionsFor allocates count positions in order, for numbering a whole
+// status at once rather than inserting one record into it.
+//
+// Spaced by seedStep where that fits, so the numbers read cleanly and there is
+// room to insert between any two afterwards without renumbering. Where it does
+// not fit, the step drops by a power of ten until the whole sequence lands
+// inside the range.
+//
+// **The step is always a power of ten, and that is load-bearing.**
+// formatPosition extends precision until a value is exact, which terminates
+// only because every position it has ever been given is a finite decimal ---
+// bisection halves, and halving a finite decimal stays finite. Dividing the
+// range by an arbitrary count does not: 9990/20001 repeats, and formatPosition
+// would search for an exact scale forever. A power of ten cannot produce one.
+func PositionsFor(count int) []Position {
+	if count <= 0 {
+		return nil
+	}
+	step := new(big.Rat).SetInt64(seedStep)
+	ceiling := new(big.Rat).SetInt64(positionCeiling)
+	n := new(big.Rat).SetInt64(int64(count))
+	ten := new(big.Rat).SetInt64(10)
+	for new(big.Rat).Mul(step, n).Cmp(ceiling) > 0 {
+		step = new(big.Rat).Quo(step, ten)
+	}
+	out := make([]Position, 0, count)
+	for i := 1; i <= count; i++ {
+		out = append(out, formatPosition(new(big.Rat).Mul(step, new(big.Rat).SetInt64(int64(i)))))
+	}
+	return out
+}
+
 // SplitRank takes a rank apart. A rank that does not parse reports so rather
 // than being repaired: a malformed rank is a record somebody edited by hand or
 // a migration that went wrong, and guessing at it would hide both.

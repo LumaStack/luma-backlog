@@ -7,6 +7,8 @@ kind: inquiry
 stage: draft
 description: Seven procedures, three policies and three templates were written in one session with no work item, and most were written once and never read again.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:30:00Z'}
+rank: 010.0350.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Review the backlog procedures

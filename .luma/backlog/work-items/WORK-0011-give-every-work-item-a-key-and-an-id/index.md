@@ -6,8 +6,9 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T20:55:03Z'}
 key: WORK-0011
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:02:21Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
+rank: 070.0090.000
 ---
 
 # Give every work item a key and an id

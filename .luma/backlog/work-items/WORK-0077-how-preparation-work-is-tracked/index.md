@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T16:55:53Z'}
 description: 'preparation steps do not get work done — they prepare the work item so work can start. are they tasks, or their own classification, and if their own thing, what are they called? a default list people add to or remove from: establish who must coordinate and when, establish what deliverables are needed to begin, define the work so outcomes are set, verify outcomes are measurable. a step can also name what it blocks, and not always the same work status. three concepts that may or may not be fleshed out here: whether complete and delivered become two different things; whether outcomes should be complete before a work item is prepared — requirement, recommendation or optional, leaning recommendation; and whether plan-building and work-doing are separated by name as well as by kind.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T16:57:24Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0610.000
 ---
 
 # How preparation work is tracked

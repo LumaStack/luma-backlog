@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T15:09:25Z'}
 description: different organizations and projects will tolerate different strategies, so there should be a menu of modes and projects configure what they tolerate and when, how, and who can use them — split from WORK-0059 as the grander scheme; revisit once the experiment has produced real experience
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T15:09:25Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0440.000
 ---
 
 # A configurable menu of working modes

@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:44:53Z'}
 description: 'the tier above the rundown: goes and confirms the records are true rather than reading what they claim; may turn into doctor or cleanup, or turn out to be WORK-0046''s check grown a tier'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:44:59Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0430.000
 ---
 
 # An exhaustive sweep that verifies rather than reports

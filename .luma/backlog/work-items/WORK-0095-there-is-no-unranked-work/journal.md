@@ -154,6 +154,54 @@ external reader sorting the raw field, which ADR-0005 now calls a convenience.
 **That is a Redefine question and not mine to answer**: is outcome 2 *every
 record carries a rank*, or *an absent rank costs nothing*? They are different
 work, and the second is already done.
+### All five tasks closed, all three outcomes proven
+
+**Creation asks the allocator for a position.** `rankAtCreation` in
+`internal/app/create.go` reads the peers at the default status, takes the back
+and calls `corpus.Between` --- the same call `applyStatus` makes. The rank is
+passed into `corpus.Spec` rather than written afterwards, so a record is never
+written unranked and then ranked, and ADR-0005's write-both invariant holds at
+creation as it does at every crossing.
+
+**`rank repair` exists now.** ADR-0005 promised it and it had never been built,
+which is why most of this corpus was unranked. It numbers each status in
+**creation order**, which makes the result a pure function of the corpus: two
+actors repairing the same state produce byte-identical files, so a
+whole-corpus rewrite resolves itself on merge instead of conflicting. Run here:
+97 of 98 changed, and an immediate second run reported *every one of the 98
+already carries the rank it should*. `--dry-run` first, never automatic.
+
+### Three things found while doing it, two of them defects
+
+**`formatPosition` hangs on a position that is not a finite decimal.** It loops
+`for !isExactAt(r, scale) { scale++ }`, and I hit it by dividing the range by
+`count+1` --- `9990/20001` repeats, and the process never returned. Safe until
+now only because `Between` bisects, and halving a finite decimal stays finite.
+`PositionsFor` therefore steps by a power of ten, which cannot produce a
+repeating value, and the comment says why so nobody reintroduces it. **The
+underlying trap is still there for any future caller.**
+
+**`--json` did not emit `rank`.** ADR-0005's entire justification for the
+ordinal prefix is that something outside this tool can sort the field alone ---
+and the machine surface omitted it, which made the claim untestable and the
+property unusable. Outcome 2's `verify_by` names `list --json`, so the check
+could not be run as written. **The field was added rather than the check
+substituted**, per the verify procedure.
+
+**`rank repair` collides with a record named `repair`.** `rank` takes a
+work-item reference and now also carries a subcommand, and cobra resolves
+`rank repair` to the subcommand --- so a work item whose slug is `repair` cannot
+be ranked by name. Narrow, real, and worth its own record. An existing test
+caught the related help defect: adding the subcommand made `rank` stop
+documenting its own argument, which is how somebody learns the argument exists.
+
+### Care needed around uncommitted work
+
+**I reverted `internal/app/status.go` with `git checkout` to undo a one-line
+experiment and lost the uncommitted call-site change with it.** Recoverable only
+because everything else in that file had already merged in #111. The experiment
+was worth running --- it is what proved the per-pair test catches an exempted
+status --- but the undo should have been the same edit in reverse.
 
 ## ▶ 2026-09-10
 

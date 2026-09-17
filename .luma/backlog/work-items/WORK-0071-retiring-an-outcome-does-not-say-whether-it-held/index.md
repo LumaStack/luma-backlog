@@ -7,7 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T18:34:09Z'}
 description: 'stage: archived says an outcome is retired and nothing says why — it no longer applies, it was superseded, it holds but not as a live check, or we stopped requiring it. only the last lowers the bar, and spec 5 flags outcome.retired as the operation most likely to need review; indistinguishable, that review has to look at all of them, which is how a review becomes a rubber stamp.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T18:34:09Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0550.000
 ---
 
 # Retiring an outcome does not say whether it held

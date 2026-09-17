@@ -5,10 +5,11 @@ workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T15:08:05Z'}
 sources: ["[[work-items/WORK-0002-lint-the-corpus]]"]
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 kind: defect
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 key: WORK-0009
+rank: 070.0070.000
 ---
 
 # Close must not deliver on records it could not read

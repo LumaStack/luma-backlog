@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:24:25Z'}
 description: 'a set of work items that constitutes a delivery has nowhere to live. leading answer is a relation rather than a unit — a work item belongs to many work items, container-ness is derived from anything pointing at it, and the container''s own title supplies the name so nothing ships a vocabulary. open: declared status against derived state, completion arithmetic, cycles, and whether a container''s key should read differently.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:35:27Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0530.000
 ---
 
 # The backlog has no unit for a delivery
