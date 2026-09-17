@@ -429,3 +429,39 @@ rounding onto a neighbour.
 **A normative document stating a falsified bound is a trap**, and it is worse
 than an absent one: somebody would have designed against fifty. Corrected rather
 than redesigned, since WORK-0096 may replace the section wholesale.
+### The brief now enumerates the workloads rather than describing them
+
+**Three abstract paragraphs became ten named scenarios**, each with the access
+pattern it produces and what it stresses, so an answer can be tested against
+each instead of against a general impression.
+
+They are: intake growing forever with promotions past a never-moving card;
+done growing append-only; **a blocked card in the queue with traffic on both
+sides, which is requirement 7's canonical case**; the same card promoted to the
+front repeatedly; one interior gap used over and over; a card that leaves a
+column and returns; a finished card reopened; a whole column drained at once;
+**two actors placing at the same spot concurrently, which is the only one on the
+list that produces no error at all**; and a hundred years of slow accumulation.
+
+**Two are marked observed rather than projected** --- the intake column here
+holds 79 cards whose oldest have never moved, and thirteen cards moved in a
+single commit.
+
+### And it now says which end an arriving card lands at
+
+**Missing entirely, and it determines the access pattern.** Advancing puts a
+card at the back of its destination; going backwards puts it at the front. The
+reasons are stated --- arrival says nothing about a card relative to what was
+already there, and a card placed too high is visible and gets corrected while
+one placed too low is invisible and stays wrong.
+
+**With the frequencies, because they are not symmetric.** Advancing is the
+overwhelmingly common direction and going backwards is rare. **But the front is
+under more pressure than that suggests**, because it absorbs deliberate
+promotions as well as backwards moves, and promotion is ordinary behaviour. The
+back absorbs every advance plus every new card.
+
+**Stated as ours and renegotiable**, and added to the open list: which end an
+arriving card lands at, and whether arriving in a column has to allocate
+anything at all. It is in the brief because it determines the workload, not
+because it is settled.
