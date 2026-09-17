@@ -3,12 +3,12 @@ type: work-item
 key: WORK-0095
 title: There is no unranked work
 description: 'Ranking needs to always happen --- there is no unranked stuff, ever. Everything is ranked all the time, and new things just go to the bottom or the top or wherever we want them, but they are always ranked. What has to be decided is where a record lands on each event: creation, advancing, and going backwards --- and whether any work status is special enough to behave differently.'
-workflow_status: in_progress
+workflow_status: prepared
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:31:16Z'}
-rank: 060.0010.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:33:49Z'}
+rank: 040.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T02:32:32Z'}
 ---
 
 # There is no unranked work
@@ -50,21 +50,49 @@ sentinel standing in for one.**
 
 ### Where a record lands
 
-**One rule underneath all of it: the back is where arrival goes, the front is
-where judgment goes.** A record that merely turned up says nothing about itself
-relative to the records already at that work status, so it queues behind them. A record
-somebody sent backwards is a record somebody examined and rejected, and that is
-a statement about it relative to its new peers.
+**Arrival goes to the back; anything sent backwards goes to the front.** A
+record that merely turned up says nothing about itself relative to the records
+already at that work status, so it queues behind them.
 
 | event | lands | why |
 | --- | --- | --- |
 | **creation** | last in `captured` | Arrival. Nothing about being new makes it next, and an unconsidered record must not outrank a considered one. |
 | **advance** | last in the destination | ADR-0005's reason, unchanged: advancing records in rank order lands them in the same relative order, because each arrives behind the last. |
-| **regress** | first in the destination | Judgment. A reopened defect at the back of `todo` behind ninety untouched records contradicts the act of reopening it. |
+| **regress** | first in the destination | **Burying something should be an act somebody performs**, not what a default does quietly. |
 
 **The asymmetry is the point.** *Everything to the back* is one sentence rather
 than two, and it makes a regression indistinguishable from an arrival --- which
 is exactly the information the transition carried.
+
+**The front is not chosen because a regression is a judgment.** Often it is not
+one. Capacity vanishing sends work back from `todo` and says nothing about the
+work. A blocker turning up at `prepared` says the record is not ready, not that
+it matters less. A reopened record might be an old defect nobody fixed, work
+that was never really complete, or something far larger than anybody thought ---
+**you do not know, and the default has to be right without knowing.**
+
+**So it is chosen on which error is recoverable.** A record placed too high sits
+at the top of a listing where somebody sees it and moves it down. A record
+placed too low is invisible and nothing surfaces it again.
+**Wrong-and-visible beats wrong-and-silent.** `rank --last` is how somebody
+says *actually, deprioritize this*, and that act is the point: it should have to
+be performed.
+
+**Strength of the case varies by crossing, and the default does not.**
+`in_progress → todo` is the clearest --- work somebody stopped should be picked
+back up before work nobody started, and moving it down should cost a decision.
+`prepared → preparing` is weaker, since preparation may take a long time, but
+the bottom is clearly wrong. `todo → prepared` may well have been a
+deprioritization, and belongs lower if it was --- **but nothing on the record
+says so**, so it goes to the front until somebody says otherwise.
+
+> **A batch sent backwards comes out reversed.** Advancing several records in
+> rank order preserves their order because each arrives behind the last; going
+> to the front does the mirror, each arrival pushing the previous one down.
+> **Measured here:** `42ef0bc` drained thirteen records from `unprepared` to
+> `captured` in one act --- the most common transition in this corpus. Backwards
+> movement is otherwise rare, so this is recorded rather than solved, and a bulk
+> drain is arguably a different operation from sending one record back.
 
 ### No work status behaves differently
 

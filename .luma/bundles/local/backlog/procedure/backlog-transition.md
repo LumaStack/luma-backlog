@@ -409,8 +409,14 @@ this happens and what it cost.
 and **the rows fire for every work status traversed rather than only for the two ends.**
 That is the sentence the table has been missing.
 
-**Going backwards is the exception**, and does little today. A record sent back
-lands at the work status named and nothing in between is replayed — there is nothing
+**Going backwards is the exception**, and does little today --- including to the
+rank: a record sent back re-enqueues at the **back** of its destination like
+anything else. **Landing it at the front is proposed and not built**
+([[work-items/WORK-0095-there-is-no-unranked-work]]), on the grounds that
+burying something should be an act somebody performs rather than what a default
+does quietly.
+
+A record sent back lands at the work status named and nothing in between is replayed — there is nothing
 sensible to re-check on the way down, since the work statuses below are ones it has
 already satisfied.
 

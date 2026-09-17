@@ -5,6 +5,108 @@
 
 ---
 
+## ▶ 2026-09-17
+
+WORK-0095-there-is-no-unranked-work in_progress → preparing: sent back: it claimed somebody was working it for six days and nobody was, and it left preparing in 2m33s without the outcomes ever being accepted --- violation 2026-09-10-173823. Redoing preparing properly.
+### Preparing, done properly this time
+
+**Outcome 1 was wrong and is rewritten.** It read *"a rank seeded from the
+record alone"*, which names the key-ordinal seed --- one of the two candidate
+schemes in WORK-0096. If the shared-position-plus-`ranked_at` scheme wins there
+is no seed at all, so the outcome asserted a mechanism and would have been
+retired rather than met. It now says what has to be true either way: a new work
+item arrives with a position among its peers, behind those already there, and
+two simultaneous captures cannot collide on it.
+
+**Its title survives unchanged.** *Without reading its peers* is true under both
+schemes --- neither needs a peer read --- so the one phrase that looked like a
+mechanism is the shared property.
+
+**Outcomes 2 and 3 stand.** Both are states rather than mechanisms, both have an
+edge, and both are checkable as written.
+
+**Five tasks, and the dependency is the shape of them.** Two are buildable now
+and advance outcomes 2 and 3 --- deriving a listing's group from the status
+field, and landing a regressed record first. Two are blocked on WORK-0096,
+because the value written at creation and the value backfilled are both the seed
+question, and building either before that settles means building it twice. The
+fifth is the per-pair test that makes outcome 3's verify_by more than an
+assertion.
+
+**So this work item can start without WORK-0096** and cannot finish without it.
+That is worth knowing before it is selected: the first two tasks fix the symptom
+that produced the record --- a listing that separates records from their status
+--- and the rest waits.
+
+**Why it came back here.** It was run `captured → in_progress` in five commands
+inside 2m33s on 2026-09-10 and sat claiming somebody was on it for six days
+(violation 2026-09-10-173823). The outcomes above were written in that burst by
+the same actor that then declared the work ready, which is the thing the
+acceptance gate exists to prevent.
+### Nothing is blocked on WORK-0096, and the block was an artefact of a dead mechanism
+
+**Correcting the entry above.** It said this work item could start without
+WORK-0096 and could not finish without it. That is wrong.
+
+**The block only existed because creation was going to compute a position
+instead of asking for one.** Seeding from the key ordinal produces a value whose
+meaning depends on which scheme WORK-0096 picks, so it could not be built first.
+But creation does not need to compute anything: read the peers at `captured`,
+take the back, call `Between(back, "")` --- nine lines that already exist at
+`internal/app/status.go:36`, where `applyStatus` does exactly this on every
+transition. **If WORK-0096 changes how positions are allocated it changes
+`Between`, and creation keeps working.**
+
+**The seed was already dead.** It cannot place a record behind one that somebody
+ranked `--last`, because `rank --last` allocates from the observed maximum and
+can exceed the next key number. Once creation reads peers, the seed's only
+advantage --- no walk --- is gone, and there is no reason left to prefer it.
+
+**What survives is a constraint on the tests, not a dependency.** Assert order,
+never specific position values: WORK-0096 may change what `Between` allocates,
+and a test pinned to numbers would fail on a scheme change that broke nothing.
+
+**Outcome 1 has now been wrong three times and each pass found a different
+error.** It named a mechanism; then it dropped *behind those already there*,
+which turned out to be achievable after all once creation reads peers; then it
+claimed two simultaneous captures cannot collide, which is false --- they compute
+the same maximum and write the same position. That is a tie, deterministic by
+name, and losing nothing. It now says so.
+### Why a regression goes to the front, on a better reason than the one it had
+
+**The reason was wrong even though the answer was right.** *The front is where
+judgment goes* does not cover the cases. Capacity vanishing sends work back from
+`todo` and is no judgment about the work at all. A blocker at `prepared` says
+the record is not ready, not that it matters less. A reopen could be an old
+defect nobody fixed, work that was never really complete, or something far
+bigger than anybody thought --- **the default has to be right without knowing
+which.**
+
+**So it is chosen on which error is recoverable.** Too high is visible at the
+top of a listing and gets corrected. Too low is invisible and nothing surfaces
+it again. Wrong-and-visible beats wrong-and-silent, which makes the front the
+default and `rank --last` the act somebody performs to deprioritize --- and that
+act having to be performed is the whole point.
+
+**Strength varies by crossing; the default does not.** `in_progress → todo` is
+the clearest case. `prepared → preparing` is weaker, since preparation can take
+a long time, but the bottom is clearly wrong. `todo → prepared` may genuinely
+have been a deprioritization and belongs lower if it was, but nothing on the
+record says so.
+
+**And the evidence contradicted the rule as first written.** Every transition
+recorded in this corpus, counted: thirteen of twenty-three are
+`unprepared → captured`, all from `42ef0bc` draining the second gate in one act.
+**A batch sent to the front comes out reversed** --- each arrival pushes the
+previous one down, the mirror of why advancing in rank order preserves order.
+Backwards movement is otherwise rare, so this is recorded rather than solved.
+
+**The procedure now says what is true rather than what is intended.** Going
+backwards re-enqueues at the back today, like everything else, and it points at
+this record for the proposal instead of describing it as though it were built.
+WORK-0095-there-is-no-unranked-work preparing → prepared: outcomes accepted by human:luma-foundry --- all three read back and two of them corrected in the process
+ACCEPTED: the three outcomes were accepted by human:luma-foundry on 2026-09-16, which is the authorization for preparing → prepared. Recorded here because there is nowhere else --- no field holds an acceptance yet (WORK-0097), so this line is the only thing that says who gave it. The accepter is not the proposer, which is the property the gate exists for.
+
 ## ▶ 2026-09-10
 
 WORK-0095-there-is-no-unranked-work captured → unprepared: the design was worked out in full before the record existed; selecting it is the decision already made out loud
