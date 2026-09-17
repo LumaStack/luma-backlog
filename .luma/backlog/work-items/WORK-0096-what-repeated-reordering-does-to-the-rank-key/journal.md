@@ -745,3 +745,50 @@ generated from observed failures rather than from reasoning about what might go
 wrong.
 The method and the checklist are now tracked as [[work-items/WORK-0099-turn-the-work-0096-research-strategy-into-something-reusable]], so this journal is the source material rather than the only copy. It records the split that matters: the checklist is ready now because it came out of eleven failures that actually happened, while the staged protocol waits on this work item producing an answer worth judging --- a method whose whole claim is that it produces better answers should not be published before one exists.
 Stage 3 said the researchers run *at the same time as* stage 2, which read as the mechanism when it is only a convenience. **The requirement is that no agent ever sees another's output, and once each has its own directory holding nothing but the brief, the filesystem guarantees that rather than the timing.** Parallel because it is quicker, sequential because it is easier --- same result. Corrected, and the real residual risk is named: it is not the agents, it is whoever runs them. Read one answer before briefing the next agent and you will nudge it, usually by adding *also consider this*. So the rule is read nothing until every answer exists, and the filing step is flagged as the last point where the blindness can be lost --- by a person, not by an agent. **Worth carrying into the reusable version: making isolation structural moved the failure mode from the agents to the operator, and the instructions did not follow it there.**
+### The method worked, and the first thing it did was refute the brief
+
+**Five for five converged on a theorem** --- three derivations and two
+literature searches, blind: you cannot have a bounded-width sortable per-card
+value, no rewrites of other cards, and unbounded insertion at one spot. Research
+found it is *online list labeling*, studied since 1981, with matching lower
+bounds. Two of the derivations proved it independently from scratch, one giving
+the bound as `ℓ ≥ n·log_b 2`.
+
+**And the brief's one confident claim was wrong.** It said subdividing cannot
+meet the requirements and no amount of precision changes that --- offered as the
+only measured result that should carry weight. It condemned a *family* where the
+measurement convicted an *allocator*. **A monotone stream, which is what all ten
+of the brief's workloads are, needs counting and costs log k. Only nested
+bisection needs halving and costs k, and nothing in the workload list does
+that.** Derived 3 measured a million placements above a fixed card at **12
+characters**; Research 2 reached the same conclusion from the literature and
+called the statement *broader than the literature supports*.
+
+**One derivation and one literature search, blind to each other, refuted the
+same claim in the same way.** That is precisely the signal the design was built
+to produce, and it landed on the one thing the brief asked a reader to take on
+trust. **Our measurement was right; the generalisation was not** --- the fifth
+instance of the pattern the brief itself warns about.
+
+**Two gaps in the brief, both found by the answers.** Concurrent *moves* of one
+card, as distinct from concurrent placements, which the literature says breaks
+every scheme (Kleppmann 2020) and which is this board's dominant operation ---
+workload 9 only ever asked about placement. And the medium itself is unoccupied:
+every polished scheme assumes a program at merge time or a database beneath, and
+**no git-native project allocates positional keys at all.**
+
+**The divergence localised the decision exactly, which is the other thing the
+design was for.** Derived 2 found the manifest shape, scored it fairly, called
+parts of it strictly stronger, and still chose the per-card key --- then named
+the crux: *loud merges and no arithmetic, versus one-file writes and in-card
+positions*, and said it is a values call rather than a technical one. Research 2
+independently asked whether *silent but valid and attributable* satisfies goal 4
+or whether only *loud* does. **Two answers arriving at the same unanswered
+question is the question.**
+
+**Stage 4 recommends the shared per-column file**, on five reasons with the
+costs named --- chiefly that requirement 7 becomes trivially true rather than
+engineered, and that a per-card scheme **structurally cannot** be loud, since
+two cards are two files and git has nothing to conflict on. **Two cheap
+measurements should be taken first**, and one of them could overturn the
+recommendation.
