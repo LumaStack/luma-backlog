@@ -148,6 +148,44 @@ starts saying *which end it was thrown at, and when*. Arguably more honest ---
 that is what happened --- but it is a different claim, and `--before X` still
 has to mean something.
 
+### One property of the current scheme, offered as input rather than a rule
+
+**Found 2026-09-17 while allocating positions for a whole status at once**
+([[work-items/WORK-0095-there-is-no-unranked-work]]). Recorded here because it
+is evidence about the scheme in place, and **not** because it constrains what
+replaces it.
+
+**Today every position has to terminate in base ten.** `formatPosition` writes a
+position at its natural precision, extending the scale until the value is
+exactly representable --- which is what makes a rebalance never mandatory rather
+than a multi-record write arriving mid-drag. That search terminates only because
+every position it has ever been handed is a finite decimal: bisection halves,
+and halving a finite decimal stays finite.
+
+**Dividing the range by a count does not terminate.** Splitting it between
+`count` records gives values like `9990/20001`, which repeats --- and the search
+for an exact scale runs forever. Not an error and not a wrong number: **the
+process hangs.** Measured on twenty thousand records.
+
+**What that is worth to this inquiry:** if the answer keeps decimal positions,
+an allocator can halve, add or subtract a finite decimal, or step by a power of
+ten, and cannot divide by an arbitrary count. **If the answer does not keep
+decimal positions, none of this applies** --- the shared-position-plus-stamp
+hunch has no arithmetic in it at all, and an integer scheme with a periodic
+renumber has no precision to extend. **So this is one input among several and
+explicitly not a constraint on the outcome.**
+
+**Do not design around it.** It describes the thing being reconsidered, and
+treating a property of the current implementation as a requirement is how an
+inquiry comes back with a slightly better version of what it started with. A
+scheme that makes this question meaningless is a better answer than one that
+satisfies it.
+
+**The guard is separate from the design.** A bounded search that returns an
+error rather than spinning should land whatever this inquiry decides: a hang
+gives nobody anything to work with --- no stack, no log, just a process that
+never returns --- and making the failure visible commits to no scheme.
+
 ### Prior art worth reading before deciding
 
 - **Fractional indexing.** The technique the current scheme already is, done
