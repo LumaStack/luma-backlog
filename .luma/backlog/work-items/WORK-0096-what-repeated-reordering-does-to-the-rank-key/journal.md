@@ -356,3 +356,37 @@ that arithmetic applies to any positional scheme rather than to a particular
 proposal.
 Goal 5 was stated as the mechanism rather than the want. The goal is that somebody can put the backlog in order **without the tool**; plain lexicographic sort is the ideal way to reach it, a short pipeline needing no knowledge the files do not carry is acceptable, and what fails is needing the binary, needing configuration to interpret a value, or walking records one at a time --- which is what any next-pointer scheme requires. Plain files in git are only worth having if plain tools can read them; the moment order is knowable only through this tool, the corpus is a database with a worse query language. And it is now written down that all seven goals probably cannot hold together: a scheme meeting the requirements and missing a goal is a candidate rather than a failure, provided it names which goal it gives up. A named sacrifice is a design decision; an unnamed one is a defect found later, usually when it is most expensive to change.
 Goal 5's third tier said *fails the goal*, which contradicted the tier it sits in --- a goal cannot disqualify anything, or it is a requirement wearing the wrong label. It now reads *last resort, and avoided*: needing the binary, needing configuration to interpret a value, or walking records one at a time is the least desirable outcome on the list and explicitly not disqualifying. A scheme that wins everywhere else and costs this may still be the right answer. The cost is stated as a cost --- plain files in git are only worth having if plain tools can read them --- rather than as a rule to obey.
+### Stopped the record teaching the incumbent before it states the problem
+
+**The body had stopped advocating and was still anchoring.** *The problem*
+opened by explaining what a `rank` is --- status ordinal, decimal position,
+allocation between neighbours --- so a reader learned the shape of the present
+answer before reading the question, and every later section inherited its
+vocabulary.
+
+**The problem is now stated without any of it.** An order over files in git that
+changes constantly, no coordination, one write per change, immovable interior
+members, unbounded growth, and a merge performed by `git` with the tool absent.
+No rank, no position, no gap, no subdivision.
+
+**The incumbent moved into its own section titled as evidence**, with one
+result marked as the only thing that should carry weight in a design:
+**subdividing a finite interval cannot meet the requirements, and no amount of
+precision changes that.** That is a result about a family of schemes rather than
+about this implementation. Two other behaviours --- that running out is loud,
+and that the whole-status renumber converges --- are marked as worth knowing and
+proving nothing.
+
+**Three smaller anchors removed.** The `range = records × room per gap`
+arithmetic now says it applies only if the answer is positional, which is itself
+a reason not to assume it. The vocabulary is listed as renegotiable ---
+*rank*, *position*, *ordinal*, *gap* are words this implementation chose, and an
+answer needing none of them is not a worse fit. And goal 5's acceptable tier
+cited `jq` over `--json`, which starts by running the binary and therefore
+contradicted the goal outright; it now names pipelines over the files.
+
+**And the framing itself is offered up for rejection.** The header asks a reader
+who thinks a requirement is really a preference, or an assumption wrong, or the
+wrong thing being ordered, to say so rather than work around it --- because a
+week inside a problem is the worst position from which to notice that the
+question is the wrong shape.
