@@ -202,6 +202,39 @@ experiment and lost the uncommitted call-site change with it.** Recoverable only
 because everything else in that file had already merged in #111. The experiment
 was worth running --- it is what proved the per-pair test catches an exempted
 status --- but the undo should have been the same edit in reverse.
+### Closing: what this delivered and what it cost to get right
+
+**Every work item carries a rank, allocated rather than computed, and placement
+depends on direction.** Three outcomes proven, five tasks closed.
+
+**What a future reader most needs from this record:** the two candidate
+mechanisms for ranking at creation are not equivalent, and the deciding case is
+narrow. Deriving a position from the record alone --- its key, its timestamp ---
+needs no peer read and **cannot place a record behind one somebody ranked
+`--last`**, because an explicit rank allocates from the observed maximum and can
+exceed any number a key would give. Asking the allocator costs a walk that
+`list` already does on every call. That is the whole argument, and it took three
+passes at the outcome to find it.
+
+**The outcome was wrong three times and each pass found a different error.** It
+named a mechanism rather than a state; then it dropped a clause that turned out
+to be achievable after all; then it claimed two simultaneous captures cannot
+collide, when they compute the same maximum and write the same position --- a
+tie, deterministic by name, losing nothing. **Every one of those was caught by
+somebody who had not written it**, which is the acceptance gate paying for
+itself on the record that was created to justify it.
+
+**Repair renumbering in creation order gave a property nobody asked for.** It
+makes the result a pure function of the corpus, so two actors repairing the same
+state produce byte-identical files and a 98-record rewrite resolves itself on
+merge instead of conflicting. That is a partial answer to WORK-0096's git
+question and worth carrying there.
+
+**What is deliberately not done.** ADR-0005's ordering direction is still
+ascending by status ordinal, so `captured` sorts above `in_progress` --- the
+inversion noted in this journal on 2026-09-10 and still deferred, because it
+needs somebody to decide whether a bare listing is a board or a work queue.
+Nothing here depends on the answer.
 
 ## ▶ 2026-09-10
 
