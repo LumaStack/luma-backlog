@@ -110,11 +110,17 @@ func parsePosition(p Position) (*big.Rat, error) {
 // would extend precision forever. That is not a slow answer or a wrong one: the
 // process hangs, with no stack and nothing logged.
 //
-// Reached only by a caller doing arithmetic this scheme does not do. Bisection
-// halves and PositionsFor steps by a power of ten, both of which stay finite ---
-// so this bound is a tripwire rather than a working limit, and a value that hits
-// it is rounded and reported by the caller that asked for it. Sixty places is
-// far past any ordering key a corpus produces and far short of spinning.
+// Rounding at the bound is not safe on its own. **A rounded position can equal
+// the neighbor it was meant to sit beside**, and two records holding one
+// position is worse than a loud failure --- the order is gone and nothing says
+// so. So Between checks that what it allocated actually falls strictly where it
+// was asked to, and refuses when it does not. That refusal is the signal to
+// repair, which is a command (`rank repair`).
+//
+// Sixty places is reached by about sixty allocations at the same spot, because
+// bisection costs roughly one decimal digit each time. That is a real workload
+// --- everything queueing in front of one blocked record --- and the bound is
+// where this scheme admits it, not where it stops being useful.
 //
 // Whether positions stay decimal at all is open
 // (.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key).
@@ -174,7 +180,7 @@ func Between(before, after Position) (Position, error) {
 		if lo := new(big.Rat).Sub(hi, step); lo.Sign() > 0 {
 			return formatPosition(lo), nil
 		}
-		return formatPosition(mid(new(big.Rat), hi)), nil
+		return checked(formatPosition(mid(new(big.Rat), hi)), "", after)
 
 	case after == "":
 		// Nothing below: step past the last, or bisect toward the ceiling.
@@ -188,7 +194,7 @@ func Between(before, after Position) (Position, error) {
 			return formatPosition(next), nil
 		}
 		ceiling := new(big.Rat).SetFrac64(99999999, 10000)
-		return formatPosition(mid(lo, ceiling)), nil
+		return checked(formatPosition(mid(lo, ceiling)), before, "")
 
 	default:
 		lo, err := parsePosition(before)
@@ -202,11 +208,36 @@ func Between(before, after Position) (Position, error) {
 		if lo.Cmp(hi) >= 0 {
 			return "", fmt.Errorf("cannot rank between %q and %q: they are not in order", before, after)
 		}
-		return formatPosition(mid(lo, hi)), nil
+		return checked(formatPosition(mid(lo, hi)), before, after)
 	}
 }
 
 func mid(a, b *big.Rat) *big.Rat {
 	sum := new(big.Rat).Add(a, b)
 	return sum.Quo(sum, new(big.Rat).SetInt64(2))
+}
+
+// checked refuses a position that does not fall strictly where it was asked to.
+//
+// **A position is only useful if it is distinct from its neighbors.** Precision
+// is finite (maxPositionScale), so a bisection deep enough will round onto one
+// of the values it was meant to separate --- and returning it would leave two
+// records sharing a position, with the order silently gone. Repeated
+// allocation at one spot costs about a decimal digit each time, so this is
+// reachable by ordinary use rather than only by abuse: a record that everything
+// else queues in front of gets there in roughly sixty moves.
+//
+// The failure is deliberately loud and names the remedy. `rank repair`
+// renumbers a status from clean spacing, so the exhaustion is recoverable ---
+// and an error a caller can act on beats a duplicate nobody can detect.
+func checked(p Position, before, after Position) (Position, error) {
+	if before != "" && p <= before {
+		return "", fmt.Errorf(
+			"no room left after %q: positions are exhausted at this status --- run `rank repair`", before)
+	}
+	if after != "" && p >= after {
+		return "", fmt.Errorf(
+			"no room left before %q: positions are exhausted at this status --- run `rank repair`", after)
+	}
+	return p, nil
 }

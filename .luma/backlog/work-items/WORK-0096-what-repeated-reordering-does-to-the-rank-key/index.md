@@ -3,12 +3,12 @@ type: work-item
 key: WORK-0096
 title: What repeated reordering does to the rank key
 description: We need to make rank always work. How do we handle someone moving everything to the top, over and over, or everything to the bottom? Something breaks in the current naive system --- at some point it has to trigger a full reorder. We want a scheme that touches as few records as possible when things move, and we may have to support full reordering some of the time, which will create all kinds of git conflicts. Git conflicts and multiple users are the hard part. This really belongs in a database, but I am hopeful there is a mathematical algorithm out there that gets us to good enough, and only triggers a reorder when somebody uses the system in a strange way.
-workflow_status: captured
+workflow_status: preparing
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:37:54Z'}
-rank: 010.0770.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 030.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T15:17:41Z'}
 ---
 
 # What repeated reordering does to the rank key
