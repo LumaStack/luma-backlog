@@ -19,9 +19,11 @@ that sits and does not move.** Something parks in `todo`, blocked forever.
 Everything selected afterwards queues behind it. Everything urgent jumps in
 front of it. What happens at a thousand records? A million?
 
-**And the budget is the real question.** We accept repairing sometimes. We want
-a scheme where repairing is rare or unnecessary, so what matters is how many
-operations fit before one is needed.
+**A million is the design bar, not a prediction.** Nobody expects that
+workload. The point of testing against an absurd quantity is that a scheme which
+survives it never has to be thought about again at realistic volumes --- and one
+that does not survive it has a limit somebody will eventually meet without
+warning. We accept repairing sometimes; we want it rare enough to forget.
 
 ## What was found
 
@@ -103,11 +105,49 @@ ranked  …/WORK-0002-bravo/index.md (010.0005.000)
 **So exhaustion is recoverable today**, and the repair is convergent --- it
 renumbers in creation order, which makes it a pure function of the corpus.
 
+### Against the million bar: stepping passes, subdividing cannot
+
+**The distinction that decides everything is whether an operation steps or
+subdivides.** Measured, a million moves each way from a centred origin:
+
+| strategy | a million each way | key length | time |
+| --- | --- | --- | --- |
+| **integer steps, 4-digit range** (today's width) | **does not fit** | --- | --- |
+| **integer steps, 12-digit range** | fits | 12 chars | instant |
+| **integer steps, 18-digit range** | fits | 18 chars | instant |
+| **bisection** (what the front does today) | **reached 203** | 65 chars | 15ms |
+
+**Stepping is O(log n) in key length and O(1) per operation. Subdividing is O(n)
+in key length and O(n²) in time.** No amount of precision fixes the second one:
+a million subdivisions is a million-digit key by definition, because each one
+adds information the key has to carry. **So any scheme that subdivides on a
+common operation fails the bar inherently, and the fix is never a bigger
+number.**
+
+**Which means the incumbent may not need replacing --- it needs a range it can
+step in.** The front subdivides only because the seed sits at `0010.000`, one
+step above the bottom of a four-digit range. Widen the integer part and seed in
+the middle, and the entire blocked-record workload becomes pure stepping: a
+million records queueing behind, a million jumping in front, twelve characters,
+no bisection at all.
+
+**What that does not fix**, and it should not be oversold: inserting *between two
+adjacent* positions still subdivides, so dragging repeatedly into one saturated
+interior gap still runs out in about two hundred moves. **The change moves
+subdivision off the common operations, it does not remove it.** Whether that is
+enough is a judgement about which operations are common, and the honest answer
+is that front, back and create are, while repeated insertion into one exhausted
+gap is not.
+
+**And the migration is already solved.** Widening the range renumbers every
+record, which `rank repair` does convergently --- a pure function of creation
+order, so two actors produce identical files.
+
 ## What it means
 
-**The scheme does not fail at a million. It fails at two hundred**, on the most
-ordinary reordering there is, and the blocked-record workload drives exactly
-that.
+**The scheme fails at two hundred on the most ordinary reordering there is**,
+and the blocked-record workload drives exactly that. Against a million-move bar
+it does not fail late --- it fails by a factor of five thousand.
 
 **Three observations worth carrying into the design, none of them a proposal:**
 
@@ -117,9 +157,12 @@ the range. Seeding in the middle would give both directions the same budget ---
 which is a cheap change and does not fix the underlying decay, only centers it.
 
 **The floor and the ceiling are the problem, not the arithmetic.** Bisection is
-only forced because the range is closed at both ends. A representation with no
-bounds --- a variable-width key, an integer with a separate tie-breaker, a
-position that is not a number at all --- has no gap to run out of.
+only forced because the range is closed at both ends and is narrow. Widening it
+and centring the seed is the cheapest thing that meets the bar for end-moves,
+and it is a change to two constants rather than a new design. **A representation
+with no bounds at all** --- a variable-width key, an integer with a separate
+tie-breaker, a position that is not a number --- **removes the question instead
+of enlarging it**, and the candidates in the parent record are of that kind.
 
 **The budget should be observable before it is spent.** Nothing today reports
 that a status is three moves from exhaustion; the first anybody hears is a
