@@ -13,224 +13,172 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T15:17:41Z'}
 
 # What repeated reordering does to the rank key
 
+> **This is a problem statement, written for somebody who has not seen it
+> before.** It gives the problem, what a solution has to achieve, what has been
+> measured, and what we are assuming. **It deliberately proposes nothing.**
+>
+> Candidates, hunches and prior art have all been moved to this record's journal
+> and are worth reading **after** you have formed a view, not before. An
+> exploration under this record carries the measurements and also a leaning;
+> the numbers are reliable and the leaning is one week of one team's thinking.
+
 ## The problem
 
-**Rank has to always work, and the naive system breaks when somebody uses it
-repetitively.** Move everything to the top, over and over. Or everything to the
-bottom, over and over. Something gives, and at some point it forces a **full
-reorder**.
+**A backlog has to remember what order to work things in, and that order has to
+survive being changed constantly by people and agents who are not coordinating.**
 
-**What we want is a scheme that touches as few records as possible when things
-move** --- ideally one --- while accepting that full reordering may sometimes be
-necessary. And a full reorder rewrites most of the corpus, which creates all
-kinds of git conflicts.
+Every work item carries a `rank`: a workflow status ordinal, then a position
+among the records sharing that status. Records are markdown files in git. There
+is no server and no allocator --- **two actors on two machines, or two agents in
+two worktrees, reorder independently and find out at merge.**
 
-**Git conflicts and multiple users are the hard part.** This really belongs in a
-database. But there is probably a **mathematical algorithm** out there that gets
-us to *good enough*: one that only triggers a reorder when somebody uses the
-system in a strange way, rather than in the course of ordinary use. Something
-that *just works* would be better still, and that is probably unrealistic.
+Reordering a record must write **that record and no others.** A scheme that
+renumbers neighbours turns the most common operation on a board into a
+many-file diff, and many-file diffs of meaningless numbers are unreviewable and
+conflict badly.
 
-### Two hunches, neither of them worked through
+### The workload that breaks it
 
-**The decimal may need to be relative to what it was ranked against, and to be
-allowed to go negative.** That probably does not answer the problem on its own,
-but it may be heading in the right direction.
+**One record that never moves.** Something sits in a status --- a `todo` nobody
+ever picks up --- and stays there while everything around it moves. Every record
+selected afterwards is placed behind it. Everything urgent is placed in front of
+it. **Both ends of one status are allocated into, over and over, indefinitely.**
 
-**Or: things moved to the top all get the same rank, and ties are broken by when
-they were ranked.** A record does not get a new number when it goes to the top
---- it joins the top, and the time it arrived there orders it against everything
-else that did.
+Two statuses grow without bound by construction: `captured`, because capture
+never stops, and `closed`, because work keeps finishing. And an early
+`captured` record will end up with nearly every later record ranked above it.
+
+### What has been measured
+
+Against the current implementation, 2026-09-17 --- see the exploration under this
+record:
+
+| operation | how it allocates | exhausted after |
+| --- | --- | --- |
+| place at the back | whole steps while they fit, then subdivide | 1,202 |
+| place at the front | subdivides from the first move | 204 |
+| place between two neighbours | subdivides the gap | 204 |
+
+**Subdividing costs about one decimal digit per operation and the arithmetic is
+quadratic in the key length.** 2,925 successive front-placements produced a
+2,929-character key and took 25 seconds. **Stepping by whole numbers costs
+nothing by comparison:** a million steps is a 7-digit key and microseconds.
+
+**Exhaustion is currently loud.** Allocation refuses rather than returning a
+position a neighbour already holds --- an earlier version rounded instead, and
+silently produced duplicate positions with the order gone.
+
+**A whole-status renumber exists and converges.** It numbers records in creation
+order, so it is a pure function of the corpus: two actors who repair the same
+state independently produce byte-identical files, and a merge resolves itself.
+It rewrites every record at the status.
+
+## What a solution has to achieve
+
+**These are requirements, not preferences.**
+
+1. **Repair is rare.**
+2. **A rewrite of more than a few records happens a handful of times in a
+   project's entire history, and only in extreme circumstances.** The reason is
+   git: a large diff of ordering numbers cannot be reviewed, and conflicts in it
+   cannot be resolved by reading.
+3. **Millions of records can be placed ahead of a record that never moves.**
+4. **Millions of records can accumulate behind one.** `closed` and `captured`
+   grow forever. If unbounded growth at the back is a problem, the approach is
+   wrong at the foundation rather than in need of tuning.
+5. **Placing records above a long-standing record must appear inexhaustible** ---
+   to a degree no project reaches in ten to a hundred years.
+6. **A rewrite once a decade is acceptable. Once a year is the ceiling. Never is
+   the target.**
+
+### The volume that has to fit
+
+A high-volume project --- agents completing work continuously:
+
+| records per day | per year | 10 years | 100 years |
+| --- | --- | --- | --- |
+| 100 | 36,500 | 365,000 | 3,650,000 |
+| 1,000 | 365,000 | 3,650,000 | 36,500,000 |
+| 10,000 | 3,650,000 | 36,500,000 | **365,000,000** |
+
+**So the design target is on the order of 10^8 to 10^9 operations**, at both
+ends of a status, without a full rewrite.
+
+## What is assumed
+
+**Stated so they can be challenged.** If a solution is better because one of
+these is wrong, say which.
+
+- **Records move forward more often than backward.**
+- **Reordering happens far more often than inserting between two specific
+  neighbours.** Nobody has measured this.
+- **Concurrency is real but low-volume**: a handful of actors, not thousands.
+- **A conflict a person can resolve by reading is acceptable. A silent merge
+  that loses order is not.**
+
+## What is genuinely open, including things currently promised
+
+**Do not treat the present design as a constraint.** These are all
+renegotiable, and a solution that abandons one should say so rather than work
+around it:
+
+- **That a position is a number at all.**
+- **That sorting the stored field alone yields the order.** ADR-0005 promises
+  this so that something outside this tool can sort a listing with no
+  configuration read. **It is a promise, not a requirement** --- a scheme where
+  order is *derived* rather than stored is allowed to break it, and should say
+  what pays for it.
+- **That the order lives in one field.** More than one, or an array, or
+  something alongside it, are all available.
+- **That the stored value orders anything directly.** It may identify, with the
+  order computed from it.
+- **Whether ascending means earlier.** The direction is an arbitrary choice
+  inherited from the first implementation.
+- **The width of the value.** Longer keys are a cost to weigh, not a limit.
 
 ## What is being delivered
 
-**Nothing yet --- this is an inquiry.** What comes out of it is the scheme, and
-the work items that follow from choosing one.
+**A decision, with the reasoning that produced it.** Whether the present scheme
+is repaired, parameterised, or replaced is exactly what this work item exists to
+settle, and it is deliberately not pre-answered.
 
-**What it has to answer:**
+**What any answer has to come with**, because these are what we would fail to
+notice on our own:
 
-- What actually degrades, how fast, and under which access patterns.
-- Which of those patterns are realistic and which are somebody being strange.
-- What a full reorder costs when two people are working, and whether it can be
-  made safe rather than merely rare.
-- Whether a scheme exists where ordinary use never triggers one.
+- **Behaviour at 10^6 and 10^8 operations** at each end of a status, and the
+  resulting key size.
+- **Files written per reorder**, and the worst case.
+- **What happens when two actors allocate concurrently at the same place** ---
+  conflict, silent duplicate, or neither.
+- **Where it degrades**, what the repair is, **how many records the repair
+  touches**, and what triggers it.
+- **Which currently-promised properties it gives up**, named explicitly.
+- **How a corpus written under the present scheme migrates**, or why it need not.
 
 ## Out of scope
 
-- **Where a record lands on each event** ---
-  [[work-items/WORK-0095-there-is-no-unranked-work]] decides which end. This
-  decides what the key is made of so that going to that end repeatedly does not
-  degrade it.
-- **Keys colliding across machines** ---
-  [[work-items/WORK-0013-how-two-workstations-avoid-colliding]]. The same
-  trade-off applies to a different field, and the reasoning may transfer.
-- **Whether everyone can see each other's backlog at all** ---
-  [[work-items/WORK-0076-how-the-backlog-stays-in-sync-with-everyone-working-it]].
+- **Which end of the ladder sorts first.** Whether a listing reads as a board or
+  as a work queue is a separate unsettled question, and every candidate here is
+  indifferent to it.
+- **Ranking anything other than work items.** Only work items carry a rank
+  today.
+- **Detecting and repairing a corpus whose status vocabulary changed** ---
+  [[work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]].
 
 ## Constraints
 
-- **Independent work must never serialize** (`spec.md` §6.1). Any scheme that
-  needs two actors to agree before either can rank something is out.
-- **A move writes one record** (`spec.md` §9.6). That is the existing guarantee
-  and the thing worth protecting.
-- **The tool is git-native by choice.** *This belongs in a database* is a fair
-  observation and not an escape --- and a database has the same problem, which
-  is why fractional ordering keys exist there too.
+**These are not negotiable, and each is a property of the system rather than of
+the current scheme.**
 
----
-
-*Everything above is the maintainer's, worded up. Everything below was added by
-the agent while capturing it.*
-
-## Added while capturing
-
-### What actually breaks today, precisely
-
-**Nothing errors. The key grows without bound.** `Between` bisects and
-`formatPosition` (`internal/corpus/rank.go:72-92`) extends precision rather than
-failing, deliberately: *"extending is what makes a rebalance never mandatory."*
-So the failure mode is not a crash, it is `0000.0000000000000001220703125`
-appearing in frontmatter after fifty moves to the same spot.
-
-**But the two ends are not symmetric today.** Appending steps by `seedStep`
-against a ceiling of 9990 --- roughly a thousand appends before it has to
-bisect at all. Prepending has a **hard floor at zero**: `Between("", after)`
-takes `hi - 10` only while that stays positive, and bisects toward zero
-otherwise (`internal/corpus/rank.go:115-127`). With a first position of
-`0010.000`, **the very first move to the top is already bisecting.**
-
-So *everything to the bottom* is cheap today and *everything to the top* is the
-expensive one, which is worth knowing before choosing between the hunches.
-
-### The floor is the bug, and the hunch about negatives is right
-
-**Allowing the position below zero makes prepending exactly as cheap as
-appending** --- step down by a constant forever, no precision growth, no
-bisection. That answers one of the two named patterns completely.
-
-**But literal negatives break the property the whole format rests on.** Text
-order and numeric order stop agreeing: `-0020` sorts before `-0010` as text and
-after it as a number, so the field can no longer be sorted by anything that
-compares strings.
-
-**Bias the range instead of signing it.** Keep positions unsigned and put the
-origin in the middle --- seed the first record at the midpoint rather than near
-zero, so *below* is an ordinary smaller number. The instinct is right; the sign
-is the part to drop. A variable-width lexicographic encoding, where a leading
-character states how long the integer part is, extends that to genuinely
-unbounded in both directions while still sorting as text --- which is the
-published form of this idea.
-
-### The same-rank-plus-timestamp hunch is stronger than it looks
-
-**It removes allocation entirely at both ends.** Nothing new has to be computed
-to go to the top: join the top, and the stamp orders you against everyone else
-who did. No bisection, no growth, no floor, no ceiling.
-
-**And it is the only one of the three that is conflict-free under concurrency.**
-Two actors sending different records to the top on different machines produce
-identical positions and distinct stamps --- different files, clean merge,
-deterministic order, no coordination.
-
-**Where it stops is the middle.** A record inserted *between* two others still
-needs a value strictly between them, so ties help with the two patterns named
-and not with the third. Which may be exactly the trade wanted: those two are the
-strange usage, and the middle insert is the ordinary one.
-
-**It fits the corpus as it stands.** A `ranked: {by, at}` stamp matches
-`created` and `modified` exactly, and buys provenance --- who placed this, and
-when --- as a side effect. Keeping the stamp beside the rank rather than inside
-it also avoids
-[[work-items/WORK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]].
-
-**The cost is conceptual.** A position stops saying *where this record is* and
-starts saying *which end it was thrown at, and when*. Arguably more honest ---
-that is what happened --- but it is a different claim, and `--before X` still
-has to mean something.
-
-### One property of the current scheme, offered as input rather than a rule
-
-**Found 2026-09-17 while allocating positions for a whole status at once**
-([[work-items/WORK-0095-there-is-no-unranked-work]]). Recorded here because it
-is evidence about the scheme in place, and **not** because it constrains what
-replaces it.
-
-**Today every position has to terminate in base ten.** `formatPosition` writes a
-position at its natural precision, extending the scale until the value is
-exactly representable --- which is what makes a rebalance never mandatory rather
-than a multi-record write arriving mid-drag. That search terminates only because
-every position it has ever been handed is a finite decimal: bisection halves,
-and halving a finite decimal stays finite.
-
-**Dividing the range by a count does not terminate.** Splitting it between
-`count` records gives values like `9990/20001`, which repeats --- and the search
-for an exact scale runs forever. Not an error and not a wrong number: **the
-process hangs.** Measured on twenty thousand records.
-
-**What that is worth to this inquiry:** if the answer keeps decimal positions,
-an allocator can halve, add or subtract a finite decimal, or step by a power of
-ten, and cannot divide by an arbitrary count. **If the answer does not keep
-decimal positions, none of this applies** --- the shared-position-plus-stamp
-hunch has no arithmetic in it at all, and an integer scheme with a periodic
-renumber has no precision to extend. **So this is one input among several and
-explicitly not a constraint on the outcome.**
-
-**Do not design around it.** It describes the thing being reconsidered, and
-treating a property of the current implementation as a requirement is how an
-inquiry comes back with a slightly better version of what it started with. A
-scheme that makes this question meaningless is a better answer than one that
-satisfies it.
-
-**The guard is separate from the design.** A bounded search that returns an
-error rather than spinning should land whatever this inquiry decides: a hang
-gives nobody anything to work with --- no stack, no log, just a process that
-never returns --- and making the failure visible commits to no scheme.
-
-### Prior art worth reading before deciding
-
-- **Fractional indexing.** The technique the current scheme already is, done
-  properly: string keys ordered lexicographically, midpoints generated between
-  neighbors, growth accepted and rebalancing avoided. Figma's write-up on
-  realtime editing of ordered sequences is the readable source, and there are
-  small published implementations.
-- **LSEQ.** An allocation strategy built specifically for the two patterns named
-  above --- it alternates its allocation direction by depth so that repeated
-  front or back insertion does not grow identifiers linearly. This is the
-  closest thing to the *mathematical algorithm that gets us to good enough*.
-- **Logoot, and Conflict-free Replicated Data Types (CRDTs) generally.**
-  Positions as a list of digit-plus-actor pairs, which is the *relative to what
-  it was ranked against* hunch in its published form. It buys uniqueness under
-  concurrency and gives up sortability by a plain text compare --- WORK-0013's
-  table, arrived at independently.
-
-### The git analysis, which is the part nobody usually writes down
-
-**The good case is already good.** One move writes one file and changes one
-line. Two people moving different records do not conflict. Two people moving the
-same record conflict on one line, git says so, and a person picks.
-
-**The dangerous case is not a conflict at all.** Two actors bisecting the same
-gap produce **the same position in two different files**. Git merges both
-cleanly, and the corpus now has a tie nobody chose and nothing reports. Silent
-disorder beats a loud conflict every time --- so the mitigations worth costing
-are the ones that make positions unique by construction: a per-actor component,
-or a random point in the gap rather than its midpoint.
-
-**A rebalance is the disaster case.** It rewrites every record at a status, so
-any concurrent branch touching any of them conflicts --- and the conflict is
-unresolvable by reading, because the numbers mean nothing individually. Two
-consequences worth building in:
-
-- **Never rebalance automatically.** Make it a named operation somebody runs
-  deliberately, with nothing else in flight, under `spec.md` §9.6's multi-record
-  guarantees --- the same shape as
-  [[work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]].
-- **Make it a pure function of the current order.** If a rebalance recomputes
-  positions from the sorted sequence alone, two actors who rebalance the same
-  state independently produce byte-identical output and merge without conflict.
-  That is cheap to guarantee and turns the disaster case into a merely bad one.
-
-**And the trigger should be measured, not guessed.** Key length is the
-observable --- when a position exceeds some width, the corpus is degenerating.
-That is a lint (`[[work-items/WORK-0002-lint-the-corpus]]`) reporting a
-condition, not the ranking code deciding to rewrite the world.
+- **No coordination.** `spec.md` §6.1 --- independent work must never serialize.
+  Nothing may require two actors to agree before either can reorder.
+- **One reorder writes one record**, in the ordinary case. `spec.md` §9.6.
+- **Records are files in git, and merges happen without the tool present.**
+  Whatever is stored has to behave when two branches are joined by git alone.
+- **Configuration is hand-editable** (`principles.md`), so any invariant tying a
+  record to configuration will be violated and has to be detected rather than
+  assumed.
+- **Report, never refuse, on read.** `spec.md` §5.2. A corpus in a degenerate
+  state must still list.
+- **A multi-record write has guarantees already**: history is never partial, the
+  working tree may be, and re-running converges. `spec.md` §9.6.
