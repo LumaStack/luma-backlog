@@ -56,7 +56,7 @@ func (s *Session) applyStatus(it corpus.Item, status string) error {
 			"%q is not a status this project carries --- rank has no ordinal for it", status)
 	}
 
-	peers, err := s.rankedPeers(it, status)
+	peers, err := s.rankedPeers(it.Path, status)
 	if err != nil {
 		return err
 	}

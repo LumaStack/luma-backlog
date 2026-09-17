@@ -6,8 +6,8 @@ workflow_status: captured
 kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:00:00Z'}
-rank: 010.0100.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
+rank: 010.0210.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # The operating system username must never be an actor

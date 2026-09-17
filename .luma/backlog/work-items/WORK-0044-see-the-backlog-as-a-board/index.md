@@ -7,6 +7,8 @@ kind: change
 stage: draft
 description: The board is the surface the whole model was designed for, and it does not exist.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:00:00Z'}
+rank: 010.0290.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # See the backlog as a board

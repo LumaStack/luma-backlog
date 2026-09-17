@@ -7,7 +7,8 @@ kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:47:35Z'}
 description: evidence/session-capture.md has no frontmatter because it is a transcript, not a record — and outcome list and task list each report it as skipped, twice per invocation of show. the tool has no notion of a file that legitimately is not a record, so a deliberate attachment is indistinguishable from a corrupt one
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T02:47:35Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0520.000
 ---
 
 # A file that is not a record is reported as a skip

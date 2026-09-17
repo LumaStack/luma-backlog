@@ -6,8 +6,8 @@ workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T14:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:20:04Z'}
-rank: 070.0020.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 070.0140.000
 closed: {on: 2026-09-08, as: completed, by: 'agent:claude-opus-5/luma-backlog', reason: 'the specification and the binary disagreed and the specification won; the code caught up'}
 ---
 

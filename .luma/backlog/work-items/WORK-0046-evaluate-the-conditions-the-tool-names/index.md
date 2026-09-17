@@ -7,6 +7,8 @@ kind: change
 stage: draft
 description: Ten conditions are specified by name and none is evaluated.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:00:00Z'}
+rank: 010.0310.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Evaluate the conditions the tool names

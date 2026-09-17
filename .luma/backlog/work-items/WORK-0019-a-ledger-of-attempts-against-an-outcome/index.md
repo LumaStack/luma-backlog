@@ -6,7 +6,8 @@ workflow_status: captured
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T20:14:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:40:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0060.000
 ---
 
 # A ledger of attempts against an outcome

@@ -67,7 +67,7 @@ func (s *Session) Rank(req RankRequest) (*RankResult, error) {
 	// Rank orders records within a status (ADR-0005), so only records sharing
 	// this one's status are neighbors. Records at another status are ahead or
 	// behind by the ordinal alone and nothing here can change that.
-	peers, err := s.rankedPeers(it, status)
+	peers, err := s.rankedPeers(it.Path, status)
 	if err != nil {
 		return nil, err
 	}
@@ -106,14 +106,14 @@ type peer struct {
 // record must write one file (§9.6); seeding the whole status here would make
 // a reorder a multi-record write, which is the thing the scheme exists to
 // avoid.
-func (s *Session) rankedPeers(moving corpus.Item, status string) ([]peer, error) {
+func (s *Session) rankedPeers(excluding string, status string) ([]peer, error) {
 	items, _, err := corpus.List(s.Backlog, corpus.Filter{Unit: corpus.WorkItem, Status: status})
 	if err != nil {
 		return nil, FailureError("%w", err)
 	}
 	var out []peer
 	for _, it := range items {
-		if it.Path == moving.Path {
+		if it.Path == excluding {
 			continue
 		}
 		raw, ok := it.Record.Get("rank")

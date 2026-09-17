@@ -7,6 +7,8 @@ kind: inquiry
 stage: draft
 description: log is specified, unbuilt, and may be answered entirely by git.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:00:00Z'}
+rank: 010.0320.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Whether history needs a command of its own

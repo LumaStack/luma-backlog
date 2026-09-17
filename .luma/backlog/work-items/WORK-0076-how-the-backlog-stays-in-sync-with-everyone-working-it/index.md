@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T15:53:47Z'}
 description: 'three candidate strategies, none chosen: the backlog lives in a database with every action tied to a git commit; every backlog action commits and pushes immediately, which makes git noisy and that may not be bad; or the backlog always lives on its own branch. the outcome is a decision — which strategy or strategies we use, and in what order we support them. open-questions.md §8 holds the prior analysis and a lean nobody implemented.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T15:53:53Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0600.000
 ---
 
 # How the backlog stays in sync with everyone working it

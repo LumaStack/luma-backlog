@@ -7,7 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:06:04Z'}
 description: the rules for workflow status, the ladder, transitions, decision records and the code are spread across backlog-move, workflow-status.md, spec.md, four ADRs and internal/. keeping them in sync is a constant problem and rereading them all is not workable. we need one document everything defers to, the gaps found and spelled out, the system brought into line with it, and a procedure for editing the spec — which is expensive, risky, and easy to get wrong. the spec should eventually be the source of truth; a simpler unifying document has to come first.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:06:04Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0700.000
 ---
 
 # The workflow model has one source of truth and the system matches it

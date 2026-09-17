@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -622,5 +623,75 @@ func TestAFirstCrossingLandsAtTheBack(t *testing.T) {
 	got := keysInOrder(t, app, "work-item", "list", "--status", "unprepared")
 	if strings.Join(got, ",") != "WORK-0001,WORK-0002" {
 		t.Errorf("selection was treated as a regression: %v", got)
+	}
+}
+
+// Every ordered pair of statuses places a record at the right end --- not just
+// the pair somebody happened to write a test for.
+//
+// Outcome 3 of WORK-0095 asks for this by name: one case per pair, so a status
+// quietly exempted from the rule fails rather than passing. The table is
+// generated from the ladder rather than typed out, so a status added to
+// configuration is covered without anybody remembering to add it here.
+//
+// **Order is asserted and positions are not.** WORK-0096 may change what
+// corpus.Between allocates, and a test pinned to particular numbers would fail
+// on a change that broke nothing.
+func TestPlacementHoldsForEveryStatusPair(t *testing.T) {
+	// The ladder as configuration carries it, lowest first. Closed is absent:
+	// `transition` refuses the terminal status and names `close`, which has
+	// its own tests.
+	ladder := []string{"captured", "unprepared", "preparing", "prepared", "todo", "in_progress"}
+
+	for from := range ladder {
+		for to := range ladder {
+			if from == to {
+				continue
+			}
+			origin, dest := ladder[from], ladder[to]
+			forward := to > from
+			name := origin + "_to_" + dest
+			t.Run(name, func(t *testing.T) {
+				app, _ := initialized(t)
+				// Two records already sitting at the destination, in order,
+				// so there is a front and a back to land at.
+				// Every one gets an outcome: reaching in_progress is refused
+				// without one, and that refusal is not what this is testing.
+				for i, title := range []string{"Alpha", "Bravo", "Charlie"} {
+					run(t, app, "work-item", "new", title)
+					run(t, app, "outcome", "new", "The queue drains",
+						"-w", fmt.Sprintf("WORK-000%d", i+1))
+				}
+
+				for _, key := range []string{"WORK-0001", "WORK-0002"} {
+					if dest == "captured" {
+						break // they are already there, in creation order
+					}
+					if code, _, e := run(t, app, "work-item", "transition", key, dest); code != ExitOK {
+						t.Fatalf("seeding %s at %s: %s", key, dest, e)
+					}
+				}
+				if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", origin); code != ExitOK {
+					t.Fatalf("putting Charlie at %s: %s", origin, e)
+				}
+				if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", dest); code != ExitOK {
+					t.Fatalf("moving Charlie %s → %s: %s", origin, dest, e)
+				}
+
+				got := keysInOrder(t, app, "work-item", "list", "--status", dest)
+				want := "WORK-0003,WORK-0001,WORK-0002" // regressed: first
+				if forward {
+					want = "WORK-0001,WORK-0002,WORK-0003" // advanced: last
+				}
+				if strings.Join(got, ",") != want {
+					direction := "going back"
+					if forward {
+						direction = "advancing"
+					}
+					t.Errorf("%s from %s to %s landed wrong:\ngot  %v\nwant %s",
+						direction, origin, dest, got, want)
+				}
+			})
+		}
 	}
 }

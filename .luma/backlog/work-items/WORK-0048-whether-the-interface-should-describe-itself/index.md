@@ -7,6 +7,8 @@ kind: inquiry
 stage: draft
 description: contract is specified and unbuilt, and it is not clear who reads it.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T01:00:00Z'}
+rank: 010.0330.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Whether the interface should describe itself

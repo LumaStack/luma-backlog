@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T05:15:06Z'}
 description: a new bundle called project-wizard that helps people set up a new project. it asks whether this is a project or an organization, then walks the common things a project will want installed by asking questions — will you be using git (installs git-workflow), will two or more agents or people be working in parallel (installs git-worktrees), what language will the project use (installs coding best practices), and so on.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T05:15:06Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0730.000
 ---
 
 # A project-wizard bundle that sets a new project up by asking

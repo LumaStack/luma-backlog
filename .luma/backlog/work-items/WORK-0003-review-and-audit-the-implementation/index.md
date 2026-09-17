@@ -5,10 +5,10 @@ description: Nothing written so far has been read by the maintainer.
 workflow_status: captured
 stage: draft
 created: {by: "human:benjamin", at: '2026-08-09T07:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:25Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 kind: inquiry
 key: WORK-0003
-rank: 010.0040.000
+rank: 010.0020.000
 ---
 
 # Review and audit the implementation

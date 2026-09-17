@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:01:16Z'}
 description: 'always capture, even when it looks like a duplicate — agents cannot always be trusted to make this call, even though we want them to make it, and a lost idea is worse than a second record. stamp duplicate, overlap and conflict in the frontmatter of everything involved. commit, so there is a checkpoint to revert to. only then let an agent reject as duplicate, merge it into another record, or leave both standing. the three relations are already computed at capture time and reported in chat, where they die. capture should also present three modes, which need working better but are different things: quick capture; find overlap and then maybe capture; capture, save, and then consider overlaps.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:07:41Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0620.000
 ---
 
 # How duplicate capture is handled

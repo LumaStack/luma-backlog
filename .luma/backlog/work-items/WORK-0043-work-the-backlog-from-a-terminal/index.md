@@ -7,6 +7,8 @@ kind: change
 stage: draft
 description: The reading commands are thin enough that a procedure has to work around them, and the board that would answer this does not exist.
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T00:00:00Z'}
+rank: 010.0280.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Work the backlog from a terminal

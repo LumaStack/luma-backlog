@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T07:05:41Z'}
 description: an idea for luma-foreman. the block it injects into CLAUDE.md should make the model fully understand that luma wires bundles into the harness, and that it must not edit CLAUDE.md in order to get them loaded. today the block says what is adopted and how to read it, and says nothing about who does the wiring — so an agent that wants a rule to reach a plain turn reaches for the file in front of it.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T07:05:41Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0750.000
 ---
 
 # The injected CLAUDE block should say that foreman wires bundles up

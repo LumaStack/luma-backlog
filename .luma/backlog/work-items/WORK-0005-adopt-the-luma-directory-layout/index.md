@@ -5,9 +5,10 @@ workflow_status: closed
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-02T21:15:03Z'}
 kind: change
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T21:01:31Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-04, reason: delivered, by: 'agent:claude-opus-5/luma-backlog'}
 key: WORK-0005
+rank: 070.0030.000
 ---
 
 # Adopt the luma directory layout

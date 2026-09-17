@@ -5,10 +5,10 @@ description: Catch records, documents, and references that have drifted out of s
 workflow_status: captured
 stage: draft
 created: {by: "human:benjamin", at: '2026-08-09T02:00:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T01:36:24Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 kind: idea
 key: WORK-0002
-rank: 010.0020.000
+rank: 010.0010.000
 ---
 
 # Lint the corpus

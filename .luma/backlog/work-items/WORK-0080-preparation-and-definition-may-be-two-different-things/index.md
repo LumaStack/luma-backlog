@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:32:21Z'}
 description: 'maybe preparation should be renamed to definition, and preparing to defining. and maybe preparation and definition should be separate pipelines: preparation is all the work you need to do in order to define something, definition is all the work you need to do to have well defined outcomes. the real question is whether all preparation must be complete before any defining starts — if not, one pipeline with the two distinct somehow within each work item. likes it a lot, and also does not want to make the process too cumbersome.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:34:23Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0640.000
 ---
 
 # Preparation and definition may be two different things

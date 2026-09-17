@@ -6,8 +6,9 @@ workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T19:30:56Z'}
-modified: {by: 'human:luma-foundry', at: '2026-09-06T13:16:22Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-06, reason: delivered, by: 'human:luma-foundry'}
+rank: 070.0120.000
 ---
 
 # Specify the minimum viable product

@@ -6,8 +6,8 @@ workflow_status: closed
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T01:50:04Z'}
-rank: 070.0030.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:21:11Z'}
+rank: 070.0110.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 closed: {on: 2026-09-08, as: completed, by: 'agent:claude-opus-5/luma-backlog', reason: 'the first question anybody asks is now one flag'}
 ---
 

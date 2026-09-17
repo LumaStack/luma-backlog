@@ -7,7 +7,8 @@ kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:31:55Z'}
 description: 'session handoff and session close should be session save and session end. saving covers handing off, resuming here, or resuming with another agent — it does not matter which, and the distinction is not worth two procedures. session checkpoint should probably collapse into session save unless there is a really good reason not to. and separately: we need a way to create an idea in one project and later move it to the project it belongs in, by command or by foreman — this record is itself an instance, since it is about session-manager and session-manager lives in luma-catalog.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:31:55Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0720.000
 ---
 
 # Session save and session end, and moving a record to the project it belongs in

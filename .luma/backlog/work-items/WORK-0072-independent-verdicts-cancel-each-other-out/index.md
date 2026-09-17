@@ -7,7 +7,8 @@ kind: defect
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:08:28Z'}
 description: an outcome's state is the latest verdict, which is right for a retry and wrong for independent verification — two checkers who disagree do not supersede each other, and the same two facts in the other order give the opposite answer. assert has the identical hole.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:08:28Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0560.000
 ---
 
 # Independent verdicts cancel each other out

@@ -64,5 +64,80 @@ func newRankCommand(a *App) *cobra.Command {
 	cmd.Flags().BoolVar(&last, "last", false, "last at its status")
 	cmd.Flags().StringVar(&before, "before", "", "immediately before this record")
 	cmd.Flags().StringVar(&after, "after", "", "immediately after this record")
+	cmd.AddCommand(newRankRepairCommand(a))
 	return cmd
+}
+
+// newRankRepairCommand renumbers every work item so all of them carry a rank.
+//
+// A subcommand of `rank` rather than a verb of its own: it changes the same
+// field, for the same reason, and somebody looking for it will look there.
+func newRankRepairCommand(a *App) *cobra.Command {
+	var dryRun bool
+
+	cmd := &cobra.Command{
+		Use:   "repair",
+		Short: "Give every work item a rank, in creation order",
+		Long: "Recomputes every work item's rank so that all of them carry one and every\n" +
+			"prefix agrees with the status the record declares.\n\n" +
+			"Records are numbered in the order they were created, within each status.\n" +
+			"That makes the result a pure function of the corpus: two people repairing\n" +
+			"the same state produce identical files, and re-running changes nothing.\n\n" +
+			"It renumbers rather than filling gaps, so an ordering somebody chose by\n" +
+			"hand is replaced. Rank again afterwards to restate it.\n\n" +
+			"This rewrites many records at once. Run it with --dry-run first.",
+		Args:         cobra.NoArgs,
+		SilenceUsage: true,
+		Example: "  luma-backlog rank repair --dry-run\n" +
+			"  luma-backlog rank repair",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			s, err := open(a)
+			if err != nil {
+				return err
+			}
+			defer s.Close()
+
+			res, err := s.RepairRanks(app.RepairRequest{DryRun: dryRun})
+			if err != nil {
+				return err
+			}
+			observe(cmd.ErrOrStderr(), res.Observations)
+
+			out := cmd.OutOrStdout()
+			for _, c := range res.Changed {
+				from := c.From
+				if from == "" {
+					from = "unranked"
+				}
+				fmt.Fprintf(out, "%s  %s  %s → %s\n", verb(res.DryRun), c.Name, from, c.To)
+			}
+			for _, name := range res.Unplaceable {
+				fmt.Fprintf(cmd.ErrOrStderr(),
+					"luma-backlog: %s declares a status this project does not carry --- no rank can be computed for it\n", name)
+			}
+			if len(res.Changed) == 0 {
+				fmt.Fprintf(out, "every one of the %d work items already carries the rank it should\n", res.Examined)
+				return nil
+			}
+			fmt.Fprintf(out, "\n%d of %d changed%s\n", len(res.Changed), res.Examined, suffix(res.DryRun))
+			return nil
+		},
+	}
+	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "show what would change and write nothing")
+	return cmd
+}
+
+// verb labels a row by whether it happened.
+func verb(dryRun bool) string {
+	if dryRun {
+		return "would rank"
+	}
+	return "ranked   "
+}
+
+func suffix(dryRun bool) string {
+	if dryRun {
+		return "; nothing was written --- re-run without --dry-run"
+	}
+	return ""
 }

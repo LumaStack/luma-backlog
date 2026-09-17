@@ -6,6 +6,8 @@ workflow_status: captured
 kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T00:35:07Z'}
+rank: 010.0050.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 ---
 
 # Decisions have levels and get promoted between them

@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:25:51Z'}
 description: 'select from a menu of exploration strategies — not yet defined — which then guide research, interviewing the user, prototyping, or others. each produces findings: an answer, a better way to measure outcomes, a mockup, well formed requirements. those findings define the outcomes and move the work forward. exploration generally goes two ways: used in preparation it defines THIS work item; used in progress on an inquiry it generates OTHER work items or deliverables. a very strong recommendation rather than a hard rule.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T17:25:51Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0630.000
 ---
 
 # How exploration is chosen and what it produces

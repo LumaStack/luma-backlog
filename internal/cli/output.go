@@ -47,7 +47,13 @@ type itemJSON struct {
 	// Status is omitted rather than emptied when the record's type declares
 	// no workflow status. A consumer can then tell "no lifecycle" from a
 	// lifecycle whose value happens to be blank.
-	Status   string `json:"status,omitempty"`
+	Status string `json:"status,omitempty"`
+	// Rank is work order --- <status ordinal>.<position>, ADR-0005. Emitted
+	// because the prefix exists so that something outside this tool can sort
+	// the field alone, and a machine surface that omits it makes that claim
+	// untestable and the property unusable. Omitted only where a record
+	// carries no rank.
+	Rank     string `json:"rank,omitempty"`
 	WorkItem string `json:"work_item,omitempty"`
 }
 
@@ -73,6 +79,7 @@ func toItemJSON(v app.View) itemJSON {
 		Slug:     v.Slug,
 		Title:    v.Title,
 		Status:   v.Status,
+		Rank:     v.Rank,
 		WorkItem: v.WorkItem,
 		Created:  toStampJSON(v.Created),
 		Modified: toStampJSON(v.Modified),

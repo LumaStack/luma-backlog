@@ -24,6 +24,15 @@ type Spec struct {
 	// unlike an outcome's desired_state there is nothing here that has to be
 	// filled in later.
 	Description string
+	// Rank is the position the record is created at, already allocated by the
+	// caller. Empty on any unit that is not ranked.
+	//
+	// It arrives from outside because allocating it means reading the records
+	// already at the default status, and which records those are is a
+	// question about the corpus rather than about this record — the same
+	// reason a status change allocates in internal/app. Passing it in keeps
+	// creation one write: a record is never written unranked and then ranked.
+	Rank string
 }
 
 // Result reports what happened, so a caller can tell a creation from a
@@ -192,6 +201,11 @@ func render(s Spec, cfg config.Config, e env.Env, adr int, key string) ([]byte, 
 	// unbacked assertion this design exists to distrust (docs/spec.md §4.4).
 	if IsWorked(s.Unit) {
 		r.Set("workflow_status", cfg.DefaultStatusFor(s.Unit))
+	}
+	// Written with the status it belongs to, never separately --- ADR-0005's
+	// invariant holds at creation as it does at every later crossing.
+	if s.Rank != "" {
+		r.Set("rank", s.Rank)
 	}
 	// A kind is written only when somebody said one. Absence means ordinary
 	// work — something we decided to do, obliging nobody — which is the

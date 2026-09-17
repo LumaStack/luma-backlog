@@ -7,7 +7,8 @@ kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:49:00Z'}
 description: 'workflow status, gates, pipelines and work statuses are ad hoc terms and they are starting to bleed into everything. two questions: should each step in the workflow status have a gate, and do gates survive an enterprise adding more steps — the hope is yes and the assumption should be play tested rather than argued. the words have to last, must not crash into other frameworks, and there should be as few of them as possible: run, pipeline, gate and workflow are all highly valuable words and should be reserved lightly.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:49:00Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0660.000
 ---
 
 # Finalize the vocabulary for the workflow model

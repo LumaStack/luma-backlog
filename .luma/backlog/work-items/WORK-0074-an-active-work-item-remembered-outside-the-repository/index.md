@@ -7,8 +7,8 @@ kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T19:36:09Z'}
 description: what somebody is working on right now, so commands stop needing -w on every call. not in git — it is per actor rather than per corpus, and two agents in worktrees would clobber one pointer. per machine to begin with, per user eventually.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:15:12Z'}
-rank: 010.0140.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 010.0580.000
 ---
 
 # An active work item, remembered outside the repository
