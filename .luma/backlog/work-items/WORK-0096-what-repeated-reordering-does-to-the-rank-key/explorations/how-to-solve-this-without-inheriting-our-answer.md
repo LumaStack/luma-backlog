@@ -46,20 +46,107 @@ badly.
 **Cards also move between columns**, at which point they take a place in the
 order of the column they arrive in.
 
-### The workload that has to survive
+### Which end a card arrives at, and how often
 
-**Some cards never move, and they are not at the ends of a column.** Something
-was added years ago, nobody will ever pick it up, and nobody will delete it. It
-sits in the middle of its column indefinitely while everything around it is
-reordered --- and **it cannot be renumbered, because renumbering it is the
-many-file write above.**
+**Advancing puts a card at the back of its destination. Going backwards puts it
+at the front.**
 
-**Two columns grow without bound by construction.** The intake column, because
-new cards never stop arriving. The done column, because work keeps finishing.
-Neither has a ceiling, ever.
+- **Advancing** --- the ordinary direction, along the board from intake toward
+  done. The card goes **behind** everything already in the column it arrives in,
+  because arriving says nothing about it relative to cards that were already
+  there, and because several cards advanced in order then keep that order, each
+  landing behind the last.
+- **Going backwards** --- returned, unblocked, reopened, deselected. The card
+  goes **in front**. Not because moving backwards means the card matters more,
+  but because burying something should be an act somebody performs rather than
+  something a default does quietly: **a card placed too high is visible at the
+  top of a column and gets corrected, while one placed too low is invisible and
+  stays wrong.**
 
-**Cards are reordered on both sides of the ones that never move**, and the board
-may see ten thousand such operations a day for a hundred years.
+**Advancing is the overwhelmingly common case. Going backwards is rare** ---
+though it is not negligible, and one bulk backwards move can involve a whole
+column at once (workload 8).
+
+**So the two budgets are consumed differently.** The back of a column absorbs
+every advance plus every new card. The front absorbs every backwards move
+**plus every deliberate promotion**, and promotion is ordinary behaviour rather
+than an exception --- which is why the front is under more pressure than the
+direction statistics alone would suggest.
+
+**This rule is ours and it is renegotiable.** It is stated because it determines
+the access pattern you have to survive, not because it is settled. If an answer
+is better when an arriving card lands somewhere else --- or when arrival does
+not allocate at all --- say so.
+
+### The workloads that have to survive
+
+**These are the shapes that break things, listed so an answer can be tested
+against each rather than against a general impression.** Some are observed on a
+real board; the rest follow from how boards are used. **An answer should say
+what happens under every one of them.**
+
+**1. Intake grows forever, and cards are promoted past one that never moves.**
+New cards land at the back of the intake column and never stop arriving.
+Triage pulls the ones that matter upward --- **past an old card that nobody will
+ever pick up and nobody will delete.** So that one card accumulates an
+ever-growing population above it while sitting exactly where it is.
+*Stresses: an unbounded back, and an unbounded run of insertions immediately
+above a fixed interior point, at the same time.*
+**Observed** --- the intake column on this board holds 79 cards and its oldest
+have never moved.
+
+**2. Done grows forever, append-only.** Every finished card is appended and
+never reordered again. Millions of appends, no interior pressure, no deletions.
+*Stresses: a back with no ceiling at all.* **This is the easiest case and it
+must be exactly free.** If unbounded append is a problem, the approach is wrong
+at the foundation rather than in need of tuning.
+
+**3. A blocked card in the queue, with traffic on both sides.** Something is
+selected, then blocked, and sits in the queue for years. New work keeps arriving
+behind it; urgent work keeps being pulled in front of it. **It never moves and
+it is in the middle.**
+*Stresses: both budgets around one immovable point simultaneously.* **This is
+the canonical case for requirement 7, and the one most schemes fail.**
+
+**4. The same card promoted to the front, again and again.** Somebody keeps
+deciding one card is the most important thing --- or an agent re-prioritises on
+every pass. Each promotion has to find a place before whatever is currently
+first.
+*Stresses: the front budget, in isolation.* **This is the cheapest way to
+exhaust a scheme that subdivides**, and it is ordinary behaviour rather than
+abuse.
+
+**5. One card dragged into the same interior gap, repeatedly.** Between the same
+two neighbours, over and over, as somebody fiddles with an order.
+*Stresses: the room inside a single gap, with both ends pinned.*
+
+**6. A card that leaves a column and comes back.** Started, then returned to the
+queue; started again; returned again. **Each arrival needs a place, and the
+column it returns to has been reordered since it left.**
+*Stresses: whether leaving a column frees anything, and whether re-entry costs
+the same as first entry.*
+
+**7. A finished card is reopened.** It returns from done to a column it left
+long ago, where its old place is meaningless and its old neighbours have moved
+or gone.
+*Stresses: placing a returning card without reference to where it used to be.*
+
+**8. A whole column is drained in one operation.** Every card in one column
+moves to another --- a decision to abandon a stage, or a bulk re-triage.
+*Stresses: the many-file write, and whether the batch keeps its relative order
+on arrival.*
+**Observed** --- thirteen cards moved in a single commit on this board.
+
+**9. Two actors place a card at the same spot, concurrently.** Two branches, the
+same pair of neighbours, no communication, and a merge afterwards.
+*Stresses: whether two independent writes can be **both valid and
+indistinguishable**.* **This is the dangerous one**, because it is the only
+failure on this list that produces no error and no conflict --- just a board
+that is quietly in the wrong order.
+
+**10. A hundred years of it.** Not a burst --- a slow accumulation that never
+resets, on a board nobody ever rebuilds, with the volume in the table below.
+*Stresses: the total budget, rather than the rate.*
 
 ### What makes it hard, whatever the answer looks like
 
@@ -202,6 +289,8 @@ answer that abandons one should say so rather than quietly work around it.
 - **That the stored value orders anything directly.** It may merely identify,
   with the order computed from it.
 - **Which direction means earlier.**
+- **Which end an arriving card lands at**, and whether arriving in a column has
+  to allocate anything at all.
 - **The width of the value.** Longer is a cost to weigh, not a limit.
 - **The vocabulary.** Every word we use for this is ours; an answer needing none
   of them is not a worse fit for that reason.
