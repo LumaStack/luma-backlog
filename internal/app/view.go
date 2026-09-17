@@ -157,29 +157,78 @@ func rankOf(it corpus.Item) string {
 	return r
 }
 
-// byWorkOrder sorts a listing the way the work is meant to be done: ranked
-// records first, in rank order, then everything nobody has placed.
+// byWorkOrder sorts a listing the way the work is meant to be done: by where a
+// record stands on the ladder, then by its position among the records standing
+// with it, then by name.
 //
-// The rank is compared as text, which is the whole reason it is zero-padded on
-// both halves (ADR-0005, spec.md §9.6) --- text order and numeric order are the
-// same order, so this needs no comparator and cannot disagree with anything
-// else that sorts the field.
+// **The group comes from `workflow_status`, not from the rank string.**
+// ADR-0005 says rank orders records *within* a status, and reading the group
+// out of the rank made the rank the only thing that said which status a record
+// was ordered within --- so a record with no rank fell below every status
+// instead of to the back of its own, and one listing showed `captured` work
+// above `in_progress` work with nothing explaining why.
 //
-// Unranked records come last rather than first. A rank is a position somebody
-// chose; a record without one has not been placed, and putting it above the
-// records that have been would let an unconsidered record outrank a considered
-// one.
-func byWorkOrder(views []View) {
+// The position half is still compared as text, which is the whole reason it is
+// zero-padded (ADR-0005, spec.md §9.6) --- text order and numeric order are the
+// same order, so there is no arithmetic here to disagree with anything else
+// that sorts the field.
+//
+// A record nobody has placed sorts to the back of its own status. A rank is a
+// position somebody chose, so an unplaced record must not outrank a placed one
+// --- but it must not leave its status either, which is the whole correction.
+func (s *Session) byWorkOrder(views []View) {
 	sort.SliceStable(views, func(i, j int) bool {
-		a, b := views[i].Rank, views[j].Rank
-		switch {
-		case a != "" && b != "":
-			return a < b
-		case a != "":
-			return true
-		case b != "":
-			return false
+		a, b := views[i], views[j]
+		if ga, gb := s.groupOf(a), s.groupOf(b); ga != gb {
+			return ga < gb
 		}
-		return views[i].Name < views[j].Name
+		pa, pb := positionOf(a.Rank), positionOf(b.Rank)
+		if pa != pb {
+			if pa == "" {
+				return false
+			}
+			if pb == "" {
+				return true
+			}
+			return pa < pb
+		}
+		return a.Name < b.Name
 	})
+}
+
+// groupOf is where a record stands on its own unit's ladder.
+//
+// A status the vocabulary no longer carries has no ordinal, and neither does a
+// record whose type declares no status at all. Both sort after every known
+// status rather than being refused: configuration is a file people may edit
+// (principles.md), a renamed status is reported as drift elsewhere
+// (spec.md §5.2), and a listing that dropped or rejected those records would
+// hide the very thing the drift report is telling somebody to fix.
+func (s *Session) groupOf(v View) int {
+	if n, ok := s.Config.LadderFor(v.Type).Ordinal(v.Status); ok {
+		return n
+	}
+	return unplacedGroup
+}
+
+// unplacedGroup sorts after every ordinal a ladder can hold --- ordinalDigits
+// caps a ladder at 999 statuses (corpus/rank.go), so this is past the end of
+// any vocabulary rather than a number somebody might configure.
+const unplacedGroup = 1000
+
+// positionOf is the ordering half of a rank, or empty where the record has no
+// rank or one that does not parse.
+//
+// A malformed rank is treated as absent for ordering and reported elsewhere:
+// guessing at half of one would put a record somewhere nobody chose, which is
+// worse than the back of its own status.
+func positionOf(rank string) string {
+	if rank == "" {
+		return ""
+	}
+	_, pos, err := corpus.SplitRank(corpus.Rank(rank))
+	if err != nil {
+		return ""
+	}
+	return string(pos)
 }

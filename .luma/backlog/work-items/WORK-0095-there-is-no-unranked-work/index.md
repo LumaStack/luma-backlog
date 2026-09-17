@@ -3,12 +3,12 @@ type: work-item
 key: WORK-0095
 title: There is no unranked work
 description: 'Ranking needs to always happen --- there is no unranked stuff, ever. Everything is ranked all the time, and new things just go to the bottom or the top or wherever we want them, but they are always ranked. What has to be decided is where a record lands on each event: creation, advancing, and going backwards --- and whether any work status is special enough to behave differently.'
-workflow_status: prepared
+workflow_status: in_progress
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T16:31:16Z'}
-rank: 040.0010.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T02:32:32Z'}
+rank: 060.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:28:05Z'}
 ---
 
 # There is no unranked work

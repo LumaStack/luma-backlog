@@ -477,3 +477,63 @@ func TestOpenAndStatusTogetherAreRefused(t *testing.T) {
 		t.Error("--open and --status were accepted together")
 	}
 }
+
+// keysInOrder is the KEY column of a listing, top to bottom.
+func keysInOrder(t *testing.T, app *App, args ...string) []string {
+	t.Helper()
+	code, out, e := run(t, app, args...)
+	if code != ExitOK {
+		t.Fatalf("%v failed: %s", args, e)
+	}
+	var keys []string
+	for _, line := range strings.Split(strings.TrimSpace(out), "\n")[1:] {
+		keys = append(keys, strings.Fields(line)[0])
+	}
+	return keys
+}
+
+// A listing groups by where a record stands, and an unranked record sorts to
+// the back of its own status rather than out of the ladder entirely.
+//
+// This is the defect WORK-0095 was opened for. byWorkOrder read the status
+// group out of the rank string, so the only records with a group were the ones
+// somebody had ranked --- and since creation writes no rank, most of a corpus
+// sorted below every status. Live, that put one in_progress record underneath
+// fourteen captured ones and then eighty unranked records of every status
+// beneath both.
+func TestAListingGroupsByStatusAndNotByWhoHasARank(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")   // WORK-0001, captured, unranked
+	run(t, app, "work-item", "new", "Bravo")   // WORK-0002, captured, unranked
+	run(t, app, "work-item", "new", "Charlie") // WORK-0003, about to be ranked
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0003")
+	if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", "in_progress"); code != ExitOK {
+		t.Fatalf("transition failed: %s", e)
+	}
+
+	got := keysInOrder(t, app, "work-item", "list")
+	want := []string{"WORK-0001", "WORK-0002", "WORK-0003"}
+	if strings.Join(got, ",") != strings.Join(want, ",") {
+		t.Errorf("listing is ordered by who holds a rank, not by status:\ngot  %v\nwant %v", got, want)
+	}
+}
+
+// Within one status, a record somebody placed outranks one nobody has.
+//
+// The correction must not go too far the other way: an unplaced record sorting
+// to the back of its own status is the point, and sorting to the front of it
+// would let an unconsidered record outrank a considered one (ADR-0005).
+func TestWithinAStatusARankedRecordOutranksAnUnrankedOne(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha") // WORK-0001
+	run(t, app, "work-item", "new", "Bravo") // WORK-0002
+	if code, _, e := run(t, app, "rank", "WORK-0002", "--first"); code != ExitOK {
+		t.Fatalf("rank failed: %s", e)
+	}
+
+	got := keysInOrder(t, app, "work-item", "list")
+	want := []string{"WORK-0002", "WORK-0001"}
+	if strings.Join(got, ",") != strings.Join(want, ",") {
+		t.Errorf("a placed record did not outrank an unplaced one at the same status:\ngot  %v\nwant %v", got, want)
+	}
+}

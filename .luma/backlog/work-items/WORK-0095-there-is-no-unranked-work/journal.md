@@ -106,6 +106,54 @@ backwards re-enqueues at the back today, like everything else, and it points at
 this record for the proposal instead of describing it as though it were built.
 WORK-0095-there-is-no-unranked-work preparing → prepared: outcomes accepted by human:luma-foundry --- all three read back and two of them corrected in the process
 ACCEPTED: the three outcomes were accepted by human:luma-foundry on 2026-09-16, which is the authorization for preparing → prepared. Recorded here because there is nowhere else --- no field holds an acceptance yet (WORK-0097), so this line is the only thing that says who gave it. The accepter is not the proposer, which is the property the gate exists for.
+WORK-0095-there-is-no-unranked-work prepared → todo: committing to it now --- 'let's continue' answers the prepared → todo question left open at the end of the last session
+WORK-0095-there-is-no-unranked-work todo → in_progress: starting on the two tasks that need no migration; owner is the maintainer, no field exists to say so (ADR-0008)
+### Two tasks built: the listing groups by status, and going back lands first
+
+**`byWorkOrder` takes the group from `workflow_status` now, and the position
+from the rank.** `internal/app/view.go`. Before, it read the group out of the
+rank string, so the only records with a group were the ones somebody had ranked
+--- and since creation writes no rank, that was most of the corpus. Measured on
+this repo: the listing went from three interleaved regions to three clean blocks
+of 79 `captured`, 1 `in_progress`, 18 `closed`.
+
+A record with no rank now sorts to the back of **its own** status. A malformed
+rank is treated the same way and reported elsewhere, and a status the vocabulary
+no longer carries sorts after every known one rather than being dropped, since
+the drift report is telling somebody to fix exactly those.
+
+**`applyStatus` reads the current status before writing the new one**, so
+direction is derived rather than passed --- a caller cannot get it wrong because
+there is nothing to pass. `internal/app/status.go`. Advancing allocates against
+the back peer, going backwards against the front one.
+
+**Tests fail without each change, checked by stashing it.** The listing test got
+`[0003 0001 0002]` --- the one ranked `in_progress` record above two unranked
+`captured` ones, which is the reported defect exactly. The placement test got
+`[0001 0002 0003]` where the record sent back should have been first.
+
+**ADR-0005 is amended in place, dated, in two sections.** The allocation rule
+now says advancing goes to the back and going backwards goes to the front, with
+the recoverable-error reasoning and the batch-reversal caveat. The storage
+section now says the prefix is a convenience for readers outside this tool
+rather than what the tool sorts on --- it is still written and still checked,
+which also makes a drifted prefix harmless for ordering instead of silently
+misplacing a record.
+
+### No outcome is provable yet, and one of them may now be wrong
+
+**Outcome 3 needs the per-pair test.** Its `verify_by` asks for one test per
+status pair so an exempted status fails; what exists covers `in_progress → todo`
+and the first-crossing case. That is the fifth task and it is still open.
+
+**Outcome 2 may be over-specified, and the listing fix is why.** It asks that no
+work item be without a rank. The listing fix makes an absent rank *harmless* ---
+the record sorts at the back of its own status --- so the backfill no longer
+fixes a visible defect. What it still buys is the prefix being true for an
+external reader sorting the raw field, which ADR-0005 now calls a convenience.
+**That is a Redefine question and not mine to answer**: is outcome 2 *every
+record carries a rank*, or *an absent rank costs nothing*? They are different
+work, and the second is already done.
 
 ## ▶ 2026-09-10
 

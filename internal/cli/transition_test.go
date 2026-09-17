@@ -565,3 +565,62 @@ func TestClosingWithOpenTasksWarnsAndDoesNotCloseThem(t *testing.T) {
 		t.Error("closing the work item closed its task, inventing a disposition")
 	}
 }
+
+// Advancing lands a record at the back of its destination; going back lands it
+// at the front (ADR-0005, amended 2026-09-17).
+//
+// The two halves are one test because the asymmetry is the claim. Advancing to
+// the back is what preserves the order of a batch --- each arrives behind the
+// last --- and going back to the front is what keeps burying a record an act
+// somebody performs rather than something a default does quietly.
+func TestAdvancingLandsLastAndGoingBackLandsFirst(t *testing.T) {
+	app, _ := initialized(t)
+	for _, title := range []string{"Alpha", "Bravo", "Charlie"} {
+		run(t, app, "work-item", "new", title)
+	}
+	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0003")
+
+	// Advanced in order, so Alpha is ahead of Bravo at todo.
+	for _, key := range []string{"WORK-0001", "WORK-0002"} {
+		if code, _, e := run(t, app, "work-item", "transition", key, "todo"); code != ExitOK {
+			t.Fatalf("advancing %s failed: %s", key, e)
+		}
+	}
+	if got := keysInOrder(t, app, "work-item", "list", "--status", "todo"); strings.Join(got, ",") != "WORK-0001,WORK-0002" {
+		t.Fatalf("advancing did not land the second record behind the first: %v", got)
+	}
+
+	// Charlie goes past todo, then comes back to it.
+	if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", "in_progress"); code != ExitOK {
+		t.Fatalf("advancing Charlie failed: %s", e)
+	}
+	if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", "todo"); code != ExitOK {
+		t.Fatalf("sending Charlie back failed: %s", e)
+	}
+
+	got := keysInOrder(t, app, "work-item", "list", "--status", "todo")
+	want := "WORK-0003,WORK-0001,WORK-0002"
+	if strings.Join(got, ",") != want {
+		t.Errorf("a record sent back did not land at the front:\ngot  %v\nwant %s", got, want)
+	}
+}
+
+// A first crossing is an arrival, not a return.
+//
+// A record leaving `captured` for the first time has a status below its
+// destination, so nothing about it is a regression --- and treating it as one
+// would put every newly selected record ahead of the work already queued,
+// which is the opposite of what the placement rule is for.
+func TestAFirstCrossingLandsAtTheBack(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Alpha")
+	run(t, app, "work-item", "new", "Bravo")
+	for _, key := range []string{"WORK-0001", "WORK-0002"} {
+		run(t, app, "work-item", "transition", key, "unprepared")
+	}
+
+	got := keysInOrder(t, app, "work-item", "list", "--status", "unprepared")
+	if strings.Join(got, ",") != "WORK-0001,WORK-0002" {
+		t.Errorf("selection was treated as a regression: %v", got)
+	}
+}
