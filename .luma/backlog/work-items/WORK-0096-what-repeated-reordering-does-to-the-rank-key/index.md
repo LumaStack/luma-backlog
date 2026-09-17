@@ -21,57 +21,95 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T15:17:41Z'}
 > and are worth reading **after** you have formed a view, not before. An
 > exploration under this record carries the measurements and also a leaning;
 > the numbers are reliable and the leaning is one week of one team's thinking.
+>
+> **And the framing is ours too.** If the problem is mis-stated --- if a
+> requirement is really a preference, if an assumption is wrong, if the thing
+> being ordered is not what should be ordered --- **say that instead of working
+> around it.** We have been inside this for a week and are the least likely
+> people to notice that the question is the wrong shape.
 
 ## The problem
 
-**A backlog has to remember what order to work things in, and that order has to
-survive being changed constantly by people and agents who are not coordinating.**
+**A backlog has to keep its work in an order, and that order changes
+constantly.** People and agents reorder it independently --- on different
+machines, in different branches, without talking to each other --- and find out
+what everybody else did when git merges.
 
-Every work item carries a `rank`: a workflow status ordinal, then a position
-among the records sharing that status. Records are markdown files in git. There
-is no server and no allocator --- **two actors on two machines, or two agents in
-two worktrees, reorder independently and find out at merge.**
+**The order lives in files.** Each work item is a markdown file in git. There is
+no server, no allocator and nothing to ask: whatever a record needs in order to
+know where it sits has to be written in the record itself.
 
-Reordering a record must write **that record and no others.** A scheme that
-renumbers neighbours turns the most common operation on a board into a
-many-file diff, and many-file diffs of meaningless numbers are unreviewable and
-conflict badly.
+**Changing where one record sits should write one record.** Anything that
+renumbers its neighbours turns the commonest operation on a board into a
+many-file diff --- and a many-file diff of ordering data cannot be reviewed and
+merges badly.
 
-### The workload that breaks it
+### The workload that has to survive
 
-**One record that never moves.** Something sits in a status --- a `todo` nobody
-ever picks up --- and stays there while everything around it moves. Every record
-selected afterwards is placed behind it. Everything urgent is placed in front of
-it. **Both ends of one status are allocated into, over and over, indefinitely.**
+**Some records never move, and they are not at the ends.** An old `captured`
+item nobody will ever pick up; a `todo` that was selected years ago and
+forgotten. They sit in the middle of the order indefinitely while work is
+reordered around them, and they cannot be renumbered, because renumbering them
+is the many-file write above.
 
-Two statuses grow without bound by construction: `captured`, because capture
-never stops, and `closed`, because work keeps finishing. And an early
-`captured` record will end up with nearly every later record ranked above it.
+**Some groups grow forever.** `captured` grows because capture never stops, and
+`closed` grows because work keeps finishing. Neither has a ceiling.
 
-### What has been measured
+**Work is reordered on both sides of the things that do not move**, and the
+project may do this ten thousand times a day for a hundred years.
 
-Against the current implementation, 2026-09-17 --- see the exploration under this
-record:
+### What makes it hard, whatever the answer looks like
 
-| operation | how it allocates | exhausted after |
+- **Nothing may coordinate.** Two actors must both be able to reorder without
+  asking anything.
+- **Git merges the result with the tool absent**, so whatever is stored has to
+  behave when two branches are joined by `git` alone.
+- **The immovable element is interior**, so room is needed on both sides of a
+  thing that cannot be touched.
+- **There is no upper bound on how much work arrives**, or on how long the
+  project runs.
+
+## What exists today, and why it is only evidence
+
+> **Read this as a measurement of one family of answers, not as a description of
+> the problem.** The vocabulary here --- rank, position, ordinal, allocation,
+> gap --- belongs to the thing we happen to have built. **None of it is required
+> by the problem above, and a better answer may share none of these words.**
+>
+> It is here because measuring it produced one general result worth having, and
+> because somebody will otherwise ask what we tried.
+
+**What it is.** Every work item carries a `rank`: a number for its workflow
+status, then a decimal position among the records sharing that status. Placing
+a record allocates a new position between its neighbours, or beyond the end.
+Sorting the field as text gives the order.
+
+**What measuring it found**, 2026-09-17 --- the full numbers are in the
+exploration under this record:
+
+| operation | how it allocates | runs out after |
 | --- | --- | --- |
-| place at the back | whole steps while they fit, then subdivide | 1,202 |
+| place at the back | whole steps while they fit, then subdivides | 1,202 |
 | place at the front | subdivides from the first move | 204 |
 | place between two neighbours | subdivides the gap | 204 |
 
-**Subdividing costs about one decimal digit per operation and the arithmetic is
-quadratic in the key length.** 2,925 successive front-placements produced a
-2,929-character key and took 25 seconds. **Stepping by whole numbers costs
-nothing by comparison:** a million steps is a 7-digit key and microseconds.
+**The one durable result: subdividing a finite interval cannot meet the
+requirements below, and no amount of precision changes that.** Each
+subdivision adds information the key has to carry, so key length grows linearly
+in the number of operations and the arithmetic grows quadratically --- 2,925
+successive front-placements produced a 2,929-character key and took 25 seconds.
+**Stepping through whole numbers costs nothing by comparison**: a million steps
+is a seven-digit key and microseconds. **That result is about a family of
+schemes, not about this implementation**, and it is the only thing here that
+should carry weight in a design.
 
-**Exhaustion is currently loud.** Allocation refuses rather than returning a
-position a neighbour already holds --- an earlier version rounded instead, and
-silently produced duplicate positions with the order gone.
-
-**A whole-status renumber exists and converges.** It numbers records in creation
-order, so it is a pure function of the corpus: two actors who repair the same
-state independently produce byte-identical files, and a merge resolves itself.
-It rewrites every record at the status.
+**Two behaviours of the present code that are worth knowing and prove nothing.**
+Running out is loud --- allocation refuses rather than handing back a position a
+neighbour already holds, after an earlier version rounded and silently produced
+duplicates with the order gone. And a whole-status renumber exists and
+converges: it numbers records in creation order, so two actors repairing the
+same state produce byte-identical files and the merge resolves itself. It
+rewrites every record at the status.
 
 ## What a solution has to achieve
 
@@ -110,9 +148,10 @@ requirements 3, 4 and 5 and fails this one on its first interior insertion ---
 and interior insertion is precisely where the present scheme runs out after
 about two hundred moves.
 
-**For any positional scheme, one width pays for two budgets.** The total number
-of records a status can hold and the room available inside each gap both come
-out of the same range:
+**If the answer is positional, one width pays for two budgets** --- and this
+arithmetic applies only in that case, which is itself a reason not to assume it.
+The total number of records a group can hold and the room available inside it
+both come out of the same range:
 
 ```
 range = records × room per gap
@@ -166,8 +205,11 @@ than discover the trade later.
    goal; text sorting is only the ideal way to reach it.
    - **Best:** a plain lexicographic `sort` on one field --- no numeric flag,
      nothing to look up.
-   - **Acceptable:** a short pipeline over the files that needs no knowledge the
-     files do not already carry --- `sort -t`, `awk`, `jq` on `--json`.
+   - **Acceptable:** a short pipeline over the files themselves that needs no
+     knowledge they do not already carry --- pulling a field out with `grep` or
+     `sed` and handing it to `sort`, with flags or a key spec. **Not the tool's
+     own output**: anything that starts by running the binary to produce JSON
+     has already failed the goal, whatever it does next.
    - **Last resort, and avoided:** needing the binary; needing to read
      configuration to interpret a stored value; or having to walk records one
      at a time to reconstruct the sequence, which is what any next-pointer
@@ -256,6 +298,9 @@ around it:
 - **Whether ascending means earlier.** The direction is an arbitrary choice
   inherited from the first implementation.
 - **The width of the value.** Longer keys are a cost to weigh, not a limit.
+- **The vocabulary.** *Rank*, *position*, *ordinal*, *gap* are words the present
+  implementation chose. The field name is not reserved and the concepts are not
+  given --- an answer that needs none of them is not thereby a worse fit.
 
 ## What is being delivered
 
