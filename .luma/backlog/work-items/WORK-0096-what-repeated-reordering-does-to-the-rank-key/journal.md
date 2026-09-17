@@ -465,3 +465,133 @@ back absorbs every advance plus every new card.
 arriving card lands at, and whether arriving in a column has to allocate
 anything at all. It is in the brief because it determines the workload, not
 because it is settled.
+### The method, written down so it can be reused: blind parallel derivation
+
+**The problem this solves is not a design problem.** When a team has circled a
+hard question for a week, **the team's own thinking is the main obstacle to
+answering it.** Everything written down leans somewhere, and a fresh reader ---
+model or person --- will improve on the attempt instead of solving the problem.
+That is a worse outcome than having asked nobody, because it arrives wearing the
+authority of an independent review.
+
+**So the method is about what a fresh reasoner is allowed to see, and when.**
+
+#### The shape
+
+1. **Write a brief that needs no context.** Self-contained: problem, workload,
+   requirements, goals, assumptions, constraints, what an answer must come with.
+   A reader should need nothing else --- not the codebase, not the design docs,
+   not the history. **If the brief sends somebody looking for context, it has
+   failed.**
+2. **Strip every direction out of it**, and move what leans into a place read
+   only later. Candidates, hunches, prior art, preferences, our measurements'
+   interpretations.
+3. **Make the isolation structural rather than instructed.** Each agent gets its
+   own directory holding a copy of the brief and nothing else. **Telling a model
+   not to read something is weaker than there being nothing to read** --- and
+   the difference costs one `cp`.
+4. **Run two independent modes, blind to each other.**
+5. **Only then read the team's own material**, and make it compete on the same
+   terms as everything else.
+
+#### The two modes, and what each is for
+
+**Mode A --- derivation in isolation.** One or more agents reason from the brief
+alone. **No searching, no literature, no prior art.** The question put to them
+is *what is the right shape for this*, not *what has somebody built*.
+
+- **What it produces:** shapes nobody has built, and a direct attack on the
+  framing. It is the only mode that can return *your problem is the wrong
+  shape*.
+- **Why the ban on searching is not arbitrary:** literature constrains an answer
+  to what exists. Some problems have answers nobody has needed yet, and a
+  reasoner who searches first will never propose one.
+- **Alone, it is enough when** the problem is unusual enough that a literature
+  is unlikely, or when the framing is what you doubt.
+
+**Mode B --- research in isolation.** One or more separate agents find what
+already exists. **No designing.**
+
+- **What it produces:** proven approaches, with what each gives up, and the
+  names to read further.
+- **Why the ban on designing is not arbitrary:** an agent that designs first and
+  searches second finds support for its design. **Searching with a preferred
+  answer in hand is confirmation, not research.**
+- **Alone, it is enough when** the problem is standard and you mainly need to
+  stop reinventing.
+
+**Together, blind, they are worth much more than either.** That is the whole
+point of the method and it is one sentence: **agreement between an independent
+derivation and the published state of the art is evidence. If either saw the
+other first, it is only influence.**
+
+- **They converge** --- strong signal, and you can stop.
+- **They diverge** --- the divergence localises the real tradeoff, which is
+  usually the most useful output of the whole exercise.
+- **Research finds nothing** --- either the problem is genuinely novel, or the
+  search was poor. Both worth knowing.
+
+#### Details that turned out to matter
+
+**Withhold the names you already know.** We deliberately did not list the
+techniques we had found. If they matter they resurface on their own --- and **if
+they do not resurface, that is informative too.** Handing a researcher your
+reading list turns research into verification.
+
+**Redundancy inside a mode, not just across modes.** Three reasoners working
+blind turn one opinion into a signal: where they agree is probably right, where
+they split is where the difficulty actually is. One reasoner gives you an
+opinion you cannot calibrate.
+
+**State the assumptions as attackable, and mark the ones nobody measured.** The
+most valuable thing a fresh reasoner can do is reject a premise, and it cannot
+do that against premises presented as facts.
+
+**List what is *promised* separately from what is *required*.** A promise
+presented as a constraint silently deletes a whole class of answers. Ours nearly
+excluded every scheme where the ordering is derived rather than stored.
+
+**Write down how the team has been wrong so far --- method failures, not
+answers.** We listed five: anchoring, measuring one budget of two, making a
+failure silent while trying to make it safe, claiming bounds without measuring
+them, and reading a symptom as success. **The pattern across all five was a
+plausible statement nobody had checked**, which is a more useful warning than
+any single instance.
+
+**Give the reasoner an escape hatch that outranks the protocol.** *If the
+problem is the wrong shape, say so and stop.* Otherwise a well-structured
+process guarantees an answer to the question as asked, which is exactly the
+failure the method exists to avoid.
+
+#### What it costs, honestly
+
+**The brief is most of the work** --- it took the better part of a session, and
+several passes to get the direction out of it. **Three of the leaks were found
+only by grepping for our own vocabulary**, not by reading.
+
+**N agents reasoning deeply is not cheap.** Five was the plan here: three
+deriving, two researching.
+
+**And it duplicates the problem statement.** Accepted here because the work item
+closes and the duplicate dies with it --- worth checking before copying the
+method into a context where the brief has to live forever.
+
+#### When not to use it
+
+- **The decision is cheap to reverse.** The method costs more than the mistake.
+- **The answer is a lookup.** Mode B alone, or neither.
+- **You cannot write a self-contained brief.** That is not a reason to skip the
+  method --- **it means the problem is not understood well enough yet**, and
+  discovering that is worth the attempt.
+
+#### Where this should live if it proves out
+
+**A journal entry on a work item that will close is where knowledge goes to
+die.** If this method produces a good answer, its durable home is a procedure in
+a bundle --- the *how*, with this entry's reasoning as the *why*. It is not
+specific to ordering, or to this project: it applies to any foundational,
+hard-to-reverse decision that a team has already circled.
+
+**Judge it on the outcome before promoting it.** The method is currently an
+untested bet whose main evidence is that the failure it guards against ---
+anchoring --- was observed repeatedly here, by people who knew to watch for it.

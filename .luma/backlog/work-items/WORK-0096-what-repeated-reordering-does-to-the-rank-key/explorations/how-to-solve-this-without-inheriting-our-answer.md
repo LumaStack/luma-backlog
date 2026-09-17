@@ -413,6 +413,111 @@ goal sacrificed and what would reopen the question.
 
 ---
 
+## How to run this
+
+**The one thing that matters operationally: stages 2 and 3 must not be able to
+see each other, or this file's siblings.** Telling a model not to read something
+is weaker than there being nothing to read. So **each agent gets its own
+directory holding a copy of this file and nothing else** --- which makes the
+avoid-list below a belt on top of braces rather than the only safeguard.
+
+### Set up, once
+
+```sh
+cd <this repository>
+BRIEF=.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key/explorations/how-to-solve-this-without-inheriting-our-answer.md
+
+mkdir -p ~/rank-problem
+for d in reason-1 reason-2 reason-3 research-1 research-2; do
+  mkdir -p ~/rank-problem/"$d"
+  cp "$BRIEF" ~/rank-problem/"$d"/PROBLEM.md
+done
+```
+
+**Three reasoners and two researchers.** One of each is the minimum; three
+reasoning independently is what turns agreement into evidence rather than one
+opinion.
+
+### Stage 2 --- each reasoner in its own directory
+
+```sh
+cd ~/rank-problem/reason-1 && claude
+```
+
+Pick the strongest model available with `/model`, then paste:
+
+> ultrathink
+>
+> Read `PROBLEM.md`. It is the entire brief --- there is deliberately nothing
+> else in this directory, and you need nothing else.
+>
+> Do **stage 2 only**. Reason the problem out from first principles. **Do not
+> search the web, and do not look for prior art or named algorithms** ---
+> another agent is doing that independently, and the worth of your answer
+> depends on it being yours.
+>
+> Write it to `ANSWER.md`. It must answer *What any answer must come with* in
+> full, and it must name which goal it trades.
+
+**Repeat in `reason-2` and `reason-3`.** Never two in one directory or one
+session.
+
+### Stage 3 --- each researcher in its own directory, at the same time
+
+```sh
+cd ~/rank-problem/research-1 && claude
+```
+
+> ultrathink
+>
+> Read `PROBLEM.md`. It is the entire brief.
+>
+> Do **stage 3 only**. Search for how this problem has been solved elsewhere ---
+> databases, ordered collections, sequence data structures, order-preserving
+> encodings, concurrent editing, and anything the search turns up that the brief
+> does not name. **The brief deliberately withholds the techniques we already
+> know about.**
+>
+> **Do not design your own scheme** --- another agent is doing that
+> independently. Report what exists, with sources.
+>
+> Write it to `ANSWER.md`: each approach, what it gives up, and which of the
+> seven requirements it would fail.
+
+### Stage 4 --- bring them together, in the repository
+
+**Only once every `ANSWER.md` exists.** A fresh session in this repository:
+
+> Read every `~/rank-problem/*/ANSWER.md`. Then read this work item's journal,
+> its other exploration, and the decision record on ordering --- the material
+> earlier stages were told to avoid.
+>
+> Build one comparison: every candidate, ours included, against every column of
+> *What any answer must come with*. Explain each. **Ours competes on the same
+> terms rather than by incumbency.**
+
+### Stage 5 --- decide
+
+A conversation with the maintainer, ending in a decision record that names the
+goal sacrificed and what would reopen the question.
+
+### On `ultrathink` and model choice
+
+**`ultrathink` in a prompt asks for deeper reasoning on that turn**, and this is
+a problem worth spending it on. Include it --- it is cheap and at worst inert.
+
+**Type it yourself in a top-level session rather than trusting it to reach a
+subagent.** Launching all five from one session would be quicker and would keep
+them blind automatically, but a subagent's reasoning depth comes from how that
+agent is configured rather than from a word in its prompt --- so the separate
+sessions above are the version whose depth you can be certain of.
+
+**Use the most capable model for stages 2 and 4.** Stage 3 is search and
+summary and is less sensitive. **Stage 4 is where a weaker model shows**: it has
+to hold every candidate at once and find the fault none of the others did.
+
+---
+
 ## What not to read until stage 4, and what each would cost you
 
 **You need nothing from this repository.** These are the specific traps.
