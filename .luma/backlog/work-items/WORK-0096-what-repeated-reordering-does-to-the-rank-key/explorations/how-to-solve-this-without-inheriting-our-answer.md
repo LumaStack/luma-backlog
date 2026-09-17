@@ -382,10 +382,19 @@ agreement into evidence. One is the minimum.)*
 
 ### Stage 3 --- search the literature, independently and blind
 
-**Separate agents, running at the same time as stage 2, and neither sees the
-other's output until both are finished.** The blindness is the point:
-**agreement between an independent derivation and the published state of the art
-is evidence. If either saw the other first, it is not.**
+**Separate agents, and no agent ever sees another's output.** That is the
+requirement; **when each one runs does not matter.** Give each its own directory
+holding nothing but the brief and the blindness is guaranteed by the filesystem
+rather than by timing --- run them in parallel because it is quicker, or one at a
+time because it is easier, and the result is the same.
+
+**The blindness is the point: agreement between an independent derivation and
+the published state of the art is evidence. If either saw the other first, it is
+not.**
+
+**The remaining risk is not the agents, it is whoever is running them.** Read one
+answer before briefing the next agent and you will nudge it --- usually by adding
+*also consider this*. **So read nothing until every answer exists.**
 
 Look for how this has been solved elsewhere --- ordering that survives
 concurrent editing without rewriting rows, ordered collections in databases,
@@ -478,7 +487,10 @@ Pick the strongest model available with `/model`, then paste:
 **Repeat in `reason-2` and `reason-3`.** Never two in one directory or one
 session.
 
-### Stage 3 --- each researcher in its own directory, at the same time
+### Stage 3 --- each researcher in its own directory
+
+**Order does not matter** --- but researchers tend to take longer, because they
+are searching, so starting them first uses the wall clock better.
 
 ```sh
 cd ~/Workspace/scratch/rank-workspace/research-1 && claude
@@ -505,6 +517,9 @@ cd ~/Workspace/scratch/rank-workspace/research-1 && claude
 **Do this before stage 4, and do not read the answers while doing it.** They are
 being filed, not assessed --- and they should all arrive before any of them is
 judged, so that reading order does not decide anything.
+
+**This is the last point at which the blindness can be lost**, and it is lost by
+a person rather than by an agent.
 
 For each answer, in the repository:
 
