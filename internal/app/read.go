@@ -71,7 +71,7 @@ func (s *Session) List(f Filter) (*ListResult, error) {
 		}
 		views = append(views, v)
 	}
-	byWorkOrder(views)
+	s.byWorkOrder(views)
 	return &ListResult{
 		Items: views,
 		Observations: Observations{

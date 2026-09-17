@@ -5,7 +5,7 @@ decided: 2026-09-05
 stage: provisional
 reopen_trigger: a case appears where something earlier in the workflow genuinely needs to be worked before something later, and priority cannot express it
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-05T21:06:00Z'}
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T00:24:45Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T00:00:00Z'}
 ---
 
 # ADR-0005: Rank is work order and workflow status dominates it
@@ -95,16 +95,66 @@ status, so the prefix is never part of the arithmetic.
 Sorting the raw field gives board order with no configuration read, which is
 what the prefix is for and its only purpose.
 
+> **Amended 2026-09-17. The prefix is a convenience for anything outside this
+> tool, and is no longer what the tool itself sorts on.**
+>
+> A record with no rank has no prefix, so sorting the raw field put it below
+> every status rather than at the back of its own — and since creation writes
+> no rank, that was most of a corpus. **This record says rank orders records
+> *within* a status; reading the group out of the rank made the rank the only
+> thing that said which status a record was ordered within.**
+>
+> So a listing now takes the group from `workflow_status` and the position from
+> the rank. The prefix stays: it is still written, still checked against the
+> status, and still lets an external reader sort the field alone. It is a
+> derived convenience rather than the source of the grouping — which also makes
+> a drifted prefix harmless for ordering instead of silently misplacing a
+> record.
+>
+> Delivered by
+> [[work-items/WORK-0095-there-is-no-unranked-work]].
+
 ### What happens on a status change
 
-**The record is re-enqueued at the back of the destination.** A rank is a
+**The record is re-enqueued at one end of the destination.** A rank is a
 position in a queue; leaving the queue does not carry the position with you.
 
-This also preserves order in the ordinary case: advancing records in rank order
-lands them in the same relative order, because each arrives behind the last.
-Advancing out of order produces an order that reflects the choice made, which is
-the honest outcome — the alternative silently overrides an act somebody just
-performed.
+**Advancing goes to the back.** That preserves order in the ordinary case:
+advancing records in rank order lands them in the same relative order, because
+each arrives behind the last. Advancing out of order produces an order that
+reflects the choice made, which is the honest outcome — the alternative silently
+overrides an act somebody just performed.
+
+> **Amended 2026-09-17. This record originally said the back, for every
+> crossing. Going backwards goes to the front.**
+>
+> **The reason is which error is recoverable, not what the move means.** Going
+> backwards often says nothing about the record: capacity vanishing sends work
+> back from `todo` without any judgment about the work, a blocker at `prepared`
+> says the record is not ready rather than that it matters less, and a reopened
+> record may be an old defect nobody fixed, work that was never really
+> complete, or something far larger than anybody thought. **The default has to
+> be right without knowing which.**
+>
+> A record placed too high sits at the top of a listing where somebody sees it
+> and moves it down. A record placed too low is invisible and stays wrong.
+> **Wrong-and-visible beats wrong-and-silent**, so burying a record is left as
+> an act somebody performs — `rank --last` — rather than something a default
+> does quietly.
+>
+> **A first crossing is an arrival, not a return.** A record leaving `captured`
+> has no earlier position to come back from, so selection lands at the back
+> like any other advance.
+>
+> **A batch sent backwards comes out reversed**, each arrival pushing the
+> previous one down — the mirror of why advancing in rank order preserves
+> order. Measured: `42ef0bc` drained thirteen records from `unprepared` to
+> `captured` in one act, and backwards crossings are otherwise rare. Recorded
+> rather than solved, and a bulk drain is arguably a different operation from
+> sending one record back.
+>
+> Delivered by
+> [[work-items/WORK-0095-there-is-no-unranked-work]].
 
 Preserving relative order across a status change was considered and is not
 available without either keeping rank history or never rewriting ranks, the
