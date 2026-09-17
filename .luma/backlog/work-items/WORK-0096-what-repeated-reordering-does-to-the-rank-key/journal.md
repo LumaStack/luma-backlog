@@ -311,3 +311,47 @@ consequences worth building in:
 observable --- when a position exceeds some width, the corpus is degenerating.
 That is a lint (`[[work-items/WORK-0002-lint-the-corpus]]`) reporting a
 The record body is now a problem statement addressed to a reader who has not seen any of this --- problem, workload, measurements, requirements, assumptions, and what any answer must come with. Every candidate and preference moved to this journal. Two things were deliberate: the assumptions are listed so they can be attacked rather than inherited, and a section names what is currently *promised* and still renegotiable --- that a position is a number, that sorting the stored field yields the order, that order lives in one field, that the stored value orders anything directly, and which direction ascending means. Presenting ADR-0005's promises as constraints would have quietly ruled out the whole class of answers where order is derived. The exploration under this record still argues for widening the range; the body says so and tells a reader the numbers are reliable and the leaning is one week of one team's thinking.
+### Goals added, and a correction to yesterday's analysis
+
+**Seven goals in the record now, in a tier of their own** --- separate from the
+requirements, which are pass or fail. Four are the maintainer's, sharpened into
+forms that can be measured: volume in the ordinary path rather than a fast path;
+*a diff a person can read* rather than *fewer conflicts*; repair scoped to the
+smallest set that fixes the problem; and `sort` with no custom comparator and no
+configuration read, which is the precise form of *sortable by simple commands*.
+
+**Three were added.** Concurrent reorders must merge correctly or conflict
+loudly, never merge cleanly into a silently wrong order --- which is the failure
+that has actually bitten and was missing from every goal on the list. Remaining
+room must be observable before it runs out, because a bigger budget with no
+warning still fails without notice. And a stored value has to stay small enough
+to read, since frontmatter is read by people and the present scheme reaches
+2,900 characters in under three thousand moves.
+
+**The conflicts between the goals are named rather than left to be discovered.**
+`sort`-ability is the one most likely to be traded, because a scheme that
+derives the order cannot be sorted by `sort` --- that is the point of deriving
+it --- so anything trading it owes an answer to what orders a listing instead.
+
+### Requirement 7 corrects something I had wrong
+
+**The maintainer's addition --- movement in both directions around one or more
+records that never move at all --- is the requirement that decides this**, and
+it is interior rather than at the ends. A record nobody touches is the normal
+state of a mature backlog, and it cannot be renumbered because renumbering it is
+the rewrite requirement 2 forbids.
+
+**And it corrects what I said yesterday.** I claimed widening the range fixes
+end-moves and leaves interior insertion exhausted at about two hundred. **That
+was wrong.** Interior room is a function of *spacing*, not of range width: the
+reason gaps are tiny today is `seedStep = 10`, not the four-digit range. Space
+records a billion apart and every gap holds a billion insertions.
+
+**What is actually true is that one width pays for two budgets** ---
+`range = records × room per gap`. Eighteen digits spaced a billion apart holds a
+billion records with a billion insertions available in each gap; four digits
+spaced ten apart holds 999 records with room for about three. **A scheme quoting
+one of those numbers and not the other has not answered requirement 7**, and
+that arithmetic applies to any positional scheme rather than to a particular
+proposal.
+Goal 5 was stated as the mechanism rather than the want. The goal is that somebody can put the backlog in order **without the tool**; plain lexicographic sort is the ideal way to reach it, a short pipeline needing no knowledge the files do not carry is acceptable, and what fails is needing the binary, needing configuration to interpret a value, or walking records one at a time --- which is what any next-pointer scheme requires. Plain files in git are only worth having if plain tools can read them; the moment order is knowable only through this tool, the corpus is a database with a worse query language. And it is now written down that all seven goals probably cannot hold together: a scheme meeting the requirements and missing a goal is a candidate rather than a failure, provided it names which goal it gives up. A named sacrifice is a design decision; an unnamed one is a defect found later, usually when it is most expensive to change.
