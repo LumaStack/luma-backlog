@@ -432,14 +432,21 @@ checkout can walk up one directory and read everything, which is the whole thing
 being prevented. A git worktree does not help either: it contains the entire
 repository by design.
 
+**Put it in a designated scratch area, never loose in the home directory.**
+`~/Workspace/scratch` or `~/Workspace/tmp`, or `/tmp` if you would rather it
+were swept away --- `/tmp` may be cleared on reboot, and this exercise can span
+days, so a persistent scratch directory is the safer default. Losing the
+workspace costs only unfinished work: every answer is landed in the work item as
+soon as it exists.
+
 ```sh
 cd <this repository>
 BRIEF=.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key/explorations/how-to-solve-this-without-inheriting-our-answer.md
 
-mkdir -p ~/rank-workspace
+mkdir -p ~/Workspace/scratch/rank-workspace
 for d in reason-1 reason-2 reason-3 research-1 research-2; do
-  mkdir -p ~/rank-workspace/"$d"
-  cp "$BRIEF" ~/rank-workspace/"$d"/PROBLEM.md
+  mkdir -p ~/Workspace/scratch/rank-workspace/"$d"
+  cp "$BRIEF" ~/Workspace/scratch/rank-workspace/"$d"/PROBLEM.md
 done
 ```
 
@@ -450,7 +457,7 @@ opinion.
 ### Stage 2 --- each reasoner in its own directory
 
 ```sh
-cd ~/rank-workspace/reason-1 && claude
+cd ~/Workspace/scratch/rank-workspace/reason-1 && claude
 ```
 
 Pick the strongest model available with `/model`, then paste:
@@ -474,7 +481,7 @@ session.
 ### Stage 3 --- each researcher in its own directory, at the same time
 
 ```sh
-cd ~/rank-workspace/research-1 && claude
+cd ~/Workspace/scratch/rank-workspace/research-1 && claude
 ```
 
 > ultrathink
@@ -511,7 +518,7 @@ the record which mode produced it and that it was produced blind** --- that
 provenance is what makes convergence between two of them mean anything later.
 
 ```sh
-rm -rf ~/rank-workspace
+rm -rf ~/Workspace/scratch/rank-workspace
 ```
 
 **Now every answer is a record in this work item**, reviewable in the same
