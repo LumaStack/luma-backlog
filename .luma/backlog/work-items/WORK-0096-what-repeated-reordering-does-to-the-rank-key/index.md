@@ -90,6 +90,39 @@ It rewrites every record at the status.
    to a degree no project reaches in ten to a hundred years.
 6. **A rewrite once a decade is acceptable. Once a year is the ceiling. Never is
    the target.**
+7. **Records can move forward and backward around a record that never moves at
+   all** --- one or more of them, sitting anywhere, for the life of the project.
+   **The fixed point is interior**, so room is needed on both sides of a
+   position that cannot be renumbered, and it has to appear inexhaustible there
+   as well as at the outer ends.
+
+### Requirement 7 is the one that decides this
+
+**A record nobody ever touches is not an edge case, it is the normal state of a
+mature backlog** --- an old `captured` item, a `todo` that was never picked up.
+It cannot be renumbered, because renumbering it is the rewrite requirement 2
+forbids. So every gap around it has to absorb traffic indefinitely while it
+stays exactly where it is.
+
+**This is what makes the problem hard, and it is easy to satisfy the other six
+without it.** A scheme that extends only at the outer ends of a status meets
+requirements 3, 4 and 5 and fails this one on its first interior insertion ---
+and interior insertion is precisely where the present scheme runs out after
+about two hundred moves.
+
+**For any positional scheme, one width pays for two budgets.** The total number
+of records a status can hold and the room available inside each gap both come
+out of the same range:
+
+```
+range = records × room per gap
+```
+
+An 18-digit range spaced a billion apart holds a billion records with a billion
+insertions available in every gap. A 4-digit range spaced ten apart --- what
+exists today --- holds 999 records with room for about three insertions between
+any two before it starts subdividing. **Neither budget can be read off the
+range alone, and a scheme quoting only one of them has not answered this.**
 
 ### The volume that has to fit
 
@@ -103,6 +136,89 @@ A high-volume project --- agents completing work continuously:
 
 **So the design target is on the order of 10^8 to 10^9 operations**, at both
 ends of a status, without a full rewrite.
+
+## Goals --- what we want, and what we would trade
+
+**Separate from the requirements above, which are pass or fail.** These are what
+a good answer is judged on once it passes. **They conflict with each other**, and
+the section after this says where, so a reader can trade deliberately rather
+than discover the trade later.
+
+1. **Volume is handled without special handling.** 10^8 to 10^9 operations in
+   the ordinary path --- not in a fast path, a cache, or a mode somebody has to
+   enable --- **at both ends of a status and in any gap inside it**
+   (requirement 7).
+2. **An ordinary reorder changes one line in one file.** This is the measurable
+   form of *avoid git churn*: not *fewer conflicts* but *a diff a person can
+   read*. Every reorder is a commit somebody reviews.
+3. **No operation rewrites every record.** And where a repair is needed, it
+   touches the smallest set that fixes the problem --- one status, or one run of
+   neighbours, rather than the corpus. **A repair scoped to twenty records is
+   reviewable; the same repair over ten thousand is not**, even though both are
+   correct.
+4. **Concurrent reorders either merge correctly or conflict loudly.** Never a
+   clean merge into a silently wrong order. **This is the failure mode that has
+   actually bitten**: two actors allocating at the same place produce the same
+   value in two files, git merges both without complaint, and the corpus holds a
+   tie nobody chose and nothing reports. **A loud conflict is a good outcome
+   here** --- a person reads two lines and picks.
+5. **Somebody can put the backlog in order without the tool.** That is the
+   goal; text sorting is only the ideal way to reach it.
+   - **Best:** a plain lexicographic `sort` on one field --- no numeric flag,
+     nothing to look up.
+   - **Acceptable:** a short pipeline over the files that needs no knowledge the
+     files do not already carry --- `sort -t`, `awk`, `jq` on `--json`.
+   - **Fails the goal:** needing the binary; needing to read configuration to
+     interpret a stored value; or having to walk records one at a time to
+     reconstruct the sequence, which is what any next-pointer scheme requires.
+
+   **Plain files in git are only worth having if plain tools can read them.**
+   The moment the order is knowable only through this tool, the corpus is a
+   database with a worse query language.
+6. **Remaining room is observable.** The system can say how close a status is to
+   needing repair **before** it needs it. **A bigger budget with no warning is
+   still a scheme that fails without notice**, which is the shape of the present
+   one: the first anybody hears is a refusal.
+7. **A stored value stays small enough for a person to read.** Frontmatter is
+   read by people. A 2,900-character ordering key is a defect even when it is
+   perfectly correct, and the present scheme reaches that in under three
+   thousand moves.
+
+### Where these goals fight each other
+
+**Naming the conflicts, because a solution has to lose one of them and should
+choose which.**
+
+- **5 against 1, 3 and 7.** A scheme where the order is *derived* rather than
+  stored cannot be sorted by `sort` --- that is the point of deriving it.
+  **Goal 5 is the one most likely to be traded**, and a scheme that trades it
+  owes an answer to *what orders a listing then, and what does somebody outside
+  this tool use?*
+- **7 against 1.** Larger volume in a fixed-width key means more characters.
+  Every digit bought is a digit read.
+- **3 against 2.** A scheme that never rewrites many records may have to write a
+  few on every reorder, or carry a tie-breaker that grows. Cheap always, or
+  cheap usually and occasionally expensive, is a real choice.
+- **6 against everything.** Observability is nearly free and nearly always
+  skipped. It is listed as a goal because it was missing from the present
+  scheme, and its absence is why exhaustion arrives as a surprise rather than a
+  warning.
+
+**We probably cannot have all seven.** That is expected, and it is why these are
+goals rather than requirements. **A scheme that meets the requirements and
+misses a goal is a candidate, not a failure** --- provided it says which goal it
+gives up and what that costs.
+
+**A named sacrifice is a design decision. An unnamed one is a defect somebody
+finds later**, usually at the moment it is most expensive to change. So the
+worst answer here is not the one that trades a goal --- it is the one that
+quietly does not mention which.
+
+**And one that is not a conflict, stated because it looks like one.** Goal 4
+does not require coordination. Detecting a collision is not the same as
+preventing one, and git detects collisions for free when two branches write the
+same path --- what has to be avoided is a scheme where two independent writes
+are *both valid and indistinguishable*.
 
 ## What is assumed
 
