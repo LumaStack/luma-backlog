@@ -342,6 +342,73 @@ inside git's own repair loop.
 **So we agree on the answer and almost nothing else.** Our lean was the ordered
 file on maintainability; this reaches the ordered file after removing the
 evidence we had leaned on, and on grounds we never considered.
+### A third option, and the two measurements that produced it
+
+**Re-prioritization is frequent in a backlog --- reported from experience, and
+it is the observation that breaks option 2.** Under the ordered file, deliberate
+re-prioritization is the *only* operation that touches the file, so if it is
+frequent then the measured ~45% conflict rate lands on the hot path rather than
+a cold one.
+
+#### `merge=union` removes that contention entirely
+
+**Measured.** Two people appending re-prioritizations to a log merge **cleanly
+with both kept**; the identical operations **conflict** without
+`.gitattributes` saying `merge=union`. So an append-only decision log does not
+contend on the operation the ordered file contends on.
+
+**And a log plus a generated order file gets both properties.** Measured: two
+people reordering the same column merges **clean with no human intervention** ---
+both decisions in the log, the generated file stale until rebuilt. So `cat`
+still shows the order, and no decision is ever lost to a manual conflict
+resolution.
+
+**This is the *derived values are not sacred* idea from the original brief,
+arriving from the other end.** The stored thing never churns because it is
+append-only; the readable thing is derived and can be blown away.
+
+#### Compaction, and the part that is counter-intuitive
+
+**The reasoning offered was that compaction deletes from the top while appends
+add to the bottom, so they cannot collide. That is right in general and wrong
+for a file rewrite.** Measured on a 50-entry log against a concurrent append:
+
+| compaction written as | result |
+| --- | --- |
+| a file rewrite, normal three-way merge | **conflict --- merge blocked** |
+| a file rewrite, `merge=union` | clean, **but all 50 old entries come back** |
+| **an append** | **clean --- checkpoint and concurrent append both survive** |
+
+**Rewriting the whole file is one hunk covering everything**, so it overlaps the
+append rather than sitting above it. And under `merge=union` the truncation is
+undone by design, because union exists precisely to never lose a line.
+
+**So compaction splits into two acts and conflating them is what breaks it.**
+**Logical compaction is an append** --- a checkpoint line carrying the full
+order, after which readers ignore everything before it. It cannot conflict, so
+it can happen whenever. **Physical truncation is separate** --- delete the
+pre-checkpoint lines, deliberately, when nothing is in flight, and if it races
+the log merely re-inflates.
+
+#### What the three options now come down to
+
+**Loudness and volume both turned out to be a wash.** Options 1 and 2 both stop
+for the case that matters, and git itself fails around 10^6 to 10^7 live files
+for all three --- so archival is mandatory regardless and **no option ever has
+to survive 10^8 live items.**
+
+**What separates them is two questions.** First: does the order live inside
+every item, or in one place per column? **Inside every item is a one-way
+door** --- changing the mechanism later means rewriting the corpus, forever ---
+whereas one place per column is a seam a database can replace without touching
+an item. Second, between the two that keep the seam: how often will people
+reorder the same column concurrently? **Rarely favours the file; often favours
+the log.**
+
+**Every option's document now says what it needs before it could be built**, and
+one requirement is shared by all three: **define the order as an interface
+rather than a file format.** Without that, options 2 and 3 lose the seam that is
+their main advantage, because every reader would be written against a layout.
 
 ## ▶ 2026-09-17
 
