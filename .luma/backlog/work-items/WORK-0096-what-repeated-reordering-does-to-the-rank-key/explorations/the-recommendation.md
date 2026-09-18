@@ -8,6 +8,78 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-18T02:58:17Z'}
 
 # The recommendation
 
+> ## Superseded on 2026-09-17, by measurement
+>
+> **The recommendation below was to adopt position-strings. It is wrong, and the
+> measurement asked for before deciding is what caught it.**
+>
+> **Position-strings grows logarithmically when appending and linearly when
+> inserting in front of a card that never moves** --- which is the workload this
+> whole work item exists for. Measured against the real library
+> (`npm install position-strings`), not a reimplementation:
+>
+> | workload | result |
+> | --- | --- |
+> | append at the back, 10,000,000 times | **11 characters** --- logarithmic, exactly as published |
+> | insert in front of a card that never moves | **2.00 characters per insertion, flat, forever** |
+> | insert into one interior gap | 2.00 characters per insertion |
+> | same, but the fixed card is one I created | 2.00 characters per insertion --- ownership is irrelevant |
+>
+> At 20,000 insertions the value is **40,011 characters**. At 10⁸ it would be
+> **200 million characters** --- and an attempt to run 10⁷ exhausted 3.5 GB of
+> heap and killed the process.
+>
+> **Why: the library's own documentation says the optimisation is for a
+> "left-to-right sequence."** Its `createBetween` has a case for *"left child of
+> right"* which the source comments **"this always appends a waypoint"** ---
+> so each leftward insertion lengthens the path by a whole waypoint rather than
+> incrementing a counter. Position-strings was built for collaborative text
+> editing, where typing forward dominates. **Our hardest case is the one it does
+> not optimise.**
+>
+> **I generalised the published claim, and so did the literature search that
+> found it.** Neither of us checked. That is the third confident
+> generalisation in this work item to be wrong, and the first that would have
+> been shipped.
+>
+> ### What measurement says instead
+>
+> | scheme | in front of a card that never moves, 10⁶ times | sorts with `sort`? |
+> | --- | --- | --- |
+> | **the stepping key derived here** | **12 characters** | **yes** --- verified over 84,030 keys |
+> | Stern--Brocot mediants | 15 characters | **no** --- comparing fractions needs cross-multiplication |
+> | position-strings | **~2,000,000 characters** | yes |
+> | our current decimal scheme | refuses after 204 | yes |
+>
+> **The blind derivation beats the published state of the art on this workload**,
+> and the reason is legible: position-strings *appends a path segment* when you
+> insert to the left of a foreign card, while the derived scheme *descends once
+> and then counts*. Counting is what makes it logarithmic.
+>
+> **That is a real contribution rather than a lucky guess** --- requirement 7 was
+> written into the brief as the thing that decides this, so the agent designed
+> for a workload the published work was not built for.
+>
+> ### What this changes
+>
+> **Do not adopt position-strings.** It is excellent work aimed at a different
+> access pattern.
+>
+> **The stepping key is now the leading candidate on evidence** --- with the
+> caveat that its implementation is a sketch whose counter ceiling crashes
+> rather than degrading, found by ten minutes of adversarial testing. **The idea
+> is validated; the code is not.**
+>
+> **A modified position-strings would also work** --- make the leftward case
+> count instead of appending --- but that is no longer *adopt published work with
+> a proof*. It is publishing a variant of our own, with the risk that carries.
+>
+> **Everything below is retained as written**, because the reasoning that led to
+> the wrong answer is worth as much as the answer.
+
+---
+
+
 **Adopt a published algorithm called position-strings. Stop designing our own.**
 
 Each card keeps one text value. Sorting those values with `sort` gives the
