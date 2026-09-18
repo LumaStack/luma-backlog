@@ -5,6 +5,54 @@
 
 ---
 
+## ▶ 2026-09-18
+
+### Both measurements taken, and one reversed the recommendation
+
+**Derived 3's verifier reproduces every claim it makes**, run unmodified in 2.4
+seconds. The headline: **10^6 placements immediately above a card that never
+moves costs 12 characters**, 0.16 seconds. The back of a column at 3.65 × 10^8
+--- the hundred-year volume --- costs 13. A realistic mixed column over 10^5
+operations peaks at 12. Nested bisection is linear exactly as the theorem
+requires, 1,505 characters at 3,000 operations. And **sort fidelity checks out
+over 84,030 keys against both Python byte order and `LC_ALL=C sort(1)`.**
+
+**So requirement 7 is satisfiable inside the card, at twelve characters.** For
+scale, the rank field in use today --- `010.0020.000` --- is also twelve
+characters, so **goal 7 is not traded at all**, which is the opposite of what
+that candidate claimed to be trading.
+
+**Stern--Brocot mediants: logarithmic as Research 2 derived, and unsortable.**
+10^6 monotone insertions gives `1000002/2000003`, width 15. But comparing
+fractions needs cross-multiplication, which `sort` cannot express --- numeric
+order `2/5, 1/2, 11/21, 2/3, 3/4` against text order
+`1/2, 11/21, 2/3, 2/5, 3/4`. **The family is dominated**: derived 3's encoding is
+shorter *and* text-sortable.
+
+**The recommendation reverses, and §5 is left standing rather than edited** so
+the sequence stays visible. Two of its five reasons were weakened by the
+numbers, and the strongest surviving one --- only a shared file can be loud ---
+turns out to be smaller than it looked. **Derived 3's tag is the actor's**, so
+two actors allocating at one spot produce equal position parts with different
+tags: distinct keys, deterministic order, attributable, and detectable.
+**Indistinguishable duplicates --- the failure that actually bit this project
+and the reason goal 4 exists --- are unreachable by construction.** What remains
+is a clean merge into an order neither actor chose: arbitrary rather than wrong,
+nothing lost, findable afterwards.
+
+**One thing blindness cost, worth recording for the method.** Derived 2 rejected
+the manifest partly on write-amplification on the commonest operation --- true
+of a manifest listing every card, **false of Derived 1's curated-head form**,
+where advancing writes only the card. It scored a weaker version of a design it
+could not see. That is a limit of the method rather than a fault in either
+agent, and stage 4 is where it gets caught --- which is what stage 4 is for.
+
+**Left for stage 5:** whether *loud* is non-negotiable. If a clean merge into an
+unchosen-but-deterministic order is unacceptable in principle rather than merely
+imperfect, no per-card scheme can satisfy it and the manifest is the answer.
+**And the question nobody asked: what happens when two actors move the same card
+concurrently.**
+
 ## ▶ 2026-09-17
 
 The finite-decimal property of the current scheme is written into the record as input rather than as a constraint --- explicitly flagged as describing the thing being reconsidered, with the note that a scheme making the question meaningless is a better answer than one satisfying it. The shared-position-plus-stamp hunch has no arithmetic at all and an integer scheme with a periodic renumber has no precision to extend, so it applies to neither. The guard against the hang landed separately and commits to no scheme: a bounded search that rounds and reports beats a process that never returns.
