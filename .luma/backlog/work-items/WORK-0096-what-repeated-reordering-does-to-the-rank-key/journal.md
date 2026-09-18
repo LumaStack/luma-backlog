@@ -164,6 +164,56 @@ Figma's fractional indexing as the best-engineered version of the approach that
 grows linearly; Kleppmann 2020 as the only paper squarely about *moving* an
 item. **And nobody at all for our medium** --- both searches independently called
 git-as-the-merge-engine unoccupied territory.
+### Measured position-strings against the real library. It fails requirement 7.
+
+**Asked to measure the single-gap case before deciding, and the measurement
+overturned the recommendation.** Run against `npm install position-strings`
+rather than a reimplementation, so there is no strawman.
+
+| workload | result |
+| --- | --- |
+| append at the back, 10^7 times | **11 characters** --- logarithmic, exactly as published |
+| insert in front of a card that never moves | **2.00 characters per insertion, flat** |
+| one interior gap, both ends fixed | 2.00 characters per insertion |
+| same, fixed card created by me | 2.00 --- **ownership is irrelevant** |
+
+20,000 insertions gives a **40,011-character** value. At 10^8 it is **200
+million characters**, and an attempt at 10^7 exhausted 3.5 GB of heap and killed
+the process.
+
+**The cause is in the source and it is not subtle.** `createBetween` has a
+branch for *left child of right* commented **"this always appends a waypoint"**,
+and the library's own documentation scopes the counter optimisation to a
+*"left-to-right sequence"*. **Position-strings was built for collaborative text
+editing, where typing forward dominates.** Inserting repeatedly to the left of a
+foreign card lengthens the path by a waypoint every time.
+
+**I generalised the published claim and so did the literature search that found
+it.** Neither of us checked whether *logarithmic on monotone runs* covered
+leftward runs. **Third confident generalisation in this work item to be wrong,
+and the first that would have been shipped.** The instruction to measure before
+deciding is the only reason it was not.
+
+### So the blind derivation beats the published state of the art here
+
+| scheme | in front of a frozen card, 10^6 | text-sortable |
+| --- | --- | --- |
+| **the stepping key derived here** | **12 characters** | **yes**, 84,030 keys verified |
+| Stern--Brocot mediants | 15 characters | no |
+| position-strings | ~2,000,000 characters | yes |
+| our current decimals | refuses at 204 | yes |
+
+**And the reason is legible rather than lucky.** Position-strings *appends a
+path segment* when inserting left of a foreign card; the derived scheme
+*descends once and then counts*. Counting is what makes it logarithmic ---
+which is exactly the sentence that agent opened with. **Requirement 7 was in
+the brief as the deciding constraint, so it designed for a workload the
+published work was never aimed at.**
+
+**What is validated is the idea, not the code.** Its counter ceiling crashes
+instead of degrading, found in ten minutes. A modified position-strings ---
+counting on the leftward case --- would work equally well, but that stops being
+*adopt published work with a proof* and becomes publishing our own variant.
 
 ## ▶ 2026-09-17
 
