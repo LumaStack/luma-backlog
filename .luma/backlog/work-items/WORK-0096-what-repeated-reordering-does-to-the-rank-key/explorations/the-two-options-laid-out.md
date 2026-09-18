@@ -235,8 +235,10 @@ found in the research, and true of every scheme. It is detectable
 | card knows its own place | **yes** | no |
 | files written to reorder | **1** | 1 |
 | files written to advance or create | **1** | 1 |
-| two people, same spot | quiet; distinct and traceable | **git stops and asks** |
-| two people, same card moved | quiet; distinct | can duplicate a line |
+| two people move **different, distant** cards | clean; both survive | clean; both survive |
+| two people move **adjacent** cards | **clean; both survive** | **conflict --- though the intentions were compatible** |
+| two people move the **same** card | **conflict --- git stops and asks** | **conflict --- git stops and asks** |
+| two people insert **different** cards at one spot | quiet; both present, order between them fixed | conflict |
 | order without our program | `sort` on one field | `cat` one file |
 | order editable by hand | no | **yes** |
 | readable value | no --- `n1l8-w3` | **n/a --- there is no value** |
@@ -245,23 +247,56 @@ found in the research, and true of every scheme. It is detectable
 
 ---
 
+# Measured: what git actually does with each
+
+**Added 2026-09-17, by running real merges rather than reasoning about them ---
+which corrected two confident claims in this document, in opposite directions.**
+
+| two people, concurrently | ordered file | addresses |
+| --- | --- | --- |
+| move different, distant cards | **clean**, both moves applied correctly | **clean**, both applied |
+| move adjacent cards | **conflict** | **clean**, both applied |
+| move the same card | **conflict** | **conflict** |
+
+**The claim that addresses can never be loud was wrong.** Two people moving the
+same card both write that card's file, on the same line --- **git conflicts.**
+Addresses are loud exactly where two people's intentions genuinely disagree.
+
+**The claim that an ordered file manufactures conflicts for ordinary work was
+also wrong**, but only partly: distant moves merge cleanly and correctly.
+**Adjacent moves conflict**, and that is a false alarm --- moving two
+neighbouring cards is compatible work, and git stops anyway.
+
+**So the loudness argument does not separate them the way this document
+assumed.** Both stop for the case that matters. The ordered file additionally
+stops for a case that did not need stopping.
+
+**The only remaining quiet case is addresses when two people insert *different*
+cards at the same spot.** Both cards exist, and the sole ambiguity is which of
+the two comes first --- something neither actor expressed an opinion about.
+There is no intent to lose.
+
 # The question that decides it
 
-**Do we want git to stop and make somebody choose when two people reorder the
-same spot?**
+**Not loudness --- that turned out to be nearly the same for both.** What is
+left is:
 
-- **Yes, that matters more than anything else** → the ordered file.
-- **No --- different, traceable and findable afterwards is enough** → addresses.
+**Do we want to own an ordering algorithm?**
 
-**Everything else is close.** Addresses keep the card self-contained and need no
-second mechanism. The ordered file needs no algorithm, is readable and editable
-by hand, and is what every comparable tool already does.
+- **No** → the ordered file. There is no arithmetic, nothing to get wrong, and
+  every comparable tool already works this way. Pay for it with a card that is
+  not self-contained, a contended file per column, and conflicts on adjacent
+  work.
+- **Yes, for better team behaviour** → addresses. Independent one-file writes
+  with no contention, loud only on genuine disagreement, cards self-contained.
+  Pay for it by maintaining an encoding nobody has shipped, whose sketch already
+  has a crash in it.
 
-**The current lean is the ordered file, on maintainability** --- three confident
-claims about ordering arithmetic were wrong during this work item, and the
-ordered file has no arithmetic to be wrong about. **The strongest argument
-against that lean is concurrency**: with many actors reordering one column,
-frequent conflicts stop being a safety feature.
+**On the team axis, addresses now win clearly.** They are loud where it matters,
+quiet where it does not, and have no single point of contention. **The case for
+the ordered file is entirely maintainability** --- which is a real argument and
+a different one, and this document should not have presented it as the overall
+answer without saying which axis it was on.
 
 ---
 
