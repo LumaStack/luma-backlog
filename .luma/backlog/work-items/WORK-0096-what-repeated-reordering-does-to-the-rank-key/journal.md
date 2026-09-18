@@ -409,6 +409,165 @@ the log.**
 one requirement is shared by all three: **define the order as an interface
 rather than a file format.** Without that, options 2 and 3 lose the seam that is
 their main advantage, because every reader would be written against a layout.
+### Compaction, settled: the threshold has a measured basis and git is the backup
+
+**Three findings, and the first one contradicted my assumption.**
+
+#### Replay cost is what drives compaction, not file size
+
+**Measured**, replaying reorder operations to produce a column's order:
+
+| column | log entries | replay |
+| --- | --- | --- |
+| 50 items | 100,000 | 24 ms |
+| 500 items | 10,000 | 18 ms |
+| 500 items | 100,000 | **175 ms** |
+| 5,000 items | 10,000 | 146 ms |
+| 5,000 items | 100,000 | **1,487 ms** |
+
+**File size is irrelevant** --- 100,000 entries is 4.8 MB. **Replay is what
+bites**, and it scales with *items x entries*.
+
+**So the threshold has a basis rather than being a taste call: keep the read
+under the 200 ms bar this project already applies.** That gives a self-scaling
+rule, and its direction is the opposite of what I would have guessed --- **a
+longer column needs a shorter log**:
+
+| column | entries before a checkpoint is worth appending |
+| --- | --- |
+| 50 items | ~100,000 |
+| 500 items | ~10,000 |
+| 5,000 items | ~1,000 |
+
+Roughly `items x entries <= 5,000,000`. **The implementation measured was naive**
+--- a linked structure would move the numbers --- so the rule should be stated
+as *keep replay under 200 ms, measured*, not as a frozen constant.
+
+#### Time-based triggers were rejected, on a precedent this project already holds
+
+**Count-based, not calendar-based.** `when-a-work-item-splits` already argues
+this for a different measurement: *"Rate is the sharper number, and the unit is
+the session. Not the calendar."* A quiet month compacts nothing worth
+compacting; a busy week fails to compact when it should.
+
+#### Retaining checkpoints: right, and for a different reason than either of us gave
+
+**The proposal was to clean before the previous one to three checkpoints,
+because keeping several lets us fix problems.** That is the better rationale ---
+**each checkpoint is a complete self-contained order, so it is a restore
+point.** My reason had been that it keeps truncation away from the working edge
+and so removes the need for quiet, which is true and secondary.
+
+**But truncation never destroys a checkpoint, and that changes the stakes.**
+Demonstrated:
+
+```
+$ git log --oneline -S CHECKPOINT-1 -- order.log
+  c5b7202 truncate to newest checkpoint
+  c0f064d epoch 1
+$ git show c0f064d:order.log | head -1
+  CHECKPOINT-1 order=[a,b,c]
+```
+
+**Git is the backup.** Every checkpoint ever committed stays recoverable however
+aggressively the file is truncated.
+
+**So retention buys discoverability rather than durability.** A person fixing a
+problem sees the restore points by opening the file, instead of needing to know
+`git log -S`. Real value, and it means **the count is an ergonomics choice that
+cannot be badly wrong.** Two or three is fine.
+
+**One wrinkle worth recording before a number is picked.** Counting in
+checkpoints gives inconsistent *time* coverage, because the cadence is driven by
+replay cost --- which scales with column length --- rather than by the calendar.
+**"Keep three" spans a month in a busy column and a decade in a quiet one.** If
+what is wanted is *enough history to catch a problem nobody noticed for a
+fortnight*, that is a different rule. Git covers the durability either way.
+
+#### The shape this leaves
+
+**Two acts, one command, neither on a calendar.**
+
+1. **Append a checkpoint** when replay for that column approaches 200 ms. An
+   append, so it cannot conflict, and it can happen whenever.
+2. **Delete everything before the third-newest checkpoint.** Routine, needs no
+   coordination, bounds the file at about three compaction windows --- for a
+   500-item column, roughly 1.5 MB forever.
+
+**And it stays a report rather than a trigger**, in the same pattern as
+`rank repair` and the status-drift observation: the tool says a log is long
+enough to be worth compacting; a person runs it.
+### A checkpoint written on a branch can silently discard somebody's work
+
+**Correction to the compaction entry above, found by asking what makes a
+checkpoint good. Demonstrated:**
+
+```
+T02 alice move alpha first
+T04 alice move bravo first
+CHECKPOINT T05 order=[bravo,alpha,charlie]
+T03 bob move charlie first        <- older than the checkpoint, arrives after it
+```
+
+Alice snapped a checkpoint on her branch, summarizing her own view. Bob's
+earlier reorder merged in afterwards --- union merge appends it below the
+checkpoint. **A reader that honors the checkpoint and ignores everything before
+it silently loses Bob's reorder.**
+
+**So the compaction design as journalled above is wrong**, and the failure is
+the exact shape this work item has been trying to eliminate: a clean merge into
+a silently incorrect order.
+
+#### Merging into main is what makes a checkpoint trustworthy
+
+**A checkpoint on a branch summarizes a private view. A checkpoint on main,
+after a merge, summarizes a state everybody shares.** That is the practical
+rule, and it is where checkpoints should be created.
+
+**But it must not depend on discipline**, because even on main a concurrent push
+can outrun a checkpoint. **So a checkpoint has to be self-describing:**
+
+```
+CHECKPOINT T05 consumed-through=T04 order=[bravo,alpha,charlie]
+```
+
+A reader that finds `T03` after it, and sees `T03 < T04`, knows the checkpoint
+has been outrun and **falls back to full replay.** Detection is a scan; the
+fallback is correct. **The optimization becomes skippable and its failure
+visible**, which is the property every other part of this design has been held
+to.
+
+#### Whether this needs a forge workflow: it must not be load-bearing
+
+**Compaction is an optimization, not correctness.** An uncompacted log yields
+the right order, only slower to replay. **A missing workflow must therefore cost
+performance and never correctness**, and that has to stay true.
+
+Three reasons to keep it out of continuous integration for now:
+
+- **It would couple the data model to a forge.** This tool is git-native rather
+  than forge-native, and somebody cloning to work offline or on another host has
+  to get identical behavior.
+- **The project's own rule.** *Never rebalance automatically; make it a named
+  operation somebody runs deliberately.* Compaction is nearer a rebalance than a
+  lint.
+- **A workflow that commits to main creates commits nobody asked for**, and can
+  race the pushes it is meant to follow.
+
+**If automation is wanted later, the honest shape is a workflow that reports
+rather than commits** --- *this column's log is long enough to be worth
+compacting* --- matching the report-never-act pattern `rank repair` and the
+status-drift observation already use. **And because validity is solved in the
+data rather than by the workflow, it can be added at any time without touching
+the format.**
+
+#### What this adds to option 3's build list
+
+1. **Checkpoints record what they consumed**, so being outrun is detectable.
+2. **A reader that finds pre-checkpoint entries after a checkpoint falls back to
+   replay** rather than trusting it.
+3. **Checkpoints are created on main, after merging** --- by convention, with
+   (1) as the safety net rather than the other way round.
 
 ## ▶ 2026-09-17
 
