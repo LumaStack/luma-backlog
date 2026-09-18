@@ -52,6 +52,44 @@ unchosen-but-deterministic order is unacceptable in principle rather than merely
 imperfect, no per-card scheme can satisfy it and the manifest is the answer.
 **And the question nobody asked: what happens when two actors move the same card
 concurrently.**
+### Negative values: needed, already present, and not encodable the obvious way
+
+**Asked whether allowing negatives would help --- either `10.123456789.-103` or
+an underscore variant for sign. Answer: yes, it is essential, and the winning
+candidate already does it. That is precisely why it has no floor.**
+
+**Measured, all three obvious encodings break:**
+
+| encoding | result |
+| --- | --- |
+| raw minus sign --- `-103` | **broken**: text puts `-1` before `-1000`, and −1 > −1000 |
+| underscore marks positives | **broken the same way** |
+| zero-padded with a sign --- `%+011d` | **broken**: `+` is 0x2B and `-` is 0x2D, so every positive sorts before every negative |
+
+**The underscore idea fixes the wrong problem.** It addresses the boundary
+between signs, and **the breakage is inside the negatives**: `-10` is a text
+prefix of `-100`, so it sorts first, while numerically −100 < −10. No sign
+marker repairs that.
+
+**Two things are needed together, and derived 3 has both.** A prefix character
+encoding sign *and digit count* --- `m` for zero, letters descending below it
+for negatives, ascending above it for positives --- **and nine's-complemented
+digits on the negative side**, so that more-negative sorts earlier:
+
+```
+-1000 -> i8999      -1 -> l8       0 -> m       1 -> n1      1000 -> q1000
+ -103 -> j896        0 -> m        5 -> n5     103 -> p103
+```
+
+The count prefix handles variable width; the complement reverses direction. Drop
+either and it fails. **Verified monotone to ±10^13** by its own verifier, which
+ran clean.
+
+**And this is the answer to the original defect.** The front of a column ran out
+after 204 moves because the seed sat one step above zero with nothing below to
+step into. **With signed segments there is no floor at all** --- the measurement
+showed the front of a column at 10^8 as `d899999999-w3`, thirteen characters,
+which is the negative encoding doing exactly the job this question is about.
 
 ## ▶ 2026-09-17
 
