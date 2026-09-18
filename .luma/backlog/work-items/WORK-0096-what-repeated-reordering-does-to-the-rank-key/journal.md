@@ -90,6 +90,80 @@ after 204 moves because the seed sat one step above zero with nothing below to
 step into. **With signed segments there is no floor at all** --- the measurement
 showed the front of a column at 10^8 as `d899999999-w3`, thirteen characters,
 which is the negative encoding doing exactly the job this question is about.
+### Isolating an agent strips the project's conventions along with its opinions
+
+**The research records name a competing project --- six mentions across two
+files --- and `CLAUDE.md` forbids naming a rival in committed output.**
+
+**The agents could not have known.** They held `PROBLEM.md` and nothing else,
+which was the entire point of the isolation. `CLAUDE.md` was never in front of
+them, so this is not an agent disregarding a rule; **the rule was never
+delivered.**
+
+**That is a cost of the method nobody anticipated**, and it generalises past
+this instance: **isolating an agent from our thinking also isolates it from our
+output conventions.** The brief carried the problem and none of the rules about
+how a record may be written --- spelling, abbreviations, what may be named, how
+a decision is cited. Anything an isolated agent produces will breach them by
+default.
+
+**For the reusable version
+([[work-items/WORK-0099-turn-the-work-0096-research-strategy-into-something-reusable]]):
+a sixth class belongs on the checklist.** *Does the brief carry the output
+conventions the result has to satisfy?* It is the mirror of the anchoring
+problem and it points the other way --- the brief must withhold **what we
+think** while carrying **how we write**, and those are easy to conflate because
+both live in the same documents.
+
+**Not yet resolved:** whether citing a rival as prior art in a design
+exploration is a breach at all. The rule forbids naming a competing project and
+permits naming tools we borrow technique from, and a functional competitor
+cited for its technique is both. **The records are untouched pending that call**
+--- scrubbing a research finding unilaterally is worse than leaving the question
+open. If it is a breach, it is `delivery: undelivered`, which is the most
+interesting value the register has and the first time it has come up honestly.
+### Two blind reasoners independently reinvented the published answer
+
+**The literature's best fit is Matthew Weidner's Fugue / position-strings, and
+derived 2 and derived 3 both arrived at it from the problem alone with searching
+forbidden.** Same structure: one string per card, lexicographic order is list
+order, path levels rather than subdivided gaps, a per-writer label at each
+branch point, and a counter that steps when a writer extends its own run ---
+which is what makes monotone runs grow logarithmically instead of linearly.
+
+**Three of the five answers landed in that family**, two of them without being
+allowed to look. **That is the strongest validation this exercise could
+produce**, and it is worth more than any of the reasoning any single answer
+contains.
+
+**So the recommendation changes in kind rather than in direction.** Not derived
+3's encoding --- **the published algorithm it reinvented.** Fugue carries a proof
+of maximal non-interleaving (Weidner and Kleppmann), a written specification, a
+reference implementation and benchmarks at 10--100 characters on real traces.
+Research 2 found **no requirement it fails**, with one caveat below. Against
+that, derived 3's version is a sketch with an unhandled boundary that an
+adversarial test found in ten minutes.
+
+**The honest caveat, and it is the same one as before:** nobody has
+characterised behaviour at 10^8 insertions into one gap. The benchmarks are
+collaborative text editing. Logarithmic growth there is extrapolated, not
+measured --- **and extrapolating a curve is what has already been wrong twice in
+this work item.** It is measurable from the published specification and should be
+measured before committing.
+
+**What independent testing of derived 3 did establish**, and it transfers to the
+family: **20,000 mixed operations including moving cards held the order with no
+duplicates, worst value nine characters.** Their own verifier never moved a
+card, and moving is this board's commonest operation --- so the one workload the
+brief worried about most is the one that turned out cheapest.
+
+**Who solved what best, recorded so it is not re-derived:** Fugue /
+position-strings for this problem; Bender et al. FOCS 2022 for provably optimal
+relabeling of bounded labels, unusable here because it assumes a single mutator;
+Figma's fractional indexing as the best-engineered version of the approach that
+grows linearly; Kleppmann 2020 as the only paper squarely about *moving* an
+item. **And nobody at all for our medium** --- both searches independently called
+git-as-the-merge-engine unoccupied territory.
 
 ## ▶ 2026-09-17
 
