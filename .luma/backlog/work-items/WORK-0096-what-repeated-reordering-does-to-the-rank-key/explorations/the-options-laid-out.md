@@ -1,15 +1,15 @@
 ---
 type: exploration
-title: The two options, laid out
+title: The options, laid out
 work_item: '[[work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-18T03:13:14Z'}
 ---
 
-# The two options, laid out
+# The options, laid out
 
-**Both of these work. Neither is obviously right. This document exists so the
-choice can be made later, deliberately, without re-deriving anything.**
+**Three options. All of them work. None is obviously right. This document exists
+so the choice can be made later, deliberately, without re-deriving anything.**
 
 Everything with a number attached was measured. Where something is unknown, it
 says so.
@@ -226,24 +226,140 @@ found in the research, and true of every scheme. It is detectable
 
 ---
 
+# Option 3 --- an append-only decision log, with a generated order file
+
+**Added after option 2's weakness turned out to sit on the most frequent
+operation.** Re-prioritization is common in a backlog --- and under option 2 it
+is the *only* thing that touches the file, so contention lands on the hot path.
+
+## The idea in one line
+
+**Reordering appends a line to a log. The order is what you get by replaying
+it. A second file holds the current order so a person can read it, and that file
+is generated and disposable.**
+
+## What is stored
+
+`.luma/order/todo.log` --- append-only, authoritative:
+
+```
+2026-09-01T09:00 alice   move alpha first
+2026-09-17T10:00 alice   move fix-login before write-docs
+2026-09-17T11:30 bob     move upgrade-parser first
+```
+
+`.luma/order/todo` --- generated from the log, so `cat` still shows the order:
+
+```
+upgrade-parser
+alpha
+fix-login
+write-docs
+```
+
+**And one line of configuration**, which is what makes the whole thing work:
+
+```
+.luma/order/*.log   merge=union
+.luma/order/*       merge=keepmine
+```
+
+**`merge=union` means git keeps the lines from both sides of any conflict** ---
+so two people appending decisions never collide. The generated file uses a
+driver that keeps either side, because it is about to be rebuilt anyway.
+
+## Creating and advancing still touch nothing
+
+As in option 2: a new item lands at the back by its timestamp, and advancing an
+item lands it at the back of its new column by timestamp. **Only a deliberate
+reordering writes to the log.**
+
+## Measured
+
+| | |
+| --- | --- |
+| two people appending re-prioritizations concurrently | **clean merge, both decisions kept** |
+| the same operations **without** `merge=union` | **conflict** |
+| two people reordering the same column, log plus generated file | **clean merge, no human intervention** --- both decisions in the log, generated file stale until rebuilt |
+
+**So the operation option 2 conflicts on --- about 45% of merges --- does not
+conflict here at all.**
+
+## Compaction: how the log is kept from growing forever
+
+**Two separate acts, and conflating them is what breaks it.**
+
+**Logical compaction --- append a checkpoint.** A line holding the full current
+order. Readers ignore everything before the newest checkpoint. **It is an
+append, so it cannot conflict**, and it can be done as often as you like.
+
+**Physical truncation --- delete the pre-checkpoint lines.** Housekeeping, done
+deliberately when nothing is in flight.
+
+**Measured, and this is the part that is counter-intuitive:**
+
+| | |
+| --- | --- |
+| compaction written as a **file rewrite**, normal merge | **conflict --- merge blocked** |
+| compaction written as a **file rewrite**, `merge=union` | clean, **but all 50 old entries come back** --- the truncation does not stick |
+| compaction written as an **append** | **clean, and both the checkpoint and the concurrent append survive** |
+
+**Why the rewrite fails:** it looks like a change at the top of the file and an
+append at the bottom, which ought to be disjoint --- but rewriting the whole
+file is one hunk covering everything, so it overlaps the append. And under
+`merge=union` the truncation is undone by design, because union exists to never
+lose a line.
+
+**Which is why compaction must be an append.** Then *old entries stop
+mattering* is always safe, and *old entries get deleted* is a rare, deliberate,
+and benign-if-raced housekeeping step.
+
+## What it costs
+
+- **Two artifacts per column** instead of one.
+- **The order is not the file's line order.** It is a replay, or a generated
+  file you trust. `cat` on the log shows decisions, not the order.
+- **The log grows until compacted.**
+- **Two people reordering the same item resolve by timestamp, silently** ---
+  last one wins, with both decisions visible in the log. **Nothing loud.**
+- **A footgun:** hand-editing the generated order file, which a rebuild
+  discards. Mitigated by a generated-file header, as `MANIFEST.md` already
+  carries.
+- **It needs `.gitattributes` to be right.** Clone without it and concurrent
+  appends start conflicting --- a silent regression in behavior, not in data.
+
+## What it gains beyond option 2
+
+- **No conflicts on the most frequent operation.**
+- **A decision history.** Who reprioritized what, and when --- which a list
+  cannot express, and which answers *why is this at the top* and *who put it
+  there*.
+- **The most natural path to a database**, because an append-only stream of
+  decisions is what you would feed one.
+- **Every failure mode is benign**: concurrent reorders keep both decisions, a
+  raced truncation re-inflates the log, the generated file cannot conflict, and
+  staleness is detectable by comparing it against a replay.
+
+---
+
 # Side by side
 
-| | **Addresses** | **Ordered file** |
-| --- | --- | --- |
-| runs out? | no --- counts instead of halving | no --- nothing is allocated |
-| a million at one spot | 12 characters | no effect at all |
-| card knows its own place | **yes** | no |
-| files written to reorder | **1** | 1 |
-| files written to advance or create | **1** | 1 |
-| two people move **different, distant** cards | clean; both survive | clean; both survive |
-| two people move **adjacent** cards | **clean; both survive** | **conflict --- though the intentions were compatible** |
-| two people move the **same** card | **conflict --- git stops and asks** | **conflict --- git stops and asks** |
-| two people insert **different** cards at one spot | quiet; both present, order between them fixed | conflict |
-| order without our program | `sort` on one field | `cat` one file |
-| order editable by hand | no | **yes** |
-| readable value | no --- `n1l8-w3` | **n/a --- there is no value** |
-| shipped anywhere | **no** | every plain-text board tool |
-| we maintain an algorithm | **yes** | no |
+| | **1. Addresses** | **2. Ordered file** | **3. Log + generated file** |
+| --- | --- | --- | --- |
+| runs out? | no --- counts instead of halving | no | no |
+| card knows its own place | **yes** | no | no |
+| files written to reorder | **1** | 1 | 2 (log + generated) |
+| files written to create or advance | **1** | **1** | **1** |
+| two people reorder the same column | clean | **~45% conflict** | **clean, both kept** |
+| two people move the same item | **conflict** | **clean, silently duplicated** | clean, last timestamp wins |
+| order without our program | `sort` on one field | `cat` one file | `cat` the generated file |
+| order editable by hand | no | **yes** | no --- append a decision instead |
+| readable stored value | no --- `n1l8-w3` | n/a | n/a |
+| decision history | no | no | **yes** |
+| shipped anywhere | **no** | every plain-text board tool | no |
+| we maintain an algorithm | **yes** | no | no --- but we maintain a replay rule |
+| path to a database later | **no --- order is in every record** | yes | **yes --- it is an event stream** |
+| needs `.gitattributes` | no | no | **yes** |
 
 ---
 
@@ -278,39 +394,63 @@ There is no intent to lose.
 
 # The question that decides it
 
-**Not loudness --- that turned out to be nearly the same for both.** What is
-left is:
+**Not loudness, and not volume.** Both turned out to be close to a wash:
+addresses and the ordered file both stop for the case that matters, and git
+itself fails somewhere around 10^6 to 10^7 live files for all three, so
+archival is mandatory regardless and no option ever has to survive 10^8 live
+items.
 
-**Do we want to own an ordering algorithm?**
+**What actually separates them:**
 
-- **No** → the ordered file. There is no arithmetic, nothing to get wrong, and
-  every comparable tool already works this way. Pay for it with a card that is
-  not self-contained, a contended file per column, and conflicts on adjacent
-  work.
-- **Yes, for better team behaviour** → addresses. Independent one-file writes
-  with no contention, loud only on genuine disagreement, cards self-contained.
-  Pay for it by maintaining an encoding nobody has shipped, whose sketch already
-  has a crash in it.
+**Do we want the order to live inside every item, or in one place per column?**
 
-**On the team axis, addresses now win clearly.** They are loud where it matters,
-quiet where it does not, and have no single point of contention. **The case for
-the ordered file is entirely maintainability** --- which is a real argument and
-a different one, and this document should not have presented it as the overall
-answer without saying which axis it was on.
+- **Inside every item** (option 1) --- items stay self-contained, every write is
+  independent, nothing contends. **And the decision is a one-way door**: the
+  order is in every record, so changing the mechanism later means rewriting the
+  whole corpus, forever.
+- **In one place per column** (options 2 and 3) --- items say nothing about
+  order, and the ordering mechanism becomes **a seam you can replace with a
+  database without touching a single item.**
 
----
+**And then, between the two that keep the seam:**
+
+**How often will people reorder the same column at the same time?**
+
+- **Rarely** → option 2. One file, `cat` shows the order, hand-editable, and
+  what every comparable tool already ships.
+- **Often** → option 3. Re-prioritization is the only operation that touches
+  the file, so if it is frequent the contention is on the hot path --- and the
+  log removes it entirely, at the cost of the order no longer being the file's
+  line order.
+
+**Reported from experience: re-prioritization is frequent in every backlog
+worth the name.** That is the observation that produced option 3.
 
 # What either would need before being built
 
-**Addresses**
+**All three**
+
+1. **Define the order as an interface, not a file format** --- *something answers
+   "what is the order of this column."* Without that, options 2 and 3 lose the
+   seam that is their main advantage, because every reader would be written
+   against a file layout.
+2. Decide what happens when two actors move the same item at once.
+
+**Option 1 --- addresses**
 
 1. Rewrite the sketch properly --- the counter ceiling must refuse, not crash.
 2. An independent test suite, written by somebody who did not design it.
-3. Decide what happens when two actors move the same card at once.
 
-**Ordered file**
+**Option 2 --- ordered file**
 
 1. Decide where the files live and what they are called.
-2. Decide what happens when the file names a card that has moved or gone.
-3. Decide what happens when two actors move the same card at once.
-4. Measure how often real concurrent reordering actually collides.
+2. Decide what happens when the file names an item that has moved or gone.
+3. Measure how often real concurrent reordering actually collides.
+
+**Option 3 --- log plus generated file**
+
+1. Specify the replay rule, and make it deterministic under any interleaving.
+2. Decide the checkpoint format, and when compaction runs.
+3. Get `.gitattributes` right, and decide how a clone that lacks it is detected
+   --- the failure is silent and behavioral rather than visible in the data.
+4. Decide whether the generated file is committed at all, or rebuilt on read.
