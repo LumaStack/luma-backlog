@@ -449,6 +449,12 @@ worth the name.** That is the observation that produced option 3.
 
 **Option 3 --- log plus generated file**
 
+0. **Checkpoints must record what they consumed.** A checkpoint snapped on a
+   branch summarizes a private view, and union merge can append an *older*
+   entry below it --- at which point a reader honoring the checkpoint silently
+   discards that entry. Demonstrated. So a checkpoint carries
+   `consumed-through=<T>`, a reader that finds an older entry after it falls
+   back to full replay, and checkpoints are created on main after merging.
 1. Specify the replay rule, and make it deterministic under any interleaving.
 2. Decide the checkpoint format, and when compaction runs.
 3. Get `.gitattributes` right, and decide how a clone that lacks it is detected
