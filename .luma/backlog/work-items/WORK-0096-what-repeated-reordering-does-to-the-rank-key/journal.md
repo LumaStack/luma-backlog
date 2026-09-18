@@ -251,6 +251,97 @@ whether it serves teams.
 
 **Third time in this work item that running something beat reasoning about it**,
 and the first time it corrected me twice in one exchange.
+### The second opinion disproved our own merge table, and we verified it
+
+**A different model, given the brief and nothing else, was asked which design
+serves git, large teams and large volume. It rejected the framing in three
+places and disproved the row everything rested on.**
+
+#### The correction that matters
+
+**"Two people move the same item → conflict" is false.** Measured on a 30-line
+column: two actors moving the same item to different distant destinations
+**merges cleanly and the item appears twice.** Verified here independently ---
+31 lines from a 30-line base, `item-15` at both the top and the bottom.
+
+**Our earlier result was an artifact of a four-line test file**, where the two
+hunks overlapped and forced a conflict. **A real column is long enough that they
+do not.**
+
+**So the loudness comparison inverts completely:**
+
+| two people move the same item | ordered file | addresses |
+| --- | --- | --- |
+| what we claimed | conflict | conflict |
+| **measured** | **clean merge, item silently duplicated** | **conflict** |
+
+**Addresses are the loud option. The ordered file is the silent one.** That is
+the opposite of the premise this comparison rested on, and it removes the only
+distinctive advantage the ordered file was credited with.
+
+**Fourth confident claim of mine about ordering to be disproved by running
+something**, and the one that was load-bearing.
+
+#### What else it found
+
+- **"Distant moves merge cleanly" only holds when all four hunks are
+  disjoint.** A move whose source is near its destination conflicts.
+- **A hazard nobody had named: reorder against advance.** They merge cleanly and
+  leave a ghost line --- and **our own rule that advancing writes only the item
+  guarantees that race.**
+- **Our open unknown, answered.** 3,000 randomized trials: git never silently
+  *dropped* a line both sides kept. **Duplication and ghosts are the complete
+  inventory of silent failures**, which is why cheap self-healing read rules
+  fully repair them.
+- **Contention measured**: a 30-line column with two operations per actor per
+  merge window conflicts on about **45%** of merges --- but the collision domain
+  is only deliberate re-prioritization, because creation and advancement never
+  touch the file.
+- **The volume axis is a wash, and this is the big reframe.** Git itself fails
+  somewhere around 10^6 to 10^7 live files --- measured at 100,000 files, an
+  8.4 MB index and 32 seconds to add --- **for both designs.** So archival is
+  mandatory regardless, and **the ordering scheme never has to survive 10^8 live
+  items.** Requirements 3, 4 and 5 are capped by git before they are capped by
+  the scheme.
+- **Addresses' advantage confirmed in kind**: midpoint-style fractional indexing
+  at a fixed hot spot grows linearly --- 16,667-character keys after 10^5
+  insertions, measured --- so the counting design's logarithmic advantage is
+  real.
+
+#### Two of our framings it pushed back on, and both land
+
+**"Adjacent moves are compatible work."** A column's order is one shared
+statement, so adjacency often marks genuinely interacting intent rather than a
+false alarm. **Our "false positive" reading was too convenient.**
+
+**"Nothing inserts between its own two most recent insertions."** True of
+people. **Not true of an agent doing binary-search insertion into one gap** ---
+which is exactly the nested-bisection pattern that makes addresses grow
+linearly. **The adversarial case we dismissed is a plausible agent behavior.**
+
+#### Its recommendation
+
+**The ordered file, amended**: the file is *advisory* rather than authoritative,
+with self-healing read rules --- first occurrence wins, names not in the column
+ignored, item id as the tiebreaker on timestamps. **Dominant axis: large
+teams**, because volume does not discriminate and git matters mainly through
+what fifty actors can trust, review and repair.
+
+**Note that the amendment is already in the design.** The curated-head proposal
+specified first-occurrence-wins and ghost-skipping from the start; the second
+opinion arrived at the same read rules independently and for sharper reasons.
+
+**Its deciding asymmetry**, and it is not the one we were arguing about:
+addresses genuinely have fewer and truer conflicts, and buy that with
+**unreviewable diffs** --- no ordering change can ever be read by a person ---
+**an unshipped algorithm every writer must implement identically**, and a
+failure mode whose only repair is mass renumbering, **the very operation the
+design forbids.** The amended file's failures are frequent, small, visible and
+inside git's own repair loop.
+
+**So we agree on the answer and almost nothing else.** Our lean was the ordered
+file on maintainability; this reaches the ordered file after removing the
+evidence we had leaned on, and on grounds we never considered.
 
 ## ▶ 2026-09-17
 
