@@ -135,7 +135,7 @@ is worth knowing and is not what this board wants.
 
 ---
 
-## 5. Recommendation
+## 5. Recommendation (superseded by §7 --- left as written)
 
 **Take A --- the order in a shared per-column file --- in Derived 1's specific
 form**, and this is a recommendation rather than a conclusion, because both
@@ -183,7 +183,126 @@ and attributable* satisfies it, or whether only *loud* does.
 
 ---
 
-## 6. Two measurements worth taking before deciding, both cheap
+## 6. The measurements were taken, and they changed the recommendation
+
+**Both ran on 2026-09-17. One overturned §5, which is why §5 is left standing
+above rather than quietly edited.**
+
+### Derived 3's verifier reproduces every claim it makes
+
+**Run unmodified, as shipped in its appendix. 2.4 seconds.**
+
+| claim | measured |
+| --- | --- |
+| 10⁶ placements immediately **above a card that never moves** | **12 characters**, 0.16s |
+| 10⁶ placements immediately **below** one | **12 characters** |
+| back of a column at 3.65 × 10⁸ --- the brief's hundred-year volume | **13 characters** |
+| front of a column at 10⁸ | 13 characters |
+| realistic mixed column, 10⁵ ops (85% back, 10% front, 5% interior) | **max 12 characters** |
+| 10⁵ random inserts into **one gap** | max 31, mean 17.8 |
+| **nested bisection**, 3,000 ops | 1,505 characters --- **linear, as the theorem requires** |
+| sort fidelity: ground truth vs Python byte order vs `LC_ALL=C sort(1)` | **84,030 keys, exact agreement** |
+
+**Requirement 7 is satisfiable inside the card.** That was the open question, and
+it is now answered with a number: **twelve characters for a million interior
+placements against a frozen neighbour, and it sorts with `sort`.**
+
+**For scale: today's rank field is `010.0020.000` --- also twelve characters.**
+So goal 7 is not traded at all, which is the opposite of what the candidate
+itself claimed to be trading.
+
+### Stern–Brocot mediants: logarithmic, and unsortable
+
+| pattern | result |
+| --- | --- |
+| monotone, 10⁶ insertions above a frozen card | `1000002/2000003` --- **width 15**, logarithmic as Research 2 derived |
+| nested bisection, 3,000 ops | width 1,256 --- linear, same theorem |
+| **does it sort as text?** | **no** |
+
+Numeric order `2/5, 1/2, 11/21, 2/3, 3/4` against text order
+`1/2, 11/21, 2/3, 2/5, 3/4`. **Comparing fractions needs cross-multiplication,
+which `sort` cannot express** --- so mediants forfeit goal 5 outright, and land
+in its *last resort* tier.
+
+**Research 2's derivation was correct and the family is still dominated:**
+derived 3's encoding is shorter (12 against 15) **and** text-sortable. Mediants
+are out.
+
+### What this does to §5's five reasons
+
+| reason | after measurement |
+| --- | --- |
+| 1. R7 trivially true rather than engineered | **substantially weakened** --- engineered turns out to cost 12 characters |
+| 2. only a shared file can be **loud** | **stands, structurally** --- two cards are two files, so git has nothing to conflict on |
+| 3. only family with field evidence in this medium | stands |
+| 4. curated head solves what makes manifests naive | stands |
+| 5. goal 5 in the *acceptable* tier, plus hand-editability | **weakened** --- derived 3 reaches the **best** tier, plain `sort`, verified |
+
+**And reason 2 is smaller than it looked, because of what derived 3's tag
+does.** The tag is the **actor's**, so two actors allocating at the same spot
+produce **equal position parts with different tags** --- distinct keys, a
+deterministic order between them, both attributable, and the condition
+**detectable** by looking for equal position parts.
+
+**That matters because of what goal 4 was written against.** The failure that
+bit this project was *indistinguishable duplicates* --- two records holding one
+identical value, the order gone, nothing reporting it. **Derived 3 makes that
+unreachable by construction.** What remains is a clean merge into an order
+neither actor chose: arbitrary, not wrong; nothing lost; attributable; findable.
+**That is not the failure goal 4 exists to prevent.**
+
+### One correction to Derived 2's rejection of the manifest
+
+It rejected the manifest partly because *"the merge advantage is bought with
+write-amplification on the commonest operation."* **That is true of a manifest
+listing every card, and not true of Derived 1's form**, where advancing writes
+only the card --- it lands in the destination's default tail by a timestamp,
+with no manifest entry at all. **Derived 2 scored a weaker version of the
+manifest than Derived 1 proposed**, which is a limit of blindness rather than a
+fault in either: neither could see the other.
+
+---
+
+## 7. Revised recommendation
+
+**Take Derived 3's stepping key in the card.** This reverses §5.
+
+**Why it wins now that the numbers exist:** it keeps every hard constraint as
+written --- one file per move, the card self-contained --- reaches goal 5's best
+tier with `sort` verified over 84,030 keys, and **trades no width at all**
+against the field in use today. Requirement 7 costs twelve characters. Goal 6
+comes free, because **value length is itself the gauge** of how much churn a
+spot has seen.
+
+**What is actually traded, named:**
+
+- **Goal 4 drops from loud to attributable.** Concurrent placement at one spot
+  merges cleanly into a deterministic order neither actor chose, detectable
+  afterwards. Indistinguishable duplicates --- the failure that motivated the
+  goal --- are unreachable.
+- **`LC_ALL=C`** is required for the sort to be locale-proof. An asterisk on
+  goal 5's best tier, not a demotion from it.
+- **Nested bisection remains linear**, as it must for any sortable stored value.
+  Nothing in the ten workloads performs it, and value length reports it long
+  before it hurts.
+
+**Take the manifest instead if *loud* is non-negotiable.** That is the whole of
+the remaining argument, and it is the values call both Derived 2 and Research 2
+identified independently. If a clean merge into an unchosen-but-deterministic
+order is unacceptable in principle --- rather than merely imperfect --- then no
+per-card scheme can ever satisfy you, and Derived 1's curated-head manifest is
+the answer, with field evidence behind it.
+
+**One question to settle either way before building:** what happens when two
+actors **move the same card** concurrently? The brief never asked. The
+literature says every scheme has a failure there, git's text merge included, and
+it is this board's commonest operation.
+
+---
+
+## 8. The measurements as they were specified, before they were run
+
+**Left as written, because §6 reports what they actually returned.**
 
 **Neither is expensive and both bear directly on the choice. Taking them would
 avoid repeating the brief's own fifth method failure.**
