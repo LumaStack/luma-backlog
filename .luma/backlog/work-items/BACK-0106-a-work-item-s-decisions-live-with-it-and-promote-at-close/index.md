@@ -76,6 +76,17 @@ assume.
 original while discarding a backward link that is free at birth. The real
 choice is backward-only versus both.
 
+**Store-forward-derive-backward was considered and argued down.** The
+maintainer proposed storing only `promoted_to` and deriving provenance by
+scanning — and spotted the flaw in the same breath: deletion. A derived link
+vanishes without trace when the work item is removed
+([[work-items/WORK-0039-what-closed-work-items-cost-as-the-corpus-grows]]
+makes retention a live topic); a stored link merely dangles, which is still
+information and still finds the record in git history. The scheme also
+inverts the costs: it stores the link that needs the §4.8.1 amendment and
+discards the one that is free. Once the original is being touched at all,
+writing both ends in the one atomic operation costs nothing extra.
+
 ### Out of scope
 
 The third level above the project, and the guidelines for what earns
