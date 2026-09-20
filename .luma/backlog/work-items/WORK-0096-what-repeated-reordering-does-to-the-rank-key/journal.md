@@ -78,6 +78,116 @@ meet every stated goal. The brief invited the framing to be rejected and it was.
 evidence, three answers means **the evidence does not determine the design.**
 More analysis will not fix that --- either a requirement is wrong, or what
 decides this is a number nobody has.
+### The next step is a measurement, not a decision
+
+**Before choosing between the three designs, measure how often re-prioritization
+actually happens.**
+
+**It is the only claim in the brief carrying no measurement, and it is the one
+holding the whole problem up.** Every argument for the log over the ordered file
+rests on it; so does the weight given to contention; so does whether option 2's
+conflict rate matters at all. **Three independent vettings reached three
+different conclusions from the same evidence, which says the evidence does not
+determine the design.** A fourth opinion will not fix that. A number might.
+
+**What to measure**, all of it recoverable from git history without instrumenting
+anything:
+
+- **How often a deliberate reorder happens at all** --- `rank` invocations, or
+  commits that change only a `rank` field. Distinguish it from creation and
+  advancement, which under options 2 and 3 never touch the shared artifact.
+- **How often two of them land in the same column inside one merge window.**
+  That is the number that decides whether contention is real, and it is
+  **branch lifetime multiplied by reorder rate**, not simultaneity.
+- **How often the same card is reordered by two actors** --- the only case where
+  any design silently loses intent.
+- **The distribution of column lengths**, because the conflict rate is a curve
+  against it: measured at 56, 26, 24 and 11 percent for 30, 60, 100 and 200
+  cards.
+
+**And the deeper question the measurement may retire.** Exact arbitrary total
+ordering is the expensive requirement. **A priority band plus the timestamp
+already on every card may satisfy every stated goal**, including the ones the
+brief said would have to give --- and if re-prioritization turns out to be rare,
+or to be about moving things into a rough band rather than to an exact position,
+then no ordering algorithm is needed and this work item closes without choosing.
+
+**This project is its own corpus and the measurement is available now**: 100
+work items, nine months of history, one actor plus agents. It is not a large
+sample and it is a real one.
+### Every claim of mine that was disproved, in one place
+
+**Five, all found by running something rather than by reasoning, and every one
+had passed review by me first.** Recorded together because a successor inheriting
+only the conclusions would have no way to tell which were tested.
+
+1. **"Subdividing a finite interval cannot meet the requirements, and no amount
+   of precision changes that."** Condemned a family where the measurement
+   convicted an allocator. A monotone stream needs counting and costs `log k`;
+   only nested bisection costs `k`. **All ten of the brief's workloads were
+   monotone.**
+2. **"Widening the range leaves interior insertion exhausted at ~200."**
+   Interior room is a function of **spacing**, not range width. One width pays
+   for two budgets: `range = records x room per gap`.
+3. **"Position-strings is logarithmic on our workload."** Measured against the
+   real library: **2.00 characters per insertion**, flat, on the never-moves
+   case. Logarithmic applies to left-to-right runs only. **This would have
+   shipped.**
+4. **"Two people moving the same card conflicts under the ordered file."** An
+   artifact of a **four-line test file** whose hunks overlapped. On a 30-line
+   column it merges clean and the card appears **twice**.
+5. **"Log plus generated file merges clean with no human intervention."**
+   Depended on `git config merge.keepmine.driver`, **a per-machine setting that
+   cannot be committed.** `merge=union` is built into git; a custom driver is
+   not. On a fresh clone it conflicts every time.
+
+**The pattern in all five: a plausible statement nobody had checked**, and in
+three of them a test that passed for a reason I had not noticed. **The fix that
+worked every time was running something, not thinking harder.**
+
+### Dead ends: designs built and abandoned
+
+**By the vettings, each rejecting its own:**
+
+- **Each card naming its neighbors**, recoverable with `tsort` through a POSIX
+  pipeline even through a cycle. **Conflicts 26--69%.**
+- **An additive variant of the same**, which looked strictly better and
+  **reordered untouched cards in 57--93% of clean merges.**
+- **A per-card predecessor pointer** --- the best write profile of anything
+  considered, and it produces **cycles across files that merge perfectly cleanly
+  and are invisible to any single-file diff.**
+
+**All three failed the same way**, and the reason is the durable part: *pinning
+one card without disturbing the others requires an absolute key.*
+
+**By us, earlier:**
+
+- **Seeding a rank from the record's own key or timestamp.** Cannot place a
+  record behind one somebody ranked `--last`, because an explicit rank allocates
+  from the observed maximum. Killed by that single case.
+- **Stern--Brocot mediants.** Logarithmic on the monotone workload as derived
+  --- width 15 at 10^6 --- but **fractions do not sort as text**, and comparing
+  them needs cross-multiplication that `sort` cannot express. Dominated on both
+  axes.
+- **Plain wide integers with occasional repair.** A hot spot gives **19 to 49
+  insertions** before the gap is exhausted, whatever range is chosen, because
+  halving converts room into `log2(room)`. Repairs would be constant.
+- **Compaction written as a file rewrite.** Conflicts outright under a normal
+  merge, and under `merge=union` the truncation is silently undone. **It has to
+  be an append.**
+
+### What is believed rather than confirmed
+
+- **That re-prioritization is frequent.** Reported from experience. **Unmeasured,
+  and it is the claim the whole problem rests on.**
+- **That replay is cheap with a better data structure.** Two vettings measured a
+  linked-list splice at 14 ms where ours took 1,487 --- **we have not run it
+  ourselves.**
+- **That archival will be mandatory** because git degrades around 10^6 to 10^7
+  live files. Measured at 100,000 files and extrapolated beyond that.
+- **That the `consumed-through` checkpoint fix is sufficient.** One vetting
+  demonstrated **two concurrent checkpoints defeat it**; we have not reproduced
+  that, and if it holds the fix needs a per-actor vector.
 
 ## ▶ 2026-09-18
 
