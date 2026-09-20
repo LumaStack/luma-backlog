@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-20
+
+The three-option vetting brief is written as explorations/brief-vet-the-three-designs, and the two-option brief is marked superseded rather than deleted --- a brief and the answer to it should be readable together, and that one is the record of what was actually put to the reader whose answer is filed beside it. The new brief carries every measurement taken, including the ones that disproved our own claims, and checked clean for leaked direction. Three things in it are deliberate. **It states that four confident claims here have already been disproved by running something**, so a reader treats the numbers as checkable rather than settled. **It reports that re-prioritization is frequent as experience rather than measurement**, because that is what it is and it is the observation option 3 exists for. And it asks what we did not think to ask, naming the two hazards found that way --- the duplicate on a same-card move, and the branch checkpoint --- with the note to assume there are more. It also carries the output conventions, which is the fix for isolated agents breaching rules they were never shown.
+
 ## ▶ 2026-09-18
 
 ### Both measurements taken, and one reversed the recommendation

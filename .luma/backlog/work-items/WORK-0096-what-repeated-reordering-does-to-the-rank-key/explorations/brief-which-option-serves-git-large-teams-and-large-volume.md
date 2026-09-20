@@ -8,6 +8,13 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-18T03:21:21Z'}
 
 # Brief: which option serves git, large teams and large volume
 
+> **Superseded by `brief-vet-the-three-designs`.** This covered two options and
+> was shaped around one question. It is kept as the record of what was actually
+> put to the reader whose answer is filed as
+> `second-opinion-on-git-teams-and-volume` --- a brief and the answer to it
+> should be readable together.
+
+
 > **A self-contained brief for a fresh reader.** Everything needed is here.
 > **Nothing else in this repository should be read** --- the rest of it contains
 > a week of our own opinions, and the point of asking somebody else is to get an
