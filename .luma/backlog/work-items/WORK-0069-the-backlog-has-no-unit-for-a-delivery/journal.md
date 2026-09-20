@@ -5,6 +5,36 @@
 
 ---
 
+## ▶ 2026-09-20
+
+### A proposal to add `kind: epic`, and what this record already says about it
+
+**Raised 2026-09-19: create a new kind, Epic --- a work item tracking a group of
+work items that must be completed together for some end goal (a release, a
+milestone, a minimum viable product, a delivery, a feature, a business outcome,
+a metric target, a deployment), similar to epics in the tool most people know.**
+
+**This record already covers that problem and already considered that answer.**
+It is listed under *two options this replaced*: **a sixth `kind` of work item
+that groups others**, set aside on two grounds --- membership would still have
+to be a field, because spec §7.1 settled the layout on whether membership is
+stable enough to be a path fact and named this kind as something that changes
+routinely; and **`kind` is an enum, so shipping `epic` makes a team that says
+`release` file epics.**
+
+**The list of end goals in the proposal is the strongest evidence for that
+second objection.** Eight different words were given for the same container.
+Under the relation this record leads with, **the container's own title says
+which one it is** --- `v1 release`, `Payments initiative` --- so nothing ships an
+opinion about the word and two teams using different vocabularies never have to
+agree.
+
+**Recorded rather than appended.** The proposal and this record's existing
+position disagree, and quietly appending raw capture beside a reasoned rejection
+would leave a reader unable to tell which is current. **Whether to reopen the
+sixth-kind option on its merits is an open question, not something this entry
+settles.**
+
 ## ▶ 2026-09-08
 
 created from a live instance rather than from theory — the maintainer asked what has to be true before another project can use this tool, the answer was eight or ten pieces of work, and there was nowhere to record that as one thing except an eleventh work item
