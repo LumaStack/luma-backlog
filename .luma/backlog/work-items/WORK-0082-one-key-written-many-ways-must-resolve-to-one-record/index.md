@@ -3,13 +3,14 @@ type: work-item
 type_version: "0.0.1"
 key: WORK-0082
 title: One key written many ways must resolve to one record
-workflow_status: captured
+workflow_status: closed
 kind: change
-stage: draft
+stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:09:57Z'}
 description: WORK-0074, WORK-74, work-74, WORK-0000000074, 'WORK      74', WORK---74 and WoRk-74 should all be the same key in the internal engine. wants tests and a sweep to prove it. one form is the most normal — downcase, spaces to dashes, collapse runs of dashes, strip leading zeros — but normalizing to WORK-0074 may be better, so that if the normalization is ever printed it is already the correct form.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
-rank: 010.0650.000
+modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:23:56Z'}
+rank: 070.0200.000
+closed: {on: 2026-09-20, as: completed, by: 'agent:claude-fable-5/luma-backlog'}
 ---
 
 # One key written many ways must resolve to one record

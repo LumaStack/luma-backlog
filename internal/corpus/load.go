@@ -233,11 +233,12 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		return Item{}, err
 	}
 
-	// A key is matched case-insensitively, so `work-00002` finds `WORK-00002`.
+	// A key is matched by its parsed value — prefix and number — never as a
+	// string, so `work-2`, `WORK---0002` and `WORK 2` all find `WORK-0002`.
 	// Somebody typing a handle from memory should not have to hold the shift
-	// key to be understood. The joined form is normalized the same way, so
-	// `work-00002-lint-the-corpus` resolves as readily as it is written.
-	normalized := NormalizeKey(ref)
+	// key, count the padding, or land the dash to be understood. The joined
+	// form normalizes its key half the same way, so `work-2-lint-the-corpus`
+	// resolves as readily as it is written.
 	normalizedName := NormalizeName(ref)
 
 	var exact, prefix []Item
@@ -245,7 +246,7 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		switch {
 		case it.Name() != "" && it.Name() == normalizedName:
 			exact = append(exact, it)
-		case it.Key() != "" && it.Key() == normalized:
+		case it.Key() != "" && SameKey(it.Key(), ref):
 			exact = append(exact, it)
 		case it.Path == ref || it.Slug() == ref:
 			exact = append(exact, it)
@@ -299,13 +300,12 @@ func scoped(items []Item, ref string) []Item {
 	}
 
 	var dir string
-	normalized := NormalizeKey(head)
 	normalizedName := NormalizeName(head)
 	for _, it := range items {
 		if it.Type() != WorkItem {
 			continue
 		}
-		if it.Key() == normalized || it.Name() == normalizedName ||
+		if (it.Key() != "" && SameKey(it.Key(), head)) || it.Name() == normalizedName ||
 			it.Slug() == head || SlugOf(it.Slug()) == head {
 			dir = path.Dir(it.Path)
 			break
