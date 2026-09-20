@@ -8,6 +8,76 @@
 ## ▶ 2026-09-20
 
 The three-option vetting brief is written as explorations/brief-vet-the-three-designs, and the two-option brief is marked superseded rather than deleted --- a brief and the answer to it should be readable together, and that one is the record of what was actually put to the reader whose answer is filed beside it. The new brief carries every measurement taken, including the ones that disproved our own claims, and checked clean for leaked direction. Three things in it are deliberate. **It states that four confident claims here have already been disproved by running something**, so a reader treats the numbers as checkable rather than settled. **It reports that re-prioritization is frequent as experience rather than measurement**, because that is what it is and it is the observation option 3 exists for. And it asks what we did not think to ask, naming the two hazards found that way --- the duplicate on a same-card move, and the branch checkpoint --- with the note to assume there are more. It also carries the output conventions, which is the fix for isolated agents breaching rules they were never shown.
+### Three independent vettings, three different answers
+
+**One model for each option.** Vetting 1 picks addresses and argues our goal-4
+evaluation is inverted; vetting 2 picks the ordered file and refuses addresses;
+vetting 3 picks the log, conditionally, and refuses addresses. **Two of three
+refuse option 1 and the third says the brief misjudged it.** No two agree on
+anything except that the question is harder than the brief made it look.
+
+**They agree on the facts, and the facts moved against our measurements rather
+than against any option.**
+
+- **The replay benchmark measured a Python list.** Found independently by two of
+  them: a linked-list splice does in **14 ms** what we reported as 1,487 ms, and
+  stays flat in column size. **So compaction may not be a performance
+  requirement at all** --- which means the checkpoint hazard was accepted to buy
+  something that costs nothing.
+- **The 45% conflict rate is a point on a curve.** 56 / 26 / 24 / 11 percent at
+  30 / 60 / 100 / 200 cards, and it varies with branch lifetime rather than
+  simultaneity. Quoting one number was the error.
+- **Option 1's interior-gap growth is a listed requirement, not a hypothetical.**
+  All three measured it linear; they disagree on the constant. **It is
+  workload 5 on our own list**, and we described it as something nothing does.
+- **"Duplication and ghosts are the complete inventory" is false** --- a
+  five-line reproduction of a clean merge into an order neither side holds.
+- **"Log plus generated file: clean, no human intervention" does not
+  reproduce.** Verified afterwards: that result depended on
+  `git config merge.keepmine.driver`, **a per-machine setting that cannot be
+  committed.** `merge=union` is built into git; a custom driver is not. On a
+  fresh clone the generated file conflicts every time. **Fifth wrong claim, and
+  the same shape as the four-line test file --- a result that passed for a
+  reason nobody checked.**
+
+**The disagreement reduces to one question, now quantified: how much silently
+lost intent is tolerable.** Two actors moving the same card gives a loud
+conflict every time under option 1, a duplicate 92--98% of the time under option
+2, and a silent wall-clock win every time under option 3. Vetting 1 treats any
+silent loss as disqualifying and shows option 1's conflicts track the base rate
+of genuine contests within a point while option 2 conflicts five times more
+often than there is anything to argue about. Vetting 2 accepts a small closed
+repairable inventory. Vetting 3 accepts silent resolution as the price of
+otherwise-correct machinery. **That is the values call, and it is sharper than
+the loud-versus-quiet framing we had.**
+
+**New hazards worth carrying regardless of choice.** Option 1's key space **is
+not dense** --- two actors at one spot produce adjacent keys with nothing
+insertable between, confirmed by exhaustive search over 140,000 addresses, and
+whether you can place a card where you asked depends on your own name. **Two
+concurrent checkpoints defeat the `consumed-through` fix** adopted two days ago;
+it needs a per-actor vector. **Placement resurrection** in options 2 and 3 both.
+Union merge **interleaves log lines out of chronological order**, making the
+wall clock a correctness input. `merge=union` is not honored by `git am`.
+Archival is an ordering operation costed nowhere.
+
+**Three fourth designs were built and all three authors rejected their own.**
+Neighbor-naming conflicts 26--69%; its additive variant reordered untouched
+cards in 57--93% of clean merges; a predecessor pointer produces cycles that
+merge cleanly and are invisible to any single-file diff. **All failed the same
+way**, and the reason is the useful part: *pinning one card without disturbing
+the others requires an absolute key.*
+
+**And the finding that outranks the question.** The one claim in the brief
+carrying no measurement --- that re-prioritization is frequent --- is the one
+holding the whole problem up. **Exact arbitrary total ordering is the expensive
+requirement**, and a priority band plus the timestamp already on the card may
+meet every stated goal. The brief invited the framing to be rejected and it was.
+
+**The three-way split argues the same way.** Three capable readers, the same
+evidence, three answers means **the evidence does not determine the design.**
+More analysis will not fix that --- either a requirement is wrong, or what
+decides this is a number nobody has.
 
 ## ▶ 2026-09-18
 
