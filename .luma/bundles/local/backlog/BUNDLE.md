@@ -2,7 +2,7 @@
 type: bundle
 type_version: "0.0.1"
 title: local/backlog
-version: 0.45.0
+version: 0.46.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -35,6 +35,10 @@ they need.
   proposing a rename.
 - `type_definitions/outcome` — the condition that must hold for a work item to
   be done. True or false, never a task in disguise.
+- `type_definitions/task` — a stored step toward a work item. How the work gets
+  done, never what done means.
+- `type_definitions/exploration` — investigation kept visibly apart from
+  commitment, so an idea recorded while thinking is never mistaken for work.
 
 **Policies**
 
@@ -69,6 +73,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.46.0` — **`task` and `exploration` earn their contracts.** Both types were
+in use — 56 tasks, 19 explorations — with nothing published to hold them to,
+so their documents could cite no `type_version` and validation had nothing to
+read. Transcribed from the corpus and the tool's spec, not invented: the
+definition is written last, after the records show what they actually carry.
+Both begin at `0.0.1`, and every existing document of each type now cites it.
 
 `0.45.0` — **Type Definitions become folders.** LKF `v0.0.21` renamed `_types/`
 to `type_definitions/` and made every Type Definition a folder:
