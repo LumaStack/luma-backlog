@@ -45,8 +45,9 @@ edited.
 - **Stored links degrade gracefully; derived links do not.** If the work item
   is deleted, a stored `promoted_from` dangles visibly and the key still
   finds the record in git history; a derived link becomes nothing, with no
-  trace that provenance existed. The maintainer found this argument while
-  proposing the derived variant, and it sank it.
+  trace that provenance existed. This surfaced while the derived variant was
+  being brainstormed — raised as a possibility to talk through, never
+  proposed — and it is what ruled the variant out.
 - **Once the original is touched at all, the second link is free.**
   `promoted_from` is written into a brand-new file; there is no economy in
   dropping it.
