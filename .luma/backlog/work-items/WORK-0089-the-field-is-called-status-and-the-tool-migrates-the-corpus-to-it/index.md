@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0089
 title: The field is called status, and the tool migrates the corpus to it
-workflow_status: captured
+workflow_status: unprepared
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:25:25Z'}
 description: 'workflow_status becomes status. status is what every tool in the field calls it, and state claims more than the field holds — a record''s state is the whole record, its status is where it stands in a process. renaming it also frees workflow to mean what everyone else means by it: the set of statuses and the moves between them. and the rename is the first thing migrations have to carry, so this delivers the mechanism WORK-0037 asked for rather than another hand-edit.'
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
-rank: 010.0710.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
+rank: 020.0030.000
 ---
 
 # The field is called status, and the tool migrates the corpus to it

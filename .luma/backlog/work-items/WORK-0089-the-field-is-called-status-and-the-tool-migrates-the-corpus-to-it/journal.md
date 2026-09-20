@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-20
+
+WORK-0089-the-field-is-called-status-and-the-tool-migrates-the-corpus-to-it captured → unprepared: selected
+
 ## ▶ 2026-09-10
 
 scope narrowed on the maintainer's instruction: this does NOT build the migration mechanism, it depends on WORK-0037 and is its first consumer. the third outcome changed from 'migrating is something the tool does' to 'this rename is carried by a migration, not by hand'
