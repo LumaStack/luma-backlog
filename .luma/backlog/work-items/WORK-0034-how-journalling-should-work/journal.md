@@ -7,6 +7,8 @@
 
 ## ▶ 2026-09-20
 
+superseded by BACK-0107 — the maintainer asked for one record defining what a journal IS: type definition, content recommendation, entry format. this record was the what-is-noise piece; the relitigation-risk finding, the subagent lean, and the two-readers tension are carried into BACK-0107 rather than lost
+
 WORK-0034-how-journalling-should-work captured → unprepared: selected
 
 ## ▶ 2026-09-06

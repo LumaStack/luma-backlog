@@ -2,13 +2,14 @@
 type: work-item
 type_version: "0.0.1"
 title: What is the journal for
-workflow_status: captured
+workflow_status: closed
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T20:55:03Z'}
 key: WORK-0012
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
-rank: 010.0030.000
+modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T18:26:44Z'}
+rank: 070.0230.000
+closed: {on: 2026-09-20, as: superseded, by: 'agent:claude-fable-5/luma-backlog', reason: 'BACK-0107 covers it — one record defining the journal: type definition, content, format. The anonymity finding is absorbed there.'}
 ---
 
 # What is the journal for

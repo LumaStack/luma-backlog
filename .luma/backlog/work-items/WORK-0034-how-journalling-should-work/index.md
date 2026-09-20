@@ -3,12 +3,13 @@ type: work-item
 type_version: "0.0.1"
 key: WORK-0034
 title: How journalling should work
-workflow_status: unprepared
+workflow_status: closed
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T15:40:00Z'}
-rank: 020.0010.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
+rank: 070.0240.000
+modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T18:26:44Z'}
+closed: {on: 2026-09-20, as: superseded, by: 'agent:claude-fable-5/luma-backlog', reason: 'BACK-0107 covers it — the what-is-noise question joins the type definition and format there; the relitigation criterion, subagent lean and two-readers tension are absorbed.'}
 ---
 
 # How journalling should work
