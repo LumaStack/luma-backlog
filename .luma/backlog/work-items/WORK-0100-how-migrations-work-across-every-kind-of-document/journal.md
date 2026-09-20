@@ -4,3 +4,7 @@
 > historical. Append, never curate. Shape: `spec.md` §5.5.
 
 ---
+
+## ▶ 2026-09-20
+
+WORK-0100-how-migrations-work-across-every-kind-of-document captured → unprepared: selected
