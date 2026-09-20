@@ -3,11 +3,12 @@ type: work-item
 key: WORK-0100
 title: How migrations work across every kind of document
 description: 'Two types of migration: ones a CLI can do without an agent, and ones only agents can do. What needs migrating: bundles, type definitions, records, frontmatter, document bodies --- basically every document. Which means every document has to track its type definition version. And a model for what is worth migrating versus what is fine to leave wrong.'
-workflow_status: captured
-rank: 010.0810.000
+workflow_status: unprepared
+rank: 020.0040.000
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:19:19Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:29:51Z'}
 ---
 
 # How migrations work across every kind of document
