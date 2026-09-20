@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: violation
+version: "0.0.1"
 fields:
   violation_id:
     field_presence: required

@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Choosing a release version
 description: Which part to bump when cutting a release, and the two cases that must be said out loud in the notes. Enough to act; the reasoning lives in the versioning bundle.
 matches:

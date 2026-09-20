@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: decision_log
+version: "0.0.1"
 ---
 
 # Decision log

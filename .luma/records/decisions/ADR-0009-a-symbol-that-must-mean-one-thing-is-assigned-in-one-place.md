@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: A symbol that must mean one thing is assigned in one place
 decided: 2026-09-06
 stage: provisional

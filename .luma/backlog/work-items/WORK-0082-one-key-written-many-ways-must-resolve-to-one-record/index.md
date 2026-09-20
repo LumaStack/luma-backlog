@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0082
 title: One key written many ways must resolve to one record
 workflow_status: captured

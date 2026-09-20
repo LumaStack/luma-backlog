@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Run down where the work stands
 description: Run down where the work stands and what to pick up — what was last touched, what is under way, what is queued, and what is worth preparing — then recommend. Use when asked "what should I work on", "what's next", "what should I pick up", "where were we", "catch me up", "where do things stand", "anything I should be doing", or at the start of a session with no stated task. Do NOT use to display a record or a listing without choosing (backlog-show), and never to reorder or move anything.
 ---

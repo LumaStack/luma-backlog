@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Create a worktree
 description: Create an isolated worktree for a task, provision what it needs to run, and verify it before starting work. Use before beginning any task that runs alongside another agent.
 ---

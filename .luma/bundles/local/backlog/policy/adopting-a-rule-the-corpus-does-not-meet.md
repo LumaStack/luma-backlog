@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Adopting a rule the corpus does not meet
 description: What to do when a new rule would fail records that already exist — backfill them or grandfather them, never neither, and how to choose.
 matches: topic:adopting a rule, tightening a policy, or changing what a record must contain

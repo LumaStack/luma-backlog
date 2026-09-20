@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: Every interface is an adapter over one application layer
 decided: 2026-09-05
 stage: provisional

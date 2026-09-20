@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Audit sensitive data
 description: Check whether a repository has already published credentials or private identity, and decide what each finding is worth. Use before making a repository public, or on any repository nobody has checked.
 ---

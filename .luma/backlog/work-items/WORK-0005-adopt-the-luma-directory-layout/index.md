@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Adopt the luma directory layout
 workflow_status: closed
 stage: draft

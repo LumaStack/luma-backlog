@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The escape hatch the refusals name exists
 desired_state: "Every refusal that names --force can actually be passed with it, and no message advertises a flag the binary does not have."
 verify_by: ["`work-item close <ref> --help` lists --force.", "A completed close refused for unproven outcomes succeeds with --force --- which is the message that has been promising the flag.", "The same holds for every other refusal on the completed path: no outcomes at all, an outcome that could not be read, and a task that never closed.", "No message in internal/ names a flag that does not exist."]

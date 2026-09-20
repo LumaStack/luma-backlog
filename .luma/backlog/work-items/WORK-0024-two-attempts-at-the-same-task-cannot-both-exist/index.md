@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0024
 title: Two attempts at the same task cannot both exist
 workflow_status: captured

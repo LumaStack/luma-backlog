@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/luma-types
-version: 0.15.1
-published: 2026-09-02
+version: 0.16.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: The type definitions more than one luma tool has to agree on — namespaced, vendored, and deliberately not built into the knowledge format.
@@ -11,7 +12,7 @@ description: The type definitions more than one luma tool has to agree on — na
 # luma types
 
 **Type Definitions that more than one luma tool needs to agree on.** Copy the
-`_types/*.md` you want into your own bundle — that is what the knowledge format's resolution and namespacing
+`type_definitions/<name>/` folders you want into your own bundle — that is what the knowledge format's resolution and namespacing
 rules mean by vendoring, and it is the only sharing mechanism the format has.
 
 ## What is here
@@ -86,7 +87,7 @@ matters depends on where the documents live — see below.
 ## Two versions at once: usually fine, once not
 
 **The bundle is the resolution scope.** A contract is found in *this* bundle's
-`_types/`, so two bundles may hold different versions of a type and each one's
+`type_definitions/`, so two bundles may hold different versions of a type and each one's
 documents are checked against the copy that travelled with them. No
 contradiction, and no need to coordinate.
 

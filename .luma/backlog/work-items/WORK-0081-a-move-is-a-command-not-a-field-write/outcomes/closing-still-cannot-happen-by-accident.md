@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Closing still cannot happen by accident
 desired_state: "Reaching closed requires close. Neither set nor transition can put a record in the terminal status."
 verify_by: ["`luma-backlog transition <ref> closed` exits non-zero and its message names `close`. Neither `set` nor `transition` can reach the terminal status.", "`close <ref> canceled` works on a work item with no outcomes --- cancelling is not gated, because gating it would make it impossible to stop work for being unfinished (spec.md §5.3.1).", "`close <ref> completed` on a work item with no outcomes is refused, and says what is missing rather than what to type.", "`close` itself is unchanged --- its refusals, dispositions and behaviour are exactly as they were before this work item."]

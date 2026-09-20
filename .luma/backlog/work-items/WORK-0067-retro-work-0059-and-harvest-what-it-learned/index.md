@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0067
 title: Retro WORK-0059 and harvest what it learned
 workflow_status: captured

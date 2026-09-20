@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0060
 title: A configurable menu of working modes
 workflow_status: captured

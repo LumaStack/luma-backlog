@@ -1,5 +1,6 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: luma/tutorial_step
 version: "0.3.0"
 extends: document

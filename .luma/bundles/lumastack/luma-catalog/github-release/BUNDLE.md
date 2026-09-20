@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/github-release
-version: 0.8.1
-published: 2026-09-02
+version: 0.10.0
+published: 2026-09-19
 stage: draft
 consumers: [project]
 description: Cutting and publishing GitHub releases — choosing the version, the changelog, release titles and contents, and the gh procedure.
@@ -63,6 +64,39 @@ to undo than anything else in the procedure, and on a managed machine it may not
 be yours to do.
 
 ## Version
+
+`0.9.0` — **a release title is the version and nothing else, and a section with
+nothing to say is left out.**
+
+**Titles.** `vX.Y.Z`, no dash and no summary. What changed moves to the opening
+line of the notes, one line below. Saying it in both places is one fact written
+twice at the same moment and amended separately afterwards — and the title is
+the copy that cannot be fixed, because feeds and unfurls cache it on the day it
+publishes. It also makes the release name, the tag and the version field one
+string with nothing to parse off the end before any two can be compared.
+
+*What it gives up is stated rather than glossed:* a reader scanning bare
+versions cannot tell which release affects them without opening one. The opening
+line is now required, because it is the only summary a release has.
+
+**Omission.** Every section below that opening line is conditional, and a
+heading reading *none* or *nothing to do* costs a stop and returns nothing.
+Absence is the statement, and the policy says so — which is what makes it
+readable rather than an author having forgotten.
+
+*This resolves a contradiction the document already had.* The banner said
+*"delete the whole line when nothing breaks"* while `Upgrading` was told to say
+*nothing to do* out loud. One document, two answers to the same question.
+
+Minor rather than patch: **a reader who correctly understood `0.8.1` now behaves
+differently**, which is the test every patch entry below turns on. Not breaking
+by this bundle's own definition — no document removed or renamed, no Type
+Definition touched, no `matches` gained or lost.
+
+*Stage and survival both checked and both unchanged:* still `draft`, still
+`intended`. Publication and adoption make the promotion question live rather
+than answering it, and the answer is still that its shape can reverse without
+notice.
 
 `0.6.4` — **the manifest declares `lifecycle: draft`.** The field was absent, and
 absent reads as `unknown` — *nobody has said*. Something was known: this is

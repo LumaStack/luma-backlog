@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/bundle-manager
-version: 0.15.1
-published: 2026-09-02
+version: 0.17.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: Creating, updating, auditing, repairing, migrating and retiring bundles — the layout they use and which catalog they belong in.
@@ -28,6 +29,9 @@ belongs in, and a procedure for each thing you do to a bundle over its life.
   a project and when to start in a catalog, and the one bar that still binds.
 - [[an-index-of-what-exists]] — load the index, never the content. How a bundle
   stays large without being expensive, and why the alternative fails silently.
+- [[what-a-bundle-may-carry]] — somebody else's writing in a bundle. Adoption is
+  redistribution, so a carried licence lands in every adopter's repository; the
+  five routes, the one that is the default, and how to cache what you point at.
 
 **Procedures**
 
@@ -85,6 +89,70 @@ Both levels. An organization curates a catalog and a project writes bundles it
 may later promote, and the procedure is the same at either end.
 
 ## Version
+
+`0.16.0` — **nothing said what happens when a bundle carries somebody else's
+writing**, and the answer is not obvious: **adoption is redistribution.**
+`foreman get` copies a bundle's directory into another repository, so a vendored
+document lands in every adopter's repository under its original licence, with
+its attribution duty, in a repository whose licence nobody checked and whose
+owner was never asked. The obligation is created by the author of the bundle and
+paid by people who never saw the decision.
+
+**[[what-a-bundle-may-carry]] names five routes and makes one the default** —
+carry only what you wrote, point at everything else. It is the only route where
+a repository's licence file tells the whole truth about the repository, and the
+only one with no downstream cost at all. The other four — restate it, quote a
+little, carry it and pass the licence on, leave it out — each say in plain terms
+what the user's repository takes on and what every adopter takes on.
+
+**The policy requires that the choice be presented rather than made.** An agent
+states the source, the licence it actually found, what each open route costs
+downstream, and its recommendation. *If we carry this, everyone who adopts this
+bundle is redistributing it too* is a sentence somebody can decide on; *it is
+CC BY 4.0* is not, and an agent that says only the second has not asked the
+question.
+
+**It also writes down how to cache what you point at**, which had been solved
+twice in this catalog and stated nowhere: one directory per bundle under
+`~/.cache/luma/luma-foreman/bundles/`, fetch the source rather than the rendered page,
+`curl -o` to the file rather than into the context window, a date stamped on the
+first line so staleness is visible, refresh when that date is not today, never
+block on the network, and never commit it — **a copy on one machine is nobody's
+business, a copy in a published repository is distribution**, which is the
+carrying route taken by accident with none of its paperwork.
+
+**The directory is the bundle's full published ID**, `<org>/<catalog>/<name>` —
+the same identifier `foreman get` takes. A bare bundle name is unique only
+within a catalog, so two catalogs may each publish a `command-line-interface`
+pointing at different documents; both would have shared one directory.
+
+**The application segment stays `luma-foreman`, and that is settled rather than
+argued.** `~/.cache/luma/bundles/…` reads better and repeats a defect this
+estate already found: foreman cached at `~/.cache/luma/catalogs` until August
+2026, a review caught it, and it moved because **a plural noun in the
+application slot breaks the mapping for everything under the organization**.
+Nothing reports that failure — a path nobody has written to before is created on
+demand, and nothing notices the old one is empty. `bundles/` goes inside the
+application directory, beside the `catalogs/` and `projects/` that are already
+there.
+
+**One copy, shared by every tool**, because nothing transforms what is cached —
+per-tool copies would buy N fetches and N staleness dates in exchange for
+nothing. The application segment names where the cache lives, not who may read
+it. **An unpublished bundle can still collide** between two projects on one
+machine, and the policy names that rather than solving it: publishing is what
+gives a bundle a unique name.
+
+**Two corrections ride along, both the same stale value.** [[update-bundle]] and
+the manifest template still taught `survival: experimental`, which the knowledge
+format renamed to `probationary` — and renamed rather than aliased, so a bundle
+scaffolded from the template declares a value that fails visibly. [[create-bundle]]
+had it right, which is how it survived: the two documents that teach the field
+disagreed, and only one of them was read when the value was chosen.
+
+Minor: new guidance and a new step. An existing bundle stays valid, nothing an
+adopter must do has changed, and a bundle that followed the old silence is
+following this policy by default.
 
 `0.13.1` — **the type-definition template still taught `obligation: mandatory`.** The
 `0.x` vocabulary change moved Type Definitions to `field_presence: required`

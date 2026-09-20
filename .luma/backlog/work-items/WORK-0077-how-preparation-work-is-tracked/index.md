@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0077
 title: How preparation work is tracked
 workflow_status: captured

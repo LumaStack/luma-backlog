@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Record a violation
 description: File a violation record in under a minute — the directory, the six fields, and the one question that decides what it means. Use when an agent did something that was not wanted, whether or not a written rule covers it.
 ---

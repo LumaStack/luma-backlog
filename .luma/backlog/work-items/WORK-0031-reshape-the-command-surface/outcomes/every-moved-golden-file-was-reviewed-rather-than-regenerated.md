@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Every moved golden file was reviewed rather than regenerated
 desired_state: "Each golden file that changed was read as a diff and accepted as an intended breaking change, and the `--json` shapes that changed are listed somewhere a consumer can find them."
 verify_by:

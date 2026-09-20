@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Behavior did not change
 desired_state: no golden file moved
 verify_by:

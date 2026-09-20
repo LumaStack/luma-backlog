@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: The estate, and what each repository owns
 description: The six repositories, the boundary each one defends, and the rule that decides where a new thing goes. Read before adding anything to any of them.
 matches: eager
@@ -35,7 +36,7 @@ does it run**.
 
 **The format must not learn about our distribution model.** It defines the
 Bundle because its own machinery needs one — a Document ID is a path within a
-Bundle, and types resolve from a Bundle's `_types/`. It knows nothing of
+Bundle, and types resolve from a Bundle's `type_definitions/`. It knows nothing of
 catalogs, adoption or projects, and a change that would teach it any of those is
 in the wrong repository.
 

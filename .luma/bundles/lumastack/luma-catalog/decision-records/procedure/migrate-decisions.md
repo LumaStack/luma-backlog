@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Migrate a DECISIONS file
 description: Split a single DECISIONS.md into individual records, reconstruct what supersedes what, repoint everything that linked to the file, and only then remove it. Use once per project that has one.
 ---
@@ -394,7 +395,7 @@ remembers in one line.
 ## 5. Write the records
 
 The shape is [the record template](../templates/decision-template.md) and the
-contract is `_types/decision`. Four things a migration decides differently.
+contract is `type_definitions/decision`. Four things a migration decides differently.
 
 **`decided` comes from the entry, never from today.** The `**Settled …**` line
 first, history second, and annotated as approximate where it is neither.
@@ -445,7 +446,7 @@ superseded_by: "[[ADR-0012-luma-hq-renamed-to-luma-leader]]"
 value most often missed. `retired` is finished business; `invalidated` says the
 project used to have an answer here and no longer does. A migration that files
 every dead entry as `retired` has flattened away every open gap in the file — see
-`_types/decision` for the four values.
+`type_definitions/decision` for the four values.
 
 **Resolve the cross-references now that the numbers are real.** The prose
 references collected in step 3 become wikilinks, quoted in frontmatter and bare

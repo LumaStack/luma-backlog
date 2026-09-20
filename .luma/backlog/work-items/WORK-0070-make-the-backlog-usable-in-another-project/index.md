@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0070
 title: Make the backlog usable in another project
 workflow_status: unprepared

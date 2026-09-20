@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Private identity never reaches a repository
 description: Real names, personal emails, home paths and machine names must not appear in commits or tracked content. What to use instead, and why deletion does not undo it.
 matches: eager

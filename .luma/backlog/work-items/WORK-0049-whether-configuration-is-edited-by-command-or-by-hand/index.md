@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0049
 title: Whether configuration is edited by command or by hand
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A forced close is visible afterwards
 desired_state: "Somebody who was not there can tell a close was forced, and what it overrode, without reading the code."
 verify_by: ["The force is announced on stderr at the time, naming each refusal it passed.", "Each override is written to the work item journal as its own line, so it survives the session.", "A close forced past two refusals produces two journal lines rather than one summary.", "Forcing with nothing to override writes nothing --- --force is not a mode, and an entry every time the flag appeared would make the count meaningless."]

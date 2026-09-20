@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Update a bundle
 description: Change a bundle's contents and version it correctly. Use when editing, extending, or fixing an existing bundle.
 ---
@@ -61,17 +62,18 @@ across, and for prose that may be the old term still resolving, or a record
 naming what replaced it. **Demoting is legitimate too** — a bundle claiming
 `stable` that turns out not to be is worse than one that says so.
 
-**`survival` — what is owed when the thing ends.** `experimental` means it is
-out there to find out whether it earns its keep; `promised` means something will
-go on answering this whatever shape it takes; `intended` is the default and
-means meant to be kept, nothing promised.
+**`survival` — what is owed when the thing ends.** `temporary` means an ending
+is already expected; `probationary` means it is out there to find out whether it
+earns its keep, and **owes a verdict** rather than sitting there indefinitely;
+`promised` means something will go on answering this whatever shape it takes;
+`intended` is the default and means meant to be kept, nothing promised.
 
 **Only write the field when the answer is not `intended`**, since absence
 already says that. The move worth noticing is `promised` → `intended`: **that
 demotion is the announcement**, which is the whole reason the promise is
 observable, so it belongs in the version entry rather than passing silently.
 
-The two are independent — `stable` + `experimental` is solid and doomed, `draft`
+The two are independent — `stable` + `probationary` is solid and on trial, `draft`
 + `promised` is committed and unsettled — so answer them separately rather than
 reading one off the other.
 

@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Tend the ideas
 description: A gardening session — read everything, advance what has grown, prune what has not, and record what the session taught about cadence. Use when the list feels unfamiliar.
 ---

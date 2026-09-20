@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The gaps between what is written and what runs are known
 desired_state: "Every rule the documents promise is either implemented, or recorded as unbuilt against a work item --- and nobody has to read the code to find out which."
 verify_by: ["Every row of every guarantee table says whether it is built.", "Each unbuilt row names the record that tracks it.", "A reader can answer does the tool actually do this without opening internal/."]

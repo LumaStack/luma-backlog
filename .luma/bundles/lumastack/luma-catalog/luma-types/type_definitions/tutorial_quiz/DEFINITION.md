@@ -1,5 +1,6 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: luma/tutorial_quiz
 version: "0.1.0"
 extends: document

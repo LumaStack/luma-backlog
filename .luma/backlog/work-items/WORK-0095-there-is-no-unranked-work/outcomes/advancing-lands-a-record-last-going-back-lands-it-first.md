@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Advancing lands a record last; going back lands it first
 desired_state: "A transition that advances lands the record last at its destination; a transition that goes backwards lands it first. No work status is exempt."
 verify_by: "Two records advanced in rank order keep that order at the destination; a record regressed from any work status sorts above every record already there. One test per work status pair, so an exempted work status fails."

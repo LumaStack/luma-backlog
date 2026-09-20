@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Rename the unit to work item
 workflow_status: closed
 stage: draft

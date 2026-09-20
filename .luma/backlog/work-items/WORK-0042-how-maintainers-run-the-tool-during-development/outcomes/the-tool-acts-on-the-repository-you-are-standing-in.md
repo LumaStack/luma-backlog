@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The tool acts on the repository you are standing in
 desired_state: The tool resolves its corpus from the caller's working directory, whichever repository that is, and refuses outside one.
 verify_by:

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0083
 title: Finalize the vocabulary for the workflow model
 workflow_status: captured

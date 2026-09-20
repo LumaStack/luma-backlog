@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Forcing does not launder the record
 desired_state: "A forced close never edits the evidence. The completion count afterwards is what it was before, and it disagrees with the ending."
 verify_by: ["After `close <ref> completed --force` over an unproven outcome, the outcome file carries no verified entry that the force added.", "`show <ref> --json` reports the same completion count as before the close --- 0 proven of 1 live, on a record marked completed.", "backlog-move names the tempting wrong implementation --- marking outcomes verified so the arithmetic comes out clean --- and the code does not do it."]

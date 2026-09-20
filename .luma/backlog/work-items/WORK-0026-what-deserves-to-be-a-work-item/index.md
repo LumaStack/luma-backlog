@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0026
 title: What deserves to be a work item
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0021
 title: Rank by position rather than by neighbor
 workflow_status: captured

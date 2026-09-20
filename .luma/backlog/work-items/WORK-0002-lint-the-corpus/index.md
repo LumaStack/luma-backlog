@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Lint the corpus
 description: Catch records, documents, and references that have drifted out of shape.
 workflow_status: captured

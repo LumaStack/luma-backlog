@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A record reports no status when its type declares none
 desired_state: "A record whose type does not declare workflow_status reports no status. The STATUS column is empty for that row, and the value is never defaulted in from another type."
 verify_by: ["luma-backlog list shows an empty STATUS for the PROJECT row", "a golden test pins the table output and fails if a status reappears"]

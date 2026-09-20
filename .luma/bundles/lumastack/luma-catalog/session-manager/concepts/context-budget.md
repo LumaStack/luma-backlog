@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Working against a context limit
 description: How much room is left, what that changes about ending a session, and what to do on each side of a compaction. Consulted first by checkpoint, handoff and close.
 ---

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Review and audit the implementation
 description: Nothing written so far has been read by the maintainer.
 workflow_status: captured

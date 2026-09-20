@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Credentials are never committed
 description: What counts as a credential, which files never belong in a repository, and why rotation comes before cleanup.
 matches:

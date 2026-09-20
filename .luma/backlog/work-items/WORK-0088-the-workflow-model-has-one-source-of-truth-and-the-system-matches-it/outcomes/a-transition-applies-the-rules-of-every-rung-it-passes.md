@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A transition applies the rules of every work status it passes
 desired_state: "Asking for a distant work status takes the record through the ladder rather than around it: the same checks fire as walking one work status at a time."
 verify_by: ["`transition <ref> prepared` from `captured` produces the same warnings and refusals as walking captured, unprepared, preparing, prepared in four calls.", "The same holds for every pair of work statuses, in the forward direction.", "Going backwards lands where it was asked to and replays nothing --- the work statuses below are ones the record already satisfied.", "It is settled and written down whether the work statuses passed through are recorded, or only checked."]

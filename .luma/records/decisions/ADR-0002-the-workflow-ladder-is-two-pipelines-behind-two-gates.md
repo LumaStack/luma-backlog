@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: The workflow ladder is two pipelines behind two gates
 decided: 2026-09-04
 stage: provisional

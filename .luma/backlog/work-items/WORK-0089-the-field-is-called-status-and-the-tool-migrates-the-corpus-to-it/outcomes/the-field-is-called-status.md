@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The field is called status
 desired_state: "Every record, command, document and type definition says status. workflow_status appears only where it is describing history."
 verify_by: ["No record in the corpus carries `workflow_status`.", "No document, procedure, ADR or type definition uses it as the name of the field --- and where one quotes it historically, that is what it is doing.", "`set <ref> status=...` is refused naming transition, the way `workflow_status=` was.", "The type definition and the configuration key agree with the records."]

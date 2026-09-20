@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Make new decision conform to decision-records
 workflow_status: closed
 stage: draft

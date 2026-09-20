@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0092
 title: A policy marked eager does not reach a plain turn
 workflow_status: captured

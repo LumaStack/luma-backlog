@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Worktree isolation
 description: Where worktrees live, how they are named, and what is shared versus isolated — so concurrent agents in one repository can never collide.
 matches: eager

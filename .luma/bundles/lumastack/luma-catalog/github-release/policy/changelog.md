@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: The changelog
 description: CHANGELOG.md follows Keep a Changelog. The six change groups, the Unreleased section, and how the changelog differs from release notes.
 matches:

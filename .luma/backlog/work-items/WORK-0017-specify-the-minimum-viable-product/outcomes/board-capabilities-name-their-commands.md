@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Board capabilities name their commands
 desired_state: every must and should board capability names the command it calls
 verify_by:

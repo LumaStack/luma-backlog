@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0035
 title: The operating system username must never be an actor
 workflow_status: captured

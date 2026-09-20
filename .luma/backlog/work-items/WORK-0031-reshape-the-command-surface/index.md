@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0031
 title: Reshape the command surface
 workflow_status: closed

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0098
 title: An actor cannot say it has standing
 description: Standing for the minimum viable product is people and orchestrating agents, and agent:<model>/<project> names a model rather than a role. An orchestrating agent and a working one are indistinguishable on the record, so standing is asserted and never proven.

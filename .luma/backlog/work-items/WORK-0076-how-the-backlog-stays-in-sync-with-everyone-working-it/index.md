@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0076
 title: How the backlog stays in sync with everyone working it
 workflow_status: captured

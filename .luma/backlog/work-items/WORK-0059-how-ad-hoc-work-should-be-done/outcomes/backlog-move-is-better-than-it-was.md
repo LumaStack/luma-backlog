@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: backlog-move is better than it was
 desired_state: "The procedure is one the maintainer will sign off as good enough — the thing dissatisfaction was pointing at when nobody could yet say what it was."
 verify_by:

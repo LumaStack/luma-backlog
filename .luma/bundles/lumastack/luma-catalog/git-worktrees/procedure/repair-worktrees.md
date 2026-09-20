@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Repair worktrees
 description: Diagnose and fix the states worktrees get stuck in — stale metadata, a branch that will not check out, a moved directory, a locked entry. Use when create or remove fails.
 ---

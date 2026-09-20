@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Policy lives in one layer
 desired_state: every validation, policy check and mutation is in internal/app
 verify_by:

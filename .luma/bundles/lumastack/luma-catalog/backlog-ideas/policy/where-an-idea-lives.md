@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Where an idea lives
 description: Choosing the scope — project, department or organization — and the default that applies when it is unclear.
 matches:

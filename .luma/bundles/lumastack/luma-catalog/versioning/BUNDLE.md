@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/versioning
-version: 0.7.1
-published: 2026-09-02
+version: 0.8.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: What a version number promises, when to bump which part, and the rules that get decided wrongly — for anything versioned, not only releases.

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0037
 title: Old records get migrated as the system improves
 workflow_status: captured

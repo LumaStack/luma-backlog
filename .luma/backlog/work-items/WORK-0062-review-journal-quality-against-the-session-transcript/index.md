@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0062
 title: Review journal quality against the session transcript
 workflow_status: captured

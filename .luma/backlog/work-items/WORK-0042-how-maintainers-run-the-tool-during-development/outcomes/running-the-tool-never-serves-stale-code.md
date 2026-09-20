@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Running the tool never serves stale code
 desired_state: The documented way to run the tool compiles from current source every time. No recommended path can answer from code that has since changed.
 verify_by:

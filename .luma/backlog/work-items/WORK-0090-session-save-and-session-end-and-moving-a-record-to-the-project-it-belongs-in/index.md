@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0090
 title: Session save and session end, and moving a record to the project it belongs in
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Confirm an outcome holds
 description: Record evidence that an outcome's desired state is true — use when work looks finished, before closing a work item as delivered, or when asked whether something is actually done. Do NOT use to assert that work was performed; verification is about the world being in the desired state, not about effort spent.
 ---

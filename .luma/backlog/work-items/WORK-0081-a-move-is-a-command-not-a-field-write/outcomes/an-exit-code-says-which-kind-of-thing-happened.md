@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: An exit code says which kind of thing happened
 desired_state: "A refused move, a bad invocation and a missing record are told apart by exit code, and a warning never changes one."
 verify_by: ["A refused move exits 5 (ExitRefused), and the record is unchanged on disk.", "A warned-but-allowed move exits 0, writes the record, and the warning appears on stderr only --- stdout stays clean and --json stays parseable.", "A move naming a record that does not exist exits 3; a move naming a status the ladder does not carry exits 2."]

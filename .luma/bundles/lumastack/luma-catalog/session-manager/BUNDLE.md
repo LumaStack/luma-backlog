@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/session-manager
-version: 0.9.1
-published: 2026-09-02
+version: 0.10.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: Ending an agent session without losing what it learned — checkpoint while working, hand off to a successor, or close for good, each writing for a different reader.

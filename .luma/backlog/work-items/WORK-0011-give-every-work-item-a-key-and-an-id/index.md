@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Give every work item a key and an id
 workflow_status: closed
 kind: change

@@ -1,5 +1,6 @@
 ---
 type: violation
+type_version: "0.0.1"
 violation_id: 2026-09-10-172003-check-skipped-before-commit
 violating_commit: 70eb7cd
 violating_actor: agent:claude-opus-5/luma-backlog

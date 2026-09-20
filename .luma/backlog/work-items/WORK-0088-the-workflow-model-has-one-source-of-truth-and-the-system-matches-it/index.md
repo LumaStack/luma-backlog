@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0088
 title: The workflow model has one source of truth and the system matches it
 workflow_status: captured

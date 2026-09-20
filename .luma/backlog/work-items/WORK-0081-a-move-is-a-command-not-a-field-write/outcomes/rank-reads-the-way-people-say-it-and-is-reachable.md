@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Rank and move are reachable without a subcommand
 desired_state: "rank and move work without naming the record type first, and rank keeps naming neighbors by sequence."
 verify_by: ["`luma-backlog rank <ref> --first` works without the work-item prefix, and so does `luma-backlog transition`.", "Every position flag names a place in the sequence --- `--before`, `--after`, `--first`, `--last` --- and none names a place in a view.", "Position is computed from stored rank rather than from any listing --- `positionFor` reads `rankedPeers`, which sorts records by their own rank, so no display option can change what `--before` means.", "The top-level forms resolve to the same application operation rather than a second implementation."]

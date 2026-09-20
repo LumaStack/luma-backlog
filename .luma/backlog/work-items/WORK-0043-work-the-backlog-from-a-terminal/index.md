@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0043
 title: Work the backlog from a terminal
 workflow_status: captured

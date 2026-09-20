@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Where a bundle belongs
 description: Which catalog a bundle goes in — universal, an organization's private one, or the project it was written in — and how it moves between them.
 matches:

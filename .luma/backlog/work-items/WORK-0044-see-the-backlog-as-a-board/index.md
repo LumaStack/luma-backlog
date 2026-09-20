@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0044
 title: See the backlog as a board
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Recording a violation
 description: What counts as a violation, where records live, how they are named, and why the register is meant to be large. Read before filing the first one.
 matches:

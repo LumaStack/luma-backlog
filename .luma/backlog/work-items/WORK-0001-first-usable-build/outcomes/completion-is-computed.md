@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Completion is computed, not asserted
 desired_state: Closing a work item as delivered while any live outcome lacks passing evidence is refused, and the refusal names the outcome.
 verify_by:

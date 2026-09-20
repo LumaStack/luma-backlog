@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0014
 title: Detect two records holding one key
 workflow_status: closed

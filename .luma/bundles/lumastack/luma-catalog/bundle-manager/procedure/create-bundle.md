@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Create a bundle
 description: Scaffold a new bundle, decide where it belongs, and get it to a publishable state. Use when asked to create, start, or extract a bundle.
 ---
@@ -46,7 +47,7 @@ description: <one line — what this holds and who it is for>
   distinguish from nobody having thought about it. `draft` is the true answer on
   the day a bundle is written: its maintainers are developing it for their own
   use, and its shape can reverse without notice. Anything higher is a claim
-  somebody makes deliberately, later; see step 8.
+  somebody makes deliberately, later; see step 9.
 - **`consumers`** — `project`, `organization`, or both. Both is right when the
   same content is wanted at either level by different adopters; that is not the
   publisher's call to force.
@@ -66,7 +67,8 @@ almost always, and can honestly be anywhere on the second.
 
 | the answer | what it means for a new bundle |
 | --- | --- |
-| **`probationary`** | written to find out whether it earns its keep. Many do not, and nobody should fall in love with it. |
+| **`temporary`** | an ending is already expected — written for something that will itself end. Rare for a bundle. |
+| **`probationary`** | written to find out whether it earns its keep, and **owing a verdict**. Many do not earn it, and nobody should fall in love with it. |
 | **`intended`** | meant to be kept, nothing promised. **The default, and the ordinary answer.** |
 | **`promised`** | something will go on answering this, whatever shape it takes. A commitment to the problem, not to this content. |
 
@@ -92,7 +94,23 @@ nothing is available on request, which is the right default for almost
 everything: its name and line are in the index, so nothing is missed out of
 ignorance, and its body waits to be asked for.
 
-## 6. Add types only if they change something
+## 6. If any of it is somebody else's, decide that deliberately
+
+**The moment a bundle would contain writing, code or data you did not write,
+stop and read [[what-a-bundle-may-carry]].**
+
+**Adoption is redistribution.** `foreman get` copies the directory into another
+repository, so anything vendored here lands in every adopter's repository under
+its original licence — and they take on its attribution duty without being asked
+and usually without noticing.
+
+**The default is to carry only what you wrote and point at everything else.**
+Departing from it is the user's call, not an agent's: present the routes and
+what each costs downstream, then follow the answer. The policy has the routes,
+the licence families, and how to cache what you point at so a fresh session can
+read it cheaply.
+
+## 7. Add types only if they change something
 
 Declare a Type Definition when a consumer must **validate, load, or behave**
 differently — not because a distinction reads well.
@@ -100,12 +118,12 @@ differently — not because a distinction reads well.
 If the bundle uses `procedure` or `policy`, copy the definition from a bundle
 that already has it. Bundles are self-contained: carry your own copy.
 
-## 7. Audit before publishing
+## 8. Audit before publishing
 
 Run [[audit-bundle]]. A bundle published with a broken link or an unquoted
 frontmatter wikilink is one every adopter copies.
 
-## 8. Publishing does not promote it
+## 9. Publishing does not promote it
 
 **A bundle stays `draft` until somebody decides otherwise**, and putting it in a
 catalog is not that decision. Being reachable by people who did not write it

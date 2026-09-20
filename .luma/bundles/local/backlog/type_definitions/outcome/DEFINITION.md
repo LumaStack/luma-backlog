@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: outcome
+version: "0.0.1"
 fields:
   desired_state:   {field_presence: required,   field_type: text, desc: "The condition that must hold. True or false — never a task in disguise."}
   verify_by:       {field_presence: recommended, desc: "How it is checked: a command, a list of steps, a pointer to a test, or prose. Deliberately unconstrained."}

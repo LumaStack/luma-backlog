@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: work-item
+version: "0.0.1"
 fields:
   key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-0002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
   kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}

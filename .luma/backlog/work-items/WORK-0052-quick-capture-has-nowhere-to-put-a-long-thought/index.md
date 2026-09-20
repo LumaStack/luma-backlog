@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0052
 title: Quick capture has nowhere to put a long thought
 workflow_status: captured

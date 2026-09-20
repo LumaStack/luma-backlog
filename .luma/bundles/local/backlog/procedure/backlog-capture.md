@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Capture something into the backlog
 description: Write something down as a work item so it is not lost — thoughtfully by default, or mechanically when speed is explicitly asked for. Use when something surfaces that should not be lost, when the user says "we should probably…", "at some point…", "capture this", "write this down", "remember to do this later" or describes a problem worth doing something about. Only the words "quick", "quickly" or "fast" skip the discussion. Do NOT use to write outcomes or tasks (backlog-refine), or to change a status (backlog-transition).
 ---

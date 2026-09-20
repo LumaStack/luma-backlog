@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A duplicate key is reported wherever the corpus is read
 desired_state: "When two work items hold the same key, any command that reads the corpus names both records and the key they share, on stderr, and still does its job."
 verify_by: ["list and close each report a planted duplicate and exit as they would have", "the report names both paths and the key"]

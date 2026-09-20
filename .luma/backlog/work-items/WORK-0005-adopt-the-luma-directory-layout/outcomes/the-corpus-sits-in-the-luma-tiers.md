@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The corpus sits in the luma tiers
 desired_state: "Work lives in .luma/backlog/, decisions made outside a work item in .luma/records/decisions/, bundles in .luma/bundles/, tool configuration in .luma/config/, and nothing remains at .backlog/. The tool discovers, contains and scaffolds against those paths."
 verify_by: ["the four tiers exist and .backlog/ does not", "no code outside tests names .backlog", "luma-backlog init in a fresh repository scaffolds the tiers"]

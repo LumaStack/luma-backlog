@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0075
 title: A move does not write the stage it promises
 description: 'backlog-move states it twice — "Closing sets stage to stable", and the work status table lists it as written by the move. Nothing in internal/ writes it: corpus/create.go:202 sets draft and no code path moves it. The in_progress row of that same table — stage is at least provisional, written by the move — is unimplemented too. Best fixed in the command; skill prose is an acceptable stopgap if we want one.'

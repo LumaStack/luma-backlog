@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0071
 title: Retiring an outcome does not say whether it held
 workflow_status: captured

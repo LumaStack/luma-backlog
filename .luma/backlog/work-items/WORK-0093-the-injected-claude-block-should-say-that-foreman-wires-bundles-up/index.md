@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0093
 title: The injected CLAUDE block should say that foreman wires bundles up
 workflow_status: captured

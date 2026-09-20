@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: decision
+version: "0.0.1"
 fields:
   decided:
     field_presence: required

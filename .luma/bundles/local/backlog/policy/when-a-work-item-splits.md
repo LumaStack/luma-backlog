@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: When a work item splits
 description: What to do when tasks keep arriving — how to tell growth from sprawl, why sprawl is usually a defect in the outcomes rather than the scope, and the narrow case that is actually a split.
 matches: eager

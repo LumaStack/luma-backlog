@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: The .luma directory layout
 description: The four directories every luma tool honours, what belongs in each, and the one invariant that makes the whole thing trustworthy.
 matches: eager
@@ -19,7 +20,7 @@ matches: eager
   config/
     luma-foreman.toml how a tool behaves here — one file per tool, named for it
   records/            what happened, and why
-  _types/             contracts for documents that are in no bundle
+  type_definitions/   contracts for documents that are in no bundle
 ```
 
 **This describes what the tools already do.** Adopting this bundle does not make
@@ -27,16 +28,17 @@ the layout apply to you — anything writing into `.luma/` is bound by it whethe
 you adopt or not. You adopt it so an agent working here can read the contract
 locally, without reaching for anything remote.
 
-## `_types/` holds contracts for documents that are in no bundle
+## `type_definitions/` holds contracts for documents that are in no bundle
 
 **Almost every Document gets its contract from the bundle it lives in.** The
-knowledge format resolves a type from *that* bundle's `_types/`, which is what
-lets two bundles hold different versions of one type without contradiction.
+knowledge format resolves a type from *that* bundle's `type_definitions/`, which
+is what lets two bundles hold different versions of one type without
+contradiction.
 
 **`PROJECT.md` is in no bundle.** It sits above the tiers, describing the
 repository the tiers belong to — so there is no bundle to resolve its `type`
 from, and the format says outright that whoever puts a Document there owes it an
-answer. `.luma/_types/` is that answer.
+answer. `.luma/type_definitions/` is that answer.
 
 **It states which contract wins — it is not the project's spare copy.** That
 distinction decides whether a file belongs here at all:
@@ -61,9 +63,9 @@ written against, instead of guessing from which fields happen to be present.
 descriptor and a backlog needs nothing here — the directory appears when
 something outside a bundle needs a contract, and most projects never reach that.
 
-*Not to be confused with a bundle's own `_types/`, which is reserved by the
-format and scoped to that bundle. Same name, deliberately: same job, different
-scope.*
+*Not to be confused with a bundle's own `type_definitions/`, which is reserved
+by the format and scoped to that bundle. Same name, deliberately: same job,
+different scope.*
 
 ## Why one directory, and why hidden
 

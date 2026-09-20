@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Configure merge settings
 description: Disable squash and rebase merging at the forge and enable branch auto-delete. Written for GitHub; the equivalent setting exists elsewhere. Use when setting up a repository, or when a merge dropdown still offers squash.
 ---

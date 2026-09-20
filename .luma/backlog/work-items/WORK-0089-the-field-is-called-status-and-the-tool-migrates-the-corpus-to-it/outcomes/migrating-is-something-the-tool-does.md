@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: This rename is carried by a migration, not by hand
 desired_state: "The corpus crosses the rename through the migration mechanism, and is the first thing to prove that mechanism works on real records."
 verify_by: ["The diff on the corpus is a migration's output rather than an edit somebody made.", "Running it on a corpus that has already crossed does nothing.", "What the migration did is reported, and the corpus records that it ran.", "A migration that stops partway leaves the corpus readable and says what it did not finish."]

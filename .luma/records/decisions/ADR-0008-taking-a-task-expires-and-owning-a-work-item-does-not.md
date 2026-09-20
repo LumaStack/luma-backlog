@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: Taking a task expires and owning a work item does not
 decided: 2026-09-05
 stage: provisional

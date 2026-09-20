@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Where knowledge goes
 description: How to find the durable home for something worth keeping, without this bundle containing the list — the resolution order, the kinds, and what to do when there is no destination.
 matches:

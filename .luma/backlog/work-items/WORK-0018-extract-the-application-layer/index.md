@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0018
 title: Extract the application layer
 workflow_status: closed

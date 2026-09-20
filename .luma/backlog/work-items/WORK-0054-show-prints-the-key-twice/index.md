@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0054
 title: show prints the key twice
 workflow_status: captured

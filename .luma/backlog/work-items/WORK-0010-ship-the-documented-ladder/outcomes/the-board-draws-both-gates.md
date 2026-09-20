@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The board draws both gates
 desired_state: "The default columns separate the pile from the preparation pipeline and the preparation pipeline from the work pipeline, so both selection gates are visible on a board."
 verify_by: ["the default columns place captured, the preparation work statuses, and todo in three different headings"]

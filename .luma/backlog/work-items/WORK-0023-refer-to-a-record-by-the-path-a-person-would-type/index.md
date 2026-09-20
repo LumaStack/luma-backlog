@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0023
 title: Refer to a record by the path a person would type
 workflow_status: captured

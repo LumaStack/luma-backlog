@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0040
 title: A decision number is reused when its file is absent
 workflow_status: captured

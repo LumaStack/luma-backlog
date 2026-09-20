@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/backlog-ideas
-version: 0.14.1
-published: 2026-09-02
+version: 0.15.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: Ideas as individual files rather than one growing IDEAS.md — what earns a file, how capture stays fast, and how the list gets tended rather than accumulating.

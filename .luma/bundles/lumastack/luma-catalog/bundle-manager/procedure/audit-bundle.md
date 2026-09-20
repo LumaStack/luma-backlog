@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Audit a bundle
 description: Check a bundle for the defects that are silent — broken links, unquoted wikilinks, orphaned assets, a missing manifest. Use before publishing or adopting.
 ---
@@ -58,7 +59,9 @@ checklist rather than a feeling.
 
 ## Types
 
-- Every `_types/*.md` has `type: type_definition` and a `defines`.
+- Every `type_definitions/<name>/DEFINITION.md` has `type: type_definition`, a
+  `defines`, and a `version`; the folder is named for the type it defines, and
+  a `CHANGELOG.md` sits beside the definition.
 - Every type the bundle's documents use is either built in or defined here.
 - No Type Definition redefines a built-in name.
 - Vendored copies of shared types are **byte-identical** to their source.

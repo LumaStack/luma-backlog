@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Command line interface guidelines
 description: Read command line interface guidelines before designing or changing CLIs.
 matches: eager
@@ -12,15 +13,17 @@ matches: eager
 **Cache it, and read the copy.**
 
 ```
-~/.cache/luma/luma-foreman/guides/clig.dev.md
+~/.cache/luma/luma-foreman/bundles/lumastack/luma-catalog/command-line-interface/clig.dev.md
 ```
 
 **Fetch the markdown source, not the rendered page.** `clig.dev` serves HTML
 — 86KB of markup wrapping the text, which greps badly and reads worse. The
 document's own source is one file:
 
-```
-curl -sSL https://raw.githubusercontent.com/cli-guidelines/cli-guidelines/main/content/_index.md
+```sh
+mkdir -p ~/.cache/luma/luma-foreman/bundles/lumastack/luma-catalog/command-line-interface
+curl -sSL -o ~/.cache/luma/luma-foreman/bundles/lumastack/luma-catalog/command-line-interface/clig.dev.md \
+  https://raw.githubusercontent.com/cli-guidelines/cli-guidelines/main/content/_index.md
 ```
 
 **Fetch to the file, never through the context window.** `curl -o <path>`
