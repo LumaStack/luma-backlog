@@ -6,6 +6,7 @@ package config
 
 import (
 	"fmt"
+	"regexp"
 
 	"gopkg.in/yaml.v3"
 )
@@ -13,14 +14,36 @@ import (
 // FileName is the tool's configuration file, relative to .luma/. It lives in
 // the config tier per the luma directory layout policy: one file per tool,
 // named for the tool so nobody has to guess which binary a file belongs to.
-const FileName = "config/luma-corpus.yaml"
+// It was config/luma-corpus.yaml until WORK-0053: that name matched an
+// internal package rename rather than the tool, so the one repository using
+// the tool had a configuration that was never read.
+const FileName = "config/luma-backlog.yaml"
+
+// DefaultKeyPrefix is what an absent work_item_key means. The prefix is
+// written INTO each record at creation rather than derived from configuration,
+// so changing the setting changes what gets written and not what already
+// exists — a derived key would silently rename every record in the corpus the
+// moment the setting changed.
+const DefaultKeyPrefix = "WORK"
+
+// KeyPrefixRule is the shape a key prefix must have, as a regular expression
+// fragment: an uppercase letter, then uppercase letters or digits, two to ten
+// characters — Jira Cloud's project-key rules (WORK-0102). One fragment, so
+// the validator here and the key reader in internal/corpus cannot drift.
+const KeyPrefixRule = `[A-Z][A-Z0-9]{1,9}`
+
+var keyPrefixPattern = regexp.MustCompile(`^` + KeyPrefixRule + `$`)
 
 // Config is the settings a repository declares.
+//
+// Every field here is read by something. A key the binary parses and never
+// consumes is a placeholder wearing a promise — it teaches an author the
+// setting works, and nothing notices that it does not (WORK-0053 found
+// exactly that: a whole file that was never read, invisible because its
+// values matched the defaults).
 type Config struct {
-	LKFVersion     string            `yaml:"lkf_version"`
-	TypeNamespace  string            `yaml:"type_namespace"`
+	WorkItemKey    string            `yaml:"work_item_key"`
 	WorkflowStatus map[string]Ladder `yaml:"workflow_status"`
-	Columns        yaml.Node         `yaml:"columns"`
 }
 
 // Default returns the built-in fallbacks.
@@ -29,14 +52,8 @@ type Config struct {
 // a default discoverable, and the fallback keeps a configuration written today
 // working when new keys are added later.
 func Default() Config {
-	var columns yaml.Node
-	_ = yaml.Unmarshal([]byte(defaultColumns), &columns)
-	if len(columns.Content) > 0 {
-		columns = *columns.Content[0]
-	}
 	return Config{
-		LKFVersion:    "0.0.2",
-		TypeNamespace: "luma/backlog",
+		WorkItemKey: DefaultKeyPrefix,
 		// A status shared by two units carries the same ordinal in both, so a
 		// rank means the same thing whichever unit it is on. Deriving them per
 		// unit would give a task's `todo` a different ordinal from a work
@@ -49,19 +66,8 @@ func Default() Config {
 				"todo", 50, "in_progress", 60, "closed", 70),
 			"task": ladderAt("todo", 50, "in_progress", 60, "closed", 70),
 		},
-		Columns: columns,
 	}
 }
-
-const defaultColumns = `
-Captured:    [captured]
-Unprepared:  [unprepared]
-Preparing:   [preparing]
-Prepared:    [prepared]
-To Do:       [todo]
-In Progress: [in_progress]
-Closed:      [closed]
-`
 
 // Parse reads a configuration file.
 //
@@ -73,10 +79,21 @@ func Parse(data []byte) (Config, error) {
 	if err := yaml.Unmarshal(data, &c); err != nil {
 		return Config{}, fmt.Errorf("parsing configuration: %w", err)
 	}
-	if c.TypeNamespace == "" {
-		return Config{}, fmt.Errorf("type_namespace is empty: short type names could not be resolved")
+	if !keyPrefixPattern.MatchString(c.WorkItemKey) {
+		return Config{}, fmt.Errorf(
+			"work_item_key %q is not a legal key prefix: an uppercase letter, then uppercase letters or digits, two to ten characters (^%s$)",
+			c.WorkItemKey, KeyPrefixRule)
 	}
 	return c, nil
+}
+
+// KeyPrefix is the prefix new work item keys are written under. It falls back
+// for a zero-value Config, which never went through Default or Parse.
+func (c Config) KeyPrefix() string {
+	if c.WorkItemKey == "" {
+		return DefaultKeyPrefix
+	}
+	return c.WorkItemKey
 }
 
 // StatusesFor returns the workflow vocabulary for a unit.
@@ -134,16 +151,3 @@ func (c Config) TerminalStatusFor(unit string) string {
 	return s[len(s)-1]
 }
 
-// Qualify expands a short type name using the declared namespace. An already
-// qualified name is returned unchanged — it is always legal and always wins.
-func (c Config) Qualify(typeName string) string {
-	if typeName == "" || c.TypeNamespace == "" {
-		return typeName
-	}
-	for _, ch := range typeName {
-		if ch == '/' {
-			return typeName
-		}
-	}
-	return c.TypeNamespace + "/" + typeName
-}

@@ -6,18 +6,45 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/lumastack/luma-backlog/internal/config"
 	"github.com/lumastack/luma-backlog/internal/root"
 )
 
-// KeyPrefix is the only prefix supported today.
+// keyPattern matches anything written as a key: WORK-0002, work-2,
+// WORK---2, "WORK  2".
 //
-// It is written INTO the record rather than derived from configuration, so a
-// repository that later chooses its own prefix changes what gets written and
-// not what already exists. A derived key would silently rename every record in
-// the corpus the moment the setting changed.
-const KeyPrefix = "WORK"
+// The prefix rule is config.KeyPrefixRule — Jira Cloud project-key rules
+// (WORK-0082): an uppercase letter first, then uppercase letters or digits,
+// two to ten characters. That admits R2D2-7 and turns away a one-letter
+// prefix — which is deliberate, so a stray `x-1` in prose stays a slug rather
+// than becoming a key. One fragment shared with the config validator, so what
+// a repository may configure and what this file can read cannot drift apart.
+//
+// The separator tolerates runs of dashes and spaces because people type keys
+// from memory and quote them out of prose. What a sloppy spelling resolves to
+// is decided by ParseKey; nothing here changes what gets written to disk.
+var keyPattern = regexp.MustCompile(`^(` + config.KeyPrefixRule + `)[ -]+(\d+)$`)
 
-// keyPattern matches a work item key: WORK-0002.
+// ParseKey reads a reference as a key, however it was spelled. This is the
+// only reader — every comparison goes through it, so two spellings of one key
+// cannot disagree anywhere (WORK-0082: keys are compared as parsed values,
+// never as strings).
+func ParseKey(ref string) (prefix string, number int, ok bool) {
+	m := keyPattern.FindStringSubmatch(strings.ToUpper(ref))
+	if m == nil {
+		return "", 0, false
+	}
+	n, err := strconv.Atoi(m[2])
+	if err != nil {
+		// More digits than an int holds is not a key anybody was given.
+		return "", 0, false
+	}
+	return m[1], n, true
+}
+
+// FormatKeyAs renders a key under a prefix. It is what NormalizeKey and
+// allocation both funnel into, so there is exactly one form a key is ever
+// printed in.
 //
 // Four digits, matching the ADR numbers, and the same accepted cost: two
 // branches can both claim the next one and somebody repairs it on merge
@@ -29,25 +56,43 @@ const KeyPrefix = "WORK"
 // fails exactly where it had stopped being worth anything. If that order ever
 // matters at that scale, the fix is sorting numerically in the tool, which
 // touches no record and does not disturb a key that is meant never to change.
-var keyPattern = regexp.MustCompile(`^([A-Z]+)-(\d+)$`)
-
-// FormatKey renders a key from its number.
-func FormatKey(number int) string {
-	return fmt.Sprintf("%s-%04d", KeyPrefix, number)
+// The width is a minimum, so a five-digit key renders as itself rather than
+// being squeezed back to four.
+func FormatKeyAs(prefix string, number int) string {
+	return fmt.Sprintf("%s-%04d", prefix, number)
 }
 
 // IsKey reports whether a reference looks like a key rather than a slug.
 func IsKey(ref string) bool {
-	return keyPattern.MatchString(strings.ToUpper(ref))
+	_, _, ok := ParseKey(ref)
+	return ok
 }
 
-// NormalizeKey upper-cases a key so `work-00002` finds `WORK-00002`. Anything
-// that is not a key is returned unchanged, since it is somebody's slug.
+// NormalizeKey renders any spelling of a key in its canonical form, so
+// `work---2` becomes `WORK-0002` — already correct to print, which is why the
+// canonical form is the stored one rather than a lowercase comparison form:
+// one representation means no bug about which one is in hand. Anything that is
+// not a key is returned unchanged, since it is somebody's slug.
 func NormalizeKey(ref string) string {
-	if IsKey(ref) {
-		return strings.ToUpper(ref)
+	if prefix, number, ok := ParseKey(ref); ok {
+		return FormatKeyAs(prefix, number)
 	}
 	return ref
+}
+
+// SameKey reports whether two references name the same key, whatever their
+// spelling. Where neither side parses as a key, plain equality answers —
+// two slugs are the same by being the same string.
+func SameKey(a, b string) bool {
+	ap, an, aok := ParseKey(a)
+	bp, bn, bok := ParseKey(b)
+	if aok != bok {
+		return false
+	}
+	if aok {
+		return ap == bp && an == bn
+	}
+	return a == b
 }
 
 // highestKey reports the largest key number in use across the project.
@@ -66,11 +111,10 @@ func highestKey(b *root.Backlog) (int, error) {
 		if !ok {
 			continue
 		}
-		m := keyPattern.FindStringSubmatch(strings.ToUpper(k))
-		if m == nil {
-			continue
-		}
-		if n, convErr := strconv.Atoi(m[2]); convErr == nil && n > highest {
+		// Parsed, not pattern-matched: a key stored in an unusual spelling
+		// must still count, or the next allocation reuses its number
+		// (WORK-0082 — the same failure WORK-0040 hit from a different cause).
+		if _, n, isKey := ParseKey(k); isKey && n > highest {
 			highest = n
 		}
 	}
@@ -105,16 +149,23 @@ func (i Item) Name() string {
 	return i.Slug()
 }
 
-// namePattern matches the joined form: WORK-0002-lint-the-corpus.
-var namePattern = regexp.MustCompile(`^([A-Za-z]+-\d+)(-.*)$`)
+// namePattern matches the joined form: WORK-0002-lint-the-corpus. The key
+// half takes only a single dash — a name comes off a directory listing, not
+// out of prose, so the sloppy separators ParseKey tolerates have no business
+// here, and a run of dashes inside a slug must stay a slug.
+var namePattern = regexp.MustCompile(`^([A-Za-z][A-Za-z0-9]{1,9})-(\d+)(-.*)$`)
 
-// NormalizeName upper-cases the key half of a name and leaves the slug alone,
-// since a slug is lower-case by construction and upper-casing it would stop it
-// matching.
+// NormalizeName renders the key half of a name canonically and leaves the
+// slug alone — a slug is lower-case by construction and upper-casing it would
+// stop it matching. `work-2-lint-the-corpus` finds `WORK-0002-lint-the-corpus`.
 func NormalizeName(ref string) string {
 	m := namePattern.FindStringSubmatch(ref)
 	if m == nil {
 		return ref
 	}
-	return strings.ToUpper(m[1]) + m[2]
+	n, err := strconv.Atoi(m[2])
+	if err != nil {
+		return ref
+	}
+	return FormatKeyAs(strings.ToUpper(m[1]), n) + m[3]
 }

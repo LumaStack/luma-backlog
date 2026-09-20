@@ -2,6 +2,7 @@ package config
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -15,39 +16,25 @@ func TestDefaultFileMatchesDefaults(t *testing.T) {
 	}
 	def := Default()
 
-	if parsed.LKFVersion != def.LKFVersion {
-		t.Errorf("lkf_version: file %q, default %q", parsed.LKFVersion, def.LKFVersion)
-	}
-	if parsed.TypeNamespace != def.TypeNamespace {
-		t.Errorf("type_namespace: file %q, default %q", parsed.TypeNamespace, def.TypeNamespace)
+	if parsed.KeyPrefix() != def.KeyPrefix() {
+		t.Errorf("work_item_key: file %q, default %q", parsed.KeyPrefix(), def.KeyPrefix())
 	}
 	if !reflect.DeepEqual(parsed.WorkflowStatus, def.WorkflowStatus) {
 		t.Errorf("workflow_status: file %v, default %v", parsed.WorkflowStatus, def.WorkflowStatus)
-	}
-
-	var fromFile, fromDefault map[string][]string
-	if err := parsed.Columns.Decode(&fromFile); err != nil {
-		t.Fatal(err)
-	}
-	if err := def.Columns.Decode(&fromDefault); err != nil {
-		t.Fatal(err)
-	}
-	if !reflect.DeepEqual(fromFile, fromDefault) {
-		t.Errorf("columns: file %v, default %v", fromFile, fromDefault)
 	}
 }
 
 func TestParseKeepsFallbacksForAbsentKeys(t *testing.T) {
 	// A configuration written today must keep working when keys are added.
-	c, err := Parse([]byte("type_namespace: acme/work\n"))
+	c, err := Parse([]byte("work_item_key: BACK\n"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if c.TypeNamespace != "acme/work" {
-		t.Errorf("TypeNamespace = %q", c.TypeNamespace)
+	if c.KeyPrefix() != "BACK" {
+		t.Errorf("KeyPrefix = %q", c.KeyPrefix())
 	}
 	if got := c.DefaultStatusFor("work-item"); got != "captured" {
-		t.Errorf("fallback lost: DefaultStatusFor = %q, want idea", got)
+		t.Errorf("fallback lost: DefaultStatusFor = %q, want captured", got)
 	}
 }
 
@@ -57,10 +44,34 @@ func TestParseRejectsMalformedYAML(t *testing.T) {
 	}
 }
 
-func TestParseRejectsAnEmptyNamespace(t *testing.T) {
-	// Silently accepting this would leave every short type name unresolvable.
-	if _, err := Parse([]byte("type_namespace: \"\"\n")); err == nil {
-		t.Error("empty type_namespace accepted")
+func TestAnAbsentWorkItemKeyMeansWork(t *testing.T) {
+	c, err := Parse([]byte("workflow_status:\n  task:\n    todo: 50\n"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if c.KeyPrefix() != "WORK" {
+		t.Errorf("KeyPrefix = %q, want WORK", c.KeyPrefix())
+	}
+	// A zero-value Config never went through Default or Parse and must not
+	// produce keys like "-0042".
+	if got := (Config{}).KeyPrefix(); got != "WORK" {
+		t.Errorf("zero-value KeyPrefix = %q, want WORK", got)
+	}
+}
+
+func TestParseRefusesAPrefixOutsideTheJiraCloudRule(t *testing.T) {
+	// An uppercase letter, then uppercase letters or digits, two to ten
+	// characters. A prefix the validator accepted but the key reader could
+	// not parse would create records the tool cannot find.
+	for _, bad := range []string{"back", "X", "2AB", "ABCDEFGHIJK", "WORK_ITEMS", "BA-CK", `""`} {
+		_, err := Parse([]byte("work_item_key: " + bad + "\n"))
+		if err == nil {
+			t.Errorf("work_item_key %q accepted; want a refusal", bad)
+			continue
+		}
+		if !strings.Contains(err.Error(), KeyPrefixRule) {
+			t.Errorf("refusal of %q does not name the rule: %v", bad, err)
+		}
 	}
 }
 
@@ -80,19 +91,5 @@ func TestDefaultStatusIsTheFirstConfiguredValue(t *testing.T) {
 		if got, want := c.DefaultStatusFor(unit), "todo"; got != want {
 			t.Errorf("%s default = %q, want %q", unit, got, want)
 		}
-	}
-}
-
-func TestQualify(t *testing.T) {
-	c := Default()
-	if got, want := c.Qualify("task"), "luma/backlog/task"; got != want {
-		t.Errorf("Qualify(task) = %q, want %q", got, want)
-	}
-	// Already qualified wins, so a record from a foreign vocabulary survives.
-	if got, want := c.Qualify("acme/thing/task"), "acme/thing/task"; got != want {
-		t.Errorf("Qualify of a qualified name = %q, want %q", got, want)
-	}
-	if got := c.Qualify(""); got != "" {
-		t.Errorf("Qualify(empty) = %q, want empty", got)
 	}
 }
