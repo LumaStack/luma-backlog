@@ -2,13 +2,13 @@
 type: work-item
 key: WORK-0070
 title: Make the backlog usable in another project
-workflow_status: captured
+workflow_status: unprepared
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:28:06Z'}
 description: everything that has to be true before a second project can adopt this tool and keep receiving updates — the remaining breaking changes, a way to ask what is open, the bundle published out of local/, a released binary, and migration. this is a delivery rather than a piece of work, and it is a work item only because WORK-0069 has not produced the unit it should be.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
-rank: 010.0540.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
+rank: 020.0020.000
 ---
 
 # Make the backlog usable in another project

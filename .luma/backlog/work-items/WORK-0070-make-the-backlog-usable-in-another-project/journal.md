@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-20
+
+WORK-0070-make-the-backlog-usable-in-another-project captured → unprepared: selected
+
 ## ▶ 2026-09-10
 
 WORK-0070-make-the-backlog-usable-in-another-project unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost

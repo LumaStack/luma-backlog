@@ -5,6 +5,10 @@
 
 ---
 
+## ▶ 2026-09-20
+
+WORK-0034-how-journalling-should-work captured → unprepared: selected
+
 ## ▶ 2026-09-06
 
 the criterion already exists — relitigation risk, from open-questions §2 — and the practice drifted from it: 142 entries in the corpus, many of them observations nobody would argue twice

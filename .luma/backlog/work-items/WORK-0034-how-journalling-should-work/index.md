@@ -2,12 +2,12 @@
 type: work-item
 key: WORK-0034
 title: How journalling should work
-workflow_status: captured
+workflow_status: unprepared
 kind: inquiry
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T15:40:00Z'}
-rank: 010.0200.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
+rank: 020.0010.000
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
 ---
 
 # How journalling should work
