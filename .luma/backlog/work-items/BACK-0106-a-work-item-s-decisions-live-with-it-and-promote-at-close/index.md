@@ -46,46 +46,16 @@ unchanged. Everything below was added by the agent while capturing it.*
   `work-item.closed`.** What is missing is the closing procedure actually
   asking, and the linking being settled.
 
-### The linking is under discussion — nothing ratified
+### The linking is settled — and this record's own pattern recorded it
 
-Three options: backward only (`promoted_from` on the copy — what §4.8.1
-specifies today), forward only (`promoted_to` on the original), or both.
-
-**The case for backward** — the copy is born at promotion, so writing
-`promoted_from` into it touches nothing that exists and can never go stale. It
-is provenance: the living rule can show the work that produced it — the
-journal, the alternatives, the constraints — which is what somebody needs when
-they later challenge the rule and must know whether the original conditions
-still hold.
-
-**The case for forward** — the reader most at risk stands at the *original*:
-a frozen decision inside a closed work item, indistinguishable from one that
-was promoted and has since been amended elsewhere. A `promoted_to` stamp is a
-redirect protecting that reader from following a rule that moved on. Deriving
-it at read time only serves people using the binary; the file read raw shows
-nothing.
-
-**The tension** — §4.8.1 says the original is left untouched. A dated
-`promoted_to` stamp changes nothing that was decided; the corpus already
-treats append-only event stamps (`closed` entries, verification entries) as
-not changing a record. Amending §4.8.1 to say "content is never changed;
-promotion appends only the stamp" is a decision preparation has to make, not
-assume.
-
-**Forward-only is strictly dominated** — it pays the cost of touching the
-original while discarding a backward link that is free at birth. The real
-choice is backward-only versus both.
-
-**Store-forward-derive-backward was considered and argued down.** The
-maintainer proposed storing only `promoted_to` and deriving provenance by
-scanning — and spotted the flaw in the same breath: deletion. A derived link
-vanishes without trace when the work item is removed
-([[work-items/WORK-0039-what-closed-work-items-cost-as-the-corpus-grows]]
-makes retention a live topic); a stored link merely dangles, which is still
-information and still finds the record in git history. The scheme also
-inverts the costs: it stores the link that needs the §4.8.1 amendment and
-discards the one that is free. Once the original is being touched at all,
-writing both ends in the one atomic operation costs nothing extra.
+**Both ends, written atomically by the one promote operation:**
+`promoted_from` on the copy, a dated `promoted_to` stamp on the original.
+Settled by the maintainer 2026-09-20 and recorded as
+[[work-items/BACK-0106-a-work-item-s-decisions-live-with-it-and-promote-at-close/decisions/ADR-0011-promotion-links-both-ends-written-by-one-operation]]
+— a decision living with its work item, which is the very shape this record
+asks for. The reasoning, the deferred alternatives (backward-only as the
+fallback floor; forward-with-derived-backward, sunk by the deletion
+argument), and the §4.8.1 amendment it entails all live there.
 
 ### Out of scope
 
