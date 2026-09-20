@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: The command line is designed against clig.dev
 decided: 2026-09-05
 stage: provisional

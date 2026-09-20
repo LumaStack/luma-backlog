@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Nothing calls the unit a deliverable
 desired_state: "No code, type definition, configuration value, command, document or corpus label calls the backlog unit a deliverable. Journal entries written before the rename keep the old word, because they are history and record what was true when written."
 verify_by: ["grep for deliverable across internal, cmd and the corpus returns only historical journal entries", "go test ./... passes"]

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Close must not deliver on records it could not read
 workflow_status: closed
 stage: draft

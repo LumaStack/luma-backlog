@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A command that belongs to a work item finds it without being told
 desired_state: "After picking a work item, every command that takes -w works without it, and an explicit -w still wins."
 verify_by:

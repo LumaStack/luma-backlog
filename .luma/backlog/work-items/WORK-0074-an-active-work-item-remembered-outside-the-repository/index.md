@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0074
 title: An active work item, remembered outside the repository
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Work that has not ended can be asked for in one command
 desired_state: "Everything except the terminal status is one flag, with no second language and no pipe."
 verify_by:

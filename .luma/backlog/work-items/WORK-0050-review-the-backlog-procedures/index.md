@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0050
 title: Review the backlog procedures
 workflow_status: captured

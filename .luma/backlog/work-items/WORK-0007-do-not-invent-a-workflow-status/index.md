@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Do not invent a workflow status
 workflow_status: closed
 stage: draft

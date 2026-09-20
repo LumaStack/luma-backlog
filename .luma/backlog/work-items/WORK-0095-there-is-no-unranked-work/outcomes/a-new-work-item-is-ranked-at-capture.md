@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A new work item is ranked at capture
 desired_state: "Every new work item arrives with a position at the back of captured, behind everything already there --- including anything somebody placed last by hand."
 verify_by: "Create a work item while another already sits at the back of captured by an explicit rank --last; the new one sorts behind it. Two captures against the same corpus may compute the same position, and the order between them is deterministic rather than lost."

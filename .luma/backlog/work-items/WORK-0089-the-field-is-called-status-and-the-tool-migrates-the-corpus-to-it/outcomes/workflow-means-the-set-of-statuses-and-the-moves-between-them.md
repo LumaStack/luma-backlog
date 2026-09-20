@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Workflow means the set of statuses and the moves between them
 desired_state: "Workflow names one thing --- the configured statuses and the transitions allowed between them --- and is not used as a prefix or a loose adjective."
 verify_by: ["Every use of the word in the documents means that one thing, or is replaced.", "The concept has somewhere it is defined, rather than being assumed.", "`workflow-status.md` is renamed or its title says what it now holds."]

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0027
 title: Whether a pull request can be evidence
 workflow_status: captured

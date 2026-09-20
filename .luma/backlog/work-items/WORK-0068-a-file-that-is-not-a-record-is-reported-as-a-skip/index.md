@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0068
 title: A file that is not a record is reported as a skip
 workflow_status: captured

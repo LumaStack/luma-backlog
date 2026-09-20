@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0034
 title: How journalling should work
 workflow_status: unprepared

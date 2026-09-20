@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0046
 title: Evaluate the conditions the tool names
 workflow_status: captured

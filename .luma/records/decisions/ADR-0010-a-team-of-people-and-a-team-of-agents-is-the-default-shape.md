@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: A team of people and a team of agents is the default shape
 decided: 2026-09-08
 stage: provisional

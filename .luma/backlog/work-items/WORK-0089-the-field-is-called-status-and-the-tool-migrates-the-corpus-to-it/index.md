@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0089
 title: The field is called status, and the tool migrates the corpus to it
 workflow_status: unprepared

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Every check the procedure names has one strength, and the move applies it
 desired_state: "Every row of backlog-move's table is either one of the three strengths, or says which kind of not-a-check it is --- and the move behaves as the row says."
 verify_by: ["Every row names allowed, warned or refused, OR is marked as a judgement nobody can automate or a field write the move owes. No row is unclassified.", "Every row marked as a strength and marked built is exercised by a test that asserts which of the three it is.", "A transition to `todo` on a work item with no outcomes does what its row says.", "Nothing is refused that the refusal surface does not name --- three checks and one judgement call."]

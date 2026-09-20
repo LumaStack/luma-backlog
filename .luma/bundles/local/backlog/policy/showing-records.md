@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Showing records
 description: How a record is rendered in any output — the state marks, the shape of a list, and the rules that keep two procedures from drifting apart.
 matches: eager

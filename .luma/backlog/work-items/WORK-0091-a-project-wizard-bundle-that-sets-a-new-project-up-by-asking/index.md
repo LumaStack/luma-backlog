@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0091
 title: A project-wizard bundle that sets a new project up by asking
 workflow_status: captured

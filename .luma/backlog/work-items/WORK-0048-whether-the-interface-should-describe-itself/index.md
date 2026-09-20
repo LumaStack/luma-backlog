@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0048
 title: Whether the interface should describe itself
 workflow_status: captured

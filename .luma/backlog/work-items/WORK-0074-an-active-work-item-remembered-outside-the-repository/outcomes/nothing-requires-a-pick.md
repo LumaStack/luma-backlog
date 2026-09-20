@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Nothing requires a pick
 desired_state: "Every command works with no active work item, and a pick that no longer resolves is reported rather than fatal."
 verify_by:

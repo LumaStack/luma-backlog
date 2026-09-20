@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0016
 title: Ask the backlog what is open
 workflow_status: closed

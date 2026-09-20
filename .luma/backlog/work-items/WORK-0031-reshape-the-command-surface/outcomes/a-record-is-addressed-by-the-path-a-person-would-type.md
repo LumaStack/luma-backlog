@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A record is addressed by the path a person would type
 desired_state: "Key-scoped paths resolve and are emitted; bare names resolve while unambiguous, and ambiguity is an error rather than a guess."
 verify_by:

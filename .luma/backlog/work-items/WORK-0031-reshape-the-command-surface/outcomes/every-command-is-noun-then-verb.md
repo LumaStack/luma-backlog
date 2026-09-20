@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Every command is noun then verb
 desired_state: "The command tree matches `spec.md` §9.1 --- noun then verb, with verb-only where no noun applies. No command takes a record type as a positional argument."
 verify_by:

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Delivered is refused when an outcome could not be read
 desired_state: "close --reason delivered exits non-zero and names the file when any record under the work item outcomes directory could not be read. The other close reasons are unaffected, because none of them claims the work succeeded."
 verify_by: ["the reproduction from the work item now refuses", "a test pins the refusal and the exit code", "close --reason canceled still works with the same broken file present"]

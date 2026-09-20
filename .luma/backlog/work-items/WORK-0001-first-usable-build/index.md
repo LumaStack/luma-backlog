@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: First usable build
 description: The smallest binary that lets this project keep its own backlog.
 workflow_status: closed

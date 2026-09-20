@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0053
 title: The tool reads a config filename this repository does not use
 workflow_status: captured

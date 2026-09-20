@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The JSON omits the key rather than emitting an empty one
 desired_state: "show --json and list --json omit the status key entirely for a record whose type declares no workflow_status, rather than emitting it with an empty or defaulted value."
 verify_by: ["luma-backlog show PROJECT --json has no status key", "a golden test pins the JSON shape"]

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The tool writes nothing outside the backlog
 desired_state: No command modifies anything outside `.luma/` and the git objects recording those changes — including when run from a nested directory, through a symlink, or against a hostile record.
 verify_by:

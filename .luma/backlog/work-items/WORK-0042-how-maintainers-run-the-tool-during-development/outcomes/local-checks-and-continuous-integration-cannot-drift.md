@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Local checks and continuous integration cannot drift
 desired_state: There is one definition of what must pass, and both a maintainer and continuous integration run that same file.
 verify_by:

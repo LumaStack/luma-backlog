@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Work out what a work item is
 description: Say what done means and how the work will be attempted — write a work item's outcomes, classify what kind of thing it is, and decompose it into tasks where that earns its place. Use when something captured is being worked out, when asked "what does done look like", when a work item is too vague to start, or before selecting work to do. Do NOT use to change a workflow status (backlog-transition) or to record evidence that an outcome holds (backlog-verify).
 ---

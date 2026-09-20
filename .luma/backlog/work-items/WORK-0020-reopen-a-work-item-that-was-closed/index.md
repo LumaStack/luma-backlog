@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0020
 title: Reopen a work item that was closed
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0094
 title: A record asked for in another project is created here instead
 workflow_status: captured

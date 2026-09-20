@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A new decision record conforms to the contract
 desired_state: "luma-backlog new decision writes ADR-NNNN-<slug>.md with the next unused number, an ADR-NNNN heading, empty decided and reopen_trigger fields, and the four required sections — Summary, Problem, Decision, Why. Nothing has to be renamed or restructured by hand afterwards."
 verify_by: ["a decision created in this repository lands as ADR-0003 with the contract fields and sections", "asking twice finds the first record and burns no number", "one sequence across the records tier and work items alike"]

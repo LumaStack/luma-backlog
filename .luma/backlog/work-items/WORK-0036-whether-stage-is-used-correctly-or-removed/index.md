@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0036
 title: Whether stage is used correctly or removed
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Command surface is enumerated
 desired_state: every command of the first release is named with its arguments and flags
 verify_by:

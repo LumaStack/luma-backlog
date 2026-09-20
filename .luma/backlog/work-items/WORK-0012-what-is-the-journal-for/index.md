@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: What is the journal for
 workflow_status: captured
 kind: inquiry

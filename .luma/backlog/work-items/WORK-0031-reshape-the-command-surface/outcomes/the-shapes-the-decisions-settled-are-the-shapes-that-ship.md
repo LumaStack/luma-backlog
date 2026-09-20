@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The shapes the decisions settled are the shapes that ship
 desired_state: "Each command shape recorded in ADR-0005, ADR-0006 and ADR-0007 exists and behaves as recorded, and nothing they excluded ships."
 verify_by:

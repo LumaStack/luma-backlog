@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: An outcome carries the doer's assertion and the checker's verdict separately
 decided: 2026-09-05
 stage: provisional

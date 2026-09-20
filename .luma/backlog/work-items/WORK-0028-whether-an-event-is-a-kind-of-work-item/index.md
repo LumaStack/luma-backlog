@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0028
 title: Whether an event is a kind of work item
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0097
 title: An authorization has nowhere to be recorded
 description: backlog-move 0.37.0 says leaving preparing is refused until somebody with standing accepts the outcomes. Nothing records that acceptance, so the refusal cannot be enforced and the rule is prose again --- which is the shape that already failed twice.

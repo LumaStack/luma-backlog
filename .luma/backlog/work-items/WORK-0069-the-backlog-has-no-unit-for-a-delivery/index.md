@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0069
 title: The backlog has no unit for a delivery
 workflow_status: captured

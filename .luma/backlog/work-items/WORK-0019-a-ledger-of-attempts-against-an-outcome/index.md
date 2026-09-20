@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0019
 title: A ledger of attempts against an outcome
 workflow_status: captured

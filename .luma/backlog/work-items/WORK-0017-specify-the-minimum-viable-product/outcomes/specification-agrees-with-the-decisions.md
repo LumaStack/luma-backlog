@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Specification agrees with the decisions
 desired_state: spec.md contradicts no decision that is in force
 verify_by:

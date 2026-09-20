@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Write to the journal
 description: Write to a work item's journal in .luma/ — capture a learning as one line, or wrap up a session with where things stand. Use whenever something is learned, a direction is ruled out, a discussion settles something, an approach is abandoned, a surprise turns up, work is being paused or handed off, or a session is ending. Trigger without being asked — if something was just understood that a future session would need, it belongs here. Also use when asked what the journal says or where things stand. Do NOT use for creating records (backlog-capture), for editing a record's fields, or for recording an event git already captures.
 ---

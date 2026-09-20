@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0030
 title: An actor can act on behalf of another
 workflow_status: captured

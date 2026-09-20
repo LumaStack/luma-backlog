@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Editing the spec has a procedure
 desired_state: "Somebody about to change spec.md knows what to check, what it can break, and how to tell whether they got it away with it --- before they start."
 verify_by: ["A procedure exists and says what to read first, what else moves when a section changes, and how to confirm nothing was left contradicting it.", "It names what makes a spec edit expensive, so the cost is a known one rather than a surprise.", "It is reachable at the moment of need rather than by remembering it exists."]

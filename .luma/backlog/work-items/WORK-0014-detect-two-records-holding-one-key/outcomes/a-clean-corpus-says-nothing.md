@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A clean corpus says nothing
 desired_state: "A corpus with no duplicate keys produces no output about keys at all, so the warning is never something a reader learns to scroll past."
 verify_by: ["a clean corpus produces zero stderr lines from a listing", "this repository, which has none, is silent"]

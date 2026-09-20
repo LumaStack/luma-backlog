@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The experiment ran and left a complete record of itself
 desired_state: "Ad hoc work was actually done rather than described, and the session that did it is recoverable from the corpus alone — journal for the reasoning, evidence for what was said."
 verify_by:

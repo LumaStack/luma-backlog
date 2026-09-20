@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0022
 title: Migrate a corpus when the vocabulary changes
 workflow_status: captured

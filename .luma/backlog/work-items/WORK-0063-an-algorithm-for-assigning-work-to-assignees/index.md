@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0063
 title: An algorithm for assigning work to assignees
 workflow_status: captured

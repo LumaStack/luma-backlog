@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Adapters cannot reach the engine
 desired_state: a surface importing internal/backlog fails the build
 verify_by:

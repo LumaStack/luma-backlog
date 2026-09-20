@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0080
 title: Preparation and definition may be two different things
 workflow_status: captured

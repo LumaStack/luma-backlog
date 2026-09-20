@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0099
 title: Turn the WORK-0096 research strategy into something reusable
 description: Adapt the research strategy used in WORK-0096 into something we can reuse on other work items when the need arises, so we do not forget to learn from this.

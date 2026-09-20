@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0072
 title: Independent verdicts cancel each other out
 workflow_status: captured

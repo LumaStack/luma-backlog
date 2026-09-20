@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0100
 title: How migrations work across every kind of document
 description: 'Two types of migration: ones a CLI can do without an agent, and ones only agents can do. What needs migrating: bundles, type definitions, records, frontmatter, document bodies --- basically every document. Which means every document has to track its type definition version. And a model for what is worth migrating versus what is fine to leave wrong.'

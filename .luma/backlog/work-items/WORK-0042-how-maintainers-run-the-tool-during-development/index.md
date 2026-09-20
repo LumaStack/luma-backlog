@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0042
 title: How maintainers run the tool during development
 workflow_status: closed

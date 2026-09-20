@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Every work item has a key that resolves
 desired_state: "Every work item in this repository carries a WORK-NNNNN key, a newly created one is allocated the next number, and the key resolves anywhere a slug does — case-insensitively."
 verify_by: ["show work-00011 resolves on this corpus", "a new work item continues the sequence", "asking twice for the same title burns no number"]

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 title: Ship the documented ladder
 workflow_status: closed
 stage: draft

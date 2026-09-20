@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The backlog is kept by the tool
 desired_state: The backlog can be kept through commands. Creating records, setting fields, linking, journalling, recording evidence and closing each have one, and none of them requires opening a file. Hand-editing stays available and expected — the records are markdown on purpose. Where hand-editing produces the better result, that is a gap the commands have not closed yet and is recorded as one, not counted as a failure of this outcome.
 verify_by: ["A full pass of real work runs without opening a record to change anything the tool owns: frontmatter, status, links, verification, closing.", "The journal for that work item is written as the work happens, not reconstructed afterwards.", "Every place hand-editing beat the command is named in the journal, with the command that should eventually cover it."]

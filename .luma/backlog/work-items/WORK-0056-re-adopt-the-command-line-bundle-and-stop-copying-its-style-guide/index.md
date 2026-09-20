@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0056
 title: Re-adopt the command line bundle and stop copying its style guide
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A corpus written before the rename still works after it
 desired_state: "Somebody who pulls this change onto an existing corpus is not broken by it, and does not have to fix anything by hand."
 verify_by: ["A corpus whose records all carry `workflow_status` is read without error after the change.", "Running the migration leaves every record carrying `status` with the same value it had.", "Nothing else about the records changes --- not rank, not modified, not fields the tool does not know about.", "Running it twice does the same as running it once."]

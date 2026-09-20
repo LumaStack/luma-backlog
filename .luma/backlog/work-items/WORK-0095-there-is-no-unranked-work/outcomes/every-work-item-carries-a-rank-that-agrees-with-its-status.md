@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Every work item carries a rank that agrees with its status
 desired_state: "No work item in the corpus is without a rank, and every rank prefix equals the ordinal its workflow status currently carries."
 verify_by: "work-item list --json reports a non-empty rank on every record, and the status-drift observation is silent on a full listing."

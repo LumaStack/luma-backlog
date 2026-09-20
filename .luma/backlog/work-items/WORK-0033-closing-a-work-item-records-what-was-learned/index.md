@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0033
 title: Closing a work item records what was learned
 workflow_status: captured

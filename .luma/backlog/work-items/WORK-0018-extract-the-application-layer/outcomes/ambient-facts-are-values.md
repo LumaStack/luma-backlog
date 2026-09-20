@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Ambient facts are values
 desired_state: actor and repository root arrive on the request, never read inside it
 verify_by:

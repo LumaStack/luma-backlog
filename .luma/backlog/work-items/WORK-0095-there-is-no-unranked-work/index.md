@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0095
 title: There is no unranked work
 description: 'Ranking needs to always happen --- there is no unranked stuff, ever. Everything is ranked all the time, and new things just go to the bottom or the top or wherever we want them, but they are always ranked. What has to be decided is where a record lands on each event: creation, advancing, and going backwards --- and whether any work status is special enough to behave differently.'

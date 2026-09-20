@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0047
 title: Whether history needs a command of its own
 workflow_status: captured

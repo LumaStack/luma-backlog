@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The report never contaminates stdout
 desired_state: "The skip report goes to stderr. stdout stays a clean listing and --json stays parseable, so a caller piping the output is unaffected by a broken record."
 verify_by: ["a test asserts the JSON still parses while a record is broken", "the report appears on stderr and not in stdout"]

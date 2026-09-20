@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The pick never reaches the repository
 desired_state: "The active work item is per machine and per user. It appears in no listing, no diff, and no other checkout."
 verify_by:

@@ -1,5 +1,6 @@
 ---
 type: violation
+type_version: "0.0.1"
 violation_id: 2026-09-10-173823-ladder-run-without-pausing
 violating_commit: 8588478
 violating_actor: agent:claude-opus-5/luma-backlog

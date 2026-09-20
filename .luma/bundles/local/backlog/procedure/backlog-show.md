@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Show where a work item stands
 description: Show one record and everything about it, show a column or status, or show the backlog at a glance when nothing is named. Use when asked "where is X", "what's left on X", "what's in progress", "what's in To Do", "show me the defects", "what have we captured", or for any request to see records. This is the way into both the show and list commands. Do NOT use to choose what to work on next (backlog-rundown), or to change anything.
 ---

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0061
 title: Surface work that went around the system to observers
 workflow_status: captured

@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: Records conform to the format
 desired_state: Every record the tool writes is conformant and self-consistent — short type names resolve through the declared namespace, a record checks out against its Type Definition where one exists, and a record hand-edited in an editor round-trips without loss.
 verify_by:

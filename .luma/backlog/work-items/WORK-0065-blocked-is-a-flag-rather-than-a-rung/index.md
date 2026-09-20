@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0065
 title: Blocked is a flag rather than a work status
 workflow_status: captured

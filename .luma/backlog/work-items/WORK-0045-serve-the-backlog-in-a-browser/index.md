@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0045
 title: Serve the backlog in a browser
 workflow_status: captured

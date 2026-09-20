@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A bare listing returns what it always returned
 desired_state: "Adding the flag changed no existing output. Output shapes are contract, so hiding closed records by default was refused as a breaking change dressed as a convenience."
 verify_by:

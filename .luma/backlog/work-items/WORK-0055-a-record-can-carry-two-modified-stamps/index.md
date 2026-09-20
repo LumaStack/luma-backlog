@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0055
 title: A record can carry two modified stamps
 workflow_status: captured

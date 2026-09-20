@@ -1,5 +1,6 @@
 ---
 type: decision
+type_version: "0.0.1"
 title: Rank is work order and workflow status dominates it
 decided: 2026-09-05
 stage: provisional

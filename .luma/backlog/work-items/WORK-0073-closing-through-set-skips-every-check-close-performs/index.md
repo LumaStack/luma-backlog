@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0073
 title: Closing through set skips every check close performs
 workflow_status: captured

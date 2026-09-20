@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A skip elsewhere does not block this work item
 desired_state: "An unreadable record belonging to another work item, or to no work item, does not prevent this one closing as delivered. Only skips that could be this work item outcomes count."
 verify_by: ["a test breaks a record in a second work item and closes the first as delivered"]

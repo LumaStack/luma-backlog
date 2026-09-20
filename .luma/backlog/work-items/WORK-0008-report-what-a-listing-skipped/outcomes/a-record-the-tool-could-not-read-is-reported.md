@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: A record the tool could not read is reported
 desired_state: "Running a command that lists records tells the reader about every file it could not read or parse, naming the path and the reason. The record is still skipped and the command still succeeds."
 verify_by: ["breaking a record in a live backlog and running list names it on stderr", "a test pins the report"]

@@ -1,5 +1,6 @@
 ---
 type: work-item
+type_version: "0.0.1"
 key: WORK-0017
 title: Specify the minimum viable product
 workflow_status: closed

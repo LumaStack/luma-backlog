@@ -1,5 +1,6 @@
 ---
 type: outcome
+type_version: "0.0.1"
 title: The shipped default is the documented ladder
 desired_state: "The default work-item vocabulary is captured, unprepared, preparing, prepared, todo, in_progress, closed — in the tool, in the scaffolded configuration file, and in this repository own corpus."
 verify_by: ["luma-backlog new work-item writes the first work status", "the scaffolded config and the compiled default agree", "no record in .luma/ carries a retired work status"]

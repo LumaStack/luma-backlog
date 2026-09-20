@@ -1,7 +1,8 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: local/backlog
-version: 0.44.0
+version: 0.45.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -29,11 +30,11 @@ they need.
 
 **Types**
 
-- `_types/work-item` — the backlog unit. Named by decision record
+- `type_definitions/work-item` — the backlog unit. Named by decision record
   ADR-0001 in `.luma/records/decisions/`, which is worth reading before
   proposing a rename.
-- `_types/outcome` — the condition that must hold for a work item to be done.
-  True or false, never a task in disguise.
+- `type_definitions/outcome` — the condition that must hold for a work item to
+  be done. True or false, never a task in disguise.
 
 **Policies**
 
@@ -68,6 +69,13 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.45.0` — **Type Definitions become folders.** LKF `v0.0.21` renamed `_types/`
+to `type_definitions/` and made every Type Definition a folder:
+`type_definitions/<name>/DEFINITION.md` is the contract, with a `CHANGELOG.md`
+beside it. `work-item` and `outcome` declare their own `version` (both begin at
+`0.0.1`), and this project's documents now carry `type_version`. The contracts
+themselves are unchanged.
 
 `0.42.0` — **`backlog-move` is renamed `backlog-transition`.** Breaking: the
 document ID changed, so anything that linked to the old one no longer resolves.
