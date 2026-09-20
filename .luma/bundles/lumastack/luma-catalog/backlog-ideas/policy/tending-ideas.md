@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Tending ideas
 description: The gardening practice — growth stages, when to prune, archiving rather than deleting, and how long an archived idea is kept.
 matches:

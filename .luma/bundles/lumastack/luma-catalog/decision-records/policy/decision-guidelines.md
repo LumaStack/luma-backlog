@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Writing a decision record
 description: When to record a decision, what makes one worth reading years later, and what you may edit once it is settled.
 matches:
@@ -8,7 +9,8 @@ matches:
 
 # Writing a decision record
 
-The contract — which fields a record carries — is in `_types/decision`. This is
+The contract — which fields a record carries — is in
+`type_definitions/decision`. This is
 the craft: when to write one, what makes it survive, and what you may change
 after the fact.
 

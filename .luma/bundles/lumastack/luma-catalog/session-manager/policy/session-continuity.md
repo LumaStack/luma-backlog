@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: How a session survives its own end
 description: The three ways a session ends, who reads what each one leaves behind, and the invariant that makes a session note safe to destroy.
 matches: eager

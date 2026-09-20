@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/git-workflow
-version: 0.8.1
-published: 2026-09-02
+version: 0.9.0
+published: 2026-09-19
 stage: draft
 consumers: [project]
 description: How changes get integrated — merge commits rather than squash or rebase, the repository settings that make it true, and how to prove a change actually landed.

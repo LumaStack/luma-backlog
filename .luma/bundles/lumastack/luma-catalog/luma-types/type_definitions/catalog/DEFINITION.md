@@ -1,5 +1,6 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: luma/catalog
 version: "0.3.0"
 extends: document
@@ -52,7 +53,7 @@ globally unique, no registry issues one, and two organizations may both publish
 **It is the other end of a distribution model, and distribution models are not
 the format's business.** LKF defines the Bundle because its own machinery needs
 one — a Document ID is a path within a Bundle, and types resolve from a Bundle's
-`_types/`. Nothing in the specification needs a catalog to exist, and a Bundle is
+`type_definitions/`. Nothing in the specification needs a catalog to exist, and a Bundle is
 perfectly usable from a git URL or a tarball.
 
 **It also changes at this project's rate, not the format's.** A pending draft

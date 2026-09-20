@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Publish a GitHub release
 description: Verify the gh CLI is installed and authenticated, then cut and publish a release. Use when asked to cut, tag, or publish a release.
 ---

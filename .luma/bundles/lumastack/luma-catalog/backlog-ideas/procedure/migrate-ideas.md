@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Migrate an IDEAS file
 description: Move ideas out of a single IDEAS.md into individual files, verify nothing was lost, and only then remove the original. Use once per project that has one.
 ---

@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/git-worktrees
-version: 0.8.1
-published: 2026-09-02
+version: 0.9.0
+published: 2026-09-19
 stage: draft
 consumers: [project]
 description: Isolated worktrees for concurrent agents in one repository — where they live, what has to be provisioned, and how to tear them down without leaving wreckage.

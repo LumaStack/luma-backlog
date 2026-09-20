@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Remove a worktree
 description: Tear down a worktree completely — directory, metadata, branch and any namespaced resources it claimed. Use as the last step of a task, at merge.
 ---

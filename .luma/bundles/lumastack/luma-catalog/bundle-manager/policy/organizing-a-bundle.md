@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Organizing a bundle
 description: The layout every bundle uses, what each directory is for, and what decides whether something is a document, an asset, or a type.
 matches: eager
@@ -10,7 +11,7 @@ matches: eager
 ```
 <bundle>/
   BUNDLE.md        the manifest — version, consumers, description
-  _types/          Type Definitions — only if the bundle declares its own
+  type_definitions/  Type Definitions — only if the bundle declares its own
   procedure/       procedures — type: procedure
   policy/          adopted courses of action — type: policy
   concepts/        background that explains — type: document
@@ -38,10 +39,11 @@ lowercase.
 
 `BUNDLE.md` speaks for the bundle. `templates/bundle.md` does not — it is a
 pattern for making one, so it stays lowercase; naming it `BUNDLE.md` would claim
-the templates directory *is* a bundle. A Type Definition at `_types/catalog.md`
-describes what a catalog is while living inside something else, so it stays
-lowercase too. **The rule excludes them rather than exempting them**, which is
-why there is no list to memorise.
+the templates directory *is* a bundle. The `DEFINITION.md` at
+`type_definitions/catalog/DEFINITION.md` speaks for the Type Definition folder
+that holds it — never for the bundle whose type it describes: what a file speaks
+for is what contains it, not what it is about. **The rule excludes them rather
+than exempting them**, which is why there is no list to memorise.
 
 **A document that owns a directory follows the same rule.** Where a procedure
 carries steps or assets of its own, it takes a directory and speaks for it:
@@ -64,7 +66,7 @@ rather than silently treated as a manifest. That is the inverse of why
 exist, and nothing you write will change that. **Never make a `README.md`
 load-bearing.**
 
-Only `BUNDLE.md` is required. `_types/` is the one name reserved by the format,
+Only `BUNDLE.md` is required. `type_definitions/` is the one name reserved by the format,
 and most bundles do not need it at all — a bundle whose Documents are all
 `policy` and `procedure` declares no types, because those are built in. **The rest is convention, not specification** — the format leaves
 placement deliberately unspecified, and a bundle that puts a procedure at its
@@ -238,14 +240,17 @@ beside it, in `procedure/<name>/`, so moving or retiring that procedure takes it
 script with it. A script nothing invokes is dead weight a reader has to
 evaluate.
 
-**`_types/`** — Type Definitions, for types **this bundle declares**. Reserved
-by the format, so the name is not ours to change.
+**`type_definitions/`** — Type Definitions, for types **this bundle declares**.
+Reserved by the format, so the name is not ours to change. Each type is a
+folder — `type_definitions/<name>/DEFINITION.md` is the contract, with a
+`CHANGELOG.md` beside it and, where they exist, prior versions and
+`migrations/`.
 
 **Never vendor a built-in.** `document`, `procedure`, `policy`, `bundle` and
 `type_definition` are supplied by the format, and copying one into a
 bundle creates a private definition that can drift from the real one while every
 consumer still assumes the format's meaning. A bundle that declares no types of
-its own has no `_types/` directory.
+its own has no `type_definitions/` directory.
 
 That is not hypothetical: this catalog carried eighteen vendored copies of
 `procedure` (then named `workflow`) and `policy` before they became built in,

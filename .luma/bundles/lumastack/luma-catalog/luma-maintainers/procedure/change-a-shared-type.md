@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Change a type more than one tool depends on
 description: Alter a shared type without making every tool upgrade at once. Use before touching anything in lumastack/luma-catalog/luma-types, or any type a second consumer already reads.
 ---

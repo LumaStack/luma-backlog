@@ -1,6 +1,8 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: session_note
+version: "0.0.1"
 extends: document
 fields:
   kind:

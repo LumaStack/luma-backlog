@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Delete a bundle
 description: Retire a bundle without breaking the projects that adopted it. Use when a bundle is superseded, wrong, or no longer maintained.
 ---

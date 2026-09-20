@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Repair a bundle
 description: Fix what an audit found, in an order that avoids making it worse. Use after audit-bundle reports findings.
 ---

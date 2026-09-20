@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Why this exists
 description: The case for ending sessions deliberately — what is lost by default, and the seven things that follow from refusing it. Read when deciding whether to keep, extend or adopt this bundle, not while using it.
 ---

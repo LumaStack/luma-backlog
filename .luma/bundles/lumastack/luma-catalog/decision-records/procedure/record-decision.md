@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Record a decision
 description: Find or establish where this project keeps decisions, then write one. Use when a position is settled, when an irreversible change is proposed, or when asked where decisions live.
 ---
@@ -136,7 +137,7 @@ mistake:
 **Take a moment over `archived_reason`.** It is the field that tells a later
 reader whether `archived/` holds finished business or an open gap — `invalidated`
 means the project used to have an answer here and no longer does. See
-`_types/decision` for what each value means and for the two things that look like
+`type_definitions/decision` for what each value means and for the two things that look like
 values and are not.
 
 **The directory is what saves the context.** Nothing loads `archived/` by

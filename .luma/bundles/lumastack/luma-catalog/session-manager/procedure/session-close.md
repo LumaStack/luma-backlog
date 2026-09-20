@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Close a session
 description: Wind a session down for good — land everything durably, shut down what is running, and leave nothing that only exists in this machine or this conversation. Use when stopping with no idea when work resumes.
 ---

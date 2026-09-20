@@ -1,8 +1,9 @@
 ---
 type: bundle
+type_version: "0.0.1"
 title: lumastack/luma-catalog/decision-records
-version: 0.12.1
-published: 2026-09-02
+version: 0.13.0
+published: 2026-09-19
 stage: draft
 consumers: [project, organization]
 description: Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
@@ -61,9 +62,9 @@ and what you may edit once it is settled.
 
 **Types**
 
-- `_types/decision` — a single decision record.
-- `_types/decision_log` — one document holding many decisions, for projects
-  small enough that a directory would be overhead.
+- `type_definitions/decision` — a single decision record.
+- `type_definitions/decision_log` — one document holding many decisions, for
+  projects small enough that a directory would be overhead.
 
 ## Archived, not deleted
 

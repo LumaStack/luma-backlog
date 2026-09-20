@@ -3,7 +3,11 @@
 Copy the block below, fill it in, delete what does not apply. **Copy the block,
 not this file.**
 
-Title format: `vX.Y.Z — what changed, in a few words`
+**Every heading here is conditional.** Delete the ones with nothing under them
+rather than writing *none* or *nothing to do* — absence is the statement, and the
+policy says so.
+
+Title format: `vX.Y.Z` — the version alone, matching the tag exactly
 Policy: `../policy/release-notes.md`
 
 ---
@@ -20,18 +24,21 @@ Policy: `../policy/release-notes.md`
 ```markdown
 <One or two sentences: what this release is, and who should care.>
 
+<!-- Required, and the only summary a release has — the title carries the
+     version and nothing else, so a reader scanning the list opens this to
+     find out whether the release affects them. Make the first line earn it. -->
+
 ## Upgrading from vX.Y.Z
 
-**Nothing to do.**
+<!-- The steps, in order.
 
-<!-- ...or the steps, in order.
+     DELETE THIS HEADING when there is nothing to do. Not "nothing to do"
+     written under it — no heading at all. Its absence says the same thing
+     and costs the reader nothing.
 
-     This is second only to the breaking banner because it is what most
-     readers came for. If the answer really is nothing, say exactly that and
-     stop — it is the most useful sentence in these notes.
-
-     Not a copy of per-change migration notes. This is the whole upgrade in
-     one place, written once the release is known. -->
+     It sits above the change groups because it is what most readers came
+     for. Not a copy of per-change migration notes: this is the whole
+     upgrade in one place, written once the release is known. -->
 
 ## Added
 

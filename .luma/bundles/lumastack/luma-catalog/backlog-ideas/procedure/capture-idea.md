@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Capture an idea
 description: Write down an idea before it is lost, check whether it already exists, and only then ask how much detail is worth adding now. Use when something worth doing surfaces during other work.
 ---

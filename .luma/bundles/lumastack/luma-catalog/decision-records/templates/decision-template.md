@@ -5,7 +5,7 @@ next unused four-digit number. **Copy the blocks, not this file**: a template
 carrying live frontmatter would be indexed and validated as a real decision.
 
 Guidance is in `../policy/decision-guidelines.md`; the field contract is in
-`../_types/decision.md`.
+`../type_definitions/decision/DEFINITION.md`.
 
 ## Frontmatter
 

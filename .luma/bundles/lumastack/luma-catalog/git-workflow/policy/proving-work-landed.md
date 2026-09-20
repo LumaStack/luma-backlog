@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Proving work has landed
 description: The commands that answer "is this landed" and "is anything stranded", why they run against the remote ref, and why a report is not an answer.
 matches:

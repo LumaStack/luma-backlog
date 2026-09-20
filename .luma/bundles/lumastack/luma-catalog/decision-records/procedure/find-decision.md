@@ -1,5 +1,6 @@
 ---
 type: procedure
+type_version: "0.0.1"
 title: Find a decision
 description: Locate a decision record from a number, a title, or a link that no longer resolves. Use whenever a citation points at nothing, or before concluding that something was never decided.
 ---

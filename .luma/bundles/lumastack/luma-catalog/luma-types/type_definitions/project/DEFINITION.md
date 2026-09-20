@@ -1,5 +1,6 @@
 ---
 type: type_definition
+type_version: "0.0.1"
 defines: luma/project
 version: "0.2.0"
 extends: document

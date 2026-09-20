@@ -1,5 +1,6 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Release titles and contents
 description: What a release is called and what it must contain. Release notes are the only thing most people will ever read about a version.
 matches:
@@ -20,27 +21,32 @@ blank page — it carries the required sections in order.
 ## Titles
 
 ```
-vX.Y.Z — what changed, in a few words
+vX.Y.Z
 ```
 
-- **Lead with the version.** It is what people scan for and sort by.
-- **Then say what changed**, in the fewest words that are actually specific.
-- **Lowercase after the dash**, no trailing period. It is a label, not a
-  sentence.
+**The title is the version and nothing else** — no dash, no summary, no
+adjective.
 
 ```
-v0.0.8 — entrypoints and release titles
-v2.1.0 — retries are configurable per endpoint
-v3.0.0 — drops Node 18
+v0.1.0
+v2.1.0
+v3.0.0
 ```
 
-**Name the change, not its size.** `v2.4.0 — big update`, `v1.1.0 — improvements
-and fixes`, and `v0.4.0 — quality of life` all cost a reader the same thing:
-they have to open the release to learn whether it affects them. A title that
-says what moved lets most people stop reading, which is the point.
+**What changed belongs in the opening line of the notes**, one line below the
+title. Saying it in both places means one fact written twice at the same moment
+and amended separately afterwards — and the title is the copy that cannot be
+fixed, because feeds, changelogs and chat unfurls cache it the day it publishes.
 
-A release with no honest short title is usually a release doing too many
-unrelated things.
+The title is also the one string that has to match the tag exactly. A release
+named `v2.1.0`, a tag named `v2.1.0` and a version field reading `2.1.0` need no
+reconciling by eye or by script; a summary appended to one of them has to be
+parsed back off before any two can be compared.
+
+**What this gives up, and what pays for it.** A reader scanning a list of bare
+versions cannot tell which release affects them without opening one. That cost
+is real, and it is why the opening line is not optional — with the title
+carrying no summary, it is the only one a release has.
 
 ## Order: urgency, not chronology
 
@@ -50,9 +56,10 @@ A reader arrives with two questions, in this order: **will this break me**, and
 So the notes lead with the answers, not with a narrative of the work:
 
 1. ⚠️ **Breaking banner** — only when something breaks
-2. **Upgrading from vX.Y.Z**
-3. The change groups
-4. Version category, known issues — when they apply
+2. **What this release is** — one or two sentences, always
+3. **Upgrading from vX.Y.Z** — when there is something to do
+4. The change groups — only those that apply
+5. Version category, known issues — when they apply
 
 Listing what was built first and burying the upgrade instructions at the bottom
 optimises for the author's memory of the release rather than the reader's need,
@@ -73,14 +80,28 @@ upgrading rather than discovering it afterwards.
 **Only when it applies.** A banner that appears on every release is decoration,
 and the next genuinely breaking one will be scrolled past like all the others.
 
+## A section with nothing to say is left out
+
+Every section below the opening line is conditional, including the ones that
+usually apply. A heading with *none*, *nothing to do* or *not applicable* under
+it costs a reader a stop and returns nothing.
+
+**Absence is the statement.** No banner means nothing breaks; no *Upgrading*
+means nothing to do; no *Known issues* means none are known. Absence is readable
+only because it is written down here — which is what makes this a rule rather
+than an author having forgotten.
+
+*The banner already worked this way — "delete the whole line when nothing
+breaks" — while `Upgrading` was told to say `nothing to do` out loud. One
+document, two answers to the same question. This is the consistent one.*
+
 ## Upgrading from vX.Y.Z
 
-The most valuable section and the most often omitted, which is why it sits
-second rather than last.
+The most valuable section and the most often omitted, which is why it sits above
+the change groups rather than below them.
 
-**Say plainly when the answer is nothing** — usually the single most useful
-sentence in the notes, because it converts *I should read all of this carefully*
-into *I can upgrade now*.
+**Leave it out entirely when there is nothing to do.** Not a heading with
+*nothing to do* beneath it — no heading.
 
 It is not a copy of per-change migration notes. Those are written as each change
 lands and are scattered; this is the whole upgrade in one place, written once
