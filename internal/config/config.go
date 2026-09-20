@@ -150,4 +150,3 @@ func (c Config) TerminalStatusFor(unit string) string {
 	}
 	return s[len(s)-1]
 }
-
