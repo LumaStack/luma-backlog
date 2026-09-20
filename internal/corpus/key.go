@@ -6,29 +6,24 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/lumastack/luma-backlog/internal/config"
 	"github.com/lumastack/luma-backlog/internal/root"
 )
-
-// KeyPrefix is the only prefix supported today.
-//
-// It is written INTO the record rather than derived from configuration, so a
-// repository that later chooses its own prefix changes what gets written and
-// not what already exists. A derived key would silently rename every record in
-// the corpus the moment the setting changed.
-const KeyPrefix = "WORK"
 
 // keyPattern matches anything written as a key: WORK-0002, work-2,
 // WORK---2, "WORK  2".
 //
-// The prefix follows Jira Cloud project-key rules (WORK-0082): an uppercase
-// letter first, then uppercase letters or digits, two to ten characters. That
-// admits R2D2-7 and turns away a one-letter prefix — which is deliberate, so a
-// stray `x-1` in prose stays a slug rather than becoming a key.
+// The prefix rule is config.KeyPrefixRule — Jira Cloud project-key rules
+// (WORK-0082): an uppercase letter first, then uppercase letters or digits,
+// two to ten characters. That admits R2D2-7 and turns away a one-letter
+// prefix — which is deliberate, so a stray `x-1` in prose stays a slug rather
+// than becoming a key. One fragment shared with the config validator, so what
+// a repository may configure and what this file can read cannot drift apart.
 //
 // The separator tolerates runs of dashes and spaces because people type keys
 // from memory and quote them out of prose. What a sloppy spelling resolves to
 // is decided by ParseKey; nothing here changes what gets written to disk.
-var keyPattern = regexp.MustCompile(`^([A-Z][A-Z0-9]{1,9})[ -]+(\d+)$`)
+var keyPattern = regexp.MustCompile(`^(` + config.KeyPrefixRule + `)[ -]+(\d+)$`)
 
 // ParseKey reads a reference as a key, however it was spelled. This is the
 // only reader — every comparison goes through it, so two spellings of one key
@@ -47,7 +42,9 @@ func ParseKey(ref string) (prefix string, number int, ok bool) {
 	return m[1], n, true
 }
 
-// FormatKey renders a key from its number.
+// FormatKeyAs renders a key under a prefix. It is what NormalizeKey and
+// allocation both funnel into, so there is exactly one form a key is ever
+// printed in.
 //
 // Four digits, matching the ADR numbers, and the same accepted cost: two
 // branches can both claim the next one and somebody repairs it on merge
@@ -61,12 +58,6 @@ func ParseKey(ref string) (prefix string, number int, ok bool) {
 // touches no record and does not disturb a key that is meant never to change.
 // The width is a minimum, so a five-digit key renders as itself rather than
 // being squeezed back to four.
-func FormatKey(number int) string {
-	return FormatKeyAs(KeyPrefix, number)
-}
-
-// FormatKeyAs renders a key under any prefix. It is what NormalizeKey funnels
-// into, so there is exactly one form a key is ever printed in.
 func FormatKeyAs(prefix string, number int) string {
 	return fmt.Sprintf("%s-%04d", prefix, number)
 }

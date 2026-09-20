@@ -94,7 +94,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 		if keyErr != nil {
 			return Result{}, keyErr
 		}
-		key = FormatKey(highest + 1)
+		key = FormatKeyAs(cfg.KeyPrefix(), highest+1)
 		// The key leads the directory name, so a listing sorts by it and the
 		// identifier on disk is the one people say. The slug follows, so the
 		// directory still reads as what the work is.

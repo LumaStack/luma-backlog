@@ -2,13 +2,14 @@
 type: work-item
 key: WORK-0102
 title: The work item key prefix is configurable
-workflow_status: captured
-rank: 010.0820.000
+workflow_status: closed
+rank: 070.0210.000
 kind: change
-stage: draft
+stage: provisional
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:16:12Z'}
 description: 'I want to be able to change the default WORK key in config. What does Jira allow for their keys — I probably want to follow similar rules. Decided while capturing: Jira Cloud style.'
-modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:16:17Z'}
+modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:53:46Z'}
+closed: {on: 2026-09-20, as: completed, by: 'agent:claude-fable-5/luma-backlog'}
 ---
 
 # The work item key prefix is configurable

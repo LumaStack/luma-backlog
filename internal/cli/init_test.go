@@ -58,8 +58,8 @@ func TestInitCreatesAUsableBacklog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("the configuration init wrote does not parse: %v", err)
 	}
-	if cfg.TypeNamespace != "luma/backlog" {
-		t.Errorf("type_namespace = %q", cfg.TypeNamespace)
+	if cfg.KeyPrefix() != "WORK" {
+		t.Errorf("KeyPrefix = %q", cfg.KeyPrefix())
 	}
 
 }
@@ -73,7 +73,7 @@ func TestInitIsSafeToRunAgain(t *testing.T) {
 	// A team's edits must survive. Running init again is ordinary — often to
 	// pick up a file a later version adds — and clobbering would be a trap.
 	path := filepath.Join(project, ".luma", config.FileName)
-	edited := "type_namespace: acme/work\n"
+	edited := "work_item_key: ACME\n"
 	if err := os.WriteFile(path, []byte(edited), 0o644); err != nil {
 		t.Fatal(err)
 	}

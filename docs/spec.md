@@ -1212,6 +1212,11 @@ It is committed because it **defines what records mean**. A workflow status voca
 lkf_version:    0.0.2             # format grammar this bundle is written against
 type_namespace: luma/backlog      # resolves short type names (§4.1)
 
+work_item_key:  WORK              # prefix of every NEW work item key; optional,
+                                  # WORK when absent. Never renames existing
+                                  # records. Shape: an uppercase letter, then
+                                  # uppercase letters or digits, 2–10 characters
+
 labels:
   work item: story              # what people see; records still say work item
 

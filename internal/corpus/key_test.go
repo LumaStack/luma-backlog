@@ -3,8 +3,11 @@ package corpus
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
+	"github.com/lumastack/luma-backlog/internal/config"
+	"github.com/lumastack/luma-backlog/internal/env"
 	"github.com/lumastack/luma-backlog/internal/root"
 )
 
@@ -195,6 +198,34 @@ func TestDuplicatesSeeOneKeyAcrossSpellings(t *testing.T) {
 	}
 	if dups[0].Key != "WORK-0074" || len(dups[0].Paths) != 2 {
 		t.Errorf("Duplicates[0] = %+v; want key WORK-0074 with both paths", dups[0])
+	}
+}
+
+func TestCreateWritesTheConfiguredPrefix(t *testing.T) {
+	// The prefix comes from work_item_key (WORK-0102) and the number
+	// continues the one corpus-wide sequence — a rename never restarts
+	// numbering, so a spoken number keeps meaning one record.
+	b := keyedBacklog(t, map[string]string{
+		"WORK-0074-large-uploads-fail": "WORK-0074",
+	})
+
+	cfg := config.Default()
+	cfg.WorkItemKey = "BACK"
+	res, err := Create(b, cfg, env.New(), Spec{Unit: WorkItem, Title: "Keyed under the new prefix"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(res.Path, "BACK-0075-") {
+		t.Errorf("path = %q, want the key BACK-0075 continuing the sequence", res.Path)
+	}
+
+	// Absent, the setting means WORK — the corpus before the setting existed.
+	res, err = Create(b, config.Default(), env.New(), Spec{Unit: WorkItem, Title: "Keyed under the default"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(res.Path, "WORK-0076-") {
+		t.Errorf("path = %q, want the key WORK-0076", res.Path)
 	}
 }
 
