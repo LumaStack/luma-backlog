@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Resolve a reference the way a person writes it
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 workflow_status: closed

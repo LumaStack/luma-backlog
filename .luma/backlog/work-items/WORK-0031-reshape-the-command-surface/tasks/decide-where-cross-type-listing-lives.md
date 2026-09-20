@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Decide where cross-type listing lives
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 workflow_status: closed

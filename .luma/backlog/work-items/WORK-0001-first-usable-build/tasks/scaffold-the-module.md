@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Scaffold the module
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 rank: "0010.000"

@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Report a task that advances nothing
 work_item: '[[work-items/WORK-0046-evaluate-the-conditions-the-tool-names]]'
 workflow_status: todo

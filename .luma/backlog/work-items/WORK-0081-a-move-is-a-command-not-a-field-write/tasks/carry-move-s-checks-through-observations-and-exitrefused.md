@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Carry the transition's checks through Observations and ExitRefused
 description: 'The tiers already exist: app.Observations to stderr at exit 0, ExitRefused=5 for a denial. Transition emits into them rather than inventing a channel.'
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

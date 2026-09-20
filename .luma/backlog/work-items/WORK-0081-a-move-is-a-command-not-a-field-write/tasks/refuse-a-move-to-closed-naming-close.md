@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Refuse a transition to closed, naming close
 description: close has its own refusals, dispositions and --force. transition must not become a second way in — backlog-move is explicit that closing is a different command.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

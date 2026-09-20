@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Root discovery and containment
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 advances: ["[[work-items/WORK-0001-first-usable-build/outcomes/writes-stay-inside]]"]

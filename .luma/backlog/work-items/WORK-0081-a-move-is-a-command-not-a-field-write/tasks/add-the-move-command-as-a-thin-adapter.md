@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Add the transition command as a thin adapter
 description: 'work-item transition <ref> <status>, over the application operation. ADR-0004: the command holds no logic of its own.'
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

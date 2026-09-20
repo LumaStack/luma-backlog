@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Settle whether the todo outcome check refuses or warns
 description: backlog-move says the refusal surface has two members and its table marks a third row 'checked at the gate'. Both cannot be true. Needs the maintainer, and probably a decision record, before any of it is coded.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

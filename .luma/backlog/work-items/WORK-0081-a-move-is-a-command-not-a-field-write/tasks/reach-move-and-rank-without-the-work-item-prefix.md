@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Reach transition and rank without the work-item prefix
 description: rank exists only as work-item rank today, which is why it reads as missing. Aliases at the top level, not a second implementation.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

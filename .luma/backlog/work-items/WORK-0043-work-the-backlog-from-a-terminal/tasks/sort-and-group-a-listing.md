@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Sort and group a listing
 work_item: '[[work-items/WORK-0043-work-the-backlog-from-a-terminal]]'
 workflow_status: todo

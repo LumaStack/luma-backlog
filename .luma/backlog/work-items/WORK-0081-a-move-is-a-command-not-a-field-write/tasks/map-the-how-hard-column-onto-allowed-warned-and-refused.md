@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Map the how-hard column onto allowed, warned and refused
 description: Six wordings, three tiers. Every row of backlog-move's table gets exactly one, and the two 'written by the move' rows are marked as side effects rather than checks. This is the design step the rest depends on.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

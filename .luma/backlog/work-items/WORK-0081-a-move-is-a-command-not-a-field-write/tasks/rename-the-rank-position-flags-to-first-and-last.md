@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Rename the rank position flags to first and last
 description: --top and --bottom become --first and --last, matching --before and --after. Sequence names survive a reversed sort; view names invert with it. This is a removal and breaking under spec.md 9.9, taken deliberately because the old names are wrong rather than merely different.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

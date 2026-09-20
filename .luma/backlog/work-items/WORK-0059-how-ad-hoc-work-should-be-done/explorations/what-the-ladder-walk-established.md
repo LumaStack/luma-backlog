@@ -1,5 +1,6 @@
 ---
 type: exploration
+type_version: "0.0.1"
 title: What the ladder walk established
 work_item: '[[work-items/WORK-0059-how-ad-hoc-work-should-be-done]]'
 stage: draft

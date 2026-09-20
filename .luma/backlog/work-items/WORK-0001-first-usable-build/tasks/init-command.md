@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: init
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 advances: ["[[work-items/WORK-0001-first-usable-build/outcomes/the-backlog-is-kept-by-the-tool]]"]

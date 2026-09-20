@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Pin both output shapes with golden tests
 work_item: '[[work-items/WORK-0007-do-not-invent-a-workflow-status]]'
 workflow_status: closed
