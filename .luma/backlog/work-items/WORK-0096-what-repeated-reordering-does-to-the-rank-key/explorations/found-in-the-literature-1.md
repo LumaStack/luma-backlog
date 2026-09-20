@@ -1,5 +1,6 @@
 ---
 type: exploration
+type_version: "0.0.1"
 title: Found in the literature, 1
 work_item: '[[work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key]]'
 stage: draft

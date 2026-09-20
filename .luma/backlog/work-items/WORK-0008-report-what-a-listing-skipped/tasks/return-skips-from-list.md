@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Return skips from List
 work_item: '[[work-items/WORK-0008-report-what-a-listing-skipped]]'
 workflow_status: closed

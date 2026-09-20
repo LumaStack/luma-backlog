@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Give each workflow status an explicit ordinal
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 workflow_status: closed

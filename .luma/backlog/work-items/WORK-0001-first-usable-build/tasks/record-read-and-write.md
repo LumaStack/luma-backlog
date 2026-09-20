@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Record read and write
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 advances: ["[[work-items/WORK-0001-first-usable-build/outcomes/records-conform]]"]

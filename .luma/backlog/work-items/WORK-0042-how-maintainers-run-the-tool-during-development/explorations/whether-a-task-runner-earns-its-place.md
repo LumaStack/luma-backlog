@@ -1,5 +1,6 @@
 ---
 type: exploration
+type_version: "0.0.1"
 title: Whether a task runner earns its place
 work_item: '[[work-items/WORK-0042-how-maintainers-run-the-tool-during-development]]'
 stage: draft

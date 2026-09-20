@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Repoint everything that documents set workflow_status
 description: backlog-move's procedure opens with the exact line that stops working, and it is the first thing a reader copies. Find every occurrence across docs and bundles before the refusal ships, or the tool starts contradicting its own instructions.
 work_item: '[[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]'

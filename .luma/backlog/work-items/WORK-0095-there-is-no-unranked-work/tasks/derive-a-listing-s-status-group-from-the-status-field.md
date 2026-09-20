@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Derive a listing's status group from the status field
 description: byWorkOrder reads the group out of the rank string, so a record with no rank falls below every status instead of to the bottom of its own. Sort on the ordinal taken from workflow_status, then the position. Advances outcome 2, needs no migration, and makes a drifted prefix harmless for ordering.
 work_item: '[[work-items/WORK-0095-there-is-no-unranked-work]]'

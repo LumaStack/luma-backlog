@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Make set refuse the rank field
 work_item: '[[work-items/WORK-0031-reshape-the-command-surface]]'
 workflow_status: closed

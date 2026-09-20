@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Add rank repair
 work_item: '[[work-items/WORK-0022-migrate-a-corpus-when-the-vocabulary-changes]]'
 workflow_status: todo

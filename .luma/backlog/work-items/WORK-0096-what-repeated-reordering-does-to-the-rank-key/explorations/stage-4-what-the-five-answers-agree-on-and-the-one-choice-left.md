@@ -1,5 +1,6 @@
 ---
 type: exploration
+type_version: "0.0.1"
 title: 'Stage 4: what the five answers agree on, and the one choice left'
 work_item: '[[work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key]]'
 stage: draft

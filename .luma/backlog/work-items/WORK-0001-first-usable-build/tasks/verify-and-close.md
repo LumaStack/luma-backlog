@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: verify and close
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 advances: ["[[work-items/WORK-0001-first-usable-build/outcomes/completion-is-computed]]"]

@@ -1,5 +1,6 @@
 ---
 type: task
+type_version: "0.0.1"
 title: Injectable clock and environment
 work_item: "[[work-items/WORK-0001-first-usable-build]]"
 rank: "0020.000"
