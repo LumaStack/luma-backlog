@@ -344,7 +344,7 @@ force**: they get told, not asked.
 > titled *"A work item is owned, and ownership is not modelled yet"* — so the
 > concept is in force and **the field does not exist**. Say who owns it anyway;
 > the gap is worth being visible. Assignees are a later question
-> ([[work-items/WORK-0063-an-algorithm-for-assigning-work-to-assignees]]).
+> (tracked upstream as WORK-0063).
 
 ### Overriding is legitimate
 
@@ -387,7 +387,7 @@ without it.
 > prose-only rules runs far below what a guarantee requires* — and the
 > measurement above is exactly that. **The durable form is the move command
 > carrying the gate's answer**, tracked as
-> [[work-items/WORK-0081-a-move-is-a-command-not-a-field-write]]. Until then this
+> WORK-0081 upstream. Until then this
 > is what there is, and it is known to be insufficient.
 
 ## What a transition actually does
@@ -413,7 +413,7 @@ That is the sentence the table has been missing.
 **Going backwards is the exception**, and does little today --- including to the
 rank: a record sent back re-enqueues at the **back** of its destination like
 anything else. **Landing it at the front is proposed and not built**
-([[work-items/WORK-0095-there-is-no-unranked-work]]), on the grounds that
+(tracked upstream as WORK-0095), on the grounds that
 burying something should be an act somebody performs rather than what a default
 does quietly.
 
@@ -683,7 +683,7 @@ being cancelled means.
 **Whether they succeeded is a warning and not a bar.** Attempting a task several
 times is ordinary and some attempts fail; a person needs to see that and decide
 whether it points at a problem. *Unbuilt — a task cannot record how it ended
-([[work-items/WORK-0064-a-task-cannot-record-why-it-ended]]).*
+(tracked upstream as WORK-0064).*
 **Never auto-close the stragglers**: that invents a disposition nobody chose,
 which is exactly what `--force` refuses to do to outcomes.
 

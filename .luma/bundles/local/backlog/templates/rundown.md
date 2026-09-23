@@ -1,7 +1,7 @@
 # Rundown template
 
 **Where the work stands, then an opinion.** Copy the shape, not this file.
-Listings inside it follow [[listing]].
+Listings inside it follow [listing](listing.md).
 
 ```
 ──[ Overview ]──────────────────────────────────────────
