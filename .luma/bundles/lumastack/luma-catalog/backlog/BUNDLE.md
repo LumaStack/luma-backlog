@@ -1,30 +1,39 @@
 ---
 type: bundle
 type_version: "0.0.1"
-title: local/backlog
+title: lumastack/luma-catalog/backlog
 version: 0.47.0
 stage: draft
 consumers: [project]
-description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
+description: The record types a luma-backlog corpus conforms to, and the procedures for the things somebody does to a backlog — what an agent needs in order to work one well.
+published: 2026-09-23
 ---
 
-# local/backlog
+# lumastack/luma-catalog/backlog
 
-This project keeps its backlog in `.luma/`, which means it is both the tool and
-the tool's first corpus. The types that corpus conforms to have to live
-somewhere a harness can reach, and until now they lived in two places — the
-types in a bundle named for the project, the procedures in `.claude/skills/`.
-Neither location survived being looked for.
+**What an agent needs in order to work a backlog well.** The types a corpus
+conforms to, and one procedure per thing somebody does to it — capture, refine,
+transition, verify, journal, show, run down.
 
-**It is local rather than published because nothing here is settled enough to
-adopt.** `work-item` reached its name on 2026-09-02 and the formation bar it
-implies is deliberately undecided. A bundle in a catalog is a promise to
-somebody who did not write it; this is a promise to ourselves, and the `local/`
-namespace is what says so.
+**The binary holds *how*; this holds *when and why*.** Every `luma-backlog`
+command works standalone and none of them needs this bundle, so a project that
+would rather not tell its agents how the backlog works can install the tool and
+stop there. That path is supported and deliberately unprivileged. Most projects
+will want both, because the commands will happily let an agent write a record
+nobody can act on.
 
-**What earns promotion out of here is a second consumer.** Until a project that
-is not this one wants these types, publishing them would be guessing at what
-they need.
+**Adopt it beside the tool**, and keep the two roughly current with each other.
+They are separate artifacts on separate update paths — the binary per machine,
+this per project — so they drift by construction rather than by accident. The
+failures that drift causes are mostly loud: a procedure reaches for a command
+that moved, the tool refuses and names the near miss, and an agent recovers by
+reading `--help`.
+
+**It is `draft`, and the version number is the honest statement of maturity.**
+Forty-seven versions in three weeks, every one of them driven by something going
+wrong in a real corpus rather than by design review. The types have been
+exercised hard and are still moving. Read the `## Version` section below before
+depending on a shape.
 
 ## What is here
 

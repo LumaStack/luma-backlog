@@ -5,7 +5,10 @@
 
 # Bundles
 
-- `local/backlog` 0.11.0
+- `lumastack/luma-catalog/backlog` 0.47.0
+  - catalog: lumastack/luma-catalog
+  - commit: 2dfc4ade7f73678ef41c966ed6416fb07e6dc918
+  - sha256: 4b910a201c60f9508b910cdd0adf96fffe87634790366acf84a970e29e9ae056
 - `lumastack/luma-catalog/backlog-ideas` 0.15.0
   - catalog: lumastack/luma-catalog
   - commit: d5d3b50c1f66dad0aaf78ac82ee381f87714088c

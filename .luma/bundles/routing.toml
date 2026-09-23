@@ -6,18 +6,26 @@
 # writes here.
 
 [[rule]]
-bundle = "local/backlog"
+bundle = "lumastack/luma-catalog/backlog"
+document = "policy/adopting-a-rule-the-corpus-does-not-meet"
+title = "Adopting a rule the corpus does not meet"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/adopting-a-rule-the-corpus-does-not-meet.md"
+on_violation = "allow"
+matches = ["topic:adopting a rule, tightening a policy, or changing what a record must contain"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/backlog"
 document = "policy/showing-records"
 title = "Showing records"
-path = ".luma/bundles/local/backlog/policy/showing-records.md"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/showing-records.md"
 on_violation = "allow"
 matches = ["eager"]
 
 [[rule]]
-bundle = "local/backlog"
+bundle = "lumastack/luma-catalog/backlog"
 document = "policy/when-a-work-item-splits"
 title = "When a work item splits"
-path = ".luma/bundles/local/backlog/policy/when-a-work-item-splits.md"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/when-a-work-item-splits.md"
 on_violation = "allow"
 matches = ["eager"]
 
@@ -100,6 +108,14 @@ title = "Command line style guide"
 path = ".luma/bundles/lumastack/luma-catalog/command-line-interface/policy/command-line-style-guide.md"
 on_violation = "allow"
 matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/command-line-interface"
+document = "policy/exit-codes"
+title = "Exit codes are one set per tool"
+path = ".luma/bundles/lumastack/luma-catalog/command-line-interface/policy/exit-codes.md"
+on_violation = "allow"
+matches = ["topic:choosing or changing an exit code, or adding a subcommand that can fail in a new way"]
 
 [[rule]]
 bundle = "lumastack/luma-catalog/decision-records"
