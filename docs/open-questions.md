@@ -1021,3 +1021,53 @@ Warning rather than refusing by default follows the standing posture: permissive
 
 *Settled by:* using the tool for a while and noticing how often anyone actually opens a record in an editor.
 
+---
+
+## 25. How a tool and its knowledge bundle stay in sync
+
+**Status:** Open, with a lean and **no measured friction** — nothing has ever fallen out of sync, because only this project has used the tool. Recorded now because the reasoning is expensive and the question arrives the moment the bundle leaves `local/` (WORK-0070).
+
+The binary teaches nobody how to use it well; the bundle does that, and the two are separate artifacts that change for separate reasons.
+
+### The arrangement makes lockstep unreachable
+
+**One binary per machine, one vendored bundle per project, on different update paths** — the binary through a release, the bundle through re-adoption. So skew is not an edge case, it is the steady state, and *"project A is stale and project B is current, against one binary"* is the normal condition rather than a corner. Any design that assumes lockstep is assuming away the arrangement.
+
+**The goal is therefore not to prevent drift.** It is to shrink the surface that can drift, and make whatever survives visible.
+
+### The failure modes are not alike
+
+| What the bundle carries | How it breaks | Who notices |
+|---|---|---|
+| Procedures that invoke commands | The command surface moved | **Loud.** The tool refuses, names the near miss, points at `--help`. |
+| Policies and templates describing output | The output changed | **Quiet.** Nothing errors; two renderings diverge indefinitely. |
+| Type definitions | The contract changed | **Quiet**, and about data at rest rather than behavior. |
+
+**Only the loud one self-corrects**, and it does so without knowing anything about versions.
+
+### The lean — shrink, then let each half fail in its own way
+
+**Shrink first.** The bundle carries only what the binary cannot emit. This is the bootstrap order scaled up: the skill holds *when and why*, the command holds *how*. Anything the tool prints or enforces should be a pointer rather than a copy — `showing-records` already carries a note saying exactly this about its own state marks.
+
+**Loud failures need no versioning.** A refusal that names the near miss and points at the help is more specific than any *"you may be behind"* warning could be, and the agent recovers by reading the help rather than by consulting a version.
+
+**Quiet failures are removed rather than detected.** Deleting a duplicated description is strictly better than building a check that notices it drifted.
+
+**Types keep the one real version contract, and already have it.** `type_version` is stamped per record and declared independently of the bundle's version. What that needs is lint and migration (§ WORK-0002, WORK-0022, WORK-0037), not a warning.
+
+**Two consequences.** The bundle carries no floor on the binary, and bundle version and tool version are **not** the same number — after the shrink they are not describing the same thing.
+
+### Deferred, and what would reopen each
+
+**A declared tool-version floor, checked by the binary.** The binary is the only thing that sees both the vendored bundle and its own version, per project, so it is the right home if this is ever needed — no registry, no matrix, and project A and project B get different answers from one process with no coordination. *Reopen when* a published procedure reaches for a command an installed binary does not have, and the refusal turns out not to be enough to recover from.
+
+**Lockstep distribution — the binary embeds the bundle and emits it.** Born in sync, but it collapses the opt-out the standalone rule protects (using the command without telling the agent how it works), and puts a second distributor beside the one that already vendors. *Reopen if* re-adoption proves too unreliable to keep bundles current in practice.
+
+**Pinning the binary per project, the way a lockfile would.** The actual fix, and disproportionate while one person owns both ends — it buys per-project installs, version managers, and continuous integration complexity. *Reopen when* somebody outside this repository runs a different version than the maintainer does.
+
+### What decides it
+
+**The first stale bundle in a project that is not this one.** Until then the promotion test is unmet — no friction, no divergence, and no invariant that prose cannot hold — so none of the machinery above should be built. The honest answer today is prose and wait.
+
+*Settled by:* publishing the bundle, then watching what actually breaks in a second project.
+
