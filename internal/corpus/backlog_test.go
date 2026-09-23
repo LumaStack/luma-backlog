@@ -97,7 +97,7 @@ func TestOnlyPathsThisToolWritesAreRecords(t *testing.T) {
 		{"records/violations/2026-01-01-x/violation.md", false, "written by a procedure, not by this tool"},
 		{"backlog/ideas/routers.md", false, "another tool's ideas"},
 		{"backlog/plans/bundle-publish.md", false, "another tool's plans"},
-		{"bundles/local/backlog/policy/x.md", false, "what is in force, not what is intended"},
+		{"bundles/lumastack/luma-catalog/backlog/policy/x.md", false, "what is in force, not what is intended"},
 		{"_types/luma/backlog/task.md", false, "a contract, not a record"},
 	}
 	for _, c := range cases {
