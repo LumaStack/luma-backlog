@@ -24,7 +24,7 @@ render identically in a terminal so they cannot divide, and a `###` section
 outranks plain text, so mixing them puts sections above the divisions that
 contain them.
 
-**The shape is [[rundown]]**, its listings are [[listing]], and the marks
+**The shape is [rundown](../templates/rundown.md)**, its listings are [listing](../templates/listing.md), and the marks
 are [[showing-records]]. Do not invent a second format.
 
 ```
@@ -176,7 +176,7 @@ recommendation with a reason is worth more than a filled one without.
 
 ## What a good one reads like
 
-Shape is [[rundown]]; this is the judgment, which is the part that does not
+Shape is [rundown](../templates/rundown.md); this is the judgment, which is the part that does not
 come from a template.
 
 > ──[ Overview ]──────────────────────────────────────────

@@ -99,7 +99,7 @@ perfectly healthy.
 
 ## The layout
 
-**[[record-view]] for one record, [[listing]] for several.** The shapes live
+**[record-view](../templates/record-view.md) for one record, [listing](../templates/listing.md) for several.** The shapes live
 there so this procedure and [[backlog-rundown]] cannot drift apart; the marks and
 the ordering are [[showing-records]].
 

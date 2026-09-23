@@ -2,7 +2,7 @@
 type: bundle
 type_version: "0.0.1"
 title: local/backlog
-version: 0.46.0
+version: 0.47.0
 stage: draft
 consumers: [project]
 description: The record types this project defines and the procedures for writing them — what luma-backlog knows about its own corpus, kept where the tool can read it.
@@ -73,6 +73,24 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.47.0` — **the links are fixed, and publishing is what found them.**
+
+Twelve wikilinks resolved to nothing, some since the templates were extracted at
+`0.14.0`. Nobody had run `luma-foreman inspect` over this bundle, because a
+local bundle is not audited on the way anywhere — the audit is a publishing
+step, and nothing was being published.
+
+**Templates cannot be wikilinked.** They carry no frontmatter by convention, so
+they have no Document ID to point at. `[[listing]]`, `[[record-view]]` and
+`[[rundown]]` are markdown links now, which is what every other bundle in the
+catalog already did.
+
+**Four links pointed into this project's own backlog**, `WORK-0063`, `0064`,
+`0081` and `0095`. Those resolve for nobody who did not write them. The
+information is still worth carrying, so each is prose naming the key —
+*tracked upstream as WORK-0063* — rather than a link that promises a document
+an adopter cannot reach.
 
 `0.46.0` — **`task` and `exploration` earn their contracts.** Both types were
 in use — 56 tasks, 19 explorations — with nothing published to hold them to,
@@ -536,7 +554,7 @@ hides the one thing the section is read for: how many there are. One concern and
 four look alike until both have been read, and this is the section somebody
 scans to decide whether to worry.
 
-So it is bullets now, one per concern, in [[rundown]] and in the worked
+So it is bullets now, one per concern, in [the rundown template](templates/rundown.md) and in the worked
 example on [[backlog-rundown]]. A bullet may run to a second sentence and never to
 a paragraph, and whatever makes it checkable — the number, the record, the file
 — goes in the first clause where a scan will find it.
@@ -578,7 +596,7 @@ The shapes are now three templates and the procedures point at them.
 
 The split follows the rest of the catalog: **a policy is a rule, a template is a
 thing you copy, a procedure is judgment.** [[showing-records]] says what the
-marks mean and why; [[listing]], [[record-view]] and [[rundown]] say what
+marks mean and why; [listing](templates/listing.md), [record-view](templates/record-view.md) and [rundown](templates/rundown.md) say what
 the output looks like; the procedures say when to produce it and what to
 notice.
 
