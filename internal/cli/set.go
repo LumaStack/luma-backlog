@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/lumastack/luma-backlog/internal/app"
@@ -67,6 +66,6 @@ func runSet(a *App, cmd *cobra.Command, ref string, assignments, unset []string,
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(cmd.OutOrStdout(), "updated  %s\n", res.Path)
+	reportSubject(cmd.OutOrStdout(), "updated", res.Subject)
 	return nil
 }

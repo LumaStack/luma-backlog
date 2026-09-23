@@ -27,6 +27,17 @@ var Units = []string{WorkItem, Outcome, Task, Decision, Exploration}
 const (
 	BundleDir           = "backlog"
 	RecordsDecisionsDir = "records/decisions"
+
+	// WorkItemsDir is where work items live. Named once because PathFor writes
+	// into it and the corpus walk accepts out of it — the two spelling it
+	// separately is how a record stops being readable by the tool that wrote
+	// it.
+	WorkItemsDir = BundleDir + "/work-items"
+
+	// ProjectFile is the project record the layout policy reserves. Not a unit
+	// this tool creates: `show` reaches it and nothing else does, which is why
+	// the walk has to name it rather than derive it.
+	ProjectFile = "PROJECT.md"
 )
 
 // childDirs maps a unit to the directory it occupies inside a work item.
@@ -68,7 +79,7 @@ func PathFor(unit, slug, workItemSlug string) (string, error) {
 		return "", fmt.Errorf("a title is required: it becomes the filename")
 	}
 	if unit == WorkItem {
-		return path.Join(BundleDir, "work-items", slug, "index.md"), nil
+		return path.Join(WorkItemsDir, slug, "index.md"), nil
 	}
 	dir, ok := childDirs[unit]
 	if !ok {
@@ -84,7 +95,7 @@ func PathFor(unit, slug, workItemSlug string) (string, error) {
 		}
 		return "", fmt.Errorf("a %s belongs to a work item: pass --work-item, or run inside one", unit)
 	}
-	return path.Join(BundleDir, "work-items", workItemSlug, dir, slug+".md"), nil
+	return path.Join(WorkItemsDir, workItemSlug, dir, slug+".md"), nil
 }
 
 // WorkItemFromPath reads the work item a path sits inside, if any. This
@@ -97,4 +108,15 @@ func WorkItemFromPath(rel string) string {
 		}
 	}
 	return ""
+}
+
+// isChildDir reports whether a directory inside a work item holds records.
+// Anything else there — journal.md, evidence/ — is not one.
+func isChildDir(dir string) bool {
+	for _, d := range childDirs {
+		if d == dir {
+			return true
+		}
+	}
+	return false
 }

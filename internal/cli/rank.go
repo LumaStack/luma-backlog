@@ -56,7 +56,7 @@ func newRankCommand(a *App) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.OutOrStdout(), "ranked  %s (%s)\n", res.Path, res.Rank)
+			reportSubject(cmd.OutOrStdout(), "ranked", res.Subject, res.Rank)
 			return nil
 		},
 	}

@@ -41,7 +41,7 @@ type TransitionRequest struct {
 
 // TransitionResult describes what was written.
 type TransitionResult struct {
-	Path string
+	Subject
 	// From and To are the statuses either side of the change. From is the
 	// status the record actually held, which is not always what the caller
 	// assumed.
@@ -66,21 +66,28 @@ type TransitionResult struct {
 // recorded as WORK-0073.
 func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	if req.To == "" {
-		return nil, UsageError("say where: transition <work-item> <status>")
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Say which status to move to",
+			LeadIn:  "Move it with",
+			Command: "luma-backlog transition " + req.Ref + " <status>",
+		})
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, resolveError(err)
+		return nil, resolveErrorFor(corpus.WorkItem, err)
 	}
 	// Tasks carry a workflow status too, and their own ladder (`todo`,
 	// `in_progress`, `closed`). They transition the same way --- applyStatus
 	// already writes rank only for work items, since only work items are
 	// ranked.
 	if it.Type() != corpus.WorkItem && it.Type() != corpus.Task {
-		return nil, UsageError(
-			"%s is a %s: only work items and tasks carry a workflow status",
-			it.Name(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Name(), it.Type()),
+			Detail:  []string{"only work items and tasks carry a workflow status"},
+			LeadIn:  "See what does with",
+			Command: "luma-backlog list",
+		})
 	}
 	isWorkItem := it.Type() == corpus.WorkItem
 
@@ -88,9 +95,15 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// means re-read and retry, which is different advice from "something
 	// broke" — and it is the distinction a retrying agent depends on.
 	if req.IfUnchanged != "" && it.Hash() != req.IfUnchanged {
-		return nil, ConflictError(
-			"%s changed since you read it — re-read and retry\n  you saw:  %s\n  it is now: %s",
-			it.Path, shortHash(req.IfUnchanged), shortHash(it.Hash()))
+		return nil, Refuse(Conflict, Refusal{
+			Problem: it.Path + " changed since you read it",
+			Detail: []string{
+				"you saw:   " + shortHash(req.IfUnchanged),
+				"it is now: " + shortHash(it.Hash()),
+			},
+			LeadIn:  "Re-read it with",
+			Command: "luma-backlog show " + req.Ref + " --json",
+		})
 	}
 
 	var advice, forced []string
@@ -100,18 +113,24 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 
 	ladder := s.Config.LadderFor(it.Type())
 	if _, ok := ladder.Ordinal(req.To); !ok {
-		return nil, UsageError(
-			"%q is not a status this project carries — the ladder runs: %s",
-			req.To, strings.Join(ladder.Statuses, " → "))
+		return nil, Refuse(Usage, Refusal{
+			Problem: req.To + " is not a status this project carries",
+			Detail:  []string{"the ladder runs: " + strings.Join(ladder.Statuses, " → ")},
+			LeadIn:  "Move it with",
+			Command: "luma-backlog transition " + req.Ref + " <status>",
+		})
 	}
 
 	// Reaching `closed` through here would bypass the outcome gate, the
 	// disposition, the `closed` event and the `--force` requirement — every
 	// check `close` exists to perform (spec.md §5.3.1).
 	if isWorkItem && req.To == terminal && terminal != "" {
-		return nil, UsageError(
-			"%q is terminal — use: work-item close %s <completed|rejected|canceled|superseded>",
-			req.To, req.Ref)
+		return nil, Refuse(Usage, Refusal{
+			Problem: req.To + " is terminal, and closing records more than a status",
+			Detail:  []string{"a disposition, the outcome gate, and the closing event"},
+			LeadIn:  "Close it with",
+			Command: fmt.Sprintf("luma-backlog work-item close %s <%s>", req.Ref, strings.Join(reasonNames(), "|")),
+		})
 	}
 
 	// Two refusals, both narrow, and both take --force. A refusal that cannot
@@ -132,10 +151,12 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// beside formed work with nothing marking the difference.
 	if isWorkItem && s.leavesThePile(it, from, req.To) && kind == "idea" {
 		if !req.Force {
-			return nil, RefusedError(
-				"%s is still an idea, and an idea is a classification on its way to "+
-					"something else.\n\nResolve it --- set %s kind=<defect|request|inquiry|change> "+
-					"--- or pass --force.", req.Ref, req.Ref)
+			return nil, Refuse(Refused, Refusal{
+				Problem: req.Ref + " is still an idea",
+				Detail:  []string{"an idea is a classification on its way to something else"},
+				LeadIn:  "Resolve it with",
+				Command: "luma-backlog set " + req.Ref + " kind=<defect|request|inquiry|change>",
+			})
 		}
 		forced = append(forced,
 			"selected while still an idea --- unformed work is now queued beside formed work")
@@ -156,10 +177,12 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	// holding a view about how work gets defined.
 	if isWorkItem && req.To == s.startedStatusFor(it) && counts == 0 {
 		if !req.Force {
-			return nil, RefusedError(
-				"%s has no outcomes, so nothing says when it is finished.\n\n"+
-					"Write one --- outcome new \"<what must be true>\" -w %s --- or pass --force.",
-				req.Ref, req.Ref)
+			return nil, Refuse(Refused, Refusal{
+				Problem: req.Ref + " has no outcomes",
+				Detail:  []string{"nothing says when it is finished"},
+				LeadIn:  "Write one with",
+				Command: fmt.Sprintf(`luma-backlog outcome new "<what must be true>" -w %s`, req.Ref),
+			})
 		}
 		forced = append(forced,
 			"started with no outcomes --- nothing says when it is finished")
@@ -261,7 +284,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	}
 
 	return &TransitionResult{
-		Path:      it.Path,
+		Subject:   subjectOf(it),
 		From:      from,
 		To:        req.To,
 		Rank:      rank,

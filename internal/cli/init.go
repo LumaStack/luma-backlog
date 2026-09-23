@@ -22,13 +22,17 @@ func newInitCommand(a *App) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			out := cmd.OutOrStdout()
-			if res.Created {
-				fmt.Fprintf(out, "created  %s\n", res.ConfigFile)
-			} else {
-				fmt.Fprintf(out, "exists   %s\n", res.ConfigFile)
+			// The heading is the end state, which is true on a re-run as well;
+			// the column beside each file says what that file needed. One shape
+			// covers both, and it takes another row rather than a rewrite if
+			// init ever writes a second file.
+			state := "created"
+			if !res.Created {
+				state = "exists"
 			}
-			fmt.Fprintf(out, "\nBacklog ready at %s\n", res.Path)
+			out := cmd.OutOrStdout()
+			fmt.Fprintf(out, "\nInitialized backlog\n  %-7s  %s\n\n", state, res.ConfigFile)
+			fmt.Fprintf(out, "Add a work item with:\n  %s\n", howToCreate(app.WorkItem))
 			return nil
 		},
 	}

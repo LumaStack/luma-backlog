@@ -52,8 +52,12 @@ func (s *Session) applyStatus(it corpus.Item, status string) error {
 	ladder := s.Config.LadderFor(it.Type())
 	ordinal, ok := ladder.Ordinal(status)
 	if !ok {
-		return UsageError(
-			"%q is not a status this project carries --- rank has no ordinal for it", status)
+		return Refuse(Usage, Refusal{
+			Problem: status + " is not a status this project carries",
+			Detail:  []string{"rank has no ordinal for it"},
+			LeadIn:  "See the ladder in",
+			Command: ConfigPath(),
+		})
 	}
 
 	peers, err := s.rankedPeers(it.Path, status)

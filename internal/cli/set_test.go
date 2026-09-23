@@ -136,7 +136,10 @@ func TestSetRefusesAStaleWrite(t *testing.T) {
 	if code != ExitConflict {
 		t.Fatalf("exit = %d, want %d (conflict)", code, ExitConflict)
 	}
-	if !strings.Contains(errOut, "re-read and retry") {
+	if !strings.Contains(errOut, "changed since you read it") {
+		t.Errorf("error did not say what was wrong:\n%s", errOut)
+	}
+	if !offersCommand(errOut, "luma-backlog show payments-v2 --json") {
 		t.Errorf("error did not say what to do:\n%s", errOut)
 	}
 

@@ -171,7 +171,7 @@ func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
 	if code == ExitOK {
 		t.Error("journalling to a work item that does not exist succeeded")
 	}
-	if !strings.Contains(errOut, "no work item") {
+	if !strings.Contains(errOut, "No work item matches WORK-9999") {
 		t.Errorf("the error did not say what was wrong: %q", errOut)
 	}
 }

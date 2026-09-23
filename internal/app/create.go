@@ -26,7 +26,7 @@ type CreateRequest struct {
 
 // CreateResult describes the record.
 type CreateResult struct {
-	Path string
+	Subject
 	// Created is false when the record already existed. Creation is
 	// idempotent by name (docs/spec.md §9.5).
 	Created bool
@@ -53,13 +53,21 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	// level is not visibly broken; it is simply somewhere nobody looks.
 	if req.Unit == corpus.Decision {
 		if req.Project && req.WorkItemGiven {
-			return nil, UsageError("--project and --work-item say different levels: pass one")
+			return nil, Refuse(Usage, Refusal{
+				Problem: "--project and --work-item say different levels",
+				Detail:  []string{"a decision sits at one or the other, never both"},
+				Note:    "Pass one of them.",
+			})
 		}
 		if !req.Project && !req.WorkItemGiven {
-			return nil, UsageError("a decision needs its level stated:\n" +
-				"  --work-item <slug>  it belongs to that work item, and is a point-in-time record\n" +
-				"  --project           it is a standing rule for the project\n" +
-				"Most decisions are work item decisions. Promotion is a separate act.")
+			return nil, Refuse(Usage, Refusal{
+				Problem: "A decision needs its level stated",
+				Detail: []string{
+					"--work-item <slug>  it belongs to that work item, as a point-in-time record",
+					"--project           it is a standing rule for the project",
+				},
+				Note: "Most decisions are work item decisions. Promotion is a separate act.",
+			})
 		}
 		if req.Project {
 			// Stated as project-level, so the working directory does not get
@@ -69,7 +77,11 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	}
 
 	if req.Kind != "" && req.Unit != corpus.WorkItem {
-		return nil, UsageError("--kind classifies a work item; %s does not take one", req.Unit)
+		return nil, Refuse(Usage, Refusal{
+			Problem: "--kind classifies a work item",
+			Detail:  []string{"a " + req.Unit + " does not take one"},
+			Note:    "Drop the flag.",
+		})
 	}
 
 	rank, err := s.rankAtCreation(req.Unit)
@@ -86,7 +98,10 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 		Rank:        rank,
 	})
 	if err != nil {
-		return nil, UsageError("%w", err)
+		// The layout layer already says what is wrong — a missing title, a
+		// child with no work item — so it becomes the heading rather than
+		// being restated less well one level up.
+		return nil, Refuse(Usage, Refusal{Problem: capitalized(err.Error())})
 	}
 
 	// Avoided, not denied. Blank is honest when nobody has looked yet — an
@@ -98,7 +113,11 @@ func (s *Session) Create(req CreateRequest) (*CreateResult, error) {
 	// So: say so and continue (docs/spec.md §5.0). Nothing is refused.
 	unclassified := res.Created && req.Unit == corpus.WorkItem && req.Kind == ""
 
-	return &CreateResult{Path: res.Path, Created: res.Created, Unclassified: unclassified}, nil
+	return &CreateResult{
+		Subject:      Subject{Key: res.Key, Title: res.Title, Path: res.Path},
+		Created:      res.Created,
+		Unclassified: unclassified,
+	}, nil
 }
 
 // workItemFromWorkingDir reads the work item from where the command was run,

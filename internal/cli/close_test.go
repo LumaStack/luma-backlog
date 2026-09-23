@@ -327,7 +327,7 @@ func TestCompletingWithAnOpenTaskIsRefused(t *testing.T) {
 	if code != ExitRefused {
 		t.Errorf("exit = %d, want %d", code, ExitRefused)
 	}
-	if !strings.Contains(errOut, "any reason is fine") {
+	if !strings.Contains(errOut, "any disposition is fine") {
 		t.Errorf("the refusal did not say that a failed task counts:\n%s", errOut)
 	}
 }

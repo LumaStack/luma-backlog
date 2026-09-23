@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
@@ -14,7 +16,7 @@ type AbandonRequest struct {
 
 // AbandonResult describes the abandonment.
 type AbandonResult struct {
-	Path string
+	Subject
 	// StillCounted is always true, and is reported so nobody expects
 	// otherwise. See Abandon.
 	StillCounted bool
@@ -43,7 +45,12 @@ func (s *Session) Abandon(req AbandonRequest) (*AbandonResult, error) {
 		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.Outcome {
-		return nil, UsageError("%s is a %s — only an outcome is abandoned", it.Slug(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Slug(), it.Type()),
+			Detail:  []string{"only an outcome is abandoned"},
+			LeadIn:  "See the outcomes with",
+			Command: "luma-backlog outcome list",
+		})
 	}
 
 	entry := map[string]string{"by": s.Env.Actor.String(), "at": s.Env.Now()}
@@ -66,7 +73,7 @@ func (s *Session) Abandon(req AbandonRequest) (*AbandonResult, error) {
 	}
 
 	return &AbandonResult{
-		Path:         it.Path,
+		Subject:      subjectOf(it),
 		StillCounted: true,
 		Verdicts:     countList(it.Record, "verified"),
 	}, nil

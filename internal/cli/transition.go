@@ -45,17 +45,19 @@ func newTransitionCommand(a *App) *cobra.Command {
 			if err != nil {
 				return err
 			}
+			// Verb first, like every other report — the path used to lead, so
+			// this was the one success message that did not say what happened
+			// until the second column.
 			// Only work items are ranked, so a task has none to report.
+			move := res.From + " → " + res.To
 			if res.Rank != "" {
-				fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s (%s)\n",
-					res.Path, res.From, res.To, res.Rank)
-			} else {
-				fmt.Fprintf(cmd.OutOrStdout(), "%s  %s → %s\n",
-					res.Path, res.From, res.To)
+				move += " (" + res.Rank + ")"
 			}
+			extra := []string{move}
 			if res.Journaled {
-				fmt.Fprintf(cmd.OutOrStdout(), "journaled the reason\n")
+				extra = append(extra, "journaled the reason")
 			}
+			reportSubject(cmd.OutOrStdout(), "moved", res.Subject, extra...)
 			// Advice goes to stderr at exit 0: the crossing happened, and
 			// stdout stays clean for a caller piping it.
 			for _, a := range res.Advice {

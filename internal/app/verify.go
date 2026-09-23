@@ -18,7 +18,7 @@ type VerifyRequest struct {
 
 // VerifyResult describes the confirmation.
 type VerifyResult struct {
-	Path string
+	Subject
 	// NoEvidence is true when the confirmation rests on nothing recorded.
 	// Reported, never refused.
 	NoEvidence bool
@@ -31,9 +31,15 @@ type VerifyResult struct {
 // handling (docs/spec.md §4.7).
 func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 	if req.As == "" {
-		return nil, UsageError("a verdict is required: %s\n\n"+
-			"Recording proof has to be said out loud. An outcome nobody checked and\n"+
-			"one somebody checked and disproved are different facts.", verdictList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Verdict required",
+			Detail: []string{
+				"an outcome nobody checked and one somebody checked and disproved",
+				"are different facts",
+			},
+			LeadIn:  "Record one with",
+			Command: fmt.Sprintf("luma-backlog outcome verify %s <%s>", req.Ref, strings.Join(verdictNames(), "|")),
+		})
 	}
 	// Refused BY NAME rather than by omission. `abandoned` is a state an
 	// outcome can be in, so validating against the state list would let it
@@ -41,11 +47,20 @@ func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 	// their own, through the command that exists to be independent of them
 	// (ADR-0007). Deciding is not finding out.
 	if req.As == "abandoned" {
-		return nil, UsageError("abandoned is a decision, not a finding — use `outcome abandon`.\n"+
-			"A verdict is one of: %s", verdictList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "abandoned is a decision, not a finding",
+			Detail:  []string{"a verdict is one of: " + verdictList()},
+			LeadIn:  "Abandon it with",
+			Command: "luma-backlog outcome abandon " + req.Ref,
+		})
 	}
 	if !corpus.IsVerdict(req.As) {
-		return nil, UsageError("unknown verdict %q: expected %s", req.As, verdictList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Unknown verdict " + req.As,
+			Detail:  []string{"expected " + verdictList()},
+			LeadIn:  "Record one with",
+			Command: fmt.Sprintf("luma-backlog outcome verify %s <%s>", req.Ref, strings.Join(verdictNames(), "|")),
+		})
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
@@ -53,7 +68,12 @@ func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.Outcome {
-		return nil, UsageError("%s is a %s — only an outcome is verified", it.Slug(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Slug(), it.Type()),
+			Detail:  []string{"only an outcome is verified"},
+			LeadIn:  "See the outcomes with",
+			Command: "luma-backlog outcome list",
+		})
 	}
 
 	at, by := s.Env.Now(), s.Env.Actor.String()
@@ -84,7 +104,7 @@ func (s *Session) Verify(req VerifyRequest) (*VerifyResult, error) {
 	}
 
 	return &VerifyResult{
-		Path:       it.Path,
+		Subject:    subjectOf(it),
 		NoEvidence: strings.TrimSpace(req.Evidence) == "",
 	}, nil
 }
@@ -138,10 +158,14 @@ func countList(r interface{ Node(string) *yaml.Node }, key string) int {
 	return 0
 }
 
-func verdictList() string {
+func verdictList() string { return strings.Join(verdictNames(), ", ") }
+
+// verdictNames is the vocabulary as plain strings, for a caller that renders
+// them rather than compares them.
+func verdictNames() []string {
 	names := make([]string, 0, len(corpus.Verdicts))
 	for _, v := range corpus.Verdicts {
 		names = append(names, string(v))
 	}
-	return strings.Join(names, ", ")
+	return names
 }
