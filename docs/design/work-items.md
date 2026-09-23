@@ -1,4 +1,11 @@
-# Work Item Specification
+# Work items
+
+> **Vision and design, and a work in progress.** Written for whoever is shaping
+> the record model.
+>
+> **It has not been reconciled against what the tool actually implements**, so
+> read every statement in it as a proposal rather than as a description of what
+> exists. That step is still to come.
 
 ## Goal
 
