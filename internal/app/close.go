@@ -25,7 +25,7 @@ type CloseRequest struct {
 
 // CloseResult describes what was closed.
 type CloseResult struct {
-	Path   string
+	Subject
 	Reason string
 	// Retired counts outcomes excluded from the arithmetic because they were
 	// archived. Worth saying: it explains a count that would otherwise look
@@ -42,20 +42,31 @@ type CloseResult struct {
 // declarations rather than to an opinion of its own (docs/spec.md §5.0).
 func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 	if req.As == "" {
-		return nil, UsageError("a disposition is required: %s\n\n"+
-			"Closing silently is how a backlog loses its own history — cancelled work\n"+
-			"and completed work look identical afterwards.", reasonList())
+		return nil, &Error{Kind: Usage, Err: &DispositionRequired{
+			Ref:     req.Ref,
+			Choices: reasonNames(),
+		}}
 	}
 	if !corpus.IsCloseReason(req.As) {
-		return nil, UsageError("unknown disposition %q: expected %s", req.As, reasonList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Unknown disposition " + req.As,
+			Detail:  []string{"expected " + reasonList()},
+			LeadIn:  "Close it with",
+			Command: fmt.Sprintf("luma-backlog work-item close %s <%s>", req.Ref, strings.Join(reasonNames(), "|")),
+		})
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, resolveError(err)
+		return nil, resolveErrorFor(corpus.WorkItem, err)
 	}
 	if it.Type() != corpus.WorkItem {
-		return nil, UsageError("%s is a %s — close applies to a work item", it.Slug(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Slug(), it.Type()),
+			Detail:  []string{"close applies to a work item"},
+			LeadIn:  "See the work items with",
+			Command: "luma-backlog list",
+		})
 	}
 
 	c, err := corpus.CompletionOf(s.Backlog, it.Slug())
@@ -79,39 +90,35 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		// succeeded, so none of them needs a count — which is also the way out
 		// when a file is beyond repair.
 		if len(c.Skipped) > 0 && !req.Force {
-			var b strings.Builder
-			fmt.Fprintf(&b, "%s cannot be completed: %d outcome(s) could not be read, so there is no count.\n",
-				it.Slug(), len(c.Skipped))
+			names := make([]string, 0, len(c.Skipped))
 			for _, sk := range c.Skipped {
-				fmt.Fprintf(&b, "  %s: %v\n", sk.Path, sk.Err)
+				names = append(names, fmt.Sprintf("%s: %v", sk.Path, sk.Err))
 			}
-			b.WriteString("\nAn unreadable outcome might be failing, and nothing here can tell.\n")
-			b.WriteString("Repair the file, or close with a reason that claims nothing about evidence.")
-			return nil, RefusedError("%s", b.String())
+			return nil, &Error{Kind: Refused, Err: &CannotComplete{
+				Ref: it.Slug(), Gap: OutcomesUnreadable, Names: names, Count: len(c.Skipped),
+			}}
 		}
 
 		if len(c.Skipped) > 0 {
 			forced = append(forced, plural(len(c.Skipped), "outcome")+" could not be read")
 		}
 		if !c.Complete() && len(c.Live) == 0 && !req.Force {
-			return nil, RefusedError(
-				"%s has no outcomes, so there is nothing that says it was completed.\n"+
-					"Declare what done means, or close with a different disposition.", it.Slug())
+			return nil, &Error{Kind: Refused, Err: &CannotComplete{
+				Ref: it.Slug(), Gap: NoOutcomes,
+			}}
 		}
 		if len(c.Live) == 0 {
 			forced = append(forced, "no outcomes at all")
 		}
 		if len(c.Unpassing) > 0 && !req.Force {
-			var names []string
+			names := make([]string, 0, len(c.Unpassing))
 			for _, o := range c.Unpassing {
-				names = append(names, "  "+o.Slug())
+				names = append(names, o.Slug())
 			}
-			return nil, RefusedError(
-				"%s cannot be completed: %d of %d outcomes are not proven.\n%s\n\n"+
-					"Verify them, or close with a different disposition. Abandoning one\n"+
-					"records why it is unmet and does not clear this — a completed close\n"+
-					"over an unmet outcome needs --force, and the count will say so.",
-				it.Slug(), len(c.Unpassing), len(c.Live), strings.Join(names, "\n"))
+			return nil, &Error{Kind: Refused, Err: &CannotComplete{
+				Ref: it.Slug(), Gap: OutcomesUnproven, Names: names,
+				Count: len(c.Unpassing), Total: len(c.Live),
+			}}
 		}
 		if len(c.Unpassing) > 0 {
 			forced = append(forced,
@@ -127,11 +134,9 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 		}
 		if openTasks > 0 {
 			if !req.Force {
-				return nil, RefusedError(
-					"%s cannot be completed: %s never reached a terminal status.\n\n"+
-						"Close them --- any reason is fine, they may have failed or been\n"+
-						"cancelled --- or pass --force.",
-					req.Ref, plural(openTasks, "task"))
+				return nil, &Error{Kind: Refused, Err: &CannotComplete{
+					Ref: it.Slug(), Gap: TasksOpen, Count: openTasks,
+				}}
 			}
 			forced = append(forced, plural(openTasks, "task")+" still open")
 		}
@@ -212,7 +217,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 	}
 
 	return &CloseResult{
-		Path:    it.Path,
+		Subject: subjectOf(it),
 		Reason:  req.As,
 		Retired: len(c.Retired),
 		Advice:  advice,
@@ -229,12 +234,16 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 	}, nil
 }
 
-func reasonList() string {
-	var s []string
+func reasonList() string { return strings.Join(reasonNames(), ", ") }
+
+// reasonNames is the vocabulary as plain strings, for a caller that renders
+// them rather than compares them.
+func reasonNames() []string {
+	s := make([]string, 0, len(corpus.CloseReasons))
 	for _, r := range corpus.CloseReasons {
 		s = append(s, string(r))
 	}
-	return strings.Join(s, ", ")
+	return s
 }
 
 // yamlQuote makes free prose safe inside an inline mapping. A colon or a hash

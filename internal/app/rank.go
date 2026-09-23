@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/lumastack/luma-backlog/internal/corpus"
@@ -33,7 +34,7 @@ type RankRequest struct {
 }
 
 type RankResult struct {
-	Path string
+	Subject
 	// Rank as written, for a caller that wants to report it.
 	Rank string
 }
@@ -42,26 +43,43 @@ type RankResult struct {
 // a decimal ordering key is what buys that (§9.6).
 func (s *Session) Rank(req RankRequest) (*RankResult, error) {
 	if req.Where == 0 {
-		return nil, UsageError("say where: --first, --last, --before <ref>, or --after <ref>")
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Say where it goes",
+			Detail:  []string{"--first, --last, --before <ref>, or --after <ref>"},
+			LeadIn:  "Rank it with",
+			Command: "luma-backlog rank " + req.Ref + " --first",
+		})
 	}
 	if (req.Where == RankBefore || req.Where == RankAfter) && req.Neighbor == "" {
-		return nil, UsageError("--before and --after need a record to sit against")
+		return nil, Refuse(Usage, Refusal{
+			Problem: "--before and --after need a record to sit against",
+			LeadIn:  "Name one with",
+			Command: "luma-backlog rank " + req.Ref + " --before <ref>",
+		})
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
 	if err != nil {
-		return nil, resolveError(err)
+		return nil, resolveErrorFor(corpus.WorkItem, err)
 	}
 	if it.Type() != corpus.WorkItem {
-		return nil, UsageError("%s is a %s: only work items are ranked", it.Name(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Name(), it.Type()),
+			Detail:  []string{"only work items are ranked"},
+			LeadIn:  "See what is ranked with",
+			Command: "luma-backlog list",
+		})
 	}
 
 	status := it.Status(s.Config.DefaultStatusFor(it.Type()))
 	ordinal, ok := s.Config.LadderFor(it.Type()).Ordinal(status)
 	if !ok {
-		return nil, UsageError(
-			"%s is at status %q, which the configured ladder does not carry --- rank has no place to put it",
-			it.Name(), status)
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is at status %s, which the ladder does not carry", it.Name(), status),
+			Detail:  []string{"rank orders records within a status, so there is no place to put it"},
+			LeadIn:  "See the ladder in",
+			Command: ConfigPath(),
+		})
 	}
 
 	// Rank orders records within a status (ADR-0005), so only records sharing
@@ -90,7 +108,7 @@ func (s *Session) Rank(req RankRequest) (*RankResult, error) {
 	if err := s.Backlog.WriteFileAtomic(it.Path, out, 0o644); err != nil {
 		return nil, FailureError("%w", err)
 	}
-	return &RankResult{Path: it.Path, Rank: rank}, nil
+	return &RankResult{Subject: subjectOf(it), Rank: rank}, nil
 }
 
 // peer is a neighbor and the position it occupies.
@@ -152,7 +170,7 @@ func (s *Session) positionFor(req RankRequest, peers []peer) (corpus.Position, e
 	// asking for a position that cannot exist.
 	target, err := corpus.Resolve(s.Backlog, req.Neighbor)
 	if err != nil {
-		return "", resolveError(err)
+		return "", resolveErrorFor(corpus.WorkItem, err)
 	}
 	at := -1
 	for i, p := range peers {
@@ -162,9 +180,12 @@ func (s *Session) positionFor(req RankRequest, peers []peer) (corpus.Position, e
 		}
 	}
 	if at < 0 {
-		return "", UsageError(
-			"%s is not ranked alongside it --- rank orders records within a status, and these are not at the same one",
-			target.Name())
+		return "", Refuse(Usage, Refusal{
+			Problem: target.Name() + " is not at the same status",
+			Detail:  []string{"rank orders records within a status, never across them"},
+			LeadIn:  "See where each sits with",
+			Command: "luma-backlog list",
+		})
 	}
 
 	if req.Where == RankBefore {

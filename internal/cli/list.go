@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"io"
 	"strings"
 	"text/tabwriter"
 
@@ -67,6 +68,7 @@ func newListCommand(a *App, unit string) *cobra.Command {
 			}
 
 			if len(res.Items) == 0 {
+				emptyListing(cmd.ErrOrStderr(), unit, f)
 				return nil
 			}
 			w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
@@ -97,6 +99,84 @@ func newListCommand(a *App, unit string) *cobra.Command {
 	}
 	if unit == "" || unit == app.WorkItem {
 		cmd.Flags().StringVarP(&kind, "kind", "k", "", "only work items of this kind")
+	}
+	return cmd
+}
+
+// emptyListing says why a listing came back empty.
+//
+// Printing nothing was the defect: it left somebody unable to tell a backlog
+// with nothing in it from a filter that matched none of one — and those need
+// opposite things said. An empty corpus needs the command that fills it; a
+// filter that matched nothing needs to show the filter, so an empty result is
+// distinguishable from a wrong question (policy/output-patterns).
+//
+// To stderr, for the reason a skip goes there: stdout stays a listing and
+// nothing else, so a caller piping it is unaffected while a person still reads
+// this.
+func emptyListing(w io.Writer, unit string, f app.Filter) {
+	unit = unitOr(unit)
+	if narrowing := narrowing(f); narrowing != "" {
+		fmt.Fprintf(w, "\nNo %ss match\n  %s\n\n", unitWords(unit), narrowing)
+		fmt.Fprintf(w, "See them all with:\n  %s\n", listing(unit))
+		return
+	}
+	fmt.Fprintf(w, "\nNo %ss yet\n\n", unitWords(unit))
+	fmt.Fprintf(w, "Add one with:\n  %s\n", howToCreate(unit))
+}
+
+// unitOr resolves the bare `list`, which carries no unit and means work items.
+func unitOr(unit string) string {
+	if unit == "" {
+		return app.WorkItem
+	}
+	return unit
+}
+
+// unitWords is a unit as a sentence says it — `work-item` is a type name, and
+// "No work-items yet" reads as a field rather than as English. Every unit
+// pluralizes with a trailing s, so callers add it.
+func unitWords(unit string) string { return strings.ReplaceAll(unit, "-", " ") }
+
+// narrowing renders the filter that ran, as the flags somebody would type.
+// Empty when nothing narrowed the listing, which is what separates the two
+// empty states.
+func narrowing(f app.Filter) string {
+	var parts []string
+	if f.WorkItem != "" {
+		parts = append(parts, "--work-item "+f.WorkItem)
+	}
+	if f.Status != "" {
+		parts = append(parts, "--status "+f.Status)
+	}
+	if f.Kind != "" {
+		parts = append(parts, "--kind "+f.Kind)
+	}
+	if f.Open {
+		parts = append(parts, "--open")
+	}
+	return strings.Join(parts, " ")
+}
+
+// listing is the unnarrowed form of this listing. Work items reach it at the
+// top level, since `list` is `work-item list` (root.go).
+func listing(unit string) string {
+	if unit == app.WorkItem {
+		return "luma-backlog list"
+	}
+	return "luma-backlog " + unit + " list"
+}
+
+// howToCreate is the command that adds one, ready to type.
+//
+// An outcome, a task and an exploration belong to a work item and `new`
+// refuses without one, so the flag is part of the command rather than
+// something to discover from the refusal.
+func howToCreate(unit string) string {
+	cmd := "luma-backlog " + unit + ` new "<title>"`
+	switch unit {
+	case app.Outcome, app.Task, app.Exploration:
+		cmd += " --work-item <key>"
 	}
 	return cmd
 }
@@ -132,6 +212,7 @@ func runTree(cmd *cobra.Command, s *app.Session, f app.Filter, asJSON bool) erro
 	}
 
 	if len(res.Nodes) == 0 {
+		emptyListing(cmd.ErrOrStderr(), f.Unit, f)
 		return nil
 	}
 	w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)

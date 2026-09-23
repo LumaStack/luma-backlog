@@ -39,11 +39,17 @@ type ListResult struct {
 // fault (docs/spec.md §9.3).
 func (s *Session) List(f Filter) (*ListResult, error) {
 	if f.Unit != "" && !corpus.IsUnit(f.Unit) {
-		return nil, UsageError("unknown unit %q: expected one of %s",
-			f.Unit, strings.Join(corpus.Units, ", "))
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Unknown unit " + f.Unit,
+			Detail:  []string{"expected one of " + strings.Join(corpus.Units, ", ")},
+		})
 	}
 	if f.Open && f.Status != "" {
-		return nil, UsageError("--open and --status %s say different things: pass one", f.Status)
+		return nil, Refuse(Usage, Refusal{
+			Problem: "--open and --status " + f.Status + " say different things",
+			Detail:  []string{"--open is every status but the terminal one"},
+			Note:    "Pass one of them.",
+		})
 	}
 	items, skipped, err := corpus.List(s.Backlog, corpus.Filter{
 		Unit:     f.Unit,

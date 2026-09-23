@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/lumastack/luma-backlog/internal/app"
 	"github.com/spf13/cobra"
 )
@@ -34,11 +32,20 @@ func newNewCommand(a *App, unit string) *cobra.Command {
 			// and picking one for them leaves that belief in place.
 			switch {
 			case len(args) == 1 && cmd.Flags().Changed("title"):
-				return app.UsageError("a title was given twice, as %q and --title %q: pass one", args[0], title)
+				return app.Refuse(app.Usage, app.Refusal{
+					Problem: "A title was given twice",
+					Detail:  []string{args[0], title},
+					Note:    "Pass one of them.",
+				})
 			case len(args) == 1:
 				title = args[0]
 			case !cmd.Flags().Changed("title"):
-				return app.UsageError("a title is required: pass it positionally or as --title")
+				return app.Refuse(app.Usage, app.Refusal{
+					Problem: "A title is required",
+					Detail:  []string{"it becomes the filename"},
+					LeadIn:  "Create one with",
+					Command: "luma-backlog " + unit + ` new "<title>"`,
+				})
 			}
 			return runNew(a, cmd, unit, title, description, workItem, kind, project, cmd.Flags().Changed("work-item"))
 		},
@@ -81,22 +88,27 @@ func runNew(a *App, cmd *cobra.Command, unit, title, description, workItem, kind
 	}
 
 	if res.Unclassified {
-		fmt.Fprintf(cmd.ErrOrStderr(),
-			"luma-backlog: no kind — recorded as unclassified.\n"+
-				"  --kind defect   something broke\n"+
-				"  --kind request  somebody asked\n"+
-				"  --kind idea     a thought nobody can judge yet\n"+
-				"  --kind inquiry  going to look, and it will produce work\n"+
-				"  --kind change   none of those\n"+
-				"Leave it blank only when nobody has looked at this yet.\n")
+		// A block, not a prefixed diagnostic: the prefix belongs on a
+		// one-liner, and this has five rows and a closing line.
+		renderRefusal(cmd.ErrOrStderr(), app.Refusal{
+			Problem: "No kind, so it is recorded as unclassified",
+			Detail: []string{
+				"--kind defect   something broke",
+				"--kind request  somebody asked",
+				"--kind idea     a thought nobody can judge yet",
+				"--kind inquiry  going to look, and it will produce work",
+				"--kind change   none of those",
+			},
+			Note: "Leave it blank only when nobody has looked at this yet.",
+		})
 	}
 
 	out := cmd.OutOrStdout()
-	if res.Created {
-		fmt.Fprintf(out, "created  %s\n", res.Path)
-	} else {
-		fmt.Fprintf(out, "exists   %s\n", res.Path)
+	verb := "created"
+	if !res.Created {
+		verb = "exists "
 	}
+	reportSubject(out, verb, res.Subject)
 	return nil
 }
 

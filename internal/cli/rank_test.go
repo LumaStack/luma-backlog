@@ -93,7 +93,7 @@ func TestSetRefusesTheRankField(t *testing.T) {
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
-	if !strings.Contains(errOut, "work-item rank") {
+	if !offersCommand(errOut, "luma-backlog rank WORK-0001 <--first|--last|--before <ref>|--after <ref>>") {
 		t.Errorf("the refusal did not name the command to use instead:\n%s", errOut)
 	}
 }
@@ -112,7 +112,7 @@ func TestRankAgainstAnotherStatusIsRefused(t *testing.T) {
 	if code != ExitUsage {
 		t.Errorf("exit = %d, want %d", code, ExitUsage)
 	}
-	if !strings.Contains(errOut, "same one") {
+	if !strings.Contains(errOut, "rank orders records within a status") {
 		t.Errorf("the refusal did not explain why:\n%s", errOut)
 	}
 }

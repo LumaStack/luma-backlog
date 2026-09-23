@@ -40,6 +40,11 @@ type Spec struct {
 type Result struct {
 	Path    string
 	Created bool // false means it already existed and was left alone
+	// Key and Title are what the record calls itself. Reported rather than
+	// left to be read back out of the path: a caller reconstructing them from
+	// a filename is parsing a slug, and gets the title back in kebab case.
+	Key   string
+	Title string
 }
 
 // Create writes a new record.
@@ -80,7 +85,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 			return Result{}, findErr
 		}
 		if existing != "" {
-			return Result{Path: path.Join(BundleDir, "work-items", existing, "index.md"), Created: false}, nil
+			return describe(b, path.Join(BundleDir, "work-items", existing, "index.md"))
 		}
 	}
 
@@ -110,7 +115,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 			return Result{}, scanErr
 		}
 		if existing != "" {
-			return Result{Path: existing, Created: false}, nil
+			return describe(b, existing)
 		}
 		adr = highest + 1
 		slug = strings.TrimSuffix(decisionFilename(adr, slug), ".md")
@@ -125,7 +130,7 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 	}
 
 	if b.Exists(rel) {
-		return Result{Path: rel, Created: false}, nil
+		return describe(b, rel)
 	}
 
 	body, err := render(s, cfg, e, adr, key)
@@ -146,7 +151,30 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 			}
 		}
 	}
-	return Result{Path: rel, Created: true}, nil
+	return Result{Path: rel, Created: true, Key: key, Title: s.Title}, nil
+}
+
+// describe reports a record that already existed, naming it as it names
+// itself.
+//
+// Read rather than derived from the path: a key can be recovered from a
+// filename but a title cannot — the path carries a slug, and a slug is the
+// title with its casing and punctuation thrown away. Naming it best-effort,
+// because the record IS there and failing to read it must not turn an
+// idempotent no-op into an error.
+func describe(b *root.Backlog, rel string) (Result, error) {
+	res := Result{Path: rel, Created: false}
+	data, err := b.ReadFile(rel)
+	if err != nil {
+		return res, nil
+	}
+	r, perr := record.Parse(data)
+	if perr != nil {
+		return res, nil
+	}
+	it := Item{Path: rel, Record: r}
+	res.Key, res.Title = it.Key(), it.Title()
+	return res, nil
 }
 
 func render(s Spec, cfg config.Config, e env.Env, adr int, key string) ([]byte, error) {

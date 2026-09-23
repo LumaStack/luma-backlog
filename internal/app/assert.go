@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/lumastack/luma-backlog/internal/corpus"
@@ -34,12 +35,23 @@ type AssertResult struct {
 // (ADR-0007).
 func (s *Session) Assert(req AssertRequest) (*AssertResult, error) {
 	if req.As == "" {
-		return nil, UsageError("a claim is required: %s\n\n"+
-			"An outcome nobody has attempted and one somebody tried and failed\n"+
-			"look identical otherwise.", assertionList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Claim required",
+			Detail: []string{
+				"an outcome nobody attempted and one somebody tried and failed",
+				"look identical otherwise",
+			},
+			LeadIn:  "Record one with",
+			Command: fmt.Sprintf("luma-backlog outcome assert %s <%s>", req.Ref, strings.Join(assertionNames(), "|")),
+		})
 	}
 	if !corpus.IsAssertion(req.As) {
-		return nil, UsageError("unknown claim %q: expected %s", req.As, assertionList())
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Unknown claim " + req.As,
+			Detail:  []string{"expected " + assertionList()},
+			LeadIn:  "Record one with",
+			Command: fmt.Sprintf("luma-backlog outcome assert %s <%s>", req.Ref, strings.Join(assertionNames(), "|")),
+		})
 	}
 
 	it, err := corpus.Resolve(s.Backlog, req.Ref)
@@ -47,7 +59,12 @@ func (s *Session) Assert(req AssertRequest) (*AssertResult, error) {
 		return nil, resolveError(err)
 	}
 	if it.Type() != corpus.Outcome {
-		return nil, UsageError("%s is a %s — only an outcome is asserted", it.Slug(), it.Type())
+		return nil, Refuse(Usage, Refusal{
+			Problem: fmt.Sprintf("%s is a %s", it.Slug(), it.Type()),
+			Detail:  []string{"only an outcome is asserted"},
+			LeadIn:  "See the outcomes with",
+			Command: "luma-backlog outcome list",
+		})
 	}
 
 	// Appended, never replaced. Overwriting would be the one place in this
@@ -76,10 +93,14 @@ func (s *Session) Assert(req AssertRequest) (*AssertResult, error) {
 	}, nil
 }
 
-func assertionList() string {
+func assertionList() string { return strings.Join(assertionNames(), " or ") }
+
+// assertionNames is the vocabulary as plain strings, for a caller that renders
+// them rather than compares them.
+func assertionNames() []string {
 	names := make([]string, 0, len(corpus.Assertions))
 	for _, a := range corpus.Assertions {
 		names = append(names, string(a))
 	}
-	return strings.Join(names, " or ")
+	return names
 }

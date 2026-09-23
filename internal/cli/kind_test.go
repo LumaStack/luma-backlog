@@ -132,7 +132,7 @@ func TestBlankKindIsNudgedNotRefused(t *testing.T) {
 	if !strings.Contains(out, "created") {
 		t.Errorf("the record was not created:\n%s", out)
 	}
-	if !strings.Contains(errOut, "no kind") {
+	if !strings.Contains(errOut, "No kind") {
 		t.Errorf("nothing was said about the missing kind:\n%q", errOut)
 	}
 	for _, k := range []string{"defect", "request", "idea", "change"} {

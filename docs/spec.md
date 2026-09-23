@@ -1275,6 +1275,10 @@ Three notes on the defaults. The first three statuses describe **how far the pla
 
 Built-in fallbacks still exist for every key, so that a configuration written today keeps working when new keys are added later. The two are not in tension: the fallbacks provide compatibility, and writing them out provides discoverability.
 
+**A missing key falls back; a missing file does not.** The configuration file is what marks a repository as a backlog, and every command refuses without it, naming the file and pointing at `init`. `.luma/` cannot serve as that marker because it is shared with the other luma tools — any of them creates it, so its presence says nothing about whether this one was ever invited. Treating the directory as the marker made a repository that had never run `init` indistinguishable from an initialized empty one, and commands then read and offered to edit another tool's records.
+
+`init` writes that file, and `.luma/config/` to hold it. **Every record directory is created by the first record that needs it** — `backlog/work-items/` with the first work item, `records/decisions/` with the first free-standing decision. Scaffolding them up front bought nothing, since git does not carry an empty directory, and cost a claim on tiers this tool does not own.
+
 ### 8.4 Repository settings and personal ones
 
 A person may hold their own preferences, and there is one rule governing what may live there:
@@ -1386,7 +1390,7 @@ Top-level:
 
 | Command | Does |
 |---|---|
-| `init` | Create `.backlog/` and a default configuration. |
+| `init` | Write the configuration file (§8.3). |
 | `board` | Open the terminal board (§11). Also the behavior with no arguments. |
 | `serve` | Start the browser interface (§11.7). |
 | `check` | Evaluate the named conditions (§5.2). |
@@ -1409,6 +1413,8 @@ Top-level:
 It is computed per invocation and **never stored** (§2.4): storing it would let it drift from the outcomes it counts.
 
 **Empty results are not errors.** A list matching nothing exits zero with an empty collection. Agents must not have to distinguish "none" from "failed."
+
+**An empty listing says which empty it is**, on standard error so the collection on standard output stays exactly the answer. A corpus with nothing in it names the command that adds the first record; a filter that matched nothing shows the filter that ran, so an empty result is distinguishable from a wrong question. Printing nothing collapses the two, and they call for opposite next moves.
 
 ### 9.4 Exit codes
 

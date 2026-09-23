@@ -39,7 +39,7 @@ func newVerifyCommand(a *App) *cobra.Command {
 			}
 
 			out := cmd.OutOrStdout()
-			fmt.Fprintf(out, "verified  %s (%s)\n", res.Path, as)
+			reportSubject(out, "verified", res.Subject, as)
 			if res.NoEvidence {
 				fmt.Fprintln(out,
 					"\nNo evidence recorded. An unbacked confirmation is the claim this\n"+

@@ -48,10 +48,12 @@ func newCloseCommand(a *App) *cobra.Command {
 			}
 
 			out := cmd.OutOrStdout()
-			fmt.Fprintf(out, "closed  %s (%s)\n", res.Path, res.Reason)
+			extra := []string{res.Reason}
 			if res.Retired > 0 {
-				fmt.Fprintf(out, "%d retired outcome(s) were excluded from the count.\n", res.Retired)
+				extra = append(extra,
+					plural(res.Retired, "outcome")+" excluded from the count, being retired")
 			}
+			reportSubject(out, "closed", res.Subject, extra...)
 			return nil
 		},
 	}

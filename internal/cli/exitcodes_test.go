@@ -60,8 +60,13 @@ func TestExitCodes(t *testing.T) {
 		if code != ExitUsage {
 			t.Errorf("exit = %d, want %d — ambiguity is a usage failure", code, ExitUsage)
 		}
-		if !strings.Contains(errOut, "could be any of") {
-			t.Errorf("stderr did not list the candidates: %q", errOut)
+		// The candidates themselves, not the phrasing around them: a caller
+		// narrowing the invocation needs the paths, and asserting on the
+		// sentence pins wording nobody promised.
+		for _, want := range []string{"payments-v2", "payments-rollout"} {
+			if !strings.Contains(errOut, want) {
+				t.Errorf("stderr did not list %s as a candidate: %q", want, errOut)
+			}
 		}
 	})
 

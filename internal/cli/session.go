@@ -33,7 +33,7 @@ func observe(w io.Writer, o app.Observations) {
 		for _, p := range d.Paths {
 			fmt.Fprintf(w, "  %s\n", p)
 		}
-		fmt.Fprintf(w, "A key is meant to name one record, and every citation of this one is ambiguous.\n")
+		fmt.Fprintf(w, "  a key names one record, so every citation of this one is ambiguous\n")
 	}
 	for _, d := range o.Drifted {
 		fmt.Fprintf(w, "luma-backlog: %s ranks at a status it no longer holds:\n"+
@@ -41,6 +41,6 @@ func observe(w io.Writer, o app.Observations) {
 			d.Path, d.Status, d.Ordinal, d.Rank)
 	}
 	if len(o.Drifted) > 0 {
-		fmt.Fprintf(w, "The status vocabulary was edited by hand. Re-set the status on each to repair it.\n")
+		fmt.Fprintf(w, "  the status vocabulary was edited by hand; re-set the status on each to repair it\n")
 	}
 }

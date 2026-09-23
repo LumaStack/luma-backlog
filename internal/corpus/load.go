@@ -149,31 +149,55 @@ func List(b *root.Backlog, f Filter) ([]Item, []Skip, error) {
 	return items, skipped, nil
 }
 
-// isRecordPath excludes files that are not units — the bundle root, journals,
-// and Type Definitions.
+// isRecordPath reports whether a path is one this tool writes.
+//
+// An ALLOWLIST, and that is the whole point. It was a denylist: every .md under
+// .luma/ counted as a record unless it sat under one of four named exceptions.
+// That is only correct if this tool owns the directory, and it does not —
+// .luma/ is shared with the other luma tools, so every directory nobody had
+// thought of yet was claimed by default.
+//
+// What that cost, all of it found in real repositories (BACK-0108): another
+// tool's ideas and plans read as this tool's corpus; the files among them that
+// were never records reported as corrupt ones on every command; and
+// records/violations/, written by a procedure rather than by this binary,
+// silently in the corpus here. Each fix extended the denylist by one directory,
+// which meant predicting the next tool's layout — a race the denylist loses by
+// construction.
+//
+// The accepted set is exactly what PathFor can produce, plus PROJECT.md, so
+// what the tool reads and what it writes cannot drift apart. A caller has
+// already checked the .md suffix.
 func isRecordPath(rel string) bool {
-	switch {
-	case path.Base(rel) == "journal.md":
-		return false
-	case strings.HasPrefix(rel, "bundles/"):
-		// Bundles hold contracts and policy — what is in force, not what is
-		// intended — so nothing under them is a backlog record.
-		return false
-	case strings.HasPrefix(rel, "_types/"):
-		// .luma/_types/ holds contracts for documents outside any bundle,
-		// which are not this tool's records either.
-		return false
-	case strings.Contains(rel, "/evidence/"):
-		// A record may keep supporting material beside it — a transcript, a
-		// log, an export. Those are attachments rather than records, and
-		// reporting them as unreadable records is a warning that fires on a
-		// correct state, which is the kind readers learn to skip past.
-		//
-		// `evidence/` is a local convention and not yet a layout tier; where
-		// attachments belong is open.
+	if rel == ProjectFile {
+		return true
+	}
+
+	// A free-standing decision — the one unit that lives outside a work item.
+	// Directly inside the directory, never below it: an archived decision is
+	// spent, and listing it beside the live ones is how a superseded position
+	// gets read as current.
+	if dir, file := path.Split(rel); path.Clean(dir) == RecordsDecisionsDir {
+		return file != ""
+	}
+
+	rest, ok := strings.CutPrefix(rel, WorkItemsDir+"/")
+	if !ok {
 		return false
 	}
-	return true
+	parts := strings.Split(rest, "/")
+	switch len(parts) {
+	case 2:
+		// The work item itself. Its journal sits beside index.md and is a
+		// ledger rather than a record.
+		return parts[1] == "index.md"
+	case 3:
+		// A child, under the directory its unit occupies. This is what keeps
+		// evidence/ out without naming it: a work item may keep a transcript
+		// or an export beside its records, and those are attachments.
+		return isChildDir(parts[1])
+	}
+	return false
 }
 
 func matches(i Item, f Filter) bool {
@@ -223,6 +247,27 @@ func matches(i Item, f Filter) bool {
 // narrowed. Collapsing them is how a well-formed query produces a duplicate.
 var ErrAmbiguous = errors.New("ambiguous reference")
 
+// ErrNoMatch reports a reference that names no record. It carries the
+// reference so an adapter can name it without parsing the message back out.
+type ErrNoMatch struct{ Ref string }
+
+func (e *ErrNoMatch) Error() string { return fmt.Sprintf("nothing matches %q", e.Ref) }
+
+// ErrAmbiguousRef is a reference that names several records, with the
+// candidates. It unwraps to ErrAmbiguous so callers matching the sentinel keep
+// working.
+type ErrAmbiguousRef struct {
+	Ref   string
+	Paths []string
+}
+
+func (e *ErrAmbiguousRef) Error() string {
+	return fmt.Sprintf("%s: %q could be any of:\n  %s",
+		ErrAmbiguous, e.Ref, strings.Join(e.Paths, "\n  "))
+}
+
+func (e *ErrAmbiguousRef) Unwrap() error { return ErrAmbiguous }
+
 func Resolve(b *root.Backlog, ref string) (Item, error) {
 	// Skips are not surfaced here yet. Resolve answers "which record did you
 	// mean", and a broken record reports as not found — misleading, but a
@@ -269,7 +314,7 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 
 	switch len(candidates) {
 	case 0:
-		return Item{}, fmt.Errorf("nothing matches %q", ref)
+		return Item{}, &ErrNoMatch{Ref: ref}
 	case 1:
 		return candidates[0], nil
 	default:
@@ -277,9 +322,7 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		for _, c := range candidates {
 			paths = append(paths, c.Path)
 		}
-		return Item{}, fmt.Errorf("%w: %q could be any of:\n  %s",
-			ErrAmbiguous,
-			ref, strings.Join(paths, "\n  "))
+		return Item{}, &ErrAmbiguousRef{Ref: ref, Paths: paths}
 	}
 }
 

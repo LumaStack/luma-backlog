@@ -49,7 +49,12 @@ func (s *Session) Journal(req JournalRequest) (*JournalResult, error) {
 
 	line := strings.TrimSpace(req.Line)
 	if line == "" {
-		return nil, UsageError("nothing to write")
+		return nil, Refuse(Usage, Refusal{
+			Problem: "Nothing to write",
+			Detail:  []string{"a journal line cannot be empty"},
+			LeadIn:  "Write one with",
+			Command: `luma-backlog journal <work-item> "<what was learned>"`,
+		})
 	}
 	if err := s.Backlog.WriteFileAtomic(rel, []byte(
 		corpus.AppendLine(current, s.Env.Today(), line)), 0o644); err != nil {
@@ -79,7 +84,11 @@ func (s *Session) journalWorkItem(given string) (string, error) {
 			return "", FailureError("%w", err)
 		}
 		if !s.Backlog.Exists(path.Join(corpus.BundleDir, "work-items", dir, "index.md")) {
-			return "", UsageError("no work item %q", given)
+			return "", Refuse(Usage, Refusal{
+				Problem: "No work item matches " + given,
+				LeadIn:  "See what exists with",
+				Command: "luma-backlog list",
+			})
 		}
 		return dir, nil
 	}
@@ -94,7 +103,12 @@ func (s *Session) journalWorkItem(given string) (string, error) {
 	}
 	switch len(items) {
 	case 0:
-		return "", UsageError("no work items yet — create one first")
+		return "", Refuse(Usage, Refusal{
+			Problem: "No work items yet",
+			Detail:  []string{"a journal belongs to one"},
+			LeadIn:  "Add one with",
+			Command: `luma-backlog work-item new "<title>"`,
+		})
 	case 1:
 		return items[0].Slug(), nil
 	}
@@ -104,6 +118,10 @@ func (s *Session) journalWorkItem(given string) (string, error) {
 		slugs = append(slugs, it.Slug())
 	}
 	sort.Strings(slugs)
-	return "", UsageError("more than one work item — say which with --work-item:\n  %s",
-		strings.Join(slugs, "\n  "))
+	return "", Refuse(Usage, Refusal{
+		Problem: "More than one work item, so the journal is ambiguous",
+		Detail:  slugs,
+		LeadIn:  "Say which with",
+		Command: `luma-backlog journal --work-item <ref> "<what was learned>"`,
+	})
 }

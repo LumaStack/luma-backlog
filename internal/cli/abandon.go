@@ -36,11 +36,15 @@ func newAbandonCommand(a *App) *cobra.Command {
 			}
 
 			out := cmd.OutOrStdout()
-			fmt.Fprintf(out, "abandoned  %s\n", res.Path)
-			fmt.Fprintln(out, "Still counted as unmet. This explains the gap; it does not close it.")
+			extra := []string{"still counted as unmet — this explains the gap, it does not close it"}
 			if res.Verdicts > 0 {
-				fmt.Fprintf(out, "%d verdict(s) already recorded — they stand.\n", res.Verdicts)
+				stand := "they stand"
+				if res.Verdicts == 1 {
+					stand = "it stands"
+				}
+				extra = append(extra, plural(res.Verdicts, "verdict")+" already recorded, and "+stand)
 			}
+			reportSubject(out, "abandoned", res.Subject, extra...)
 			if reason == "" {
 				fmt.Fprintln(out,
 					"\nNo reason recorded. A retrospective asks which of two things happened —\n"+
