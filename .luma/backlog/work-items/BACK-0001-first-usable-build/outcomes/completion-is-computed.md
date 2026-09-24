@@ -9,7 +9,7 @@ verify_by:
   - Close a different work item as canceled with an unmet outcome; expect success, because only delivery is gated.
 work_item: "[[work-items/BACK-0001-first-usable-build]]"
 stage: provisional
-created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+created: {by: "human:luma-founder", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"
     by: agent:opus-5/luma-backlog

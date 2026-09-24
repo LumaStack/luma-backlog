@@ -6,7 +6,7 @@ desired_state: The backlog can be kept through commands. Creating records, setti
 verify_by: ["A full pass of real work runs without opening a record to change anything the tool owns: frontmatter, status, links, verification, closing.", "The journal for that work item is written as the work happens, not reconstructed afterwards.", "Every place hand-editing beat the command is named in the journal, with the command that should eventually cover it."]
 work_item: "[[work-items/BACK-0001-first-usable-build]]"
 stage: provisional
-created: {by: "human:benjamin", at: '2026-08-09T00:00:00Z'}
+created: {by: "human:luma-founder", at: '2026-08-09T00:00:00Z'}
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-04T14:55:11Z'}
 verified:
   - at: "2026-09-04T14:55:31Z"

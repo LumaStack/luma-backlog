@@ -6,7 +6,7 @@ desired_state: A single invocation appends a line to the right journal, creating
 verify_by: backlog journal "a thing worth keeping" && grep -q "a thing worth keeping" .luma/backlog/work items/*/journal.md
 work_item: "[[work-items/BACK-0001-first-usable-build]]"
 stage: provisional
-created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+created: {by: "human:luma-founder", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"
     by: agent:opus-5/luma-backlog

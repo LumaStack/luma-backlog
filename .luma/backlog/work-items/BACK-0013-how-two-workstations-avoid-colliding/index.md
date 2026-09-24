@@ -43,7 +43,7 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 ### The leaning: pick a loser and send it to the end
 
-**On a collision, one record keeps the key and the other takes the next free number at the end of the sequence** (benjamin, 2026-09-04). Two records claim `BACK-0014` and `15`, `16`, `17` already exist: the winner stays `14`, the loser becomes `18`.
+**On a collision, one record keeps the key and the other takes the next free number at the end of the sequence** (the maintainer, 2026-09-04). Two records claim `BACK-0014` and `15`, `16`, `17` already exist: the winner stays `14`, the loser becomes `18`.
 
 **That does not cascade, and an earlier draft of this record said it would.** The claim rested on repairing to *n+1* — bump the second `14` to `15`, hit the existing `15`, and the fix runs through the corpus. That is not the repair. The repair is to append, and **the end of the sequence is free by construction**, so exactly one record moves and nothing else is touched.
 

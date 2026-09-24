@@ -9,7 +9,7 @@ verify_by:
   - Add an unrecognized key by hand, run every command that rewrites the record, confirm the key survives each.
 work_item: "[[work-items/BACK-0001-first-usable-build]]"
 stage: provisional
-created: {by: "human:benjamin", at: '2026-08-08T06:00:00Z'}
+created: {by: "human:luma-founder", at: '2026-08-08T06:00:00Z'}
 verified:
   - at: "2026-08-10T05:39:04Z"
     by: agent:opus-5/luma-backlog

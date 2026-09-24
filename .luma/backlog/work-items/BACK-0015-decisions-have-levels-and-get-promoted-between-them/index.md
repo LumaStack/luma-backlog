@@ -42,7 +42,7 @@ Not settled. What this idea is for is working out:
 
 ## The position so far
 
-**The tool creates work item decisions; the model decides the level** (benjamin, 2026-09-04). A first pass has `new decision` producing a work item decision, and the tool able to **promote** one to the project. Whether it can create a project decision directly is unsettled; if it can, that is a flag rather than an inference.
+**The tool creates work item decisions; the model decides the level** (the maintainer, 2026-09-04). A first pass has `new decision` producing a work item decision, and the tool able to **promote** one to the project. Whether it can create a project decision directly is unsettled; if it can, that is a flag rather than an inference.
 
 **The judgment is never mechanical.** Which level a decision belongs to is the model's call, following guidelines. What the tool contributes is one reliable way to carry it out, so every model does it the same way instead of each shuffling files slightly differently. That is `spec.md` §4.8.1 already — *the tool provides the operation and never judges* — and it is the bootstrap rule in `CLAUDE.md`: what earns a command is an invariant prose cannot hold, and *promotion writes exactly these files* is one.
 
@@ -86,7 +86,7 @@ That is a usage error rather than a refusal about content — the tool is not ju
 ### Option: a decision gets a key only when it is promoted
 
 **Work item decisions carry no number; project decisions do, and promotion is
-where one is earned** (benjamin, 2026-09-04). Recorded as an option rather than a
+where one is earned** (the maintainer, 2026-09-04). Recorded as an option rather than a
 plan.
 
 **A number exists to be cited**, in a commit, in conversation, from another
