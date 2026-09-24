@@ -1119,7 +1119,7 @@ Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to wr
 
 **Whether the confusion survives fixing the command.** If `rank` is made to work on tasks and nobody is misled again, the naming is taste and can be left. If people keep conflating the two in conversation and in records after that, the name is doing real damage and should change.
 
-**And the timing is forced by something else.** BACK-0103 already rewrites every record in the corpus. A rank rename is dramatically cheaper inside that pass than as a second sweep afterwards, so this wants deciding before that migration is built rather than after.
+**An earlier version of this entry said BACK-0103 forced the timing. It does not, and the two are unrelated.** The claim was that a migration already rewriting every record could carry a field rename along. It cannot: renaming a frontmatter key across 131 records shares nothing with rewriting directory names inside arbitrary text — different operation, different code, different scope. Nor is there a weaker version of the link worth keeping. **Corrected rather than deleted, because a false dependency in an open question is the kind of thing somebody acts on.**
 
 *Settled by:* fixing the command first, then seeing whether anyone is still confused.
 

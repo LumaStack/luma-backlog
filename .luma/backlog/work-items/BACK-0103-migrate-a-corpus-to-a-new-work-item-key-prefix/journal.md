@@ -441,6 +441,40 @@ a convention.
 caller has to remember is one a caller will forget. Both ends of a rename are
 checked. A file merely containing the letters, `notes.gitignore-sample`, is not
 the git directory and is allowed — asserted, so the check cannot quietly widen.
+### Journals are in scope for `--include-bare-keys`, confirmed
+
+**A key in a journal is an address, not a quotation.** The record still exists
+and answers to a new name; git holds what was literally written; a reference
+that resolves is worth more than one preserved in amber. Same reading already
+applied to full names, now applied deliberately rather than by inheritance.
+
+That settles 45% of what the flag touches, and the caveat marking it unconfirmed
+is removed rather than left to age into something nobody knows the status of.
+
+### A dependency on the rank rename was invented, and there was never one
+
+**Recorded because the failure is mine and it is a repeatable kind.** I told the
+maintainer that open-questions §26 — whether a work item's rank and a task's
+rank share a name — wanted deciding before this migration was built, on the
+grounds that a pass already rewriting every record could carry a field rename
+along.
+
+**It cannot.** Renaming a frontmatter key across 131 records shares nothing with
+rewriting directory names inside arbitrary text: different operation, different
+code, different scope. When that was pointed out I reached for a weaker version
+of the link — *one review and one merge window instead of two* — and that was
+salvaging a connection rather than dropping one. **The two pieces of work are
+unrelated.**
+
+**What produced it:** two things were open at the same time and both touched
+records, so proximity read as coupling. The reciprocal test from
+`when-a-work-item-splits` answers it in one move — outcomes for a rank rename
+share nothing with these eleven — and it applies to invented dependencies as
+readily as to splits.
+
+**Corrected in §26 rather than deleted**, because a false deadline sitting in an
+open question is exactly the kind of thing somebody acts on later without
+knowing where it came from.
 
 ## ▶ 2026-09-23
 

@@ -129,12 +129,12 @@ per corpus, and nobody makes it by scrolling.
 **A key matching no record here is reported, not rewritten.** That is the 1%,
 and it is the only case the flag must not touch.
 
-**One consequence to know before using it:** 45% of what it would change is
-journal lines such as *"Journaled on WORK-0039"* — statements about what
-happened, in a file whose own header says *append, never curate*. Treated as
-addresses rather than quotations, the same reading already applied to full
-names. **Not separately confirmed**, and the cheapest moment to disagree is
-before the flag is built.
+**Journals are included, and that was confirmed rather than assumed.** 45% of
+what the flag changes is lines such as *"Journaled on WORK-0039"* — statements
+about what happened, in a file whose own header says *append, never curate*.
+**A key in a journal is an address, not a quotation**: the record still exists,
+it answers to a new name, and a reference that resolves is worth more than one
+preserved in amber. Git holds what was literally written.
 
 ### The order is forced, and the first step leaves the repository
 
