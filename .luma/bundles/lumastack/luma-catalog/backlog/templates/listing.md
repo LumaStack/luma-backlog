@@ -6,9 +6,9 @@ the ordering are [[showing-records]]; this is what the block looks like.
 ```
 **<Column or filter> (<count>)**
 
-○ WORK-0022 · Migrate a corpus when the vocabulary changes
-◐ WORK-0031 · Reshape the command surface
-✔ WORK-0018 · Extract the application layer
+○ WORK-0001 · Migrate a corpus when the vocabulary changes
+◐ WORK-0011 · Reshape the command surface
+✔ WORK-0111 · Extract the application layer
 
 `luma-backlog work-item list --status <status>`
 ```

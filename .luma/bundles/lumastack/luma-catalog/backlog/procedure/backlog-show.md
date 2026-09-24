@@ -11,7 +11,7 @@ description: Show one record and everything about it, show a column or status, o
 
 | asked for | do |
 | --- | --- |
-| a named record --- `WORK-0031`, an outcome, a task | **one record**, below |
+| a named record --- `WORK-0001`, an outcome, a task | **one record**, below |
 | a column or status --- "To Do", "what's in progress" | **a listing**, below |
 | nothing at all | **the summary**, below --- and stop there |
 
@@ -86,10 +86,10 @@ sees it once stops needing to ask.
 > …where it stands, and what would move it along.
 >
 > ```
-> luma-backlog show WORK-0031
-> luma-backlog task list -w BACK-0031-reshape-the-command-surface
-> luma-backlog outcome list -w BACK-0031-reshape-the-command-surface
-> luma-backlog work-item journal -w BACK-0031-reshape-the-command-surface
+> luma-backlog show WORK-0001
+> luma-backlog task list -w WORK-0001-reshape-the-command-surface
+> luma-backlog outcome list -w WORK-0001-reshape-the-command-surface
+> luma-backlog work-item journal -w WORK-0001-reshape-the-command-surface
 > ```
 
 **Read all four before saying anything.** Each answers a different question and
@@ -206,8 +206,8 @@ the table.**
 >
 > | key | title |
 > | --- | --- |
-> | WORK-0001 | First usable build |
-> | WORK-0004 | Rename the unit to work item |
+> | WORK-0011 | First usable build |
+> | WORK-0111 | Rename the unit to work item |
 >
 > `luma-backlog work-item list --status closed`
 

@@ -8,8 +8,8 @@ Listings inside it follow [listing](listing.md).
 
 **Preparation considerations**
 
-○ WORK-0039 · What closed work items cost as the corpus grows
-○ WORK-0038 · Where a work item stands is hard to see in the file
+○ WORK-0001 · What closed work items cost as the corpus grows
+○ WORK-0011 · Where a work item stands is hard to see in the file
 
 <one sentence, at the bottom, on how close any of it is>
 
@@ -65,7 +65,7 @@ bottom-up, and leading with the most important thing means burying it.
 > wrong end. Nothing pipes a report, so the constraint does not carry across.
 
 **Risks stays above Last touched and below the listings.** It refers to the
-records above it --- *"WORK-0031 has 23 tasks"* means nothing before WORK-0031
+records above it --- *"WORK-0111 has 23 tasks"* means nothing before WORK-0111
 has appeared --- so it cannot lead, and it is the second thing worth reading, so
 it sits second from the bottom.
 

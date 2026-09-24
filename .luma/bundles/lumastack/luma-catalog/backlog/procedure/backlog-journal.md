@@ -94,7 +94,7 @@ The mapping is the requirement — which point landed on which record. Where it
 sits on the page is not.
 
 > **Closed is not archived** — closed is about the work, archived is about
-> attention. *Journaled on WORK-0039.*
+> attention. *Journaled on WORK-0001.*
 
 A footer works too, if it carries the mapping. **A bare list of record names
 does not** — it proves three records were touched and hides which idea landed
@@ -107,8 +107,8 @@ has no model of what is being written in their name.
 beside it is already complete.
 
 **A footer has to reference the point**, because it carries no position to say
-it for you. *Journaled on WORK-0031* names a record and leaves a reader unable
-to tell which of five points landed there. *Journaled on WORK-0031 — the count
+it for you. *Journaled on WORK-0011* names a record and leaves a reader unable
+to tell which of five points landed there. *Journaled on WORK-0011 — the count
 argument and the verify guard* does the job.
 
 **Merge points that share a destination.** Omit it when nothing was journalled,

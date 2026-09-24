@@ -800,6 +800,36 @@ pre-empts the judgment the register exists to collect.
 
 **Two are recorded as open questions**, since they are design rather than
 conduct: §27 for reference-versus-illustration, §28 for the verification gap.
+### The migration edited the adopted bundle, and my check for it was wrong
+
+**Found late, by foreman refusing to re-adopt.** *"lumastack/luma-catalog/backlog
+has been edited here — adopting would discard those edits."*
+
+**Commit `943f9bd`, the migration run itself, rewrote four files under
+`.luma/bundles/`** — `BUNDLE.md`, `backlog-show.md`, `record-view.md` and the
+`work-item` DEFINITION. Every change was an illustration using a full directory
+name, matched because those names were real before the migration.
+
+**The exclusion did not exist yet.** It was added afterwards, in `991d9cd`,
+after `--include-bare-keys` hit the same files more visibly. So the code is
+right now and was not right then.
+
+**The verification was the failure.** I checked the clause with
+`git show --stat` on the **merge** commit, which does not list the files, saw
+zero, and reported the bundle untouched. The outcome was marked passing on a
+command that could not have detected the thing it was asked about. **A check
+that returns the expected answer for the wrong reason is worse than no check**,
+because it also stops anybody looking again.
+
+**What would have caught it:** compare the vendored copy against the catalog,
+which is the question actually being asked, rather than reading a commit's file
+list. `diff -rq` on the two directories answers it in one line and cannot be
+fooled by which commit is being inspected.
+
+**Repaired** with `luma-foreman get --force` — the local edits were unwanted
+drift, which is exactly the case that flag exists for. The vendored copy is now
+byte-identical to the catalog at 0.49.0, and a dry run with
+`--include-bare-keys` rewrites zero files under `.luma/bundles/`.
 
 ## ▶ 2026-09-23
 

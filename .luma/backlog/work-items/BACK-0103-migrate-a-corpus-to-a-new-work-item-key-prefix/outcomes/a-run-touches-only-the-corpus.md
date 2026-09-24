@@ -11,10 +11,16 @@ verified:
   - as: proven
     at: "2026-09-24T07:50:36Z"
     by: agent:claude-opus-5/luma-backlog
+  - as: proven
+    at: "2026-09-24T14:05:41Z"
+    by: agent:claude-opus-5/luma-backlog
 evidence:
   - at: "2026-09-24T07:50:36Z"
     by: agent:claude-opus-5/luma-backlog
     what: git recorded 356 renames and the content diff touched only lines containing a migrated name. internal/config/config.go DefaultKeyPrefix is still WORK. Nothing under .luma/bundles/ was touched by the default run — verified by git show --stat on the migration merge, which lists zero bundle files, and the bundle's 8 WORK- mentions are intact.
+  - at: "2026-09-24T14:05:41Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'Re-verified after the first evidence was found wrong. I had checked the bundle clause with git show --stat on the MERGE commit, which does not list the files, and reported zero. Checking the migration commit itself — 943f9bd — shows it rewrote four files under .luma/bundles/: BUNDLE.md, backlog-show.md, record-view.md and the work-item DEFINITION. All were illustrations using full directory names, matched because they were real pre-migration names. The bundle exclusion did not exist when that ran; it was added in 991d9cd. The drift is repaired by luma-foreman get --force, and the vendored copy is now byte-identical to the catalog. Against the current binary a dry run with --include-bare-keys rewrites zero files under .luma/bundles/, and TestWalkTextSkipsAdoptedBundles holds it. git recorded 356 renames; DefaultKeyPrefix is still WORK.'
 ---
 
 # A run touches only the corpus

@@ -2,11 +2,11 @@
 type: bundle
 type_version: "0.0.1"
 title: lumastack/luma-catalog/backlog
-version: 0.48.0
+version: 0.49.0
 stage: draft
 consumers: [project]
 description: The record types a luma-backlog corpus conforms to, and the procedures for the things somebody does to a backlog — what an agent needs in order to work one well.
-published: 2026-09-23
+published: 2026-09-24
 ---
 
 # lumastack/luma-catalog/backlog
@@ -83,6 +83,36 @@ judgment and calls the command for everything else.
 
 ## Version
 
+`0.49.0` — **closing shows what it journalled, and asks before filing anything
+else.**
+
+The procedure already said to write the journal entry before closing. It said
+nothing about what happens next, and the gap had a shape: an agent journalled a
+session's failures, then filed three violation records on its own judgement.
+
+**Two registers outlive a work item and neither is the agent's to write into
+unasked.** A violation register is read in aggregate to decide what keeps
+happening, so an agent filing its own entries has already made the judgement
+that reading them was supposed to inform. A decision record is worse — it is in
+force the moment it is written, and one written unasked binds everybody to a
+position nobody took.
+
+**Recommendations rather than questions.** *Is there anything to file?* hands
+the work back to the reader. Name each candidate, say what it would record, say
+which you would file and why, and say plainly when the answer is none.
+
+**The journal stays the exception.** It binds nothing and is the work item's own
+memory, so it is written without asking and shown afterwards — the showing being
+the new part, because it was written in somebody's name and they had not seen
+it.
+
+**Run it while closing; after is acceptable and less ideal.** When it happens
+after, the run says so, and says what could not be done after the fact where
+anything could not.
+
+**Nothing to do.** No rule, permission or requirement changed — only which
+records some explanatory prose points at.
+
 `0.48.0` — **`work-item` gains `former_keys`** (type `0.0.2`).
 
 **Nothing to do.** Adding a field is not breaking — a consumer that has not
@@ -118,10 +148,10 @@ they have no Document ID to point at. `[[listing]]`, `[[record-view]]` and
 `[[rundown]]` are markdown links now, which is what every other bundle in the
 catalog already did.
 
-**Four links pointed into this project's own backlog**, `WORK-0063`, `0064`,
+**Four links pointed into this project's own backlog**, `BACK-0063`, `0064`,
 `0081` and `0095`. Those resolve for nobody who did not write them. The
 information is still worth carrying, so each is prose naming the key —
-*tracked upstream as WORK-0063* — rather than a link that promises a document
+*tracked upstream as BACK-0063* — rather than a link that promises a document
 an adopter cannot reach.
 
 `0.46.0` — **`task` and `exploration` earn their contracts.** Both types were
@@ -314,7 +344,7 @@ needed, coach once, accept the answer, and journal the skip — because whether
 the process was wrong, the person was right, or it cost something later is not
 knowable at the moment of the skip.
 
-Written from a measured failure rather than a worry: an agent ran WORK-0074 up
+Written from a measured failure rather than a worry: an agent ran BACK-0074 up
 three work statuses in three commands and the maintainer sent it back.
 
 `0.27.0` — **a finished work item is where a session clears.**
@@ -425,7 +455,7 @@ idempotent by name (§9.5), with hand-editing the one way to break it.
 
 **Neither of those would have prevented the error**, which is the honest note to
 end on: the agent never opened the type definition. Only a check would have, and
-that is `WORK-0002`, moved out of the pile on the strength of this instance.
+that is `BACK-0002`, moved out of the pile on the strength of this instance.
 
 `0.21.1` — **the force approval belongs to the owner, and the record says who
 answered.**
@@ -675,7 +705,7 @@ writing them first: `new` takes no `--description`, so capturing a sentence
 costs two calls; `show` gives a record's fields but not its outcomes, tasks or
 journal; there is no `--column`, though the config defines columns; and nothing
 asks for *everything except closed*. Each is now a task on
-`BACK-0031-reshape-the-command-surface`.
+`WORK-0031-reshape-the-command-surface`.
 
 `0.11.0` — **a key held by two records is reported.**
 
@@ -691,14 +721,14 @@ records and the key they share, on stderr, and each still does its job:
 a duplicate key is a real problem and not a reason to stop working.
 
 **Detection, not repair.** What a duplicate becomes belongs to
-`BACK-0013-how-two-workstations-avoid-colliding`, and choosing it here would
+`WORK-0013-how-two-workstations-avoid-colliding`, and choosing it here would
 pre-empt that. Reporting is useful before it is settled and is what makes any
 repair usable at all — a repair nobody knows is needed does not happen.
 
 The check runs over the whole work item set rather than the rows a caller asked
 for, because a filtered listing would miss a duplicate outside its filter.
 
-`0.10.0` — **`BACK-0002-lint-the-corpus` is a name.**
+`0.10.0` — **`WORK-0002-lint-the-corpus` is a name.**
 
 The vocabulary in one place: a **path** is the identity, a **key** is the short
 handle, a **slug** is what the work is about, a **name** is the two joined and
@@ -731,7 +761,7 @@ One stray directory from that bug is removed and its entry recovered into the
 journal it was meant for.
 
 `0.9.0` — **a work item's directory carries its key.**
-`work-items/BACK-0002-lint-the-corpus/` — the key leads so a listing sorts by
+`work-items/WORK-0002-lint-the-corpus/` — the key leads so a listing sorts by
 it, the slug follows so the directory still reads as what the work is, and it
 matches the decision records where the number is in the filename too.
 
@@ -780,7 +810,7 @@ good at. Only the level is withheld from it.
 shape as `new task` refusing without a work item — the tool is not judging the
 work, it is saying it was not told enough.
 
-`0.7.1` — **a work item is written as `BACK-0002-lint-the-corpus`.** Key and
+`0.7.1` — **a work item is written as `WORK-0002-lint-the-corpus`.** Key and
 slug joined, the way a decision's filename joins its number and slug, and all
 three forms resolve — joined, key alone, slug alone.
 

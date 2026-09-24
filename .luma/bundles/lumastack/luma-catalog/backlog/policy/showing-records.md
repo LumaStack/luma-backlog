@@ -50,14 +50,14 @@ looked is not a bad result, it is no result.
 
 **In ephemeral output, a key carries its title at least once per turn.** A
 reply, a report, a board — anything shown to somebody now and gone afterwards.
-`WORK-0088` on its own asks the reader to have memorised every key in the
+`WORK-0001` on its own asks the reader to have memorised every key in the
 corpus. It need not be at the first mention, only somewhere in the same turn,
 because forcing it first would fight whatever else is deciding the shape of that
 line.
 
 **Where the key is part of a form being shown — a template, an example, a
 command — the form decides.** A listing is already `mark · key · title`, so it
-satisfies this by construction. `rank WORK-0031 --first` deliberately does not,
+satisfies this by construction. `rank WORK-0011 --first` deliberately does not,
 and a title there corrupts the shape being demonstrated. **This rule never edits
 a form; it fills the gap forms do not cover, which is sentences.**
 
@@ -67,13 +67,35 @@ moment of writing and is wrong the first time somebody renames the record. **The
 key does not change; the title does** — and ephemeral output can carry a title
 safely precisely because it does not outlive the question it was answering.
 
+## Numbers to use in an example
+
+**A recommendation, not a rule.** Where an example needs a key, these read as
+examples at a glance:
+
+```
+WORK-0001  WORK-0011  WORK-0111  WORK-1111
+WORK-0002  WORK-0022  WORK-0222  WORK-2222
+```
+
+**A repeated digit is unmistakably artificial** --- nobody meets `WORK-2222` and
+wonders whether to look it up --- and the widths vary, so an example does not
+quietly teach that a key is always four characters.
+
+**Take one family per set of records a passage must keep apart**, and reuse them
+freely across passages that have nothing to do with each other.
+
+**Nothing enforces this and nothing should.** These are ordinary numbers a real
+corpus reaches on its first day, so they protect nothing; they only make an
+example recognisable as one. An example that needs a ninth number, or reads
+better with a different one, is not doing anything wrong.
+
 ## A list of records
 
 **Mark, key, title — and the key only when the record has one.**
 
 ```
-○ WORK-0022 · Migrate a corpus when the vocabulary changes
-✔ WORK-0018 · Extract the application layer
+○ WORK-0111 · Migrate a corpus when the vocabulary changes
+✔ WORK-1111 · Extract the application layer
 ```
 
 Outcomes and tasks carry no key, so they are mark and title alone:

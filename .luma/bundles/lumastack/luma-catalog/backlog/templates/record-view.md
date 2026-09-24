@@ -7,7 +7,7 @@ Everything above is what the corpus says; everything below is yours, and a
 reader must be able to tell without being told.
 
 ```
-## WORK-0031 · Reshape the command surface
+## WORK-0001 · Reshape the command surface
 
 | | |
 | --- | --- |
@@ -41,10 +41,10 @@ reader must be able to tell without being told.
 <the reading — see the procedure>
 
 ```
-luma-backlog show WORK-0031
-luma-backlog task list -w BACK-0031-reshape-the-command-surface
-luma-backlog outcome list -w BACK-0031-reshape-the-command-surface
-luma-backlog work-item journal -w BACK-0031-reshape-the-command-surface
+luma-backlog show WORK-0001
+luma-backlog task list -w WORK-0001-reshape-the-command-surface
+luma-backlog outcome list -w WORK-0001-reshape-the-command-surface
+luma-backlog work-item journal -w WORK-0001-reshape-the-command-surface
 ```
 ```
 
