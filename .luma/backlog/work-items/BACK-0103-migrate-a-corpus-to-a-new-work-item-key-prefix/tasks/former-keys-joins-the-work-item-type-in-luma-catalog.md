@@ -7,6 +7,7 @@ workflow_status: todo
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:15:22Z'}
 advances: ["[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/a-record-carries-its-former-keys-and-shows-them]]"]
+rank: 050.0010.000
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:16:18Z'}
 ---
 
