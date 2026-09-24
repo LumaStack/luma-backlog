@@ -128,6 +128,39 @@ func (i Item) Key() string {
 	return k
 }
 
+// FormerKeys returns the keys this record used to answer to and no longer
+// does, oldest first. Empty for a record that has never been migrated, which
+// is nearly all of them.
+//
+// They are read but never written here: a key migration is the only thing that
+// appends to the list, so nothing else has to decide what belongs in it.
+func (i Item) FormerKeys() []string {
+	return i.Record.List("former_keys")
+}
+
+// HeldKey reports whether a reference names any key this record answers to ---
+// its current one, or one it used to. The distinction the caller usually wants
+// is which, so Resolve asks separately rather than calling this; it is here
+// for the checks that only care whether a key is taken at all.
+func (i Item) HeldKey(ref string) bool {
+	if i.Key() != "" && SameKey(i.Key(), ref) {
+		return true
+	}
+	return i.HeldFormerKey(ref)
+}
+
+// HeldFormerKey reports whether a reference names a key this record used to
+// answer to. Compared as parsed values like every other key comparison, so a
+// former key quoted from memory still finds its record (WORK-0082).
+func (i Item) HeldFormerKey(ref string) bool {
+	for _, k := range i.FormerKeys() {
+		if SameKey(k, ref) {
+			return true
+		}
+	}
+	return false
+}
+
 // Name is what a record is called: WORK-0002-lint-the-corpus.
 //
 // Key and slug joined, the way a decision's filename joins its number and slug,

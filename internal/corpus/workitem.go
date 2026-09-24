@@ -62,7 +62,12 @@ func matchesWorkItem(dirName, filter string) bool {
 		return true
 	}
 	if m := dirPattern.FindStringSubmatch(dirName); m != nil {
-		return strings.EqualFold(m[1], filter)
+		// Compared as parsed keys rather than as strings, so `-w work-36`
+		// reaches WORK-0036-a-slug the way `show work-36` already did.
+		// EqualFold answered case but not padding or separator runs, which
+		// made `-w` the stricter door for no stated reason (WORK-0082: keys
+		// are compared as parsed values, never as strings).
+		return SameKey(m[1], filter)
 	}
 	return false
 }
@@ -85,8 +90,21 @@ func ResolveWorkItemDir(b *root.Backlog, ref string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// A former key resolves here too, or `-w` would be the one door a migrated
+	// key could not open --- the directory is renamed by the migration, so the
+	// old key survives only in the record's former_keys.
+	//
+	// Two passes rather than one, so a live match always beats a former one.
+	// Returning on the first hit would make the answer depend on walk order
+	// during the window where a migration has moved a key but not yet moved
+	// every record.
 	for _, it := range items {
 		if matchesWorkItem(it.WorkItem, ref) {
+			return it.WorkItem, nil
+		}
+	}
+	for _, it := range items {
+		if it.HeldFormerKey(ref) {
 			return it.WorkItem, nil
 		}
 	}

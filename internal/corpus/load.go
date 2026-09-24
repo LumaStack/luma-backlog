@@ -286,13 +286,21 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 	// resolves as readily as it is written.
 	normalizedName := NormalizeName(ref)
 
-	var exact, prefix []Item
+	var exact, former, prefix []Item
 	for _, it := range items {
 		switch {
 		case it.Name() != "" && it.Name() == normalizedName:
 			exact = append(exact, it)
 		case it.Key() != "" && SameKey(it.Key(), ref):
 			exact = append(exact, it)
+		// A key the record used to answer to. Its own tier, below exact and
+		// above everything else, so a live key always wins: during a
+		// migration a key can briefly be one record's current key and
+		// another's former one, and the record that holds it now is the
+		// answer. Allocation never reissues a former key to a different
+		// record, so outside that window the tier has one member at most.
+		case it.HeldFormerKey(ref):
+			former = append(former, it)
 		case it.Path == ref || it.Slug() == ref:
 			exact = append(exact, it)
 		// The slug half alone, for a work item whose directory leads with a
@@ -305,6 +313,9 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 		}
 	}
 	candidates := exact
+	if len(candidates) == 0 {
+		candidates = former
+	}
 	if len(candidates) == 0 {
 		candidates = scoped(items, ref)
 	}

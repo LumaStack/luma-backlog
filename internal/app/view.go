@@ -1,8 +1,10 @@
 package app
 
 import (
-	"github.com/lumastack/luma-backlog/internal/corpus"
 	"sort"
+	"strings"
+
+	"github.com/lumastack/luma-backlog/internal/corpus"
 )
 
 // View is one record as a surface needs to show it.
@@ -98,6 +100,15 @@ func (s *Session) record(it corpus.Item) (Record, error) {
 	for _, k := range order {
 		if v, ok := it.Record.Get(k); ok {
 			raw[k] = v
+			continue
+		}
+		// A list field, rendered as a person would read it out. Without this
+		// every sequence in the frontmatter is invisible to any caller working
+		// from Raw — `former_keys` on a migrated record, `advances` on a task
+		// — because Get answers for scalars only. Fields still carries the
+		// decoded value, so a structured consumer is unaffected either way.
+		if l := it.Record.List(k); len(l) > 0 {
+			raw[k] = strings.Join(l, ", ")
 		}
 	}
 	v := s.view(it)
