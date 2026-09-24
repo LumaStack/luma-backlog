@@ -3,6 +3,7 @@ package root
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -100,5 +101,47 @@ func TestProjectRefusesToWriteInsideGit(t *testing.T) {
 	// A path merely containing the letters is not the git directory.
 	if err := p.WriteFile("notes.gitignore-sample", []byte("x"), 0o644); err != nil {
 		t.Errorf("an ordinary file was refused: %v", err)
+	}
+}
+
+func TestWalkTextSkipsAdoptedBundles(t *testing.T) {
+	// An adopted bundle is a vendored copy of somebody else's published
+	// content. Editing one is drift: the copy stops matching what it was taken
+	// from, and the next adoption reverts the edit or conflicts with it.
+	dir := t.TempDir()
+	write := func(rel string) {
+		p := filepath.Join(dir, rel)
+		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte("WORK-0031 mentioned here"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write(".luma/bundles/lumastack/luma-catalog/backlog/BUNDLE.md")
+	write(".luma/backlog/work-items/WORK-0031-a/index.md")
+	write("docs/notes.md")
+
+	p, err := OpenProject(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { p.Close() })
+
+	seen := map[string]bool{}
+	if err := p.WalkText(func(rel string, _ []byte) error {
+		seen[rel] = true
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	for k := range seen {
+		if strings.HasPrefix(k, ".luma/bundles/") {
+			t.Errorf("descended into an adopted bundle: %s", k)
+		}
+	}
+	// The rest of .luma is still ours and must be visited.
+	if !seen[".luma/backlog/work-items/WORK-0031-a/index.md"] || !seen["docs/notes.md"] {
+		t.Errorf("the exclusion was too broad: %v", seen)
 	}
 }

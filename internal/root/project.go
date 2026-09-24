@@ -101,15 +101,32 @@ func (p *Project) Rename(from, to string) error {
 	return p.root.Rename(from, to)
 }
 
-// skipDirs are never descended into.
+// skipDirs are never descended into, by name at any depth.
 //
 // `.git` because rewriting object storage would corrupt the repository, and
-// because nothing in it is a name anybody wrote. The rest are build output and
-// vendored code: not ours to edit, regenerated anyway, and the place a naive
-// walk does the most damage.
+// because nothing in it is a name anybody wrote. `node_modules`, `vendor`,
+// `dist` and `build` are build output and vendored code: not ours to edit,
+// regenerated anyway, and the place a naive walk does the most damage.
 var skipDirs = map[string]bool{
 	".git": true, "node_modules": true, "vendor": true, "dist": true, "build": true,
 }
+
+// skipPaths are never descended into, by location rather than by name.
+//
+// `.luma/bundles/` holds adopted bundles, which are vendored copies of
+// somebody else's published content. **Editing one is drift**: the copy stops
+// matching what it was taken from, and the next adoption silently reverts the
+// edit or conflicts with it. A bundle's own prose may name a work item --- this
+// project's does, eight times --- and those mentions belong to the bundle's
+// history rather than to this corpus.
+//
+// Kept separate from skipDirs because `bundles` is too ordinary a word to skip
+// wherever it appears.
+var skipPaths = []string{root_Dir + "/bundles"}
+
+// root_Dir is this package's own constant, named here to keep the path literal
+// in one place.
+const root_Dir = Dir
 
 // WalkText visits every text file in the repository, giving each path relative
 // to it, slash-separated whatever the platform.
@@ -131,6 +148,11 @@ func (p *Project) WalkText(fn func(relPath string, data []byte) error) error {
 		if d.IsDir() {
 			if skipDirs[d.Name()] {
 				return fs.SkipDir
+			}
+			for _, s := range skipPaths {
+				if filepath.ToSlash(path) == s {
+					return fs.SkipDir
+				}
 			}
 			return nil
 		}
