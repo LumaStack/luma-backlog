@@ -306,6 +306,24 @@ would rewrite build artifacts, vendored dependencies and anything else binary.
 **Now a constraint: only tracked text files are read or written.** Ask git what
 it tracks, and skip what does not decode as text. Cheap to state now and
 expensive to discover during a run over 111 records.
+### The flag is `--include-bare-keys`, because the default already rewrites keys
+
+**`--rewrite-keys` named something the tool does without it.** The `key:` field
+moving from `WORK-0031` to `BACK-0031` *is* the migration, so a flag by that
+name describes default behaviour and reads as redundant rather than additive.
+That is a collision of meaning, not a matter of taste, and it is what settled
+this.
+
+**`--bare-keys` was the shorter candidate and is ambiguous** — *only* bare keys,
+or *also* bare keys? The flag widens scope, and `include` is the word that says
+so. This tool's existing booleans give no rule to follow: `--force` and
+`--dry-run` are verbs, `--first` and `--last` positions, `--json` and `--tree`
+formats, `--open` a state. So the deciding factor was which name cannot be
+misread.
+
+**The entry above keeps `--rewrite-keys` as written.** It is what was proposed
+at that moment, and the journal appends rather than curates. A reader meeting
+the old name there will find this entry directly above it.
 
 ## ▶ 2026-09-23
 

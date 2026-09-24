@@ -119,7 +119,7 @@ prefix — rare, and silent when it happens.
 
 **But for a single-project repository it is right nearly every time**, so the
 run lists what it did not rewrite, grouped by file with counts, and names the
-flag. `--rewrite-keys` does it. Same shape as `--renumber`: the run reports, a
+flag. `--include-bare-keys` does it. Same shape as `--renumber`: the run reports, a
 flag acts, and nobody decides without seeing what would change.
 
 **Grouped, never line by line.** Roughly 550 occurrences are genuinely
