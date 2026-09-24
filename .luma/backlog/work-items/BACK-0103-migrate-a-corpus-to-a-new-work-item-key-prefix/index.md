@@ -56,6 +56,32 @@ path without the allocator rule, and a command nobody has run proves nothing.
    formerly — with the one exception that a record may reclaim its own.
 5. **The old-to-new mapping as output**, one line per record, pipeable.
 
+### A collision stops one record, never the run
+
+**Settled 2026-09-24.** Where the target key is held by another record — live or
+in its `former_keys` — that record is **left exactly as it was and reported**,
+and the migration carries on. Aborting would leave a corpus half-migrated and
+hand the operator a failure rather than a list.
+
+**`--renumber` changes what a collision does, on the same command.** With the
+flag, a collided record takes the next available number from the sequence
+instead of being skipped; its old key goes into `former_keys` and keeps
+resolving, as in any migration. Without it, behaviour is exactly as above.
+
+**The two-pass workflow falls out of idempotence rather than being built.** Run
+it, read the skipped list, run it again with `--renumber` — the second run
+touches precisely what the first one left, because a record already at the
+target prefix is not migrated twice. No second code path, and no flag that
+refuses on a clean corpus.
+
+**The next available number comes from the allocator**, which skips every key
+any record has ever held. So a renumbered record can never be handed a key some
+other record once answered to.
+
+**Opt-in because the number is worth something.** It is what makes a diff
+reviewable and an external reference recognizable, so giving one up is a
+decision made after seeing what collided — not a silent recovery.
+
 ### The order is forced, and the first step leaves the repository
 
 **The type change goes first, and it goes the long way.** `work-item`'s
@@ -98,14 +124,15 @@ whoever owns the system holding the old key.
 - **Structure only**, and only under `.luma/backlog/` and `.luma/records/`.
 - **Records already at the configured prefix are untouched**, which their
   unchanged `modified` stamp shows.
+- **The collision paths are proven by automated tests over constructed
+  corpora.** No ordinary corpus contains a collision and nobody will produce one
+  by hand, so a test is the only thing that will ever exercise this. Three cases,
+  and the third is the one that looks like the others and is not: the target held
+  by another live record, the target held in another record's `former_keys`, and
+  the target held in **this record's own** `former_keys` — which is a reclaim and
+  must migrate normally.
 
 ## Open
-
-**What the command does when a target key is held by another record.** Allocate
-a fresh number from the sequence, or refuse and hand it to a person? It cannot
-happen in this corpus — the number ranges do not overlap — so it is an open
-question for the repeatable case rather than a blocker for the first run.
-Somebody implementing this should not guess.
 
 **Whether `former_keys` needs a decision record.** It is a new field on a type a
 second project could now adopt, which is the bar `change-a-shared-type` sets.

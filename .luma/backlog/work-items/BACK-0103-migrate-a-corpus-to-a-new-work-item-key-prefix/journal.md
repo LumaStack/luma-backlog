@@ -57,6 +57,45 @@ hand as well, or the tool reports it as ranking at a status it no longer holds.
 tool recomputes the ordinal part, and a person writing the key by hand has taken
 on a second thing to keep true. Fine for five rows in one record. It is the
 reason not to reach for this by default.
+### A collision fails one record and never the run, and --renumber is a mode rather than a second pass
+
+**Settled 2026-09-24.** Without `--renumber`, a record whose target key is held
+by another — live or in its `former_keys` — is left untouched and reported, and
+the migration carries on. With the flag, that record takes the next available
+number instead.
+
+**The correction worth keeping: I first wrote `--renumber` as a separate second
+pass** that operated on what a previous run had skipped, and gave it a refusal
+when there was nothing to renumber. Both were wrong, and for one reason — it is
+a flag on the same command, not another operation.
+
+**Which means the two-pass workflow is free rather than built.** The migration
+is already idempotent, so running it again with the flag touches exactly the
+records the first run left and nothing else. A second code path would have been
+a second thing to keep correct, and the refusal would have contradicted
+idempotence outright: a flag that errors on a clean corpus cannot be left on.
+
+**Aborting the run was never on the table and the reason is worth stating.** A
+half-migrated corpus hands the operator a failure where they needed a list.
+Failing one record and continuing means the output is the work plan.
+
+**The next available number comes from the allocator**, which already skips
+every key any record has ever held. Reusing it is what stops a renumbered record
+being handed a key some other record once answered to — a second idea of
+*available* would have had to stay in agreement with the first, and would not
+have.
+
+### Nobody will ever hit this by hand, so tests are the only proof
+
+**99% of corpora will never collide**, which makes the collision path the one
+most likely to ship broken and least likely to be noticed. Written into the
+constraints rather than left as an intention.
+
+**Three cases, and the third is the trap**: the target held by another live
+record, the target held in another record's `former_keys`, and the target held
+in **this record's own** `former_keys` — which is a reclaim, is not a collision,
+and must migrate normally. The first two look alike and the third looks like
+them and is not.
 
 ## ▶ 2026-09-23
 
