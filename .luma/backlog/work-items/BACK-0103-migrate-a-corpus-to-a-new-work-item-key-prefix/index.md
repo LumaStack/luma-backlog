@@ -111,6 +111,31 @@ follows to end the name — so a name that is a prefix of another cannot corrupt
 the longer one. No name is a prefix of another today; the boundary is there
 because that is not something to depend on.
 
+### Bare keys are offered rather than assumed
+
+**Left alone by default, because rewriting one can be wrong.** A bare
+`WORK-0031` may name a work item in a different project that uses the same
+prefix — rare, and silent when it happens.
+
+**But for a single-project repository it is right nearly every time**, so the
+run lists what it did not rewrite, grouped by file with counts, and names the
+flag. `--rewrite-keys` does it. Same shape as `--renumber`: the run reports, a
+flag acts, and nobody decides without seeing what would change.
+
+**Grouped, never line by line.** Roughly 550 occurrences are genuinely
+arguable — 266 in Go comments, 246 in journals, 26 in `docs/`. The decision is
+per corpus, and nobody makes it by scrolling.
+
+**A key matching no record here is reported, not rewritten.** That is the 1%,
+and it is the only case the flag must not touch.
+
+**One consequence to know before using it:** 45% of what it would change is
+journal lines such as *"Journaled on WORK-0039"* — statements about what
+happened, in a file whose own header says *append, never curate*. Treated as
+addresses rather than quotations, the same reading already applied to full
+names. **Not separately confirmed**, and the cheapest moment to disagree is
+before the flag is built.
+
 ### The order is forced, and the first step leaves the repository
 
 **The type change goes first, and it goes the long way.** `work-item`'s
@@ -158,6 +183,11 @@ whoever owns the system holding the old key.
 - **Structure only**, and only under `.luma/backlog/` and `.luma/records/`.
 - **Records already at the configured prefix are untouched**, which their
   unchanged `modified` stamp shows.
+- **Only tracked text files are read or written.** Found by accident: a scan
+  over every file matched inside the compiled `./luma-backlog` binary, on a Go
+  runtime error string. A naive tree walk would corrupt build artifacts,
+  vendored dependencies and anything else binary. Ask git what it tracks, and
+  skip what does not decode as text.
 - **The collision paths are proven by automated tests over constructed
   corpora.** No ordinary corpus contains a collision and nobody will produce one
   by hand, so a test is the only thing that will ever exercise this. Three cases,

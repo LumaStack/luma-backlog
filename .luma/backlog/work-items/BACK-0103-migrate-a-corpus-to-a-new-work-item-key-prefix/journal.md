@@ -272,6 +272,40 @@ largest section of the output and every entry a non-problem, which is how a
 report teaches people to skip it. Whether anything names a key resolving to
 nothing is a standing question rather than a migration one; WORK-0002 is its
 home.
+### Bare keys get a flag, and my count-only recommendation was too conservative
+
+**Corrected twice, and the second correction changed the answer.** I argued
+against listing bare keys on the grounds that there were 1309 of them and every
+one a non-problem. That number was wrong in two ways: it counted keys *inside*
+full names, which the migration rewrites regardless, and it counted the `key:`
+frontmatter fields themselves.
+
+**The genuinely arguable set is about 550**, and it is not one population: 266
+in Go comments, 246 in journals, 26 in `docs/`. That is a work queue, not noise,
+and for a single-project repository nearly all of it wants rewriting. Refusing
+to offer it makes the operator do by hand what the tool could do reliably.
+
+**So: listed by default, grouped by file, with the flag named in the output.
+`--rewrite-keys` does it.** Same shape as `--renumber` — the run reports, a flag
+acts, and nobody decides without seeing what would change. The 1% that must
+never be touched is a key matching no record here, which most likely belongs to
+another project; that is reported rather than rewritten.
+
+**Journals are 45% of what the flag would change**, and they are statements
+about what happened in a file whose header says *append, never curate*. Treated
+as addresses rather than quotations, the same reading already applied to full
+names. **Recorded as not separately confirmed**, because it is the one place the
+flag does something somebody might not want.
+
+### A scan over every file matched inside the compiled binary
+
+**Found by accident while counting.** A Go runtime error string in
+`./luma-backlog` matched the key pattern. A migration doing a naive tree walk
+would rewrite build artifacts, vendored dependencies and anything else binary.
+
+**Now a constraint: only tracked text files are read or written.** Ask git what
+it tracks, and skip what does not decode as text. Cheap to state now and
+expensive to discover during a run over 111 records.
 
 ## ▶ 2026-09-23
 
