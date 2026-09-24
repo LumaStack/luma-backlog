@@ -8,6 +8,14 @@ verify_by: "For every record that migrated, the number in the new key equals the
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:08:07Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'All 102 renames preserved the number: the mapping printed WORK-NNNN -> BACK-NNNN on every line, and BACK-0031 carries former_keys [WORK-0031]. Collision paths proven by constructed corpora since none occurs here — TestPlanReportsACollisionAgainstALiveKey, TestPlanReportsACollisionAgainstAFormerKey, and TestPlanLetsARecordReclaimItsOwnFormerKey for the reclaim case, which must migrate rather than skip. TestCollisionLeavesOneRecordAndContinues confirms an unblocked record still migrates.'
 ---
 
 # A migrated key keeps its number

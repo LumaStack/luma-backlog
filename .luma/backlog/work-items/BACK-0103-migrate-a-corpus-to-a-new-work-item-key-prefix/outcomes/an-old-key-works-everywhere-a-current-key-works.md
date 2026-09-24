@@ -7,6 +7,14 @@ verify_by: "For a migrated record, run each key-accepting command with the old k
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:03:33Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'Each key-accepting command run with WORK-0031 and BACK-0031 against the live corpus and compared: show -> BACK-0031 both; set -> updated BACK-0031 both; rank -> moved BACK-0031 both; journal --work-item -> same journal.md path; transition -> byte-identical refusal. Every one names the record by its CURRENT key. --work-item covered by TestWorkItemFlagAcceptsAFormerKey and TestWorkItemFlagPrefersTheRecordHoldingTheKeyNow.'
 ---
 
 # An old key works everywhere a current key works

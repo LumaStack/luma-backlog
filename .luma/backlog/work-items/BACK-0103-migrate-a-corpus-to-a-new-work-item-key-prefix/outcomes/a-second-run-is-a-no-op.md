@@ -7,6 +7,14 @@ verify_by: "Run, commit, run again; git status --porcelain is empty."
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:03:33Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'migrate keys --dry-run against the migrated corpus: moved 0, already correct 111, files rewritten 0. TestRunningItTwiceChangesNothing asserts byte-equality of a record and a file across two runs.'
 ---
 
 # A second run is a no-op

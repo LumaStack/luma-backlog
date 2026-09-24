@@ -7,6 +7,14 @@ verify_by: "luma-backlog list --json: every key's prefix equals work_item_key fr
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:03:33Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: 'list --json over the live corpus: Counter({''BACK'': 112}) — every key at BACK, matching work_item_key: BACK in config. The 9 already at BACK were reported as ''already correct'' and are absent from the 102-line mapping, so counted rather than rewritten.'
 ---
 
 # No work item answers to a key with the pre-migration prefix
