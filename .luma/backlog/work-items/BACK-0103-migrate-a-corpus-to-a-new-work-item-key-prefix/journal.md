@@ -791,11 +791,15 @@ seven days and already knew the deliverable was a command and that the wikilink
 rewrite was the silent-corruption risk. Reopening cost one field. Recorded as
 *rejected*, that argument would have been had again from nothing.
 
-**Three of these are also filed as violations** in `.luma/records/violations/`,
-and two as open questions — §27 for reference-versus-illustration, §28 for the
-verification gap. Duplicated deliberately: the journal holds them as what
-happened here, the register counts them against other sessions, and the open
-questions are what somebody would reopen.
+**Three of these look like violations and none has been filed.** The invented
+constraint that deleted data, committing on a red `scripts/check` — which would
+be a second instance of `2026-09-20-201357` — and citing a pull request number
+before it existed. **Whether any of them belongs in the register is the
+maintainer's call, not the agent's**, and an agent filing its own violations
+pre-empts the judgment the register exists to collect.
+
+**Two are recorded as open questions**, since they are design rather than
+conduct: §27 for reference-versus-illustration, §28 for the verification gap.
 
 ## ▶ 2026-09-23
 
