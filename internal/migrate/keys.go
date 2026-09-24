@@ -23,6 +23,9 @@ type Options struct {
 	// IncludeBareKeys also rewrites keys written without their slug. Off by
 	// default because a bare key may name another project's work item.
 	IncludeBareKeys bool
+	// Ignore adds to the built-in exclusions. A project with vendored content
+	// the defaults do not name needs this, and needs it on every run.
+	Ignore []string
 }
 
 // FileChange is one file and how many replacements it took.
@@ -47,6 +50,9 @@ type Result struct {
 	// rewrote them.
 	BareKeys []BareKeyFile
 	DryRun   bool
+	// Ignored is what the walk skipped, so a reader can see it rather than
+	// wonder why a file they expected is missing from the list.
+	Ignored root.Ignore
 }
 
 // Keys moves every work item to the target prefix and repoints what named it.
@@ -95,7 +101,9 @@ func Keys(projectRoot string, b *root.Backlog, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	files, bare, err := rewriteTree(p, res.Renames, items, opts)
+	ig := root.NewIgnore(opts.Ignore...)
+	res.Ignored = ig
+	files, bare, err := rewriteTree(p, res.Renames, items, ig, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +201,7 @@ func yamlList(items []string) string {
 
 // rewriteTree repoints every name across the repository, and collects or
 // rewrites the bare keys depending on what was asked for.
-func rewriteTree(p *root.Project, renames []corpus.KeyRename, items []corpus.Item, opts Options) ([]FileChange, []BareKeyFile, error) {
+func rewriteTree(p *root.Project, renames []corpus.KeyRename, items []corpus.Item, ig root.Ignore, opts Options) ([]FileChange, []BareKeyFile, error) {
 	var files []FileChange
 	var bare []BareKeyFile
 
@@ -228,7 +236,7 @@ func rewriteTree(p *root.Project, renames []corpus.KeyRename, items []corpus.Ite
 		stamped[path.Join(root.Dir, corpus.WorkItemPath(r.Dir))] = r.OldKey + "\x00" + r.NewKey
 	}
 
-	err := p.WalkText(func(rel string, data []byte) error {
+	err := p.WalkText(ig, func(rel string, data []byte) error {
 		text := string(data)
 		if pair, ok := stamped[rel]; ok {
 			k := strings.SplitN(pair, "\x00", 2)

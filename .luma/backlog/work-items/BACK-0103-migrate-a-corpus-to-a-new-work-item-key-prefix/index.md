@@ -183,11 +183,17 @@ whoever owns the system holding the old key.
 - **Structure only**, and only under `.luma/backlog/` and `.luma/records/`.
 - **Records already at the configured prefix are untouched**, which their
   unchanged `modified` stamp shows.
-- **Only tracked text files are read or written.** Found by accident: a scan
-  over every file matched inside the compiled `./luma-backlog` binary, on a Go
-  runtime error string. A naive tree walk would corrupt build artifacts,
-  vendored dependencies and anything else binary. Ask git what it tracks, and
-  skip what does not decode as text.
+- **Binary files are never read or written**, and content nobody here owns is
+  skipped by a list the run prints. Found by accident: a scan over every file
+  matched inside the compiled `./luma-backlog` binary, on a Go runtime error
+  string.
+
+  **An earlier version of this constraint said *only tracked text files*, and
+  that was wrong.** Git is a strong recommendation for this tool, not a
+  requirement — so in a project without it nothing is tracked, the migration
+  would rewrite nothing, and it would report success. A silent no-op on exactly
+  the projects least equipped to notice. The exclusion list plus binary
+  detection does the job without assuming git.
 - **The collision paths are proven by automated tests over constructed
   corpora.** No ordinary corpus contains a collision and nobody will produce one
   by hand, so a test is the only thing that will ever exercise this. Three cases,

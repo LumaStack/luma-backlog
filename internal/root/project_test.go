@@ -31,7 +31,7 @@ func TestWalkTextSkipsBinaryAndGit(t *testing.T) {
 	t.Cleanup(func() { p.Close() })
 
 	seen := map[string]bool{}
-	if err := p.WalkText(func(rel string, _ []byte) error {
+	if err := p.WalkText(NewIgnore(), func(rel string, _ []byte) error {
 		seen[rel] = true
 		return nil
 	}); err != nil {
@@ -129,7 +129,7 @@ func TestWalkTextSkipsAdoptedBundles(t *testing.T) {
 	t.Cleanup(func() { p.Close() })
 
 	seen := map[string]bool{}
-	if err := p.WalkText(func(rel string, _ []byte) error {
+	if err := p.WalkText(NewIgnore(), func(rel string, _ []byte) error {
 		seen[rel] = true
 		return nil
 	}); err != nil {
@@ -143,5 +143,30 @@ func TestWalkTextSkipsAdoptedBundles(t *testing.T) {
 	// The rest of .luma is still ours and must be visited.
 	if !seen[".luma/backlog/work-items/WORK-0031-a/index.md"] || !seen["docs/notes.md"] {
 		t.Errorf("the exclusion was too broad: %v", seen)
+	}
+}
+
+func TestIgnoreMatchesTheWaySomebodyWouldType(t *testing.T) {
+	ig := NewIgnore("internal/**/*_test.go", "generated")
+	cases := []struct {
+		path string
+		want bool
+	}{
+		{".luma/bundles/lumastack/luma-catalog/backlog/BUNDLE.md", true}, // default
+		{"node_modules/x/y.js", true},                                    // default
+		{"vendor/pkg/a.go", true},                                        // default
+		{"internal/cli/key_test.go", true},                               // ** spanning a segment
+		{"internal/a/b/c_test.go", true},                                 // ** spanning several
+		{"internal/cli/key.go", false},                                   // not a fixture
+		{"generated", true},                                              // a bare name matches itself
+		{"generated/client/api.go", true},                                // and everything under it
+		{"docs/notes.md", false},
+		{".luma/backlog/work-items/BACK-0001-a/index.md", false}, // ours
+		{"regenerated/thing.go", false},                          // not a prefix match on a name
+	}
+	for _, c := range cases {
+		if got := ig.Match(c.path); got != c.want {
+			t.Errorf("Match(%q) = %v, want %v", c.path, got, c.want)
+		}
 	}
 }

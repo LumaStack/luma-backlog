@@ -558,6 +558,60 @@ cannot observe sends the reader to the wrong file.
 **Repaired by hand, which the maintainer authorized for tasks inside one work
 item** — ordinal moved to 070, positions kept, so the order the work happened in
 still reads correctly.
+### `--include-bare-keys` ran, broke the build, and was reverted
+
+**Two bugs, and neither was the one the flag was designed around.** The 1% it
+exists to protect is another project's keys. What it actually hit was closer to
+home.
+
+**It rewrote five files inside `.luma/bundles/`.** An adopted bundle is a
+vendored copy of published content and editing one is drift — this work item's
+own outcome already said nothing there is touched, and the walk did not know.
+The plain migration never had the problem, because bundle mentions are bare
+keys and bare keys are left alone by default. Only the flag reached them.
+
+**It rewrote test fixtures and the build failed.** `workItem("WORK-0031", …)`
+became `workItem("BACK-0031", …)`, and an assertion for
+`former_keys: ["WORK-0031"]` became one for `["BACK-0031"]`. **Those are
+literals, not references** — and the tool cannot tell them from a genuine
+citation in a comment like `// recorded as WORK-0073`, which does need to move.
+Same string, same file type, opposite meanings.
+
+**Reverted before committing, and `.git` was never at risk** — fingerprinted
+before and after, byte-identical through both runs, `fsck` clean.
+
+### Markdown-only was the wrong fix, and the maintainer said so
+
+**My proposal was to rewrite markdown only and merely list source files.** That
+would have broken the case that matters everywhere else: code referencing a work
+item, a config value, a comment — all of it needs to move. The fixture problem
+is **self-referential and rare**, because only luma-backlog has keys as *data*
+in its source. It is this repository's quirk rather than a rule for the tool.
+
+### Tracked-only was also wrong, for a better reason
+
+**I proposed asking git what it tracks.** The maintainer's correction: **git is
+a strong recommendation for this tool, not a requirement.** In a project without
+it nothing is tracked, so the migration rewrites nothing and reports success —
+a silent no-op on exactly the projects least equipped to notice it.
+
+**The constraint in this record said *only tracked text files*, and it is now
+corrected rather than deleted.** It also removes the question of whether this
+codebase should gain its first `exec.Command`.
+
+### What shipped instead
+
+**`--ignore <glob>`, repeatable, on top of a built-in list**, with `**`
+spanning segments and a bare name matching itself and everything under it — so
+`--ignore vendor` does what somebody typing it meant.
+
+**The defaults are printed in `--help` and again on every run**, because a file
+missing from the output is either untouched or excluded and those are different
+facts. Nothing is skipped invisibly.
+
+**Every rewritten file is listed with its change count.** A count cannot show
+anybody that a rewrite reached a file it had no business touching; only the name
+can, and the run is the one chance to notice.
 
 ## ▶ 2026-09-23
 
