@@ -2,7 +2,7 @@
 type: bundle
 type_version: "0.0.1"
 title: lumastack/luma-catalog/backlog
-version: 0.47.0
+version: 0.48.0
 stage: draft
 consumers: [project]
 description: The record types a luma-backlog corpus conforms to, and the procedures for the things somebody does to a backlog — what an agent needs in order to work one well.
@@ -30,7 +30,7 @@ that moved, the tool refuses and names the near miss, and an agent recovers by
 reading `--help`.
 
 **It is `draft`, and the version number is the honest statement of maturity.**
-Forty-seven versions in three weeks, every one of them driven by something going
+Forty-eight versions in three weeks, every one of them driven by something going
 wrong in a real corpus rather than by design review. The types have been
 exercised hard and are still moving. Read the `## Version` section below before
 depending on a shape.
@@ -82,6 +82,29 @@ judgment and calls the command for everything else.
   thing and says why.
 
 ## Version
+
+`0.48.0` — **`work-item` gains `former_keys`** (type `0.0.2`).
+
+**Nothing to do.** Adding a field is not breaking — a consumer that has not
+learned it reads a record exactly as before, and a record that has never been
+migrated carries no list. It is `optional` rather than `recommended` for that
+reason: raising an obligation is the change that breaks while looking additive.
+
+**What it is for.** A key migration rewrites a record's prefix, and every
+reference held anywhere we cannot edit would break. `former_keys` holds what the
+record used to answer to, so the old key keeps resolving — the way a renamed
+repository keeps answering to its old name, without anybody rewriting the old
+name out of other people's content.
+
+**The promise being defended is that a key resolves to exactly one record**,
+which is stronger than *a key is used once*. That distinction is what allows a
+record to reclaim a key from its own list — migrating back must be able to
+return `WORK-0123` to the record that held it — while a key freed by migration
+is never issued to a *different* record, since that would make one old reference
+resolve to two.
+
+**Written by a migration, never by hand.** The tooling that writes it is
+luma-backlog's, and does not exist yet.
 
 `0.47.0` — **the links are fixed, and publishing is what found them.**
 

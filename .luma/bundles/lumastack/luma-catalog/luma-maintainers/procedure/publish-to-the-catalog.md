@@ -51,6 +51,23 @@ paragraph nobody acted on is patch. **One kind is objective and gets rejected
 outright**: removing a document others link to, or a field from a type when
 records exist against it.
 
+### A first publication carries the version it already had
+
+**Promoting a bundle out of a project does not reset it to `0.1.0`.** The number
+it reached locally is the honest one — it counts changes that really happened,
+and the `## Version` section beneath it is the record of what each one was.
+
+**Resetting throws that away and replaces it with a worse claim.** A bundle at
+`0.1.0` reads as *new and barely exercised*; one at `0.47.0` reads as *churned
+hard against something real*, which is what a first adopter most needs to know.
+The high number is not embarrassing — it is the most useful thing on the page,
+and it is the only signal that says how much of this has been wrong before.
+
+**Do not reset unless the maintainer asks for it**, and when they do, say what
+is being given up first. **Lean towards keeping the history intact even then**:
+a changelog can survive a renumbering if the old numbers stay readable in the
+entries, and an entry nobody can date against a version is close to useless.
+
 ## 3. Write the `## Version` section
 
 **Newest first, with the reasoning.** This is what an adopter reads to decide
