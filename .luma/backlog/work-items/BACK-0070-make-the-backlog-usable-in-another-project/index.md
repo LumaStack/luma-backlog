@@ -3,13 +3,13 @@ type: work-item
 type_version: "0.0.1"
 key: BACK-0070
 title: Make the backlog usable in another project
-workflow_status: unprepared
+workflow_status: preparing
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-08T16:28:06Z'}
 description: everything that has to be true before a second project can adopt this tool and keep receiving updates — the remaining breaking changes, a way to ask what is open, the bundle published out of local/, a released binary, and migration. this is a delivery rather than a piece of work, and it is a work item only because BACK-0069 has not produced the unit it should be.
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
-rank: 020.0020.000
+modified: {by: 'agent:opus-5/luma-backlog', at: '2026-09-24T18:33:23Z'}
+rank: 030.0020.000
 former_keys: ["WORK-0070"]
 ---
 
@@ -88,3 +88,15 @@ correctness one.
 - `docs/design/mvp.md` — the command surface, and what the first release ships.
 - [[work-items/BACK-0069-the-backlog-has-no-unit-for-a-delivery]] — what this
   record should have been.
+
+## Related work items
+
+**[FORE-0001 · Test backlog in a new project](https://github.com/LumaStack/luma-foreman/tree/main/.luma/backlog/work-items/FORE-0001-test-backlog-in-a-new-project)**
+— in `luma-foreman`. The second project, standing the tool up for real. Its
+outcomes are this record's conditions being checked where they actually have to
+hold, so what fails there is a finding against this delivery rather than against
+that repository.
+
+A cross-repository link is a URL because it has to be. Wikilinks resolve within
+one corpus, so `[[work-items/FORE-0001-…]]` written here would find nothing and
+say nothing about it.
