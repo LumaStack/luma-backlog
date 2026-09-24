@@ -289,3 +289,36 @@ func TestBareKeyCountIgnoresTheRedirectItJustWrote(t *testing.T) {
 		t.Errorf("former_keys counted as remaining: %s %v", f.Path, f.Keys)
 	}
 }
+
+func TestIncludeBareKeysWorksAfterTheMigration(t *testing.T) {
+	// The flag is most useful after the fact: somebody migrates, reads the
+	// list, decides, and runs it again. Built from this run's renames alone,
+	// the map is empty on that second run and the flag silently does nothing
+	// — which is exactly when it was reached for.
+	dir, b := repo(t, map[string]string{
+		".luma/backlog/work-items/WORK-0031-reshape/index.md": workItem("WORK-0031", "reshape"),
+		"docs/notes.md": "WORK-0031 in prose.\n",
+	})
+	if _, err := Keys(dir, b, Options{Target: "BACK"}); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(read(t, dir, "docs/notes.md"), "WORK-0031 in prose") {
+		t.Fatal("the first run should have left the bare key alone")
+	}
+
+	res, err := Keys(dir, b, Options{Target: "BACK", IncludeBareKeys: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(res.Renames) != 0 {
+		t.Errorf("the second run should migrate nothing: %+v", res.Renames)
+	}
+	if !strings.Contains(read(t, dir, "docs/notes.md"), "BACK-0031 in prose") {
+		t.Errorf("the bare key was not rewritten on a later run:\n%s", read(t, dir, "docs/notes.md"))
+	}
+	// And the redirect it reads the mapping from is still intact.
+	idx := read(t, dir, ".luma/backlog/work-items/BACK-0031-reshape/index.md")
+	if !strings.Contains(idx, `former_keys: ["WORK-0031"]`) {
+		t.Errorf("former_keys was damaged by the run that read it:\n%s", idx)
+	}
+}

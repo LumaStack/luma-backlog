@@ -91,7 +91,11 @@ func Keys(projectRoot string, b *root.Backlog, opts Options) (*Result, error) {
 		}
 	}
 
-	files, bare, err := rewriteTree(p, res.Renames, opts)
+	items, _, err := corpus.List(b, corpus.Filter{Unit: corpus.WorkItem})
+	if err != nil {
+		return nil, err
+	}
+	files, bare, err := rewriteTree(p, res.Renames, items, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -189,10 +193,26 @@ func yamlList(items []string) string {
 
 // rewriteTree repoints every name across the repository, and collects or
 // rewrites the bare keys depending on what was asked for.
-func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]FileChange, []BareKeyFile, error) {
+func rewriteTree(p *root.Project, renames []corpus.KeyRename, items []corpus.Item, opts Options) ([]FileChange, []BareKeyFile, error) {
 	var files []FileChange
 	var bare []BareKeyFile
+
+	// Old keys come from two places, and using only the first made the flag
+	// useless exactly when somebody would reach for it.
+	//
+	// **This run's renames** answer during a migration. **Every record's
+	// former_keys** answer afterwards --- and after a migration there are no
+	// renames, so a map built from renames alone is empty and
+	// `--include-bare-keys` silently does nothing. The keys a corpus has moved
+	// away from are a property of the corpus, not of the run that moved them.
 	old := map[string]string{}
+	for _, it := range items {
+		for _, k := range it.FormerKeys() {
+			if it.Key() != "" {
+				old[corpus.NormalizeKey(k)] = it.Key()
+			}
+		}
+	}
 	for _, r := range renames {
 		old[r.OldKey] = r.NewKey
 	}
