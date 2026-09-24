@@ -5,10 +5,10 @@
 
 # Bundles
 
-- `lumastack/luma-catalog/backlog` 0.48.0
+- `lumastack/luma-catalog/backlog` 0.49.0
   - catalog: lumastack/luma-catalog
-  - commit: e4dec90b326c48b2f1b3fa30de23cbf3b24a3ac3
-  - sha256: 8cfa63c37126a726a44af353a6b8685dff4c6d45822ab4dec10a50fa53dc17ab
+  - commit: e7a4ce7a698e53e15261f8bfc191e0390adeec54
+  - sha256: b36067d9e842d46412c47c5f473b5fbea72a392a5fdb3c3aa786e12bdbed77f3
 - `lumastack/luma-catalog/backlog-ideas` 0.15.0
   - catalog: lumastack/luma-catalog
   - commit: d5d3b50c1f66dad0aaf78ac82ee381f87714088c

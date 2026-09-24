@@ -19,14 +19,14 @@ things, and doing the wrong one is worse than doing neither.
 ## First: a new work item, or an existing one?
 
 **Adding to something that already exists is a capture too** --- "capture that
-into WORK-0031", "add this to what I just captured", "append that to the retry
+into WORK-0001", "add this to what I just captured", "append that to the retry
 work". Work out which is being asked for before running anything.
 
 **Appending is never a quick capture.** It means reading the target, showing it
 back, and sometimes asking before writing --- which is the whole of what quick
 mode buys its way out of. **A quick capture is always a new work item.**
 
-So if a request asks for both --- *"quickly add that to WORK-0031"* --- the append
+So if a request asks for both --- *"quickly add that to WORK-0001"* --- the append
 wins and the mode does not. Say so in a clause, not a paragraph, and carry on:
 *"Appending needs a look at it first, so this one is not quick."* Keep everything
 else lean; the ceremony that follows is the minimum the append needs, not an
@@ -55,7 +55,7 @@ the description already holds. Two reasons, and the second is the one that bites
 **Say plainly that the record has moved on**, name the status it reached, show
 what it says, and wait.
 
-> **WORK-0031** is at `prepared`, not `captured` --- it has outcomes and nineteen
+> **WORK-0001** is at `prepared`, not `captured` --- it has outcomes and nineteen
 > tasks, and somebody has decided what it is.
 >
 > *"The specification and the binary disagree, and the specification won."*
@@ -124,7 +124,7 @@ Then do only this:
 2. **Show what landed, in one message.** The key, the title, and the description
    back --- so nothing has to be opened to check it was taken down right.
 
-   > Captured **WORK-0043** --- *Lint the corpus* · kind `defect`
+   > Captured **WORK-0011** --- *Lint the corpus* · kind `defect`
    > *"records drift from the format and nothing notices until something breaks"*
    > Quick capture; tell me if the kind is wrong or you want it worked up
    > properly.
@@ -225,20 +225,20 @@ indentation does not survive markdown --- two spaces collapse and four become a
 code block, which would take the bolding with it.
 
 > **Duplicates**
-> - **WORK-0002** *Lint the corpus* (`captured`) --- records drifting from the
+> - **WORK-0111** *Lint the corpus* (`captured`) --- records drifting from the
 >   format with nothing noticing. Same problem, and the description is close to
 >   what you just said.
 >
 > **Overlaps**
-> - **WORK-0037** *Old records get migrated as the system improves*
+> - **WORK-1111** *Old records get migrated as the system improves*
 >   (`unprepared`) --- repairing records after a change, which is the half you
 >   would hit second. Different problem, same neighbourhood.
 >
 > **Conflicts**
-> - **WORK-0021** *Rank by position rather than by neighbor* (`captured`) ---
+> - **WORK-0002** *Rank by position rather than by neighbor* (`captured`) ---
 >   proposes the opposite ordering model. Both cannot ship.
 >
-> This reads as a duplicate of WORK-0002. Append to it?
+> This reads as a duplicate of WORK-0111. Append to it?
 
 **All three are worth saying out loud, and none is the junior one.** They fail
 in different ways:
@@ -253,7 +253,7 @@ in different ways:
   knows.
 
 **Say the boundary, not just the neighbour.** For an overlap the useful sentence
-is where one stops and the other starts --- *"WORK-0037 covers repairing records
+is where one stops and the other starts --- *"WORK-1111 covers repairing records
 after a change; this covers noticing they need it."* Naming the seam is what
 turns two records into a division of labour rather than two people guessing.
 
@@ -322,23 +322,23 @@ is too big."*
 >
 > **Duplicates**
 >
-> - **WORK-0112** · Large uploads fail with no error shown
+> - **WORK-0022** · Large uploads fail with no error shown
 >   Same problem, same scope, and its description is almost the sentence you
 >   just said.
 >
 > **Overlaps**
 >
-> - **WORK-0089** · Show upload progress
->   Same screen, different problem. WORK-0089 is the successful path taking a
+> - **WORK-0222** · Show upload progress
+>   Same screen, different problem. WORK-0222 is the successful path taking a
 >   long time; this is the failed path saying nothing.
 >
 > **Conflicts**
 >
-> - **WORK-0104** · Drop the upload size limit
+> - **WORK-2222** · Drop the upload size limit
 >   If the limit goes there is no "too big" left to report. One of these should
 >   not be built.
 >
-> **WORK-0104 is the one to look at** --- it is already in To Do, so somebody is
+> **WORK-2222 is the one to look at** --- it is already in To Do, so somebody is
 > about to remove the thing this asks us to report on.
 >
 > If you still want this captured, I would write:
@@ -349,19 +349,19 @@ is too big."*
 > | **Kind** | `defect` |
 > | **Description** | "uploads fail silently when the file is too big" --- no error, no toast, the file just does not appear |
 >
-> And below that, kept separate: this is likely a duplicate of WORK-0112 rather
-> than a new record, and it is in direct tension with WORK-0104.
+> And below that, kept separate: this is likely a duplicate of WORK-0022 rather
+> than a new record, and it is in direct tension with WORK-2222.
 >
-> Append to WORK-0112, open it as new, or leave it until WORK-0104 is settled?
+> Append to WORK-0022, open it as new, or leave it until WORK-2222 is settled?
 
 **Second message --- after they choose.**
 
-> Appended to **WORK-0112** --- *Large uploads fail with no error shown*.
+> Appended to **WORK-0022** --- *Large uploads fail with no error shown*.
 >
 > Its description now reads: *"large uploads fail with no error shown --- no
 > error, no toast, the file just does not appear."*
 >
-> Still at `captured`. I have not touched WORK-0104.
+> Still at `captured`. I have not touched WORK-2222.
 
 **What the example is showing**, since the shape is easy to copy and the
 substance is not:

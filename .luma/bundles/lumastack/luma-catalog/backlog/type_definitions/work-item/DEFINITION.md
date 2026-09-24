@@ -4,7 +4,7 @@ type_version: "0.0.1"
 defines: work-item
 version: "0.0.2"
 fields:
-  key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-0002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
+  key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-0001. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
   kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
   former_keys:     {field_presence: optional, field_type: list of text, desc: "Keys this record formerly answered to and no longer does, oldest first. Written by a key migration, never by hand. Resolution accepts them, so a reference written before the migration keeps working; allocation skips them, so one is never issued to a different record. A record may reclaim a key from its own list."}
@@ -35,7 +35,7 @@ one old reference resolve to two, which is the failure a rename redirect has
 when somebody takes the vacated name.
 
 **The single exception is a record reclaiming its own.** Migrating back from
-`BACK` to `WORK` must be allowed to return `WORK-0123` to the record that held
+`BACK` to `WORK` must be allowed to return `WORK-0011` to the record that held
 it — same record, so the promise above still holds. Without the exception,
 migrating back would be refused for every record that ever moved.
 
@@ -292,10 +292,10 @@ field is `recommended` rather than required for exactly that reason.
 
 | | |
 | --- | --- |
-| **path** | `backlog/work-items/BACK-0002-lint-the-corpus/index.md` — the **identity**. A wikilink resolves against it, and it is what a record *is* (`spec.md` §7.1). |
-| **key** | `WORK-0002` — the short handle, unique, and what survives a move. |
+| **path** | `backlog/work-items/WORK-0001-lint-the-corpus/index.md` — the **identity**. A wikilink resolves against it, and it is what a record *is* (`spec.md` §7.1). |
+| **key** | `WORK-0001` — the short handle, unique, and what survives a move. |
 | **slug** | `lint-the-corpus` — what the work is about, derived from the title. |
-| **name** | `BACK-0002-lint-the-corpus` — the two joined, and literally the directory's name. |
+| **name** | `WORK-0001-lint-the-corpus` — the two joined, and literally the directory's name. |
 | **title** | *Lint the corpus* — prose for a person. |
 
 **A title is prose; a name is what the thing is called.** The name is unique like
@@ -308,7 +308,7 @@ set aside `change` for a kind and `committed` for a work status.
 
 ### Written and said as one string
 
-`BACK-0002-lint-the-corpus` — the key and the slug joined, the way a decision's
+`WORK-0001-lint-the-corpus` — the key and the slug joined, the way a decision's
 filename joins its number and its slug. That is the form to use in prose, in a
 commit message and out loud, and all of it resolves: the joined form, the key
 alone, and the slug alone, with the key half matched case-insensitively.
@@ -318,7 +318,7 @@ a listing with a key column leaves an empty cell on every record that carries
 none — only a work item has a key, so an outcome's identifier is its slug and the
 column is never blank.
 
-**And it is the directory name.** `work-items/BACK-0002-lint-the-corpus/` — the
+**And it is the directory name.** `work-items/WORK-0001-lint-the-corpus/` — the
 key leads so a listing sorts by it, and the slug follows so the directory still
 reads as what the work is. That matches the decision records, where the number is
 in the filename too.

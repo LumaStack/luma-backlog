@@ -19,10 +19,10 @@ item**, so it cannot route on its own. **What follows it decides:**
 | they said | it means | because the object is |
 | --- | --- | --- |
 | *move it to in progress* · *move it back* · *move it along* · *move it to done* | **this procedure** | a work status on the ladder |
-| *move it to the top* · *move it above WORK-0031* · *move it up the list* · *make it next* | **the `rank` command** | a position among peers at one work status |
+| *move it to the top* · *move it above WORK-0001* · *move it up the list* · *make it next* | **the `rank` command** | a position among peers at one work status |
 
 **Where nothing names either, ask — one question, and a cheap one.** *"Move
-WORK-0095"* and *"move it up"* are genuinely ambiguous: up the ladder and up the
+WORK-0011"* and *"move it up"* are genuinely ambiguous: up the ladder and up the
 list are both ordinary things to want, and guessing wrong writes the wrong field
 on a record somebody is watching.
 
@@ -113,7 +113,7 @@ editing this document may add a fourth; an agent reading it may not invent one
 in the moment**, and a procedure that claimed the list was final would be an
 argument against its own maintainer.
 
-**Measured here, twice in one session on 2026-09-09.** An agent took WORK-0074
+**Measured here, twice in one session on 2026-09-09.** An agent took BACK-0074
 from `preparing` to `in_progress` in three consecutive commands, and the
 maintainer sent it back to `todo` because no work had been done on it. **This
 procedure already said not to**, which is the evidence that saying it is not
@@ -344,7 +344,7 @@ force**: they get told, not asked.
 > titled *"A work item is owned, and ownership is not modelled yet"* — so the
 > concept is in force and **the field does not exist**. Say who owns it anyway;
 > the gap is worth being visible. Assignees are a later question
-> (tracked upstream as WORK-0063).
+> (tracked upstream as BACK-0063).
 
 ### Overriding is legitimate
 
@@ -387,7 +387,7 @@ without it.
 > prose-only rules runs far below what a guarantee requires* — and the
 > measurement above is exactly that. **The durable form is the move command
 > carrying the gate's answer**, tracked as
-> WORK-0081 upstream. Until then this
+> WORK-0111 upstream. Until then this
 > is what there is, and it is known to be insufficient.
 
 ## What a transition actually does
@@ -413,7 +413,7 @@ That is the sentence the table has been missing.
 **Going backwards is the exception**, and does little today --- including to the
 rank: a record sent back re-enqueues at the **back** of its destination like
 anything else. **Landing it at the front is proposed and not built**
-(tracked upstream as WORK-0095), on the grounds that
+(tracked upstream as BACK-0095), on the grounds that
 burying something should be an act somebody performs rather than what a default
 does quietly.
 
@@ -642,11 +642,56 @@ workers apart.
 luma-backlog work-item close <ref> <completed|rejected|canceled|superseded>
 ```
 
+**Run this while closing.** Running it after the work item is closed is
+acceptable and less ideal --- so when that is what is happening, say so, and say
+what could not be done after the fact where anything could not.
+
 **Write the journal entry first.** What was learned, what was tried that did not
 work, what a future reader would need, what will help an eventual retrospective, and
 what may be considered valuable and should not become lost after this session —
 [[backlog-journal]]. After closing, nobody comes back to write it, and the work
 item's memory is the only thing that survives the session.
+
+### Then show it, and ask before filing anything else
+
+**Show what was journalled --- the entry, not a summary of it.** It was written
+in somebody's name and they have had no chance to see it. The moment before
+closing is the last one where a learning filed on the wrong record costs a
+sentence to move rather than an excavation.
+
+**Then name what else might be worth recording, and stop there.** Two registers
+outlive this work item, and neither is the agent's to write into unasked:
+
+- **a decision** --- a position the work settled, which somebody will otherwise
+  re-argue from nothing
+- **a violation** --- something an agent did that was not wanted, whether or not
+  a rule existed to break
+
+**Come with recommendations rather than questions.** *"Is there anything to
+file?"* hands the work back to the reader. Name each candidate, say in a line
+what it would record, say which you would file and why --- and say so plainly
+when the answer is none, because *nothing here is worth a record* is an answer
+and an empty list is not.
+
+**Then wait. Neither is filed without sign-off.**
+
+**A violation register is read in aggregate to decide what keeps happening**, so
+an agent filing its own entries has already made the judgement that reading them
+was supposed to inform. **A decision record is worse**: it is in force the moment
+it is written, and one written unasked binds everybody to a position nobody
+took.
+
+**The journal is the deliberate exception.** It is the work item's own memory, it
+binds nothing, and a learning lost costs more than a paragraph nobody needed ---
+so it is written without asking, and shown afterwards.
+
+**Run this while closing, and run it afterwards if it was missed.** Nothing here
+depends on the record still being open: a journal can be shown, a candidate can
+be named, and a decision or a violation can be filed against a work item that
+closed weeks ago. **Somebody asking for it after the fact is asking for the
+right thing** --- the answer is to do it, never to observe that the moment has
+passed. A step that only runs at one instant is a step that gets skipped once
+and then never.
 
 **Only `completed` is checked against the outcomes.** The others close freely,
 deliberately: gating cancellation on completion would make it impossible to stop
@@ -683,7 +728,7 @@ being cancelled means.
 **Whether they succeeded is a warning and not a bar.** Attempting a task several
 times is ordinary and some attempts fail; a person needs to see that and decide
 whether it points at a problem. *Unbuilt — a task cannot record how it ended
-(tracked upstream as WORK-0064).*
+(tracked upstream as BACK-0064).*
 **Never auto-close the stragglers**: that invents a disposition nobody chose,
 which is exactly what `--force` refuses to do to outcomes.
 
@@ -793,7 +838,7 @@ the thing that dispatched the work rather than the thing that did it.
 
 **Nothing in the actor format says which one an agent is.** `agent:<model>/<project>`
 names a model, not a role, so an orchestrating agent and a working one are
-indistinguishable on the record (WORK-0066). Until that changes, standing is
+indistinguishable on the record (BACK-0066). Until that changes, standing is
 **asserted rather than proven** — and a false assertion here is a false
 attribution, which `CLAUDE.md` already calls worse than no attribution at all.
 
@@ -818,16 +863,16 @@ field is a decision nobody can prove was made.
 | reaching `todo` | **we commit to starting this soon** | **authorization** | *the crossing is the act* | ✘ nowhere to record it |
 | reaching `in_progress` | at least one outcome exists | check | **refused** — `--force` | ✔ |
 | reaching `in_progress` | **there is capacity to start now** | **authorization** | *the crossing is the act* | ✘ nowhere to record it |
-| reaching `in_progress` | `stage` is at least `provisional` | *field write the move owes* | — | ✘ WORK-0075 |
+| reaching `in_progress` | `stage` is at least `provisional` | *field write the move owes* | — | ✘ WORK-1111 |
 | reaching `in_progress` | an owner | *settled by ADR-0008* | — | ✘ no field, no `take` |
-| reaching `in_progress` | one per worker (ADR-0010) | check | — | ✘ WORK-0066 |
+| reaching `in_progress` | one per worker (ADR-0010) | check | — | ✘ WORK-0002 |
 | leaving `closed` | a reason is given | check | **warned** | ✔ |
-| leaving `closed` | `stage` resets, never to `stable` | *field write the move owes* | — | ✘ WORK-0075 |
+| leaving `closed` | `stage` resets, never to `stable` | *field write the move owes* | — | ✘ WORK-1111 |
 | `closed` as `completed` | every live outcome proven | check | **refused** — `--force` | ✔ |
 | `closed` as `completed` | every task has reached a terminal work status | check | **refused** — `--force` | ✔ |
 | `closed`, other dispositions | every task resolved | check | **warned** | ✔ |
-| `closed` as `completed` | every task that ran, succeeded | check | **warned** | ✘ WORK-0064 |
-| `closed` | `stage` becomes `stable` | *field write the move owes* | — | ✘ WORK-0075 |
+| `closed` as `completed` | every task that ran, succeeded | check | **warned** | ✘ WORK-0022 |
+| `closed` | `stage` becomes `stable` | *field write the move owes* | — | ✘ WORK-1111 |
 | `closed` | **forcing it, whatever the disposition** | **authorization** | *the owner's, never assumed* | ✘ no owner field |
 
 **Some checks you can satisfy yourself, and some you cannot — which is not a

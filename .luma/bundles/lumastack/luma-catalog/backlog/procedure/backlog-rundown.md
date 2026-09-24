@@ -54,7 +54,7 @@ most.**
 **Do not force it.** If nothing in the pile looks ready to work out, say that
 and name the top one or two anyway — **not as recommendations but as a gauge**,
 so somebody can see how far preparation actually is from producing anything.
-*"Nothing here is close; the nearest is WORK-0022, and it needs a decision
+*"Nothing here is close; the nearest is WORK-0001, and it needs a decision
 first."*
 
 **Never offer `captured` or `prepared` work as something to do.** It has not
@@ -117,7 +117,7 @@ record to find out costs more than the answer is worth. `spec.md` §5.5 is
 explicit that git is the machine record — every action is a commit — so recency
 is a git question.
 
-**One line, naming the record and roughly when.** *"Last touched WORK-0031,
+**One line, naming the record and roughly when.** *"Last touched WORK-0011,
 about an hour ago — the help restyle."* Somebody returning after a break wants
 their place back before they want advice.
 
@@ -157,10 +157,10 @@ faster than you can.
 **One to five, ranked, with a clause each.** Not a plan — a shortlist somebody
 can act on without reading twice.
 
-> 1. **Finish WORK-0031** — the only thing in progress, and two of its outcomes
+> 1. **Finish WORK-0011** — the only thing in progress, and two of its outcomes
 >    are provable now.
-> 2. **Prepare WORK-0022** — it blocks the migration work already queued.
-> 3. **Verify the two outcomes on WORK-0031** — ten minutes, and the record
+> 2. **Prepare WORK-0001** — it blocks the migration work already queued.
+> 3. **Verify the two outcomes on WORK-0011** — ten minutes, and the record
 >    stops understating itself.
 
 **Rank on what unblocks the most, then on what is nearly done.** Do not weigh it
@@ -183,8 +183,8 @@ come from a template.
 >
 > **Preparation considerations**
 >
-> ○ WORK-0039 · What closed work items cost as the corpus grows
-> ○ WORK-0038 · Where a work item stands is hard to see in the file
+> ○ WORK-0111 · What closed work items cost as the corpus grows
+> ○ WORK-1111 · Where a work item stands is hard to see in the file
 >
 > Neither has outcomes or a scope, so neither is close.
 >
@@ -200,23 +200,23 @@ come from a template.
 >
 > - Fifty-six commits here and two in luma-catalog, none pushed. Everything
 >   from today is in one working tree.
-> - WORK-0031 has 23 tasks and began the day with 9. The reshape is finished;
+> - WORK-0011 has 23 tasks and began the day with 9. The reshape is finished;
 >   what remains is the pile of commands it turned up.
 > - The second gate has never been used --- nothing has ever been `todo`, so
 >   this report can only ever show an empty queue.
 >
 > **Last touched**
 >
-> WORK-0031, still open, all session. Its stamp reads `16:51` and two `captured`
+> WORK-0011, still open, all session. Its stamp reads `16:51` and two `captured`
 > records show as more recent, but that is an artefact --- adding a task or
 > writing a journal line never touches the parent's stamp. You were mid-flight;
 > this is where you resume.
 >
 > ──[ Options ]───────────────────────────────────────────
 >
-> 1. **Verify WORK-0031's two provable outcomes** --- both shipped with tests;
+> 1. **Verify WORK-0011's two provable outcomes** --- both shipped with tests;
 >    the record understates itself until then.
-> 2. **Split WORK-0031** --- the open tasks are a different work item wearing
+> 2. **Split WORK-0011** --- the open tasks are a different work item wearing
 >    its name.
 > 3. **Move one thing to `todo`** --- so the second gate has been used once and
 >    this report has something to say.
@@ -225,7 +225,7 @@ come from a template.
 >
 > **Push and open both PRs.** Everything above is more work; this is the only
 > thing that reduces risk rather than adding to it, and it takes ten minutes.
-> If you would rather keep building, take 2 --- deciding what WORK-0031 *is*
+> If you would rather keep building, take 2 --- deciding what WORK-0011 *is*
 > determines which task comes next.
 
 **What that example is doing**, since the shape is easy to copy and the
@@ -241,5 +241,5 @@ substance is not:
 - **The pick is not on the menu.** It is a different kind of thing from the
   three below it --- they are all more work, it is the one that reduces risk ---
   and repeating it would have cost a line to say nothing.
-- **Nothing is offered as work that has not been selected.** WORK-0031 appears
+- **Nothing is offered as work that has not been selected.** WORK-0011 appears
   as a preparation candidate and in the recommendations --- never as *next*.
