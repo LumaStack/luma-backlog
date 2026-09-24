@@ -96,6 +96,21 @@ default. The flag would invert to `--strict` in that world.
 reviewable and an external reference recognizable, so giving one up is a
 decision made after seeing what collided — not a silent recovery.
 
+### The run reaches the whole repository
+
+**Scoping it to `.luma/` was wrong.** Records live there; names are written
+wherever anybody writes them. Counted before building: **450 wikilinks across
+233 files**, **95 full names outside a wikilink**, one link in
+`docs/open-questions.md`, and full names in **ten `.go` files** —
+`internal/corpus/rank.go` cites `WORK-0096`, `duplicate.go` cites `WORK-0013`.
+A migration that stopped at `.luma/` would have broken all of those quietly.
+
+**Anchored on the full name, with a boundary.** The replacement matches
+`[[work-items/<old name>` and the bare `<old name>` alike, and requires what
+follows to end the name — so a name that is a prefix of another cannot corrupt
+the longer one. No name is a prefix of another today; the boundary is there
+because that is not something to depend on.
+
 ### The order is forced, and the first step leaves the repository
 
 **The type change goes first, and it goes the long way.** `work-item`'s
@@ -108,15 +123,20 @@ and it is worth knowing it costs a cycle before anybody starts.
 
 ## Out of scope
 
-**Prose that mentions a key.** A journal line reading *journaled on WORK-0036*
-was true when written and still resolves through the redirect. Rewriting it
-would falsify a record to fix something that is not broken. **Wikilinks are a
-different matter and are in scope** — a wikilink is a location, the location
-moves, and no server exists to redirect a file path.
+**Bare keys, wherever they appear.** A line reading *journaled on WORK-0036*
+still resolves, because `former_keys` answers for it — shipped, not planned.
+And rewriting one is **not safe**: a bare key may name a work item in another
+project that uses the same prefix. Unnecessary and risky is an easy call.
+
+**Full names are the opposite on both counts and are in scope.** A name is not a
+key: resolution falls back to string equality, which a slug defeats, so
+`WORK-0031-reshape-the-command-surface` breaks silently after the directory
+moves and nothing rescues it. A key *and* slug colliding across projects is not
+a real risk. **So the rule is: rewrite names, never keys.**
 
 **The vendored bundle.** `.luma/bundles/` is not edited by this or anything
-else; an adopted bundle is a copy and editing it is drift. Its old-key mentions
-are historical prose and would be out of scope even if we could reach them.
+else; an adopted bundle is a copy and editing it is drift. That is the reason,
+and it is not scope — the run otherwise reaches the whole repository.
 
 **`DefaultKeyPrefix`.** It stays `WORK`. It is a value rather than a key, and
 rewriting it would change what every project that never configured a prefix

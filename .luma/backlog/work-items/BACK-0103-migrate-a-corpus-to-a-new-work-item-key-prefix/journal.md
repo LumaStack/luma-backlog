@@ -233,6 +233,45 @@ and it is smaller than the one I made first.
 rather than filling the first gap. A gap is usually a record somebody removed,
 and giving its number to new work makes every old reference point at the wrong
 thing.
+### Settled: rewrite names, never keys — and the scope was wrong
+
+**The rule is one sentence and it comes from the two forms being exact opposites
+on both axes**, which is not how I had it framed. I had been saying *rewrite
+links, leave prose* — wrong, because `internal/corpus/rank.go`'s comment citing
+`WORK-0096-what-repeated-reordering-does-to-the-rank-key` is prose and still has
+to move.
+
+| in the text | survives a migration | safe to rewrite |
+| --- | --- | --- |
+| bare `WORK-0031` | **yes**, `former_keys` resolves it | **no**, may name another project's work item |
+| full `WORK-0031-reshape-the-command-surface` | **no** | **yes** |
+
+**The second row was checked rather than assumed.** After the directory moves,
+`matchesWorkItem` fails on the full name and the former-key pass fails too,
+because `ParseKey` will not parse a string with a slug attached and the
+comparison falls back to string equality. **Full names break silently and
+nothing rescues them** — which makes them the form that *must* move, not merely
+the form that may.
+
+**And the maintainer's point about bare keys is a correctness argument, not a
+convenience one.** A bare key can legitimately name a work item in a different
+project using the same prefix. Rewriting it would be wrong roughly one time in a
+hundred, and silently. Leaving it costs nothing because resolution already
+answers for it.
+
+**Scope was measured, not estimated.** 450 wikilinks across 233 files; 95 full
+names outside a wikilink; a link in `docs/open-questions.md` written two hours
+earlier; full names in ten `.go` files. **A run stopping at `.luma/` would have
+broken every one of those quietly**, and the outcome saying it touched only the
+corpus has been rewritten rather than left to be discovered during the run.
+
+**Reporting: a count, never a list.** 1309 bare old keys remain after a clean
+run. Every one resolves, some deliberately name another project, and one is a
+fixture for `WORK-9999`, a key that has never existed. Listing them would be the
+largest section of the output and every entry a non-problem, which is how a
+report teaches people to skip it. Whether anything names a key resolving to
+nothing is a standing question rather than a migration one; WORK-0002 is its
+home.
 
 ## ▶ 2026-09-23
 
