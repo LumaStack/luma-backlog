@@ -1113,7 +1113,7 @@ Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to wr
 
 ### Not the WORK-0085 shape, though it is adjacent
 
-[[work-items/WORK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]] is a single field asked to carry two independent facts. Neither field here carries two facts; this is one *word* covering two *scopes*, which is a different problem. WORK-0085 notes that it and ADR-0003's inverse may want writing down together — a third rule about naming could join them, if this settles into one.
+[[work-items/BACK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]] is a single field asked to carry two independent facts. Neither field here carries two facts; this is one *word* covering two *scopes*, which is a different problem. WORK-0085 notes that it and ADR-0003's inverse may want writing down together — a third rule about naming could join them, if this settles into one.
 
 ### What decides it
 

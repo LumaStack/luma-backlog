@@ -87,9 +87,9 @@ sees it once stops needing to ask.
 >
 > ```
 > luma-backlog show WORK-0031
-> luma-backlog task list -w WORK-0031-reshape-the-command-surface
-> luma-backlog outcome list -w WORK-0031-reshape-the-command-surface
-> luma-backlog work-item journal -w WORK-0031-reshape-the-command-surface
+> luma-backlog task list -w BACK-0031-reshape-the-command-surface
+> luma-backlog outcome list -w BACK-0031-reshape-the-command-surface
+> luma-backlog work-item journal -w BACK-0031-reshape-the-command-surface
 > ```
 
 **Read all four before saying anything.** Each answers a different question and

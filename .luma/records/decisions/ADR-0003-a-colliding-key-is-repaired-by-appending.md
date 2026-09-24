@@ -123,7 +123,7 @@ Each is set aside with what would bring it back. None is rejected.
 
 ## Follow-up
 
-- [[work-items/WORK-0014-detect-two-records-holding-one-key]] — nothing notices a duplicate today, and this decision is inert without it.
+- [[work-items/BACK-0014-detect-two-records-holding-one-key]] — nothing notices a duplicate today, and this decision is inert without it.
 - **How the winner is chosen** is unspecified and needs a deterministic rule, or two actors repairing independently produce a new divergence. Candidates: earliest `created`, lowest path, or whichever reached the integration branch first.
 - Nothing here is implemented.
 
@@ -133,4 +133,4 @@ Each is set aside with what would bring it back. None is rejected.
 - `docs/spec.md` §6.1 — independent work never serializes, which rules out a coordinator.
 - `docs/spec.md` §3.2, §2.4 — one fact, one place; why the key does not also carry order.
 - `docs/open-questions.md` §8 — the storage topology this sits inside.
-- [[work-items/WORK-0013-how-two-workstations-avoid-colliding]] — the inquiry this came out of, including the trilemma table and the reasoning that was corrected on the way here.
+- [[work-items/BACK-0013-how-two-workstations-avoid-colliding]] — the inquiry this came out of, including the trilemma table and the reasoning that was corrected on the way here.

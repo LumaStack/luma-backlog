@@ -26,7 +26,7 @@ type Duplicate struct {
 // Duplicates reports every key held by more than one record.
 //
 // Detection, not repair. What a duplicate should become is
-// backlog/work-items/WORK-0013-how-two-workstations-avoid-colliding, and
+// backlog/work-items/BACK-0013-how-two-workstations-avoid-colliding, and
 // records/decisions/ADR-0003 leans toward sending one of them to the end of the
 // sequence. Reporting is useful before that is settled, and it is what makes any
 // repair usable at all: a repair nobody knows is needed does not happen.

@@ -36,7 +36,7 @@ Three parts, one record:
 This record supersedes two earlier ones, and their findings are carried here
 rather than lost.
 
-**From [[work-items/WORK-0012-what-is-the-journal-for]]** (captured 2026, its
+**From [[work-items/BACK-0012-what-is-the-journal-for]]** (captured 2026, its
 whole problem statement): the journal is the one place a write is anonymous —
 no timestamp, no actor, ordering within a day implied by position. Whether
 that matters depends on what the journal is *for*, which was never written
@@ -45,7 +45,7 @@ whether a format change is an improvement. The specific question that raised
 it — grouping by date versus a timestamp per entry — is downstream and must
 not be settled first.
 
-**From [[work-items/WORK-0034-how-journalling-should-work]]** (its capture and
+**From [[work-items/BACK-0034-how-journalling-should-work]]** (its capture and
 analysis):
 
 - **A criterion already exists and drifted from practice.**
@@ -68,7 +68,7 @@ analysis):
 ## Out of scope
 
 - Journalling *at close* specifically —
-  [[work-items/WORK-0033-closing-a-work-item-records-what-was-learned]] holds
+  [[work-items/BACK-0033-closing-a-work-item-records-what-was-learned]] holds
   the settled rules (entries belong to their work item; a learning journalled
   once is not journalled elsewhere).
 - Changing any skill prose before the definition exists — the prose follows

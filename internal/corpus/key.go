@@ -226,7 +226,7 @@ func (i Item) HeldFormerKey(ref string) bool {
 	return false
 }
 
-// Name is what a record is called: WORK-0002-lint-the-corpus.
+// Name is what a record is called: BACK-0002-lint-the-corpus.
 //
 // Key and slug joined, the way a decision's filename joins its number and slug,
 // and literally the name of the directory — so the model and the filesystem
@@ -247,7 +247,7 @@ func (i Item) Name() string {
 	return i.Slug()
 }
 
-// namePattern matches the joined form: WORK-0002-lint-the-corpus. The key
+// namePattern matches the joined form: BACK-0002-lint-the-corpus. The key
 // half takes only a single dash — a name comes off a directory listing, not
 // out of prose, so the sloppy separators ParseKey tolerates have no business
 // here, and a run of dashes inside a slug must stay a slug.
@@ -255,7 +255,7 @@ var namePattern = regexp.MustCompile(`^([A-Za-z][A-Za-z0-9]{1,9})-(\d+)(-.*)$`)
 
 // NormalizeName renders the key half of a name canonically and leaves the
 // slug alone — a slug is lower-case by construction and upper-casing it would
-// stop it matching. `work-2-lint-the-corpus` finds `WORK-0002-lint-the-corpus`.
+// stop it matching. `work-2-lint-the-corpus` finds `BACK-0002-lint-the-corpus`.
 func NormalizeName(ref string) string {
 	m := namePattern.FindStringSubmatch(ref)
 	if m == nil {

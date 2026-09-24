@@ -123,7 +123,7 @@ func parsePosition(p Position) (*big.Rat, error) {
 // where this scheme admits it, not where it stops being useful.
 //
 // Whether positions stay decimal at all is open
-// (.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key).
+// (.luma/backlog/work-items/BACK-0096-what-repeated-reordering-does-to-the-rank-key).
 const maxPositionScale = 60
 
 // formatPosition writes a position at its natural precision --- at least three

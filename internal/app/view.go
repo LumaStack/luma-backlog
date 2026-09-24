@@ -20,7 +20,7 @@ type View struct {
 	// none: only a work item carries one, and a record written before keys
 	// existed has none either.
 	Key string
-	// Name is the two joined — WORK-0002-lint-the-corpus.
+	// Name is the two joined — BACK-0002-lint-the-corpus.
 	Name  string
 	Slug  string
 	Title string

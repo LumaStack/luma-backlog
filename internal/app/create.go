@@ -136,7 +136,7 @@ func (s *Session) workItemFromWorkingDir() string {
 // unranked state: a record with no rank has no position among its peers, and
 // nothing downstream can tell "nobody has placed this" from "placed last" ---
 // so the question is answered once, here, rather than by every reader
-// (.luma/backlog/work-items/WORK-0095-there-is-no-unranked-work).
+// (.luma/backlog/work-items/BACK-0095-there-is-no-unranked-work).
 //
 // It lands at the back of the default status. Arriving says nothing about a
 // record relative to the ones already there, and an unconsidered record must

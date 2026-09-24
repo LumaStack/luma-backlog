@@ -62,5 +62,5 @@ has committed to is work that may never be read — worth weighing against fixin
 them lazily, when a record is picked up.
 
 **Related.**
-[[work-items/WORK-0037-old-records-get-migrated-as-the-system-improves]] is the
+[[work-items/BACK-0037-old-records-get-migrated-as-the-system-improves]] is the
 general question; this is one instance of it.

@@ -161,7 +161,7 @@ checkable.
 
 ## Follow-up
 
-- `[[backlog/work-items/WORK-0004-rename-the-unit-to-work-item]]` — the vocabulary rename
+- `[[backlog/work-items/BACK-0004-rename-the-unit-to-work-item]]` — the vocabulary rename
   end to end.
 - The formation bar's semantics are deliberately deferred. Neither `actionable`
   nor `deliverable` is adopted as a defined gate; both candidate meanings are

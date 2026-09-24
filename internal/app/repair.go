@@ -40,7 +40,7 @@ type RepairResult struct {
 // downstream can tell "nobody has placed this" from "placed last". ADR-0005
 // promised this command and it did not exist, which is why most of this
 // project's own corpus was unranked
-// (.luma/backlog/work-items/WORK-0095-there-is-no-unranked-work).
+// (.luma/backlog/work-items/BACK-0095-there-is-no-unranked-work).
 //
 // **Records are numbered in the order they were created**, within each status.
 // Creation order is already recorded, it is meaningful, and it is the same for

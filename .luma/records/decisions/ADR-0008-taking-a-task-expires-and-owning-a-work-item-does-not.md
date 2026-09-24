@@ -139,7 +139,7 @@ worked on right now* from *nothing is happening*. A crashed agent leaves a work
 item in `in_progress` looking exactly like one under active work, and only a
 person noticing will surface it. This is the same gap that leaves a failed task
 unrepresented and an in-flight attempt invisible
-([[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]]).
+([[backlog/work-items/BACK-0019-a-ledger-of-attempts-against-an-outcome]]).
 
 `open-questions.md` §8 reaches the same conclusion and says why it is
 tolerable: *"what remains is whether occasional duplicated work is tolerable

@@ -155,7 +155,7 @@ project that uses the same prefix. Unnecessary and risky is an easy call.
 
 **Full names are the opposite on both counts and are in scope.** A name is not a
 key: resolution falls back to string equality, which a slug defeats, so
-`WORK-0031-reshape-the-command-surface` breaks silently after the directory
+`BACK-0031-reshape-the-command-surface` breaks silently after the directory
 moves and nothing rescues it. A key *and* slug colliding across projects is not
 a real risk. **So the rule is: rewrite names, never keys.**
 

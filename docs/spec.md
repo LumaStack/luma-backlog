@@ -1484,7 +1484,7 @@ Storing it as a string rather than a number is deliberate: floating-point values
 >
 > **And a rebalance is now mandatory at exhaustion.** Extending precision indefinitely cannot work: the format writes a position at its natural precision, and a value that cannot terminate in base ten makes that search run forever. Precision is therefore bounded, and allocation **refuses** once a further subdivision would round onto a neighbour — because handing back a position another record already holds loses the order silently, which is worse than a refusal. The remedy is the rebalance, which is why it is no longer optional.
 >
-> **Whether any of this survives is open** — `.luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key` is reconsidering the ordering key from the problem rather than from this design, so these numbers are corrected rather than redesigned here.
+> **Whether any of this survives is open** — `.luma/backlog/work-items/BACK-0096-what-repeated-reordering-does-to-the-rank-key` is reconsidering the ordering key from the problem rather than from this design, so these numbers are corrected rather than redesigned here.
 
 The caller never sees the key. `rank --before`, `--after`, `--first`, `--last` express intent; the tool chooses the value.
 

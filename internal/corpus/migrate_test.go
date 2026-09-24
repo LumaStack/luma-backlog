@@ -8,7 +8,7 @@ import (
 
 func TestPlanMovesOnlyThePrefix(t *testing.T) {
 	b := migratedBacklog(t, map[string][]string{
-		"WORK-0031-reshape-the-command-surface": {"WORK-0031"},
+		"BACK-0031-reshape-the-command-surface": {"WORK-0031"},
 		"WORK-0102-a-second-one":                {"WORK-0102"},
 	})
 	plan, err := PlanKeyMigration(b, "BACK")
@@ -107,12 +107,12 @@ func TestPlanLetsARecordReclaimItsOwnFormerKey(t *testing.T) {
 func TestRewriteNamesLeavesBareKeysAlone(t *testing.T) {
 	renames := []KeyRename{{
 		OldKey: "WORK-0031", NewKey: "BACK-0031",
-		OldName: "WORK-0031-reshape-the-command-surface",
+		OldName: "BACK-0031-reshape-the-command-surface",
 		NewName: "BACK-0031-reshape-the-command-surface",
 	}}
-	in := "See [[work-items/WORK-0031-reshape-the-command-surface]] and also " +
-		"[[work-items/WORK-0031-reshape-the-command-surface/outcomes/x]].\n" +
-		"Journaled on WORK-0031, and `WORK-0031-reshape-the-command-surface` in prose."
+	in := "See [[work-items/BACK-0031-reshape-the-command-surface]] and also " +
+		"[[work-items/BACK-0031-reshape-the-command-surface/outcomes/x]].\n" +
+		"Journaled on WORK-0031, and `BACK-0031-reshape-the-command-surface` in prose."
 	got, n := RewriteNamesIn(in, renames)
 	if n != 3 {
 		t.Errorf("changed = %d, want 3", n)
@@ -131,12 +131,12 @@ func TestRewriteNamesWillNotCorruptALongerName(t *testing.T) {
 	renames := []KeyRename{{
 		OldName: "WORK-0031-reshape", NewName: "BACK-0031-reshape",
 	}}
-	in := "[[work-items/WORK-0031-reshape-the-command-surface]] and [[work-items/WORK-0031-reshape]]"
+	in := "[[work-items/BACK-0031-reshape-the-command-surface]] and [[work-items/WORK-0031-reshape]]"
 	got, n := RewriteNamesIn(in, renames)
 	if n != 1 {
 		t.Errorf("changed = %d, want 1 — only the exact name", n)
 	}
-	if !strings.Contains(got, "WORK-0031-reshape-the-command-surface") {
+	if !strings.Contains(got, "BACK-0031-reshape-the-command-surface") {
 		t.Errorf("the longer name was corrupted; output:\n%s", got)
 	}
 	if !strings.Contains(got, "BACK-0031-reshape]]") {
@@ -154,8 +154,8 @@ func TestRewriteNamesWillNotCorruptALongerName(t *testing.T) {
 // only that it comes back.
 func TestRewriteNamesTerminatesOnAPrefixName(t *testing.T) {
 	renames := []KeyRename{{OldName: "WORK-0031-reshape", NewName: "BACK-0031-reshape"}}
-	in := "[[work-items/WORK-0031-reshape-the-command-surface]] twice: " +
-		"[[work-items/WORK-0031-reshape-the-command-surface]]"
+	in := "[[work-items/BACK-0031-reshape-the-command-surface]] twice: " +
+		"[[work-items/BACK-0031-reshape-the-command-surface]]"
 
 	done := make(chan string, 1)
 	go func() {

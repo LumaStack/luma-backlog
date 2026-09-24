@@ -29,7 +29,7 @@ type itemJSON struct {
 	// none: only a work item carries one, and a record written before keys
 	// existed has none either.
 	Key string `json:"key,omitempty"`
-	// Name is the two joined — WORK-0002-lint-the-corpus — which is what the
+	// Name is the two joined — BACK-0002-lint-the-corpus — which is what the
 	// record is called and what its directory is named. Key and slug are kept
 	// beside it so a consumer can use either half without parsing this apart.
 	Name  string `json:"name"`

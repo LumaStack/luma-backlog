@@ -16,7 +16,7 @@ import (
 //
 // **Advancing re-enqueues the record at the back of the destination; going
 // backwards puts it at the front** (ADR-0005, amended 2026-09-17,
-// .luma/backlog/work-items/WORK-0095-there-is-no-unranked-work).
+// .luma/backlog/work-items/BACK-0095-there-is-no-unranked-work).
 //
 // Advancing to the back preserves order in the ordinary case: several records
 // advanced in rank order land in the same relative order, because each arrives

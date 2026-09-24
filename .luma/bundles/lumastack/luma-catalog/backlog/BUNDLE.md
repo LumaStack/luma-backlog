@@ -675,7 +675,7 @@ writing them first: `new` takes no `--description`, so capturing a sentence
 costs two calls; `show` gives a record's fields but not its outcomes, tasks or
 journal; there is no `--column`, though the config defines columns; and nothing
 asks for *everything except closed*. Each is now a task on
-`WORK-0031-reshape-the-command-surface`.
+`BACK-0031-reshape-the-command-surface`.
 
 `0.11.0` — **a key held by two records is reported.**
 
@@ -691,14 +691,14 @@ records and the key they share, on stderr, and each still does its job:
 a duplicate key is a real problem and not a reason to stop working.
 
 **Detection, not repair.** What a duplicate becomes belongs to
-`WORK-0013-how-two-workstations-avoid-colliding`, and choosing it here would
+`BACK-0013-how-two-workstations-avoid-colliding`, and choosing it here would
 pre-empt that. Reporting is useful before it is settled and is what makes any
 repair usable at all — a repair nobody knows is needed does not happen.
 
 The check runs over the whole work item set rather than the rows a caller asked
 for, because a filtered listing would miss a duplicate outside its filter.
 
-`0.10.0` — **`WORK-0002-lint-the-corpus` is a name.**
+`0.10.0` — **`BACK-0002-lint-the-corpus` is a name.**
 
 The vocabulary in one place: a **path** is the identity, a **key** is the short
 handle, a **slug** is what the work is about, a **name** is the two joined and
@@ -731,7 +731,7 @@ One stray directory from that bug is removed and its entry recovered into the
 journal it was meant for.
 
 `0.9.0` — **a work item's directory carries its key.**
-`work-items/WORK-0002-lint-the-corpus/` — the key leads so a listing sorts by
+`work-items/BACK-0002-lint-the-corpus/` — the key leads so a listing sorts by
 it, the slug follows so the directory still reads as what the work is, and it
 matches the decision records where the number is in the filename too.
 
@@ -780,7 +780,7 @@ good at. Only the level is withheld from it.
 shape as `new task` refusing without a work item — the tool is not judging the
 work, it is saying it was not told enough.
 
-`0.7.1` — **a work item is written as `WORK-0002-lint-the-corpus`.** Key and
+`0.7.1` — **a work item is written as `BACK-0002-lint-the-corpus`.** Key and
 slug joined, the way a decision's filename joins its number and slug, and all
 three forms resolve — joined, key alone, slug alone.
 

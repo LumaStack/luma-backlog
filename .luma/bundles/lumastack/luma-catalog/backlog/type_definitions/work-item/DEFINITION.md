@@ -292,10 +292,10 @@ field is `recommended` rather than required for exactly that reason.
 
 | | |
 | --- | --- |
-| **path** | `backlog/work-items/WORK-0002-lint-the-corpus/index.md` — the **identity**. A wikilink resolves against it, and it is what a record *is* (`spec.md` §7.1). |
+| **path** | `backlog/work-items/BACK-0002-lint-the-corpus/index.md` — the **identity**. A wikilink resolves against it, and it is what a record *is* (`spec.md` §7.1). |
 | **key** | `WORK-0002` — the short handle, unique, and what survives a move. |
 | **slug** | `lint-the-corpus` — what the work is about, derived from the title. |
-| **name** | `WORK-0002-lint-the-corpus` — the two joined, and literally the directory's name. |
+| **name** | `BACK-0002-lint-the-corpus` — the two joined, and literally the directory's name. |
 | **title** | *Lint the corpus* — prose for a person. |
 
 **A title is prose; a name is what the thing is called.** The name is unique like
@@ -308,7 +308,7 @@ set aside `change` for a kind and `committed` for a work status.
 
 ### Written and said as one string
 
-`WORK-0002-lint-the-corpus` — the key and the slug joined, the way a decision's
+`BACK-0002-lint-the-corpus` — the key and the slug joined, the way a decision's
 filename joins its number and its slug. That is the form to use in prose, in a
 commit message and out loud, and all of it resolves: the joined form, the key
 alone, and the slug alone, with the key half matched case-insensitively.
@@ -318,7 +318,7 @@ a listing with a key column leaves an empty cell on every record that carries
 none — only a work item has a key, so an outcome's identifier is its slug and the
 column is never blank.
 
-**And it is the directory name.** `work-items/WORK-0002-lint-the-corpus/` — the
+**And it is the directory name.** `work-items/BACK-0002-lint-the-corpus/` — the
 key leads so a listing sorts by it, and the slug follows so the directory still
 reads as what the work is. That matches the decision records, where the number is
 in the filename too.
