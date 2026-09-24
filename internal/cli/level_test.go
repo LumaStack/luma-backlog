@@ -30,7 +30,7 @@ func TestEachLevelLandsWhereItBelongs(t *testing.T) {
 	}
 	for _, args := range [][]string{
 		{"decision", "new", "Use the new queue", "--project"},
-		{"decision", "new", "Retry inside the worker", "-w", "payments-v2"},
+		{"decision", "new", "Retry inside the worker", "--work-item", "payments-v2"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
 			t.Fatalf("%v failed: %s", args, e)
@@ -53,7 +53,7 @@ func TestBothLevelsAtOnceIsRefused(t *testing.T) {
 	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	code, _, errOut := run(t, app, "decision", "new", "Contradiction", "--project", "-w", "payments-v2")
+	code, _, errOut := run(t, app, "decision", "new", "Contradiction", "--project", "--work-item", "payments-v2")
 	if code == ExitOK {
 		t.Fatal("a decision was created with two levels")
 	}

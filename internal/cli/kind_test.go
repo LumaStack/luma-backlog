@@ -37,7 +37,7 @@ func TestKindClassifiesWorkItemsOnly(t *testing.T) {
 	if code, _, e := run(t, app, "work-item", "new", "Payments v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	code, _, errOut := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2", "--kind", "bug")
+	code, _, errOut := run(t, app, "outcome", "new", "It drains", "--work-item", "payments-v2", "--kind", "bug")
 	if code == ExitOK {
 		t.Fatal("--kind was accepted on an outcome")
 	}
@@ -157,7 +157,7 @@ func TestOtherUnitsAreNotNudged(t *testing.T) {
 	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	_, _, errOut := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2")
+	_, _, errOut := run(t, app, "outcome", "new", "It drains", "--work-item", "payments-v2")
 	if strings.Contains(errOut, "no kind") {
 		t.Errorf("an outcome was nudged about kind:\n%q", errOut)
 	}
@@ -174,7 +174,7 @@ func TestDecisionsAreNumberedFromOneSequence(t *testing.T) {
 	}
 	for _, args := range [][]string{
 		{"decision", "new", "Catalogs do not inherit", "--project"},
-		{"decision", "new", "Retry inside the worker", "-w", "payments-v2"},
+		{"decision", "new", "Retry inside the worker", "--work-item", "payments-v2"},
 		{"decision", "new", "Store evidence as events", "--project"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {

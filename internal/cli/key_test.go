@@ -37,7 +37,7 @@ func TestOnlyWorkItemsCarryAKey(t *testing.T) {
 		{"outcome", wiPath(t, project, "payments-v2", "outcomes", "a-thing.md")},
 		{"task", wiPath(t, project, "payments-v2", "tasks", "a-thing.md")},
 	} {
-		if code, _, e := run(t, app, tc.unit, "new", "A thing", "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, tc.unit, "new", "A thing", "--work-item", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
 		}
 		if got := readFile(t, project, tc.path); strings.Contains(got, "key:") {
@@ -127,7 +127,7 @@ func TestARecordWithoutAKeyRefsAsItsSlug(t *testing.T) {
 	if code, _, e := run(t, app, "work-item", "new", "Payments v2", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "It drains", "--work-item", "payments-v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	_, out, _ := run(t, app, "show", "it-drains", "--json")

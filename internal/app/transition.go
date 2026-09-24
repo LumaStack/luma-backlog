@@ -181,7 +181,7 @@ func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 				Problem: req.Ref + " has no outcomes",
 				Detail:  []string{"nothing says when it is finished"},
 				LeadIn:  "Write one with",
-				Command: fmt.Sprintf(`luma-backlog outcome new "<what must be true>" -w %s`, req.Ref),
+				Command: fmt.Sprintf(`luma-backlog outcome new "<what must be true>" --work-item %s`, req.Ref),
 			})
 		}
 		forced = append(forced,

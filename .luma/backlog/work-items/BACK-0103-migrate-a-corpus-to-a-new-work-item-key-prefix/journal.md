@@ -131,6 +131,41 @@ beneath, never in backticks.
 `--renumber` names what the flag does. `--strict` only reads correctly if
 strictness is the opt-in, and `--same-number` would have been the only flag in
 the interface phrased as a constraint rather than an action.
+### Task 2 done — one reader made it small, and a second door nearly got missed
+
+**`Resolve` in `internal/corpus/load.go` is the only place a reference becomes a
+record**, so accepting a former key everywhere was one new case rather than a
+sweep through every command. That is the design paying off, and it is worth
+knowing before touching anything key-shaped.
+
+**The exception was `-w`.** `ResolveWorkItemDir` matches on the **directory
+name**, not on the record's fields — and a migration renames the directory, so
+the old key survives only in `former_keys`. Left alone it would have been the
+one door a migrated key could not open, and it is the door every child record is
+created through. Two passes now, live matches before former ones.
+
+**Precedence is deliberate in both.** A former key is its own tier below exact,
+so a live key always wins. During a migration one key can briefly be one
+record's current key and another's former one, and returning on first match
+would have made the answer depend on walk order.
+
+**Found while there: `-w` was stricter than `show` for no stated reason.** It
+compared keys with `strings.EqualFold`, which answers case but not padding or
+separator runs — so `show work-36` worked and `-w work-36` did not. Now
+`SameKey`, which is what WORK-0082 settled: keys are compared as parsed values,
+never as strings.
+
+**And a decomposition error of mine.** Task 1 was written as advancing *a record
+carries its former keys, and shows them*, and it only did the first half — a
+type admitting a field does not make anything display it. `show` renders
+frontmatter from `Raw`, which was filled by `Record.Get`, which answers for
+scalars only. **So every list field in the corpus was invisible to `show`,
+not just this one** — `advances` on a task has never displayed either. Fixed
+generally rather than special-casing `former_keys`.
+
+**Verified end to end with the binary**, not only in unit tests: `show`, `set`,
+`transition` and `journal -w` all accept `WORK-0001` after a simulated migration
+and all report `BACK-0001` back.
 
 ## ▶ 2026-09-23
 

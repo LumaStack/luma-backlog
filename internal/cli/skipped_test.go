@@ -67,7 +67,7 @@ func TestCloseReportsAnOutcomeItCouldNotRead(t *testing.T) {
 	// answer. Refusing is a separate work item; being told is this one.
 	app, project := initialized(t)
 	seed(t, app)
-	if code, _, e := run(t, app, "outcome", "new", "Latency holds", "-w", "payments-v2"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "Latency holds", "--work-item", "payments-v2"); code != ExitOK {
 		t.Fatalf("new outcome failed: %s", e)
 	}
 	if code, _, e := run(t, app, "outcome", "verify", "latency-holds", "proven", "-e", "measured"); code != ExitOK {

@@ -114,7 +114,7 @@ func TestNewOutcomeTakesItsWorkItemFromAFlag(t *testing.T) {
 	app, project := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
 
-	code, _, errOut := run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	code, _, errOut := run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr: %s", code, errOut)
 	}
@@ -143,7 +143,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 		{"decision", wiPath(t, project, "payments-v2", "decisions", "ADR-0001-a-thing.md")},
 		{"exploration", wiPath(t, project, "payments-v2", "explorations", "a-thing.md")},
 	} {
-		if code, _, e := run(t, app, tc.unit, "new", "A thing", "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, tc.unit, "new", "A thing", "--work-item", "payments-v2"); code != ExitOK {
 			t.Fatalf("new %s failed: %s", tc.unit, e)
 		}
 		if r := readRecord(t, project, tc.path); r.Has("workflow_status") {
@@ -152,7 +152,7 @@ func TestJudgedUnitsGetNoWorkflowStatus(t *testing.T) {
 	}
 
 	// A task is worked, so it does carry one.
-	run(t, app, "task", "new", "Do it", "-w", "payments-v2")
+	run(t, app, "task", "new", "Do it", "--work-item", "payments-v2")
 	if r := readRecord(t, project, wiPath(t, project, "payments-v2", "tasks", "do-it.md")); !r.Has("workflow_status") {
 		t.Error("a new task has no workflow_status")
 	}
@@ -284,7 +284,7 @@ func TestNewWritesNothingOutsideTheBacklog(t *testing.T) {
 	before := snapshot(t, project)
 
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
 
 	for path := range snapshot(t, project) {
 		if _, existed := before[path]; existed {
@@ -316,4 +316,18 @@ func wiPath(t *testing.T, project, slug string, rest ...string) string {
 	t.Helper()
 	parts := append([]string{"backlog", "work-items", wiDir(t, project, slug)}, rest...)
 	return filepath.Join(parts...)
+}
+
+// TestWorkItemShorthandStillWorks owns the shorthand deliberately.
+//
+// Every other test spells the flag in full, because a shorthand is
+// configurable and a suite that leans on one breaks everywhere at once when it
+// moves. This is the single place that asserts `-w` is wired to --work-item,
+// so changing the shorthand fails here and nowhere else.
+func TestWorkItemShorthandStillWorks(t *testing.T) {
+	app, _ := initialized(t)
+	run(t, app, "work-item", "new", "Payments v2")
+	if code, _, e := run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2"); code != ExitOK {
+		t.Fatalf("shorthand -w rejected: %s", e)
+	}
 }

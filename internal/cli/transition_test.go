@@ -67,7 +67,7 @@ func TestTransitionReachesEveryRungBelowTerminal(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
 	// in_progress refuses without one, which is its own test below.
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
 
 	for _, status := range []string{"unprepared", "preparing", "prepared", "todo", "in_progress"} {
 		if code, _, e := run(t, app, "work-item", "transition", "WORK-0001", status); code != ExitOK {
@@ -201,7 +201,7 @@ func TestTransitionJournalsAReasonWhenGivenOne(t *testing.T) {
 		t.Fatalf("transition failed: %s", e)
 	}
 
-	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	_, journal, _ := run(t, app, "work-item", "journal", "--work-item", "WORK-0001")
 	if !strings.Contains(journal, "the outcomes pass their checks") {
 		t.Errorf("the reason did not reach the journal:\n%s", journal)
 	}
@@ -219,7 +219,7 @@ func TestTransitionWithoutAReasonWritesNoJournalLine(t *testing.T) {
 	run(t, app, "work-item", "new", "Alpha")
 	run(t, app, "transition", "WORK-0001", "todo")
 
-	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	_, journal, _ := run(t, app, "work-item", "journal", "--work-item", "WORK-0001")
 	if strings.Contains(journal, "→ todo") {
 		t.Errorf("a crossing with no reason wrote to the journal anyway:\n%s", journal)
 	}
@@ -318,7 +318,7 @@ func TestStartingWithNoOutcomesCanBeForced(t *testing.T) {
 func TestStartingWithOneOutcomeIsAllowed(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
 
 	if code, _, e := run(t, app, "transition", "WORK-0001", "in_progress"); code != ExitOK {
 		t.Fatalf("a work item with an outcome was refused: %s", e)
@@ -348,7 +348,7 @@ func TestLeavingPreparingWithoutOutcomesOrTasksWarns(t *testing.T) {
 func TestLeavingPreparingNamesOnlyWhatIsMissing(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
 	run(t, app, "transition", "WORK-0001", "preparing")
 
 	_, _, errOut := run(t, app, "transition", "WORK-0001", "prepared")
@@ -412,7 +412,7 @@ func TestAForcedCrossingIsRecordedInTheJournal(t *testing.T) {
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
 	run(t, app, "transition", "WORK-0001", "in_progress", "--force")
 
-	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	_, journal, _ := run(t, app, "work-item", "journal", "--work-item", "WORK-0001")
 	if !strings.Contains(journal, "FORCED") {
 		t.Errorf("a forced crossing left no journal entry:\n%s", journal)
 	}
@@ -428,10 +428,10 @@ func TestAForcedCrossingIsRecordedInTheJournal(t *testing.T) {
 func TestForceWithNothingToOverrideRecordsNothing(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
 	run(t, app, "transition", "WORK-0001", "in_progress", "--force")
 
-	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	_, journal, _ := run(t, app, "work-item", "journal", "--work-item", "WORK-0001")
 	if strings.Contains(journal, "FORCED") {
 		t.Errorf("--force wrote an entry with nothing to override:\n%s", journal)
 	}
@@ -443,7 +443,7 @@ func TestForceWithNothingToOverrideRecordsNothing(t *testing.T) {
 func TestATaskTransitionsThroughItsOwnLadder(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 
 	for _, status := range []string{"in_progress", "closed"} {
 		if code, _, e := run(t, app, "transition", "do-the-thing", status); code != ExitOK {
@@ -465,7 +465,7 @@ func TestATaskTransitionsThroughItsOwnLadder(t *testing.T) {
 func TestATaskIsNotHeldToWorkItemChecks(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 
 	code, _, errOut := run(t, app, "transition", "do-the-thing", "in_progress")
 	if code != ExitOK {
@@ -481,7 +481,7 @@ func TestATaskIsNotHeldToWorkItemChecks(t *testing.T) {
 func TestAnOutcomeCannotTransition(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
 
 	code, _, errOut := run(t, app, "transition", "the-queue-drains", "todo")
 	if code != ExitUsage {
@@ -513,8 +513,8 @@ func TestLeavingThePileWithNoKindWarns(t *testing.T) {
 func TestLeavingPreparingWithAnUnmeasuredOutcomeWarns(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 	run(t, app, "transition", "WORK-0001", "preparing")
 
 	_, _, errOut := run(t, app, "transition", "WORK-0001", "prepared")
@@ -551,7 +551,7 @@ func TestQueuingWithNoOutcomesWarns(t *testing.T) {
 func TestClosingWithOpenTasksWarnsAndDoesNotCloseThem(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 
 	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled")
 	if code != ExitOK {
@@ -579,7 +579,7 @@ func TestAdvancingLandsLastAndGoingBackLandsFirst(t *testing.T) {
 	for _, title := range []string{"Alpha", "Bravo", "Charlie"} {
 		run(t, app, "work-item", "new", title)
 	}
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0003")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0003")
 
 	// Advanced in order, so Alpha is ahead of Bravo at todo.
 	for _, key := range []string{"WORK-0001", "WORK-0002"} {
@@ -660,7 +660,7 @@ func TestPlacementHoldsForEveryStatusPair(t *testing.T) {
 				for i, title := range []string{"Alpha", "Bravo", "Charlie"} {
 					run(t, app, "work-item", "new", title)
 					run(t, app, "outcome", "new", "The queue drains",
-						"-w", fmt.Sprintf("WORK-000%d", i+1))
+						"--work-item", fmt.Sprintf("WORK-000%d", i+1))
 				}
 
 				for _, key := range []string{"WORK-0001", "WORK-0002"} {

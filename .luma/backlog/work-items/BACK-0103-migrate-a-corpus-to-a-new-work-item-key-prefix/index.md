@@ -48,7 +48,7 @@ path without the allocator rule, and a command nobody has run proves nothing.
 1. **`former_keys` on `work-item`** — every key the record formerly answered to
    and no longer does, oldest first.
 2. **Resolution by former key, everywhere a key is accepted** — `show`, `set`,
-   `transition`, `rank`, `close`, `journal -w`, and `-w` on every child unit.
+   `transition`, `rank`, `close`, `journal --work-item`, and `--work-item` on every child unit.
    Output names the record by its current key, so the reader learns it.
 3. **A migration command**, reading the source prefix from the corpus and the
    target from configuration, assuming neither.

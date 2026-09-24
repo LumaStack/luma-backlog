@@ -61,9 +61,9 @@ var messages = []messageCase{
 	{name: "unknown disposition", args: []string{"work-item", "close", "alpha", "finished"},
 		setup: [][]string{{"work-item", "new", "Alpha"}}},
 	{name: "missing input, verdict", args: []string{"outcome", "verify", "the-queue-drains"},
-		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "-w", "alpha"}}},
+		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "missing input, claim", args: []string{"outcome", "assert", "the-queue-drains"},
-		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "-w", "alpha"}}},
+		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "missing input, rank", args: []string{"work-item", "rank", "alpha"},
 		setup: [][]string{{"work-item", "new", "Alpha"}}},
 	{name: "missing input, transition", args: []string{"work-item", "transition", "alpha"},
@@ -73,7 +73,7 @@ var messages = []messageCase{
 	{name: "missing input, title", args: []string{"work-item", "new"}},
 
 	{name: "wrong type for the verb", args: []string{"work-item", "close", "the-queue-drains", "completed"},
-		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "-w", "alpha"}}},
+		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "field that is not set directly", args: []string{"set", "alpha", "workflow_status=todo"},
 		setup: [][]string{{"work-item", "new", "Alpha"}}},
 	{name: "status the ladder does not carry", args: []string{"work-item", "transition", "alpha", "nowhere"},
@@ -84,14 +84,14 @@ var messages = []messageCase{
 	{name: "precondition, no outcomes", args: []string{"work-item", "close", "alpha", "completed"},
 		setup: [][]string{{"work-item", "new", "Alpha"}}},
 	{name: "precondition, outcomes unproven", args: []string{"work-item", "close", "alpha", "completed"},
-		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "-w", "alpha"}}},
+		setup: [][]string{{"work-item", "new", "Alpha"}, {"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 
 	// Success paths. Left out at first, on the assumption that only refusals
 	// have shape — and two nonconforming reports sat behind that assumption
 	// until somebody ran the commands by hand.
 	{name: "report, created", args: []string{"work-item", "new", "Alpha"}},
 	{name: "report, created with a kind", args: []string{"work-item", "new", "Alpha", "--kind", "change"}},
-	{name: "report, created child", args: []string{"outcome", "new", "The queue drains", "-w", "alpha"},
+	{name: "report, created child", args: []string{"outcome", "new", "The queue drains", "--work-item", "alpha"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
 	{name: "report, moved", args: []string{"work-item", "transition", "alpha", "todo"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
@@ -99,20 +99,20 @@ var messages = []messageCase{
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
 	{name: "report, set", args: []string{"set", "alpha", "description=hello"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
-	{name: "report, journalled", args: []string{"work-item", "journal", "-w", "alpha", "learned a thing"},
+	{name: "report, journalled", args: []string{"work-item", "journal", "--work-item", "alpha", "learned a thing"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
 	{name: "report, verified", args: []string{"outcome", "verify", "the-queue-drains", "proven", "-e", "ran it"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"},
-			{"outcome", "new", "The queue drains", "-w", "alpha"}}},
+			{"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "report, verified with no evidence", args: []string{"outcome", "verify", "the-queue-drains", "proven"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"},
-			{"outcome", "new", "The queue drains", "-w", "alpha"}}},
+			{"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "report, abandoned", args: []string{"outcome", "abandon", "the-queue-drains"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"},
-			{"outcome", "new", "The queue drains", "-w", "alpha"}}},
+			{"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "report, abandoned after a verdict", args: []string{"outcome", "abandon", "the-queue-drains", "-r", "dropped"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"},
-			{"outcome", "new", "The queue drains", "-w", "alpha"},
+			{"outcome", "new", "The queue drains", "--work-item", "alpha"},
 			{"outcome", "verify", "the-queue-drains", "proven", "-e", "ran it"}}},
 	{name: "report, closed", args: []string{"work-item", "close", "alpha", "canceled", "-r", "not doing it"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
@@ -122,7 +122,7 @@ var messages = []messageCase{
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
 	{name: "listing as a tree", args: []string{"list", "--tree"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"},
-			{"outcome", "new", "The queue drains", "-w", "alpha"}}},
+			{"outcome", "new", "The queue drains", "--work-item", "alpha"}}},
 	{name: "show", args: []string{"show", "alpha"},
 		setup: [][]string{{"work-item", "new", "Alpha", "--kind", "change"}}},
 }
@@ -311,7 +311,7 @@ func TestReportsNameKeylessRecordsByTitle(t *testing.T) {
 	app, _ := initialized(t)
 	for _, s := range [][]string{
 		{"work-item", "new", "Payments v2", "--kind", "change"},
-		{"outcome", "new", "The queue drains", "-w", "payments-v2"},
+		{"outcome", "new", "The queue drains", "--work-item", "payments-v2"},
 	} {
 		if code, _, e := run(t, app, s...); code != ExitOK {
 			t.Fatalf("setup %v failed: %s", s, e)

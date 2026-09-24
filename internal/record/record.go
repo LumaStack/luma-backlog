@@ -123,6 +123,30 @@ func (r *Record) Get(key string) (string, bool) {
 	return "", false
 }
 
+// List returns a sequence field's scalar entries, in order.
+//
+// A field that is absent, or holds a scalar rather than a sequence, comes back
+// empty rather than as an error. The fields this reads are optional by
+// contract, and a caller asking for one it does not have is the ordinary case
+// rather than a fault --- the same reasoning as Stamp.
+//
+// Nested nodes inside the sequence are skipped. Every list field in use holds
+// strings, and a caller wanting structure should read the node itself rather
+// than have this flatten something it cannot represent.
+func (r *Record) List(key string) []string {
+	_, v := r.find(key)
+	if v == nil || v.Kind != yaml.SequenceNode {
+		return nil
+	}
+	out := make([]string, 0, len(v.Content))
+	for _, n := range v.Content {
+		if n.Kind == yaml.ScalarNode {
+			out = append(out, n.Value)
+		}
+	}
+	return out
+}
+
 // Stamp reads a `{by: ..., at: ...}` field --- the shape `created` and
 // `modified` use. Missing keys come back empty rather than as an error: a
 // record written before stamps existed has neither, and that is not a fault.
