@@ -206,3 +206,76 @@ func TestWorkItemFlagPrefersTheRecordHoldingTheKeyNow(t *testing.T) {
 		t.Errorf("ResolveWorkItemDir(WORK-0050) = %q, want the record holding it now", dir)
 	}
 }
+
+func TestAllocationStepsPastAKeyHeldOnlyAsFormer(t *testing.T) {
+	// A former key numbered ABOVE every key in use. A corpus this tool wrote
+	// cannot reach this state, which is the point: former_keys is a field
+	// people can edit, and the allocator must not depend on what it expects to
+	// find there.
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0009-hand-edited": {"BACK-0009", "BACK-0011"},
+		"BACK-0010-ordinary":    {"BACK-0010"},
+	})
+
+	got, err := NextAvailableKey(b, "BACK")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "BACK-0012" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0012 — BACK-0011 is still answered to", got)
+	}
+}
+
+func TestAllocationWalksPastEveryHeldKeyInARun(t *testing.T) {
+	// Several keys held in a run at the top. This passes under the arithmetic
+	// too --- highest counts former keys, so it is already 14 --- and that is
+	// worth knowing rather than hiding: no static corpus can reach the loop's
+	// second turn. It is here to pin the ANSWER, so that a future change to how
+	// highest is computed fails against a corpus with keys given up, instead of
+	// only against ordinary ones.
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0011-a": {"BACK-0011", "BACK-0012", "BACK-0013"},
+		"BACK-0005-b": {"BACK-0005", "BACK-0014"},
+	})
+
+	got, err := NextAvailableKey(b, "BACK")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "BACK-0015" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0015", got)
+	}
+}
+
+func TestAllocationIsPerPrefix(t *testing.T) {
+	// Availability is a question about a KEY, prefix and number together. The
+	// numbers are one sequence across the corpus, so a new prefix does not
+	// restart at one — but a number held under another prefix does not make
+	// this one unavailable either.
+	b := migratedBacklog(t, map[string][]string{
+		"WORK-0007-elsewhere": {"WORK-0007"},
+	})
+
+	got, err := NextAvailableKey(b, "PROJ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "PROJ-0008" {
+		t.Errorf("NextAvailableKey(PROJ) = %s, want PROJ-0008", got)
+	}
+}
+
+func TestAllocationReadsAFormerKeyHoweverItIsSpelled(t *testing.T) {
+	// Parsed, never string-matched — the same rule the rest of key handling
+	// follows. A sloppily written former key must still consume its number.
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0002-sloppy-former": {"BACK-0002", "back  77"},
+	})
+	got, err := NextAvailableKey(b, "BACK")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "BACK-0078" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0078", got)
+	}
+}

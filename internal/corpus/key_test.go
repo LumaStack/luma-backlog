@@ -229,18 +229,18 @@ func TestCreateWritesTheConfiguredPrefix(t *testing.T) {
 	}
 }
 
-func TestHighestKeyCountsUnusualSpellings(t *testing.T) {
+func TestAllocationCountsUnusualSpellings(t *testing.T) {
 	// A key stored unpadded must still hold its number, or the next
 	// allocation reuses it — WORK-0040's failure from a different cause.
 	b := keyedBacklog(t, map[string]string{
 		"WORK-0074-large-uploads-fail": "WORK-0074",
 		"WORK-88-stored-unpadded":      "WORK-88",
 	})
-	highest, err := highestKey(b)
+	got, err := NextAvailableKey(b, "WORK")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if highest != 88 {
-		t.Errorf("highestKey = %d, want 88", highest)
+	if got != "WORK-0089" {
+		t.Errorf("NextAvailableKey = %s, want WORK-0089", got)
 	}
 }

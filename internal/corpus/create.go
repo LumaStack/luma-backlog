@@ -95,11 +95,11 @@ func Create(b *root.Backlog, cfg config.Config, e env.Env, s Spec) (Result, erro
 	// be burned by one.
 	key := ""
 	if s.Unit == WorkItem {
-		highest, keyErr := highestKey(b)
+		next, keyErr := NextAvailableKey(b, cfg.KeyPrefix())
 		if keyErr != nil {
 			return Result{}, keyErr
 		}
-		key = FormatKeyAs(cfg.KeyPrefix(), highest+1)
+		key = next
 		// The key leads the directory name, so a listing sorts by it and the
 		// identifier on disk is the one people say. The slug follows, so the
 		// directory still reads as what the work is.

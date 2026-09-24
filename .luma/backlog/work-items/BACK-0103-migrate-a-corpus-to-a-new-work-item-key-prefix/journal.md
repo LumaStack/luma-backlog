@@ -166,6 +166,73 @@ generally rather than special-casing `former_keys`.
 **Verified end to end with the binary**, not only in unit tests: `show`, `set`,
 `transition` and `journal -w` all accept `WORK-0001` after a simulated migration
 and all report `BACK-0001` back.
+### Task 3 done — the allocator was already nearly right, and that was the problem
+
+**`highest+1` over keys in use could already never reissue a former key**, and
+the reason is a real invariant: a record's number only ever moves upward, so the
+largest key in use is at least as large as any key given up. On a corpus this
+tool wrote, reading `former_keys` changes no answer at all.
+
+**Which is exactly why it now reads them.** That argument is an unstated
+invariant rather than a guarantee — it holds only while nothing numbers a record
+downward and nobody hand-edits a key. **If either happens the failure is
+silent**: a new record is handed a key another record still answers to, and one
+old reference begins resolving to two. The cost of checking is one field per
+record.
+
+**This was worth noticing rather than shipping quietly.** A task whose code
+change is a no-op on every real corpus looks like wasted work, and the honest
+description is the opposite — it converts a property that happens to hold into
+one that is enforced.
+
+**The test that carries the whole point constructs a corpus this tool cannot
+produce**: a former key numbered *above* every key in use. Reaching it needs a
+hand edit, which is precisely the case the invariant does not cover. Without the
+change the next allocation collides; with it, it does not.
+
+**Verified end to end.** With `WORK-0001` live and `WORK-0009` held only as a
+former key, creating a record produced **`WORK-0010`** rather than `WORK-0002` —
+it stepped past the given-up key.
+
+**One thing deliberately not decided here.** A record reclaiming a key from its
+own `former_keys` is allowed, and that exception belongs to the migration rather
+than to allocation: creation never reclaims, so the allocator has no case to
+answer. Written into the function's comment so task 4 does not have to
+rediscover where the rule lives.
+### Task 3 redone — check rather than conclude, and two false claims of mine corrected
+
+**Reopened after review.** The first version computed a maximum over more
+fields and then argued the result must be free. It is now `NextAvailableKey`,
+which tries a number and asks whether anybody holds it.
+
+**The reason is that no argument survives what actually happens.** A pull can
+land records between the scan and the write; a merge can bring a branch that
+allocated the same number; `former_keys` is a field people edit. Reasoning
+about availability assumes a corpus that stays still, and it does not.
+
+**First correction: I wrote that `highest+1` "could never reissue a former
+key" as though it were a hazard.** It is the opposite — a statement that the
+old code was already safe. Badly enough worded to read as nonsense, and it was
+called out as such.
+
+**Second correction, which I found by testing my own claim.** I wrote a test
+whose comment said the arithmetic would land on `BACK-0012` and be wrong three
+times over. **That is false.** `highest` counts former keys, so it was already
+14 and the arithmetic gives the same answer. **No corpus on disk can reach the
+loop's second turn**, and a test claiming otherwise was asserting something it
+does not prove.
+
+**So what the loop is actually for, stated plainly in the code rather than
+dressed up:** it guards the next change to how `highest` is computed. Narrow
+that scan to one prefix, or stop reading `former_keys`, and the arithmetic
+begins handing out a key somebody still answers to — silently — while the check
+steps over it. Cheap guard, silent failure prevented. That is the whole claim,
+and it is smaller than the one I made first.
+
+**Kept from the first attempt:** allocation starts above the highest number
+rather than filling the first gap. A gap is usually a record somebody removed,
+and giving its number to new work makes every old reference point at the wrong
+thing.
 
 ## ▶ 2026-09-23
 

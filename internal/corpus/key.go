@@ -95,22 +95,47 @@ func SameKey(a, b string) bool {
 	return a == b
 }
 
-// highestKey reports the largest key number in use across the project.
+// NextAvailableKey returns a key under the given prefix that no record holds
+// --- not as its key, and not as one it used to answer to.
 //
 // One sequence for the whole corpus. The number is what somebody says out loud
 // or writes in a commit, so it has to mean one record — which is the same
 // reason decision numbers are allocated project-wide rather than per directory.
-func highestKey(b *root.Backlog) (int, error) {
-	highest := 0
+//
+// **It tries a number and checks, rather than computing one and concluding.**
+// The arithmetic answer — one above the highest number anywhere — is very
+// nearly always free, and reasoning that it must be free is the part that does
+// not hold. A pull can land new records between the scan and the write, a
+// merge can bring a branch that allocated the same number, and `former_keys`
+// is a field people can edit. **Nothing here knows what the corpus will
+// contain**, so the only durable answer is to look rather than to argue.
+//
+// It starts above the highest number in use rather than filling the first gap.
+// A gap is usually a record somebody removed, and handing its number to
+// something new makes every old reference to it point at the wrong work.
+//
+// **The loop does not turn twice today, and that is not a reason to drop it.**
+// highest counts every number held, so highest+1 is above all of them by
+// construction --- no corpus on disk can reach the second turn. What it guards
+// is the next change to how highest is computed: narrow that scan by a prefix
+// or stop reading former_keys, and the arithmetic quietly starts handing out a
+// key somebody answers to, while the check simply steps over it. The guard is
+// cheap and the failure it prevents is silent.
+//
+// Termination is the corpus: each turn either returns or names a key some
+// record holds, and there are finitely many of those.
+//
+// A record reclaiming a key from its own former_keys is a separate matter and
+// is not decided here --- creation never reclaims, so the exception belongs to
+// the migration.
+func NextAvailableKey(b *root.Backlog, prefix string) (string, error) {
 	items, _, err := List(b, Filter{Unit: WorkItem})
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	for _, it := range items {
-		k, ok := it.Record.Get("key")
-		if !ok {
-			continue
-		}
+
+	highest := 0
+	consider := func(k string) {
 		// Parsed, not pattern-matched: a key stored in an unusual spelling
 		// must still count, or the next allocation reuses its number
 		// (WORK-0082 — the same failure WORK-0040 hit from a different cause).
@@ -118,7 +143,31 @@ func highestKey(b *root.Backlog) (int, error) {
 			highest = n
 		}
 	}
-	return highest, nil
+	for _, it := range items {
+		if k, ok := it.Record.Get("key"); ok {
+			consider(k)
+		}
+		for _, k := range it.FormerKeys() {
+			consider(k)
+		}
+	}
+
+	for n := highest + 1; ; n++ {
+		candidate := FormatKeyAs(prefix, n)
+		if !anyoneHolds(items, candidate) {
+			return candidate, nil
+		}
+	}
+}
+
+// anyoneHolds reports whether any record answers to a key, now or formerly.
+func anyoneHolds(items []Item, key string) bool {
+	for _, it := range items {
+		if it.HeldKey(key) {
+			return true
+		}
+	}
+	return false
 }
 
 // Key returns the work item's key, or empty when it has none. A record written
