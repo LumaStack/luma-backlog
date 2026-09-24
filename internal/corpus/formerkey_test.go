@@ -171,7 +171,7 @@ func TestRecordWithoutFormerKeysHasNone(t *testing.T) {
 }
 
 func TestWorkItemFlagAcceptsAFormerKey(t *testing.T) {
-	// `-w` matches on the directory name, and a migration renames it — so the
+	// `--work-item` matches on the directory name, and a migration renames it,
 	// old key survives only in former_keys. Without this the flag would be the
 	// one door a migrated key could not open, and it is the door every child
 	// record is created through.

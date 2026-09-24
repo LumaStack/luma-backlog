@@ -247,7 +247,7 @@ func refOf(v app.View) string {
 // Outcomes and tasks have no key, and their slug is their title in kebab case
 // --- printing it puts the same sentence on the row twice and pushes every
 // other column right. The type is the useful thing at this width; to act on a
-// child, `task list -w <ref>` gives the handles.
+// child, `task list --work-item <ref>` gives the handles.
 func marker(unit string) string {
 	switch unit {
 	case app.Outcome:

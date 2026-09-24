@@ -15,8 +15,8 @@ func withTwoOutcomes(t *testing.T) (*App, string) {
 	app, project := initialized(t)
 	for _, args := range [][]string{
 		{"work-item", "new", "Payments v2", "--kind", "change"},
-		{"outcome", "new", "Latency holds", "-w", "payments-v2"},
-		{"outcome", "new", "The retry queue drains", "-w", "payments-v2"},
+		{"outcome", "new", "Latency holds", "--work-item", "payments-v2"},
+		{"outcome", "new", "The retry queue drains", "--work-item", "payments-v2"},
 		{"outcome", "verify", "latency-holds", "proven", "-e", "measured"},
 		{"outcome", "verify", "the-retry-queue-drains", "proven", "-e", "measured"},
 	} {
@@ -78,7 +78,7 @@ func TestASkipElsewhereDoesNotBlockThisWorkItem(t *testing.T) {
 	if code, _, e := run(t, app, "work-item", "new", "Search relevance", "--kind", "change"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
-	if code, _, e := run(t, app, "outcome", "new", "Results rank well", "-w", "search-relevance"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "Results rank well", "--work-item", "search-relevance"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	breakOutcome(t, project, wiPath(t, project, "search-relevance", "outcomes", "results-rank-well.md"))

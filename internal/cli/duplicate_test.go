@@ -91,7 +91,7 @@ func TestClosingReportsADuplicateKey(t *testing.T) {
 	// Closing writes a terminal state, so it is where acting on the wrong
 	// record costs most — and a citation of this close could land on either.
 	app, project := twoWorkItems(t)
-	if code, _, e := run(t, app, "outcome", "new", "It drains", "-w", "payments-v2"); code != ExitOK {
+	if code, _, e := run(t, app, "outcome", "new", "It drains", "--work-item", "payments-v2"); code != ExitOK {
 		t.Fatalf("setup failed: %s", e)
 	}
 	if code, _, e := run(t, app, "outcome", "verify", "it-drains", "proven", "-e", "measured"); code != ExitOK {

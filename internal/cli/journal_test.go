@@ -144,7 +144,7 @@ func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
 	}
 	dir := wiDir(t, project, "payments-v2")
 	for _, ref := range []string{"WORK-0001", "payments-v2", dir} {
-		if code, _, e := run(t, app, "work-item", "journal", "-w", ref, "via "+ref); code != ExitOK {
+		if code, _, e := run(t, app, "work-item", "journal", "--work-item", ref, "via "+ref); code != ExitOK {
 			t.Fatalf("journal -w %s failed: %s", ref, e)
 		}
 	}
@@ -167,7 +167,7 @@ func TestJournalResolvesItsWorkItemRatherThanTrustingIt(t *testing.T) {
 		t.Errorf("journal created stray directories: %v", names)
 	}
 
-	code, _, errOut := run(t, app, "work-item", "journal", "-w", "WORK-9999", "nope")
+	code, _, errOut := run(t, app, "work-item", "journal", "--work-item", "WORK-9999", "nope")
 	if code == ExitOK {
 		t.Error("journalling to a work item that does not exist succeeded")
 	}

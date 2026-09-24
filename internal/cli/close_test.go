@@ -10,7 +10,7 @@ func withOutcomes(t *testing.T) (*App, string) {
 	t.Helper()
 	app, project := withWorkItem(t)
 	for _, title := range []string{"The queue drains", "Retries are durable"} {
-		if code, _, e := run(t, app, "outcome", "new", title, "-w", "payments-v2"); code != ExitOK {
+		if code, _, e := run(t, app, "outcome", "new", title, "--work-item", "payments-v2"); code != ExitOK {
 			t.Fatalf("new outcome failed: %s", e)
 		}
 	}
@@ -319,8 +319,8 @@ func TestTheLatestVerdictWins(t *testing.T) {
 func TestCompletingWithAnOpenTaskIsRefused(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
 
 	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed")
@@ -336,8 +336,8 @@ func TestCompletingWithAnOpenTaskIsRefused(t *testing.T) {
 func TestCompletingWithACancelledTaskIsAllowed(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 	run(t, app, "outcome", "verify", "the-queue-drains", "proven", "-e", "ran it")
 	run(t, app, "transition", "do-the-thing", "closed")
 
@@ -351,7 +351,7 @@ func TestCompletingWithACancelledTaskIsAllowed(t *testing.T) {
 func TestCancellingWithAnOpenTaskIsNotGated(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 
 	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "canceled")
 	if code != ExitOK {
@@ -368,8 +368,8 @@ func TestCancellingWithAnOpenTaskIsNotGated(t *testing.T) {
 func TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest(t *testing.T) {
 	app, project := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0001")
-	run(t, app, "task", "new", "Do the thing", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0001")
+	run(t, app, "task", "new", "Do the thing", "--work-item", "WORK-0001")
 
 	code, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed", "--force")
 	if code != ExitOK {
@@ -381,7 +381,7 @@ func TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest(t *testing.T) {
 		}
 	}
 
-	_, journal, _ := run(t, app, "work-item", "journal", "-w", "WORK-0001")
+	_, journal, _ := run(t, app, "work-item", "journal", "--work-item", "WORK-0001")
 	if strings.Count(journal, "FORCED close as completed") != 2 {
 		t.Errorf("both overrides were not written down:\n%s", journal)
 	}
@@ -427,7 +427,7 @@ func TestCancellingWithAReasonIsSilent(t *testing.T) {
 func TestCompletingWithoutAReasonIsSilent(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "It holds", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "It holds", "--work-item", "WORK-0001")
 	run(t, app, "outcome", "verify", "it-holds", "proven", "-e", "ran it")
 
 	_, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed")
@@ -441,7 +441,7 @@ func TestCompletingWithoutAReasonIsSilent(t *testing.T) {
 func TestForcingWithoutAReasonIsAdvisedAgainst(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Alpha", "--kind", "change")
-	run(t, app, "outcome", "new", "It holds", "-w", "WORK-0001")
+	run(t, app, "outcome", "new", "It holds", "--work-item", "WORK-0001")
 
 	_, _, errOut := run(t, app, "work-item", "close", "WORK-0001", "completed", "--force")
 	if !strings.Contains(errOut, "only prose can explain it") {

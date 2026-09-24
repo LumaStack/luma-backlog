@@ -19,8 +19,8 @@ func seed(t *testing.T, app *App) {
 	t.Helper()
 	for _, args := range [][]string{
 		{"work-item", "new", "Payments v2"},
-		{"outcome", "new", "The retry queue drains", "-w", "payments-v2"},
-		{"task", "new", "Add the retry queue", "-w", "payments-v2"},
+		{"outcome", "new", "The retry queue drains", "--work-item", "payments-v2"},
+		{"task", "new", "Add the retry queue", "--work-item", "payments-v2"},
 		{"work-item", "new", "Search relevance"},
 	} {
 		if code, _, e := run(t, app, args...); code != ExitOK {
@@ -128,7 +128,7 @@ func TestEmptyListIsNotAnError(t *testing.T) {
 func TestListFilters(t *testing.T) {
 	app := populated(t)
 
-	_, out, _ := run(t, app, "list", "-w", "payments-v2")
+	_, out, _ := run(t, app, "list", "--work-item", "payments-v2")
 	if strings.Contains(out, "search-relevance") {
 		t.Errorf("work item filter leaked another work item:\n%s", out)
 	}
@@ -194,7 +194,7 @@ func TestListIgnoresNonRecords(t *testing.T) {
 func TestShowResolvesAKeyScopedPath(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 
 	for _, ref := range []string{
 		"WORK-0001/tasks/add-the-queue",
@@ -219,7 +219,7 @@ func TestShowResolvesAKeyScopedPath(t *testing.T) {
 func TestAKeyScopedPathWithAnUnknownScopeIsNotFound(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 
 	if code, _, _ := run(t, app, "show", "WORK-9999/tasks/add-the-queue"); code != ExitNotFound {
 		t.Errorf("exit = %d, want %d (not found)", code, ExitNotFound)
@@ -231,7 +231,7 @@ func TestAKeyScopedPathWithAnUnknownScopeIsNotFound(t *testing.T) {
 func TestABareSlugStillResolves(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 
 	code, out, errOut := run(t, app, "show", "add-the-queue")
 	if code != ExitOK {
@@ -246,7 +246,7 @@ func TestABareSlugStillResolves(t *testing.T) {
 func TestANounListsItsOwnRecords(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
 
 	code, out, errOut := run(t, app, "work-item", "list")
 	if code != ExitOK {
@@ -265,7 +265,7 @@ func TestANounListsItsOwnRecords(t *testing.T) {
 func TestBareListIsWorkItemList(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
 
 	code, out, errOut := run(t, app, "list")
 	if code != ExitOK {
@@ -292,8 +292,8 @@ func TestListDoesNotTakeAUnitPositionally(t *testing.T) {
 func TestListTreeShowsChildrenBeneathTheirWorkItem(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 
 	code, out, errOut := run(t, app, "list", "--tree")
 	if code != ExitOK {
@@ -317,7 +317,7 @@ func TestListTreeShowsChildrenBeneathTheirWorkItem(t *testing.T) {
 func TestATreeFilterNarrowsWorkItemsNotChildren(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 	run(t, app, "work-item", "transition", "payments-v2", "todo")
 
 	code, out, errOut := run(t, app, "list", "--tree", "--status", "todo")
@@ -359,8 +359,8 @@ func TestAListingShowsKeyStatusAndTitle(t *testing.T) {
 func TestATreeMarksChildrenByType(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
 
 	_, out, _ := run(t, app, "work-item", "list", "--tree")
 	for _, want := range []string{"TASK", "OUT", "Add the queue", "The queue drains"} {
@@ -379,8 +379,8 @@ func TestATreeMarksChildrenByType(t *testing.T) {
 func TestTasksComeBeforeOutcomes(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "outcome", "new", "The queue drains", "-w", "payments-v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
 
 	_, out, _ := run(t, app, "work-item", "list", "--tree")
 	task, outcome := strings.Index(out, "TASK"), strings.Index(out, "OUT ")
@@ -397,8 +397,8 @@ func TestTasksComeBeforeOutcomes(t *testing.T) {
 func TestTheLastChildClosesTheBranch(t *testing.T) {
 	app, _ := initialized(t)
 	run(t, app, "work-item", "new", "Payments v2")
-	run(t, app, "task", "new", "Add the queue", "-w", "payments-v2")
-	run(t, app, "task", "new", "Drain it", "-w", "payments-v2")
+	run(t, app, "task", "new", "Add the queue", "--work-item", "payments-v2")
+	run(t, app, "task", "new", "Drain it", "--work-item", "payments-v2")
 
 	_, out, _ := run(t, app, "work-item", "list", "--tree")
 	if strings.Count(out, "└─") != 1 {
@@ -506,7 +506,7 @@ func TestAListingGroupsByStatusAndNotByWhoHasARank(t *testing.T) {
 	run(t, app, "work-item", "new", "Alpha")   // WORK-0001, captured, unranked
 	run(t, app, "work-item", "new", "Bravo")   // WORK-0002, captured, unranked
 	run(t, app, "work-item", "new", "Charlie") // WORK-0003, about to be ranked
-	run(t, app, "outcome", "new", "The queue drains", "-w", "WORK-0003")
+	run(t, app, "outcome", "new", "The queue drains", "--work-item", "WORK-0003")
 	if code, _, e := run(t, app, "work-item", "transition", "WORK-0003", "in_progress"); code != ExitOK {
 		t.Fatalf("transition failed: %s", e)
 	}
