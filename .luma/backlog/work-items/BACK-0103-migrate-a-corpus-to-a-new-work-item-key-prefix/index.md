@@ -78,6 +78,20 @@ refuses on a clean corpus.
 any record has ever held. So a renumbered record can never be handed a key some
 other record once answered to.
 
+**Renumber-by-default was considered and not taken.** It would make the common
+case one run instead of two, and `former_keys` means nothing breaks either way
+— so the argument for it is real. What decided against it is what happens when
+collisions are not rare: a corpus with many of them, two backlogs merged for
+instance, would have a large block of records silently reassigned in one pass.
+**After that the numbering no longer says anything about creation order, nobody
+chose it, and re-running does not undo it.** One quiet renumber is survivable; a
+corpus-wide one is a different corpus.
+
+*Reopen if* this is ever run unattended — in continuous integration, in a
+scripted onboarding, or by an agent working without a person — because there
+nobody reads the skipped list and re-runs, and failing becomes the wrong
+default. The flag would invert to `--strict` in that world.
+
 **Opt-in because the number is worth something.** It is what makes a diff
 reviewable and an external reference recognizable, so giving one up is a
 decision made after seeing what collided — not a silent recovery.

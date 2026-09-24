@@ -96,6 +96,41 @@ record, the target held in another record's `former_keys`, and the target held
 in **this record's own** `former_keys` — which is a reclaim, is not a collision,
 and must migrate normally. The first two look alike and the third looks like
 them and is not.
+### Renumber-by-default deferred — the failure is a cascade, not a surprise
+
+**The polarity was reconsidered and stands: fail by default, `--renumber` to opt
+in.** Worth recording because the argument that settled it is not the one that
+opened it.
+
+**My case was about surprise** — a silent renumber is one anomalous line in a
+111-row mapping, and nobody reads it looking for that. Weak on its own, because
+`former_keys` means the old key still resolves, so nothing actually breaks. The
+only loss is the number matching across the prefix change, which is a human
+heuristic rather than a working reference.
+
+**The maintainer's case is about scale, and it is the stronger one.** One quiet
+renumber is survivable. A corpus with many collisions — two backlogs merged, a
+prefix changed twice — would have a large block reassigned in a single pass.
+**After that the numbering no longer says anything about creation order, nobody
+chose it, and re-running does not undo it.** The bad case is not one odd record;
+it is a different corpus.
+
+*Reopen if* this is ever run unattended — continuous integration, scripted
+onboarding, an agent working with nobody watching. There is nobody to read the
+skipped list and re-run, so failing becomes the wrong default and the flag
+inverts to `--strict`. That was the question put, and the answer was that this
+is supervised.
+
+**The friction argument went away rather than being overruled.** The skipped
+list ends by naming the exact command that resolves it, so the second run is a
+guided step rather than something the operator has to work out. `output-patterns`
+asks for that shape anyway — a command introduced by a colon and indented
+beneath, never in backticks.
+
+**Names follow the default, not the reverse.** With failing as the default,
+`--renumber` names what the flag does. `--strict` only reads correctly if
+strictness is the opt-in, and `--same-number` would have been the only flag in
+the interface phrased as a constraint rather than an action.
 
 ## ▶ 2026-09-23
 
