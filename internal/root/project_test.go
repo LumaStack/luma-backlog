@@ -70,3 +70,35 @@ func TestProjectCannotEscapeTheRepository(t *testing.T) {
 		t.Error("write escaped the repository root")
 	}
 }
+
+func TestProjectRefusesToWriteInsideGit(t *testing.T) {
+	// The walk skips .git, which governs reading. This governs writing —
+	// corrupting object storage or refs does not look like a migration bug, it
+	// looks like a broken repository, and it damages the history that would
+	// have let somebody undo the migration.
+	dir := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(dir, ".git", "objects"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	p, err := OpenProject(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { p.Close() })
+
+	for _, name := range []string{".git/config", ".git", "./.git/objects/ab", ".git/refs/heads/main"} {
+		if err := p.WriteFile(name, []byte("x"), 0o644); err == nil {
+			t.Errorf("WriteFile(%q) was allowed", name)
+		}
+	}
+	if err := p.Rename("docs", ".git/docs"); err == nil {
+		t.Error("Rename into .git was allowed")
+	}
+	if err := p.Rename(".git/config", "config"); err == nil {
+		t.Error("Rename out of .git was allowed")
+	}
+	// A path merely containing the letters is not the git directory.
+	if err := p.WriteFile("notes.gitignore-sample", []byte("x"), 0o644); err != nil {
+		t.Errorf("an ordinary file was refused: %v", err)
+	}
+}

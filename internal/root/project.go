@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 )
@@ -50,8 +51,33 @@ func (p *Project) Close() error { return p.root.Close() }
 // ReadFile reads a file relative to the repository root.
 func (p *Project) ReadFile(name string) ([]byte, error) { return p.root.ReadFile(name) }
 
+// ErrGitDir is returned for any write that would land inside `.git`.
+var ErrGitDir = fmt.Errorf(".git is never written to")
+
+// refuseGit rejects a path inside the repository's own git directory.
+//
+// **The walk already skips `.git`, and that is not enough.** Skipping governs
+// what is read; this governs what is written, and a caller that built a path
+// some other way would otherwise reach object storage, refs, or the index.
+// Corrupting those does not look like a migration bug — it looks like a broken
+// repository, and the history that would have let somebody undo the migration
+// is the thing that got damaged.
+//
+// Refused at the handle rather than checked by each caller, because a rule
+// every caller has to remember is one a caller will forget.
+func refuseGit(name string) error {
+	clean := path.Clean(filepath.ToSlash(name))
+	if clean == ".git" || strings.HasPrefix(clean, ".git/") {
+		return fmt.Errorf("%w: %s", ErrGitDir, name)
+	}
+	return nil
+}
+
 // WriteFile replaces a file's contents relative to the repository root.
 func (p *Project) WriteFile(name string, data []byte, perm os.FileMode) error {
+	if err := refuseGit(name); err != nil {
+		return err
+	}
 	f, err := p.root.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
 		return fmt.Errorf("opening %s: %w", name, err)
@@ -63,8 +89,17 @@ func (p *Project) WriteFile(name string, data []byte, perm os.FileMode) error {
 	return f.Close()
 }
 
-// Rename moves a file or directory within the repository.
-func (p *Project) Rename(from, to string) error { return p.root.Rename(from, to) }
+// Rename moves a file or directory within the repository. Neither end may be
+// inside `.git`.
+func (p *Project) Rename(from, to string) error {
+	if err := refuseGit(from); err != nil {
+		return err
+	}
+	if err := refuseGit(to); err != nil {
+		return err
+	}
+	return p.root.Rename(from, to)
+}
 
 // skipDirs are never descended into.
 //

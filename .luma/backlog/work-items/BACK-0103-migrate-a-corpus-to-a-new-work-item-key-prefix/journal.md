@@ -398,6 +398,49 @@ Chosen by the maintainer over `key migrate`. It is verb-noun where the record
 tree is noun-verb, and the reason is grouping: `migrate` will have siblings
 (WORK-0022 vocabulary, WORK-0037 old records, WORK-0100 across document kinds).
 Recorded as a deliberate departure so it does not read later as an accident.
+### Migrations stay in one binary, separated by capability rather than by artifact
+
+**Settled: no second binary.** The estate rule decides it — projects split on
+runtime location, not subject matter, and *"asking what is this about produces
+the wrong answer every time."* A key migration runs exactly where the backlog
+runs, on the same records, through the same key parsing. A separate binary
+would duplicate that or import it, and importing it means they ship together
+anyway — two artifacts on two update paths, which is §25's drift problem bought
+for nothing.
+
+**But the argument for splitting was never subject matter.** It was that
+migrations need a capability nothing else should have: a handle reaching past
+`.luma/`. That is separable without a second artifact, and
+`internal/guards` is exactly the machinery — it already turns *only
+`internal/root` may touch the filesystem* into a build failure by reading the
+AST.
+
+**So `internal/migrate` exists to be named by a guard.** Only that package may
+call `root.OpenProject`. Everything else takes a `*root.Backlog` and stops at
+the backlog directory. One test, and the tool stays one thing to install.
+
+**The guard was watched failing before being trusted.** A temporary call added
+to `internal/corpus` produced
+`internal/corpus/tempviolation.go:5 calls root.OpenProject`, and the file was
+removed. A check nobody has seen fail is not known to fail —
+`command-line-interface` 0.6.0 says exactly that about the battery written
+beside it.
+
+### `.git` is refused on write, not merely skipped on read
+
+**Skipping governs reading and that is not enough.** `WalkText` never descends
+into `.git`, but `WriteFile` and `Rename` would have accepted a path built some
+other way, reaching object storage, refs or the index.
+
+**Corrupting those does not look like a migration bug.** It looks like a broken
+repository — and the history that would have let somebody undo the migration is
+the thing that got damaged. That asymmetry is why this is a refusal rather than
+a convention.
+
+**Refused at the handle rather than by each caller**, because a rule every
+caller has to remember is one a caller will forget. Both ends of a rename are
+checked. A file merely containing the letters, `notes.gitignore-sample`, is not
+the git directory and is allowed — asserted, so the check cannot quietly widen.
 
 ## ▶ 2026-09-23
 
