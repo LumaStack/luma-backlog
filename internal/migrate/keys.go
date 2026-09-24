@@ -197,8 +197,23 @@ func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]F
 		old[r.OldKey] = r.NewKey
 	}
 
+	// A migrating record's own `key:` field is rewritten by stampRecords, which
+	// a dry run does not do. Without accounting for that here, a dry run reads
+	// its own un-stamped input and reports each record's current key as one
+	// "remaining" --- over-counting by exactly the number of records moved, and
+	// naming files that need nothing. **A dry run that does not predict the run
+	// is worse than no dry run**, because it is believed.
+	stamped := map[string]string{}
+	for _, r := range renames {
+		stamped[path.Join(root.Dir, corpus.WorkItemPath(r.Dir))] = r.OldKey + "\x00" + r.NewKey
+	}
+
 	err := p.WalkText(func(rel string, data []byte) error {
 		text := string(data)
+		if pair, ok := stamped[rel]; ok {
+			k := strings.SplitN(pair, "\x00", 2)
+			text = strings.Replace(text, "key: "+k[0], "key: "+k[1], 1)
+		}
 		next, n := corpus.RewriteNamesIn(text, renames)
 
 		found := bareKeysIn(next, old)
@@ -215,6 +230,8 @@ func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]F
 		if opts.DryRun {
 			return nil
 		}
+		// On a real run the file already carries the stamped key, so writing
+		// `next` is writing what stampRecords produced plus the name rewrite.
 		return p.WriteFile(rel, []byte(next), 0o644)
 	})
 	sort.Slice(bare, func(i, j int) bool { return bare[i].Path < bare[j].Path })

@@ -475,6 +475,33 @@ readily as to splits.
 **Corrected in §26 rather than deleted**, because a false deadline sitting in an
 open question is exactly the kind of thing somebody acts on later without
 knowing where it came from.
+### Task 4 done, and the dry run caught itself being wrong
+
+**`migrate keys` exists**, with `--dry-run`, `--renumber` and
+`--include-bare-keys`. The mapping goes to stdout and everything else to
+stderr, so whoever is updating an external system can pipe old-to-new and get
+nothing else.
+
+**Run against this corpus: 102 moved, 9 already correct, 273 files rewritten.**
+Which is the number that makes the repo-wide scope real rather than argued —
+273 files, where only 111 are records.
+
+**The dry run over-reported, and the shape of the error is the lesson.** It
+listed each migrating record's own `key:` field as a bare key "remaining". It
+is not: step one rewrites it. But a dry run skips step one, so the walk read
+un-stamped input and counted 535 bare keys where a real run leaves 435 — over
+by almost exactly the number of records moved, and naming 61 files that need
+nothing.
+
+**A dry run that does not predict the run is worse than no dry run, because it
+is believed.** Fixed by applying the stamp in memory during the walk, and the
+test asserts the property rather than the number: run it dry, run it for real
+twice, and the dry run's answer must match what the second real run finds.
+
+**Found by running it against the real corpus rather than by a test.** The unit
+tests all passed with the bug in place, because none of them looked at what a
+dry run said about a record's own key. Fixtures agreed with the code; the
+corpus did not.
 
 ## ▶ 2026-09-23
 

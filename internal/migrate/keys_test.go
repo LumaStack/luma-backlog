@@ -219,3 +219,38 @@ func TestRunningItTwiceChangesNothing(t *testing.T) {
 		t.Error("a second run changed a file")
 	}
 }
+
+func TestDryRunPredictsTheRealRun(t *testing.T) {
+	// A dry run skips stamping, so without accounting for that it reads its own
+	// un-stamped input and reports each record's own `key:` field as a bare key
+	// "remaining" --- over-counting by exactly the number of records moved. A
+	// dry run that does not predict the run is worse than none, because it is
+	// believed.
+	files := map[string]string{
+		".luma/backlog/work-items/WORK-0031-reshape/index.md": workItem("WORK-0031", "reshape"),
+		".luma/backlog/work-items/WORK-0040-other/index.md":   workItem("WORK-0040", "other"),
+	}
+	dirA, bA := repo(t, files)
+	dry, err := Keys(dirA, bA, Options{Target: "BACK", DryRun: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	dirB, bB := repo(t, files)
+	if _, err := Keys(dirB, bB, Options{Target: "BACK"}); err != nil {
+		t.Fatal(err)
+	}
+	real2, err := Keys(dirB, bB, Options{Target: "BACK", DryRun: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// After a real run nothing remains; the dry run beforehand must have said
+	// the same rather than naming each record's own key.
+	if len(real2.BareKeys) != 0 {
+		t.Fatalf("after a real run, bare keys remain: %+v", real2.BareKeys)
+	}
+	if len(dry.BareKeys) != 0 {
+		t.Errorf("the dry run reported bare keys the real run does not leave: %+v", dry.BareKeys)
+	}
+}
