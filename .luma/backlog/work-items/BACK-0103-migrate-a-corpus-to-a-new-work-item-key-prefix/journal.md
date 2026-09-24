@@ -233,6 +233,248 @@ and it is smaller than the one I made first.
 rather than filling the first gap. A gap is usually a record somebody removed,
 and giving its number to new work makes every old reference point at the wrong
 thing.
+### Settled: rewrite names, never keys — and the scope was wrong
+
+**The rule is one sentence and it comes from the two forms being exact opposites
+on both axes**, which is not how I had it framed. I had been saying *rewrite
+links, leave prose* — wrong, because `internal/corpus/rank.go`'s comment citing
+`WORK-0096-what-repeated-reordering-does-to-the-rank-key` is prose and still has
+to move.
+
+| in the text | survives a migration | safe to rewrite |
+| --- | --- | --- |
+| bare `WORK-0031` | **yes**, `former_keys` resolves it | **no**, may name another project's work item |
+| full `WORK-0031-reshape-the-command-surface` | **no** | **yes** |
+
+**The second row was checked rather than assumed.** After the directory moves,
+`matchesWorkItem` fails on the full name and the former-key pass fails too,
+because `ParseKey` will not parse a string with a slug attached and the
+comparison falls back to string equality. **Full names break silently and
+nothing rescues them** — which makes them the form that *must* move, not merely
+the form that may.
+
+**And the maintainer's point about bare keys is a correctness argument, not a
+convenience one.** A bare key can legitimately name a work item in a different
+project using the same prefix. Rewriting it would be wrong roughly one time in a
+hundred, and silently. Leaving it costs nothing because resolution already
+answers for it.
+
+**Scope was measured, not estimated.** 450 wikilinks across 233 files; 95 full
+names outside a wikilink; a link in `docs/open-questions.md` written two hours
+earlier; full names in ten `.go` files. **A run stopping at `.luma/` would have
+broken every one of those quietly**, and the outcome saying it touched only the
+corpus has been rewritten rather than left to be discovered during the run.
+
+**Reporting: a count, never a list.** 1309 bare old keys remain after a clean
+run. Every one resolves, some deliberately name another project, and one is a
+fixture for `WORK-9999`, a key that has never existed. Listing them would be the
+largest section of the output and every entry a non-problem, which is how a
+report teaches people to skip it. Whether anything names a key resolving to
+nothing is a standing question rather than a migration one; WORK-0002 is its
+home.
+### Bare keys get a flag, and my count-only recommendation was too conservative
+
+**Corrected twice, and the second correction changed the answer.** I argued
+against listing bare keys on the grounds that there were 1309 of them and every
+one a non-problem. That number was wrong in two ways: it counted keys *inside*
+full names, which the migration rewrites regardless, and it counted the `key:`
+frontmatter fields themselves.
+
+**The genuinely arguable set is about 550**, and it is not one population: 266
+in Go comments, 246 in journals, 26 in `docs/`. That is a work queue, not noise,
+and for a single-project repository nearly all of it wants rewriting. Refusing
+to offer it makes the operator do by hand what the tool could do reliably.
+
+**So: listed by default, grouped by file, with the flag named in the output.
+`--rewrite-keys` does it.** Same shape as `--renumber` — the run reports, a flag
+acts, and nobody decides without seeing what would change. The 1% that must
+never be touched is a key matching no record here, which most likely belongs to
+another project; that is reported rather than rewritten.
+
+**Journals are 45% of what the flag would change**, and they are statements
+about what happened in a file whose header says *append, never curate*. Treated
+as addresses rather than quotations, the same reading already applied to full
+names. **Recorded as not separately confirmed**, because it is the one place the
+flag does something somebody might not want.
+
+### A scan over every file matched inside the compiled binary
+
+**Found by accident while counting.** A Go runtime error string in
+`./luma-backlog` matched the key pattern. A migration doing a naive tree walk
+would rewrite build artifacts, vendored dependencies and anything else binary.
+
+**Now a constraint: only tracked text files are read or written.** Ask git what
+it tracks, and skip what does not decode as text. Cheap to state now and
+expensive to discover during a run over 111 records.
+### The flag is `--include-bare-keys`, because the default already rewrites keys
+
+**`--rewrite-keys` named something the tool does without it.** The `key:` field
+moving from `WORK-0031` to `BACK-0031` *is* the migration, so a flag by that
+name describes default behaviour and reads as redundant rather than additive.
+That is a collision of meaning, not a matter of taste, and it is what settled
+this.
+
+**`--bare-keys` was the shorter candidate and is ambiguous** — *only* bare keys,
+or *also* bare keys? The flag widens scope, and `include` is the word that says
+so. This tool's existing booleans give no rule to follow: `--force` and
+`--dry-run` are verbs, `--first` and `--last` positions, `--json` and `--tree`
+formats, `--open` a state. So the deciding factor was which name cannot be
+misread.
+
+**The entry above keeps `--rewrite-keys` as written.** It is what was proposed
+at that moment, and the journal appends rather than curates. A reader meeting
+the old name there will find this entry directly above it.
+### How a loop errors instead of hanging — the project already decided, twice
+
+**Asked after `RewriteNamesIn` hung. The answer was not to invent anything:**
+two mechanisms already exist, they are complementary, and both date from
+2026-09-17 when a repeating decimal made `formatPosition` spin.
+
+**In production code, assert the invariant that guarantees progress.**
+`checked` in `rank.go` does not bound by count or by time — it asserts that the
+new position lies strictly between its neighbours, which is the property that
+makes the search terminate, and errors **naming the remedy**: *positions are
+exhausted at this status — run `rank repair`*. An error a caller can act on
+beats a duplicate nobody can detect, and beats a process that never returns.
+
+**In tests, a tripwire that asserts only termination.** `hang_test.go` runs the
+call in a goroutine and selects against a timeout. Its comment is the reason
+this class needs its own test: *no error, no wrong answer, just a process that
+never returned.* Nothing else catches that — a wrong answer fails an assertion,
+a hang just sits there until somebody kills it.
+
+**Applied to both loops here.**
+
+`NextAvailableKey` is bounded by what could possibly block it: a candidate is
+only rejected because some record holds that key, so one of `held+1` candidates
+must be free. Exceeding that means the holding check is answering wrongly, and
+it now says so rather than spinning.
+
+`RewriteNamesIn` has one guarantee — `from` strictly increases, because
+`end > i >= from` — and that holds only while the name is non-empty. The
+non-empty check was already there and read as a nil check; it is now stated as
+the thing that makes the loop terminate. A tripwire test covers the exact
+prefix case that hung.
+
+**Worth noting the default that let it run for two minutes.** `go test` allows
+ten minutes before it gives up, so a hang looks like a slow suite rather than a
+failure. The tripwire brings that down to ten seconds for the call that can
+actually hang, which is the right place for the bound rather than shortening
+the whole suite's patience.
+### The fence moves from .luma/ to the repository, and does not open
+
+**The migration could not be built through the handle the tool has.** `Backlog`
+is an `os.Root` fenced at `.luma/` — deliberately, and a guard test in
+`internal/guards` fails the build if any package outside `internal/root`
+touches the filesystem directly. Reaching `docs/` and `internal/` is not an
+oversight to route around; it is the boundary saying no.
+
+**What made it safe to widen is what `spec.md` §9a.4 actually says.** Its stated
+concern is the tool *"writing outside their repository"* — not outside `.luma/`.
+So a second `os.Root` at the repository root preserves the property exactly:
+traversal out via `..` or a symlink is resisted by the same mechanism with the
+same caveats. `.luma/` was simply where the tool needed to work until now.
+
+**`root.Project` is the narrowest thing that does the job** — read, write,
+rename, and a text walk. Every method on it reaches past `.luma/`, which is
+worth keeping in view when somebody wants to add a fifth.
+
+**Two tests hold the line rather than describe it.** One proves the wider fence
+still refuses `..` on read and on write. The other proves the walk skips a
+compiled binary and never descends into `.git` — the binary case is the one
+found by accident, where counting key mentions matched a Go runtime error
+string inside `./luma-backlog` sitting in the repository root.
+
+**Binary detection is a NUL byte in the first 8KB**, which is the same
+heuristic git uses for the same question. A heuristic, and the one everything
+else in this ecosystem already trusts.
+
+**Also skipped: `node_modules`, `vendor`, `dist`, `build`.** Not ours to edit
+and regenerated anyway, and the place a naive walk does the most damage.
+
+### The command is `migrate keys`
+
+Chosen by the maintainer over `key migrate`. It is verb-noun where the record
+tree is noun-verb, and the reason is grouping: `migrate` will have siblings
+(WORK-0022 vocabulary, WORK-0037 old records, WORK-0100 across document kinds).
+Recorded as a deliberate departure so it does not read later as an accident.
+### Migrations stay in one binary, separated by capability rather than by artifact
+
+**Settled: no second binary.** The estate rule decides it — projects split on
+runtime location, not subject matter, and *"asking what is this about produces
+the wrong answer every time."* A key migration runs exactly where the backlog
+runs, on the same records, through the same key parsing. A separate binary
+would duplicate that or import it, and importing it means they ship together
+anyway — two artifacts on two update paths, which is §25's drift problem bought
+for nothing.
+
+**But the argument for splitting was never subject matter.** It was that
+migrations need a capability nothing else should have: a handle reaching past
+`.luma/`. That is separable without a second artifact, and
+`internal/guards` is exactly the machinery — it already turns *only
+`internal/root` may touch the filesystem* into a build failure by reading the
+AST.
+
+**So `internal/migrate` exists to be named by a guard.** Only that package may
+call `root.OpenProject`. Everything else takes a `*root.Backlog` and stops at
+the backlog directory. One test, and the tool stays one thing to install.
+
+**The guard was watched failing before being trusted.** A temporary call added
+to `internal/corpus` produced
+`internal/corpus/tempviolation.go:5 calls root.OpenProject`, and the file was
+removed. A check nobody has seen fail is not known to fail —
+`command-line-interface` 0.6.0 says exactly that about the battery written
+beside it.
+
+### `.git` is refused on write, not merely skipped on read
+
+**Skipping governs reading and that is not enough.** `WalkText` never descends
+into `.git`, but `WriteFile` and `Rename` would have accepted a path built some
+other way, reaching object storage, refs or the index.
+
+**Corrupting those does not look like a migration bug.** It looks like a broken
+repository — and the history that would have let somebody undo the migration is
+the thing that got damaged. That asymmetry is why this is a refusal rather than
+a convention.
+
+**Refused at the handle rather than by each caller**, because a rule every
+caller has to remember is one a caller will forget. Both ends of a rename are
+checked. A file merely containing the letters, `notes.gitignore-sample`, is not
+the git directory and is allowed — asserted, so the check cannot quietly widen.
+### Journals are in scope for `--include-bare-keys`, confirmed
+
+**A key in a journal is an address, not a quotation.** The record still exists
+and answers to a new name; git holds what was literally written; a reference
+that resolves is worth more than one preserved in amber. Same reading already
+applied to full names, now applied deliberately rather than by inheritance.
+
+That settles 45% of what the flag touches, and the caveat marking it unconfirmed
+is removed rather than left to age into something nobody knows the status of.
+
+### A dependency on the rank rename was invented, and there was never one
+
+**Recorded because the failure is mine and it is a repeatable kind.** I told the
+maintainer that open-questions §26 — whether a work item's rank and a task's
+rank share a name — wanted deciding before this migration was built, on the
+grounds that a pass already rewriting every record could carry a field rename
+along.
+
+**It cannot.** Renaming a frontmatter key across 131 records shares nothing with
+rewriting directory names inside arbitrary text: different operation, different
+code, different scope. When that was pointed out I reached for a weaker version
+of the link — *one review and one merge window instead of two* — and that was
+salvaging a connection rather than dropping one. **The two pieces of work are
+unrelated.**
+
+**What produced it:** two things were open at the same time and both touched
+records, so proximity read as coupling. The reciprocal test from
+`when-a-work-item-splits` answers it in one move — outcomes for a rank rename
+share nothing with these eleven — and it applies to invented dependencies as
+readily as to splits.
+
+**Corrected in §26 rather than deleted**, because a false deadline sitting in an
+open question is exactly the kind of thing somebody acts on later without
+knowing where it came from.
 
 ## ▶ 2026-09-23
 

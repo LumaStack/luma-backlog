@@ -96,6 +96,46 @@ default. The flag would invert to `--strict` in that world.
 reviewable and an external reference recognizable, so giving one up is a
 decision made after seeing what collided — not a silent recovery.
 
+### The run reaches the whole repository
+
+**Scoping it to `.luma/` was wrong.** Records live there; names are written
+wherever anybody writes them. Counted before building: **450 wikilinks across
+233 files**, **95 full names outside a wikilink**, one link in
+`docs/open-questions.md`, and full names in **ten `.go` files** —
+`internal/corpus/rank.go` cites `WORK-0096`, `duplicate.go` cites `WORK-0013`.
+A migration that stopped at `.luma/` would have broken all of those quietly.
+
+**Anchored on the full name, with a boundary.** The replacement matches
+`[[work-items/<old name>` and the bare `<old name>` alike, and requires what
+follows to end the name — so a name that is a prefix of another cannot corrupt
+the longer one. No name is a prefix of another today; the boundary is there
+because that is not something to depend on.
+
+### Bare keys are offered rather than assumed
+
+**Left alone by default, because rewriting one can be wrong.** A bare
+`WORK-0031` may name a work item in a different project that uses the same
+prefix — rare, and silent when it happens.
+
+**But for a single-project repository it is right nearly every time**, so the
+run lists what it did not rewrite, grouped by file with counts, and names the
+flag. `--include-bare-keys` does it. Same shape as `--renumber`: the run reports, a
+flag acts, and nobody decides without seeing what would change.
+
+**Grouped, never line by line.** Roughly 550 occurrences are genuinely
+arguable — 266 in Go comments, 246 in journals, 26 in `docs/`. The decision is
+per corpus, and nobody makes it by scrolling.
+
+**A key matching no record here is reported, not rewritten.** That is the 1%,
+and it is the only case the flag must not touch.
+
+**Journals are included, and that was confirmed rather than assumed.** 45% of
+what the flag changes is lines such as *"Journaled on WORK-0039"* — statements
+about what happened, in a file whose own header says *append, never curate*.
+**A key in a journal is an address, not a quotation**: the record still exists,
+it answers to a new name, and a reference that resolves is worth more than one
+preserved in amber. Git holds what was literally written.
+
 ### The order is forced, and the first step leaves the repository
 
 **The type change goes first, and it goes the long way.** `work-item`'s
@@ -108,15 +148,20 @@ and it is worth knowing it costs a cycle before anybody starts.
 
 ## Out of scope
 
-**Prose that mentions a key.** A journal line reading *journaled on WORK-0036*
-was true when written and still resolves through the redirect. Rewriting it
-would falsify a record to fix something that is not broken. **Wikilinks are a
-different matter and are in scope** — a wikilink is a location, the location
-moves, and no server exists to redirect a file path.
+**Bare keys, wherever they appear.** A line reading *journaled on WORK-0036*
+still resolves, because `former_keys` answers for it — shipped, not planned.
+And rewriting one is **not safe**: a bare key may name a work item in another
+project that uses the same prefix. Unnecessary and risky is an easy call.
+
+**Full names are the opposite on both counts and are in scope.** A name is not a
+key: resolution falls back to string equality, which a slug defeats, so
+`WORK-0031-reshape-the-command-surface` breaks silently after the directory
+moves and nothing rescues it. A key *and* slug colliding across projects is not
+a real risk. **So the rule is: rewrite names, never keys.**
 
 **The vendored bundle.** `.luma/bundles/` is not edited by this or anything
-else; an adopted bundle is a copy and editing it is drift. Its old-key mentions
-are historical prose and would be out of scope even if we could reach them.
+else; an adopted bundle is a copy and editing it is drift. That is the reason,
+and it is not scope — the run otherwise reaches the whole repository.
 
 **`DefaultKeyPrefix`.** It stays `WORK`. It is a value rather than a key, and
 rewriting it would change what every project that never configured a prefix
@@ -138,6 +183,11 @@ whoever owns the system holding the old key.
 - **Structure only**, and only under `.luma/backlog/` and `.luma/records/`.
 - **Records already at the configured prefix are untouched**, which their
   unchanged `modified` stamp shows.
+- **Only tracked text files are read or written.** Found by accident: a scan
+  over every file matched inside the compiled `./luma-backlog` binary, on a Go
+  runtime error string. A naive tree walk would corrupt build artifacts,
+  vendored dependencies and anything else binary. Ask git what it tracks, and
+  skip what does not decode as text.
 - **The collision paths are proven by automated tests over constructed
   corpora.** No ordinary corpus contains a collision and nobody will produce one
   by hand, so a test is the only thing that will ever exercise this. Three cases,
