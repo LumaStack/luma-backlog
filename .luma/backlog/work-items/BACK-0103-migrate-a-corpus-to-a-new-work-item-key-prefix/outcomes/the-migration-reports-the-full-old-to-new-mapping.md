@@ -8,6 +8,14 @@ verify_by: "Run the migration and capture the output: one line per migrated reco
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:03:33Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:36Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:36Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: stdout carried 102 lines of old-key TAB new-key, byte-identical to the dry run's prediction (diff clean), count equal to records moved. stderr carried the summary, the per-file listing, and the bare-key section grouped by file naming the flag that rewrites them. Collision reporting proven by TestCollisionLeavesOneRecordAndContinues.
 ---
 
 # The migration reports the full old-to-new mapping

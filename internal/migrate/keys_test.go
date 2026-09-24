@@ -322,3 +322,64 @@ func TestIncludeBareKeysWorksAfterTheMigration(t *testing.T) {
 		t.Errorf("former_keys was damaged by the run that read it:\n%s", idx)
 	}
 }
+
+func TestReclaimKeepsTheWholeHistory(t *testing.T) {
+	// Migrating away and back leaves both keys in the history, and that is
+	// correct: the record did formerly answer to each of them. Resolution is
+	// unaffected, because a live key matches before the former tier is
+	// consulted. An earlier version pruned the reclaimed key to satisfy an
+	// invented rule and destroyed a true fact to do it.
+	dir, b := repo(t, map[string]string{
+		".luma/backlog/work-items/WORK-0040-a/index.md": workItem("WORK-0040", "a"),
+	})
+	for _, target := range []string{"BACK", "WORK"} {
+		if _, err := Keys(dir, b, Options{Target: target}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	idx := read(t, dir, ".luma/backlog/work-items/WORK-0040-a/index.md")
+	if !strings.Contains(idx, "key: WORK-0040") {
+		t.Fatalf("the key was not reclaimed:\n%s", idx)
+	}
+	if !strings.Contains(idx, `former_keys: ["WORK-0040", "BACK-0040"]`) {
+		t.Errorf("the history was pruned:\n%s", idx)
+	}
+}
+
+func TestARecordMayRevertToAnyOfItsFormerKeys(t *testing.T) {
+	// Not only the one it held most recently. A record that went WORK to BACK
+	// to PROJ must be able to go back to WORK — the oldest of its own former
+	// keys — as readily as to BACK. The exception is "this record held it",
+	// not "this record held it last".
+	dir, b := repo(t, map[string]string{
+		".luma/backlog/work-items/WORK-0040-a/index.md": workItem("WORK-0040", "a"),
+	})
+	for _, target := range []string{"BACK", "PROJ"} {
+		if _, err := Keys(dir, b, Options{Target: target}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	idx := read(t, dir, ".luma/backlog/work-items/PROJ-0040-a/index.md")
+	if !strings.Contains(idx, `former_keys: ["WORK-0040", "BACK-0040"]`) {
+		t.Fatalf("history not as expected:\n%s", idx)
+	}
+
+	// Now all the way back to the oldest.
+	res, err := Keys(dir, b, Options{Target: "WORK"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(res.Collisions) != 0 {
+		t.Fatalf("reverting to an older former key was blocked: %+v", res.Collisions)
+	}
+	idx = read(t, dir, ".luma/backlog/work-items/WORK-0040-a/index.md")
+	if !strings.Contains(idx, "key: WORK-0040") {
+		t.Errorf("did not revert to the oldest former key:\n%s", idx)
+	}
+	// And it still resolves by every key it has ever answered to.
+	for _, k := range []string{"WORK-0040", "BACK-0040", "PROJ-0040"} {
+		if !strings.Contains(idx, k) {
+			t.Errorf("%s is no longer recorded:\n%s", k, idx)
+		}
+	}
+}

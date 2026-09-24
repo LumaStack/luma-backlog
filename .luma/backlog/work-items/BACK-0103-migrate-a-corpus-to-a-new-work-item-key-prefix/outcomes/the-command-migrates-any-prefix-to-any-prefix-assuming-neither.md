@@ -7,6 +7,14 @@ verify_by: "Run against a corpus whose source prefix is not WORK and whose targe
 work_item: '[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]]'
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:03:33Z'}
+verified:
+  - as: proven
+    at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+evidence:
+  - at: "2026-09-24T07:50:19Z"
+    by: agent:claude-opus-5/luma-backlog
+    what: Run on luma-foreman, a second repository, where source is WORK and target is FORE — neither of this project's. WORK-0001 -> FORE-0001; the child outcome's link followed to [[work-items/FORE-0001-test-backlog-in-a-new-project]]; show WORK-0001 returns FORE-0001; second run reported 0 moved, 1 already correct. Merged as LumaStack/luma-foreman#166.
 ---
 
 # The command migrates any prefix to any prefix, assuming neither

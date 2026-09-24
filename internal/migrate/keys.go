@@ -173,8 +173,11 @@ func stampRecords(p *root.Project, renames []corpus.KeyRename) error {
 		if err != nil {
 			return fmt.Errorf("parsing %s: %w", rel, err)
 		}
-		former := rec.List("former_keys")
-		former = append(former, r.OldKey)
+		// Append, never prune. A record that migrates away and back holds both
+		// keys in its history, and that is accurate --- it did formerly answer
+		// to each of them. Resolution is unaffected, because a live key matches
+		// before the former tier is consulted.
+		former := append(rec.List("former_keys"), r.OldKey)
 		rec.Set("key", r.NewKey)
 		if err := rec.SetRaw("former_keys", yamlList(former)); err != nil {
 			return fmt.Errorf("writing former_keys on %s: %w", rel, err)

@@ -654,6 +654,85 @@ every file it touched, and somebody looks.
 **Six patterns for this repository, and they are permanent** — it will need
 them on every run, which is the argument for an `ignore:` list in
 `luma-backlog.yaml` rather than six flags retyped from memory. Not built yet.
+### An invented constraint became a defect, then a code change that destroyed data
+
+**What happened, in order.** While writing this work item's outcomes I added a
+clause to *a record carries its former keys*: **"A key is never both live and
+former on the same record."** Nobody asked for it. It was not derived from a
+requirement, a decision record, or anything the maintainer said — it sounded
+tidy while I was writing the sentence around it.
+
+**Weeks of work later, verification found it false.** Migrating a record away
+and back leaves `key: WORK-0040` beside
+`former_keys: ["WORK-0040", "BACK-0040"]`. I recorded that as a defect, changed
+`stampRecords` to prune a reclaimed key from the list, wrote a test asserting
+the pruning, and verified the outcome as passing.
+
+**The maintainer asked what we had messed up. The answer was: nothing, until I
+fixed it.** That data is correct — the record *did* formerly answer to
+WORK-0040, and it *did* formerly answer to BACK-0040. Both facts are true, and
+resolution never cared, because a live key matches before the former tier is
+consulted. **I deleted true history to satisfy a rule I had made up.**
+
+### Why verification did not catch it, which is the useful part
+
+**Verification checks the world against the outcome. It cannot check the
+outcome against reality.** The procedure is built for an outcome that is right
+and a world that might not be; it has no step for an outcome that is wrong. So
+a fabricated clause passes straight through the one gate designed to catch
+falsehood, and arrives wearing evidence.
+
+**And the failure looked exactly like success.** I found a discrepancy, traced
+it, fixed code, added a test, re-verified. Every motion was the motion of doing
+good work. Nothing in the process felt wrong, which is why nothing in the
+process stopped it.
+
+### What would have caught it
+
+**Ask where each clause came from, at the moment it is written.** Every other
+clause in these twelve outcomes traces to something: a decision record, a
+measurement, a sentence the maintainer said, a failure we hit. This one traced
+to nothing, and that was visible when I wrote it and invisible afterwards.
+
+**Treat a clause with no source as a proposal, not a requirement.** The
+`brainstorming-is-not-a-proposition` rule already says to record a stance at the
+strength it was given. A stance nobody gave has no strength at all, and writing
+it as an outcome is the same error one step further along.
+
+**When verification fails, suspect the outcome first.** The instinct is to fix
+the world, because that is what verification is for. But the outcome is younger
+than the code here, was written by one person in one sitting, and had never been
+read by anybody — it is the less-tested artifact of the two, and it is the one
+to doubt first.
+
+**A rule that deletes data deserves its own pause.** The fix removed a recorded
+fact. Anything that makes the corpus hold *less* than it did should have to
+justify itself against something stronger than a sentence in an outcome.
+### The same invention survived its own correction, in weaker form
+
+**After reverting the code I rewrote the outcome as *"holds every key it has
+ever answered to and does not now"*.** That reads as a fix. It is the same
+fabricated rule with a softer edge: *does not now* still forbids a live key
+appearing in the list, which is exactly the state the maintainer said was
+allowed.
+
+**It was caught by running the thing, not by reading it.** A round trip in a
+throwaway repository — WORK to BACK to PROJ and back to WORK — ends with
+`key: WORK-0001` and `former_keys: ["WORK-0001", "BACK-0001", "PROJ-0001"]`.
+The record is live under a key the list also holds, and the corrected sentence
+forbade it.
+
+**Two lessons, and the second is the one worth keeping.**
+
+**A retraction is not automatically correct.** I reverted the code, felt the
+matter closed, and reached for new words while still holding the assumption
+that produced the old ones. The belief outlived the sentence that carried it.
+
+**Demonstrate the behaviour before writing the sentence that describes it.**
+Both wrong versions were written from what I thought the system did. The right
+one was written from watching it — and took one command to establish. Where a
+behaviour can be run, run it first and describe what came back; do not write the
+description and then go looking for agreement.
 
 ## ▶ 2026-09-23
 
