@@ -162,8 +162,8 @@ that does not get worse as surfaces are added.
 
 ## Follow-up
 
-- `[[backlog/work-items/WORK-0018-extract-the-application-layer]]` — the refactor.
-- `[[backlog/work-items/WORK-0017-specify-the-minimum-viable-product]]` — written
+- `[[backlog/work-items/BACK-0018-extract-the-application-layer]]` — the refactor.
+- `[[backlog/work-items/BACK-0017-specify-the-minimum-viable-product]]` — written
   against the amended text rather than the text it contradicts.
 - The three `spec.md` amendments, which are consequences of this record and not
   separate decisions.

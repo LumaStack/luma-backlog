@@ -32,11 +32,11 @@ refinement can discard it.
 knowledge bundle stay in sync*. This record is the one actionable piece of it;
 everything else there is deferred with a reopen trigger. The same conclusion is
 journalled on
-[[work-items/WORK-0070-make-the-backlog-usable-in-another-project]], which is
+[[work-items/BACK-0070-make-the-backlog-usable-in-another-project]], which is
 where it changes a delivery.
 
 **The boundary with WORK-0056.**
-[[work-items/WORK-0056-re-adopt-the-command-line-bundle-and-stop-copying-its-style-guide]]
+[[work-items/BACK-0056-re-adopt-the-command-line-bundle-and-stop-copying-its-style-guide]]
 covers the bundle duplicating **another bundle** — the vendored
 command-line-interface copy is 0.1.0, the ascii-styleguide landed in 0.3.0, and
 the marks in `showing-records` were copied rather than pointed at. This record

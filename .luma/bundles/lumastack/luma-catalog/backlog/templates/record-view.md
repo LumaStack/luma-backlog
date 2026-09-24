@@ -42,9 +42,9 @@ reader must be able to tell without being told.
 
 ```
 luma-backlog show WORK-0031
-luma-backlog task list -w WORK-0031-reshape-the-command-surface
-luma-backlog outcome list -w WORK-0031-reshape-the-command-surface
-luma-backlog work-item journal -w WORK-0031-reshape-the-command-surface
+luma-backlog task list -w BACK-0031-reshape-the-command-surface
+luma-backlog outcome list -w BACK-0031-reshape-the-command-surface
+luma-backlog work-item journal -w BACK-0031-reshape-the-command-surface
 ```
 ```
 

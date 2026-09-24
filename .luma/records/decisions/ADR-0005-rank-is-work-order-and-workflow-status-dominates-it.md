@@ -63,7 +63,7 @@ work-item rank <ref> [--before <ref> | --after <ref> | --first | --last]
 > name taken from the sequence does not (`spec.md` §9.6).
 
 **`--at <n>` is deferred**
-([[backlog/work-items/WORK-0021-rank-by-position-rather-than-by-neighbor]]).
+([[backlog/work-items/BACK-0021-rank-by-position-rather-than-by-neighbor]]).
 
 **`set` refuses the rank field.** §9.6 says the caller never computes an
 ordering key; if `set rank=0010.500` works, that rule is decoration. `rank` is
@@ -113,7 +113,7 @@ what the prefix is for and its only purpose.
 > record.
 >
 > Delivered by
-> [[work-items/WORK-0095-there-is-no-unranked-work]].
+> [[work-items/BACK-0095-there-is-no-unranked-work]].
 
 ### What happens on a status change
 
@@ -155,7 +155,7 @@ overrides an act somebody just performed.
 > sending one record back.
 >
 > Delivered by
-> [[work-items/WORK-0095-there-is-no-unranked-work]].
+> [[work-items/BACK-0095-there-is-no-unranked-work]].
 
 Preserving relative order across a status change was considered and is not
 available without either keeping rank history or never rewriting ranks, the

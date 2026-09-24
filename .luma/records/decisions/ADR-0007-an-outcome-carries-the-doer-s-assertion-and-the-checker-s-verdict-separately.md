@@ -59,7 +59,7 @@ verified:
 design that destroys history — everywhere else the rule is create, never
 overwrite: `verified` accumulates (§4.7), promotion copies (§4.8.1), succession
 writes a new record (§4.6), and closing appends so a reopen cannot erase it
-([[backlog/work-items/WORK-0020-reopen-a-work-item-that-was-closed]]).
+([[backlog/work-items/BACK-0020-reopen-a-work-item-that-was-closed]]).
 
 It also costs nothing. `verified` is already an append-only list and the code
 that appends to it exists; a single field would have been a second shape for no
@@ -301,7 +301,7 @@ distrusted.
   distinction nobody makes.
 - Waves arrive, which would bind each assertion to the attempt it belonged to —
   the remaining half of
-  [[backlog/work-items/WORK-0019-a-ledger-of-attempts-against-an-outcome]].
+  [[backlog/work-items/BACK-0019-a-ledger-of-attempts-against-an-outcome]].
 - Somebody needs self-verification enforced rather than observed.
 
 ## References

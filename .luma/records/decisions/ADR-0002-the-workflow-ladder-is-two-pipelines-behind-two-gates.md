@@ -148,7 +148,7 @@ chose.
 
 > **Corrected 2026-09-09.** Two things were wrong and neither was the position.
 > The fourth bullet is new, raised by
-> [[work-items/WORK-0080-preparation-and-definition-may-be-two-different-things]]
+> [[work-items/BACK-0080-preparation-and-definition-may-be-two-different-things]]
 > — the proposal that preparation and definition are separate pipelines, which
 > is the most likely challenge to this decision and matched none of the three
 > triggers as written. And the frontmatter `reopen_trigger` carried only the

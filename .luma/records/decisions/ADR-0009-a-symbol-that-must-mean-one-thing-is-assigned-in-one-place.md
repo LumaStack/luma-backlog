@@ -77,7 +77,7 @@ not be.
 
 **Which letters get which flags.** Assigning a shorthand scheme against a
 partial flag set means redoing it. **Re-open when the last command in
-[[work-items/WORK-0031-reshape-the-command-surface]] lands** and the full set
+[[work-items/BACK-0031-reshape-the-command-surface]] lands** and the full set
 can be seen at once.
 
 *Input for that decision, recorded as it turns up:*
@@ -97,7 +97,7 @@ can be seen at once.
 
 ## References
 
-- [[work-items/WORK-0031-reshape-the-command-surface]] --- where the registry
+- [[work-items/BACK-0031-reshape-the-command-surface]] --- where the registry
   first gets built.
 - [[records/decisions/ADR-0006-the-command-line-is-designed-against-clig-dev]]
   --- CLIG's standard flag names are an input to the assignment, not a

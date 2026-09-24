@@ -254,3 +254,38 @@ func TestDryRunPredictsTheRealRun(t *testing.T) {
 		t.Errorf("the dry run reported bare keys the real run does not leave: %+v", dry.BareKeys)
 	}
 }
+
+func TestIncludeBareKeysNeverTouchesFormerKeys(t *testing.T) {
+	// The redirect the migration just created is itself a bare key by every
+	// other test in this file. Rewriting it would turn "this record used to be
+	// WORK-0031" into "this record used to be BACK-0031" — destroying every
+	// reference held anywhere else, silently, in the same run that created it.
+	dir, b := repo(t, map[string]string{
+		".luma/backlog/work-items/WORK-0031-reshape/index.md": workItem("WORK-0031", "reshape"),
+		"docs/notes.md": "WORK-0031 in prose.\n",
+	})
+	if _, err := Keys(dir, b, Options{Target: "BACK", IncludeBareKeys: true}); err != nil {
+		t.Fatal(err)
+	}
+	idx := read(t, dir, ".luma/backlog/work-items/BACK-0031-reshape/index.md")
+	if !strings.Contains(idx, `former_keys: ["WORK-0031"]`) {
+		t.Fatalf("the redirect was rewritten and the old key no longer resolves:\n%s", idx)
+	}
+	// Prose still moved, so the exclusion is narrow rather than a blanket skip.
+	if !strings.Contains(read(t, dir, "docs/notes.md"), "BACK-0031 in prose") {
+		t.Error("prose was not rewritten")
+	}
+}
+
+func TestBareKeyCountIgnoresTheRedirectItJustWrote(t *testing.T) {
+	dir, b := repo(t, map[string]string{
+		".luma/backlog/work-items/WORK-0031-reshape/index.md": workItem("WORK-0031", "reshape"),
+	})
+	res, err := Keys(dir, b, Options{Target: "BACK"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range res.BareKeys {
+		t.Errorf("former_keys counted as remaining: %s %v", f.Path, f.Keys)
+	}
+}

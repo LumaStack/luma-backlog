@@ -238,13 +238,13 @@ thing.
 **The rule is one sentence and it comes from the two forms being exact opposites
 on both axes**, which is not how I had it framed. I had been saying *rewrite
 links, leave prose* — wrong, because `internal/corpus/rank.go`'s comment citing
-`WORK-0096-what-repeated-reordering-does-to-the-rank-key` is prose and still has
+`BACK-0096-what-repeated-reordering-does-to-the-rank-key` is prose and still has
 to move.
 
 | in the text | survives a migration | safe to rewrite |
 | --- | --- | --- |
 | bare `WORK-0031` | **yes**, `former_keys` resolves it | **no**, may name another project's work item |
-| full `WORK-0031-reshape-the-command-surface` | **no** | **yes** |
+| full `BACK-0031-reshape-the-command-surface` | **no** | **yes** |
 
 **The second row was checked rather than assumed.** After the directory moves,
 `matchesWorkItem` fails on the full name and the former-key pass fails too,
@@ -502,6 +502,37 @@ twice, and the dry run's answer must match what the second real run finds.
 tests all passed with the bug in place, because none of them looked at what a
 dry run said about a record's own key. Fixtures agreed with the code; the
 corpus did not.
+### The corpus is migrated — and the run found a bug that would have destroyed every redirect
+
+**102 moved, 9 already correct, 273 files rewritten. The mapping was
+byte-identical to what the dry run predicted**, and a second run reports 0
+moved, 111 already correct, 0 files rewritten. Git detected 356 renames, so
+history stays followable through the move.
+
+**The bare-key count came back 536 in 229 files where the dry run said 435 in
+168** — the opposite direction from the over-report fixed an hour ago, and a
+worse problem than a count.
+
+**`former_keys` is a bare key by every test in the file.** The stamp writes
+`former_keys: ["WORK-0031"]`, and the scan that finds keys written without a
+slug finds exactly that. So `--include-bare-keys` would have rewritten it to
+`["BACK-0031"]` — turning *this record used to be WORK-0031* into *this record
+used to be what it is called now*, and **destroying every reference held
+anywhere else, silently, in the same run that created the redirects.**
+
+**It did not happen here** because the real run was plain `migrate keys`. The
+flag has never been run against this corpus, and now cannot do that.
+
+**Two tests, and the second is the narrow one.** One asserts `former_keys`
+survives `--include-bare-keys` while prose in the same corpus still moves — so
+the exclusion is a line rule rather than a blanket skip of record files. The
+other asserts the count ignores the redirect it just wrote.
+
+**What this says about the earlier fix.** I corrected the dry run to predict the
+real run, tested that property, and shipped it — and the property held for the
+case I had in mind while both sides were wrong about `former_keys`. **Two runs
+agreeing is not two runs being right.** The real corpus disagreed with both,
+which is the second time today it caught something every fixture passed.
 
 ## ▶ 2026-09-23
 

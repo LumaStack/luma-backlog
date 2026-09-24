@@ -10,7 +10,7 @@ import "testing"
 // small enough to be reached by ordinary use, not only by abuse. A record that
 // everything else queues in front of consumes the front budget one move at a
 // time. Measured 2026-09-17 for
-// .luma/backlog/work-items/WORK-0096-what-repeated-reordering-does-to-the-rank-key.
+// .luma/backlog/work-items/BACK-0096-what-repeated-reordering-does-to-the-rank-key.
 //
 // The bounds are asserted loosely, as floors rather than exact values: a change
 // to how positions are allocated should move them, and a test pinned to the

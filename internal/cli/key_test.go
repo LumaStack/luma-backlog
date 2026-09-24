@@ -92,7 +92,7 @@ func TestAskingTwiceDoesNotBurnAKey(t *testing.T) {
 }
 
 func TestTheJoinedFormResolves(t *testing.T) {
-	// WORK-0002-lint-the-corpus is how a work item is written and said, the
+	// BACK-0002-lint-the-corpus is how a work item is written and said, the
 	// way a decision's filename joins its number and slug. All three forms
 	// have to reach the same record, or the one people actually type is the
 	// one that fails.

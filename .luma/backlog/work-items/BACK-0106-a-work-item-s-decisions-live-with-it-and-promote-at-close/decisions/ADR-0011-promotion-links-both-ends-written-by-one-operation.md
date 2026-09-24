@@ -75,4 +75,4 @@ edited.
 
 - Amend `spec.md` §4.8.1 when BACK-0106 is worked: "the original's content is
   never changed; promotion appends only the `promoted_to` stamp."
-- The lint pair-check lands with [[work-items/WORK-0002-lint-the-corpus]].
+- The lint pair-check lands with [[work-items/BACK-0002-lint-the-corpus]].

@@ -61,7 +61,7 @@ argument), and the §4.8.1 amendment it entails all live there.
 
 The third level above the project, and the guidelines for what earns
 promotion —
-[[work-items/WORK-0015-decisions-have-levels-and-get-promoted-between-them]]
+[[work-items/BACK-0015-decisions-have-levels-and-get-promoted-between-them]]
 keeps both. The seam: this ships the two levels the specification already
 knows and the close-time ask; WORK-0015 works out the tier above and what
 belongs where.
@@ -77,7 +77,7 @@ belongs where.
 ## References
 
 - `docs/spec.md` §4.8.1 — promotion; §5.2 — the `work-item.closed` condition.
-- [[work-items/WORK-0015-decisions-have-levels-and-get-promoted-between-them]]
+- [[work-items/BACK-0015-decisions-have-levels-and-get-promoted-between-them]]
   — the levels above, and what earns each.
-- [[work-items/WORK-0033-closing-a-work-item-records-what-was-learned]] — the
+- [[work-items/BACK-0033-closing-a-work-item-records-what-was-learned]] — the
   close-time sibling for journals.

@@ -238,6 +238,22 @@ func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]F
 	return files, bare, err
 }
 
+// onFormerKeysLine reports whether an offset falls on a `former_keys:` line.
+//
+// **Those entries are the migration's own output and must never be touched.**
+// A record's former_keys holds the key it used to answer to, written by the
+// step before this one --- so it is a bare key by every test this file applies,
+// and rewriting it would turn the redirect into a statement that the record
+// used to be called what it is called now. Every reference held anywhere else
+// would stop resolving, silently, in the same run that created them.
+//
+// Counting them is the smaller half of the same mistake: it reports 102
+// "remaining" keys that are not remaining, in 61 files that need nothing.
+func onFormerKeysLine(text string, at int) bool {
+	start := strings.LastIndexByte(text[:at], '\n') + 1
+	return strings.HasPrefix(strings.TrimSpace(text[start:at]), "former_keys:")
+}
+
 // bareKeysIn reports which migrated keys appear without their slug.
 func bareKeysIn(text string, old map[string]string) []string {
 	seen := map[string]bool{}
@@ -247,6 +263,9 @@ func bareKeysIn(text string, old map[string]string) []string {
 			end := at + len(k)
 			if end < len(text) && text[end] == '-' {
 				continue // part of a full name, already rewritten
+			}
+			if onFormerKeysLine(text, at) {
+				continue
 			}
 			if !seen[k] {
 				seen[k] = true
@@ -270,6 +289,9 @@ func rewriteBareKeys(text string, old map[string]string, n int) (string, int) {
 			}
 			end := at + len(k)
 			if end < len(text) && text[end] == '-' {
+				continue
+			}
+			if onFormerKeysLine(text, at) {
 				continue
 			}
 			b.WriteString(text[from:at])

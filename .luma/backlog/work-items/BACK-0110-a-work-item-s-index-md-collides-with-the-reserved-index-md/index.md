@@ -55,7 +55,7 @@ path that names one, or the format is asked to stop reserving `INDEX.md` in a
 case-insensitive way. `docs/format-requests.md` is where the second kind of ask
 is recorded, and this may belong there instead.
 
-**Related.** [[work-items/WORK-0037-old-records-get-migrated-as-the-system-improves]]
+**Related.** [[work-items/BACK-0037-old-records-get-migrated-as-the-system-improves]]
 is the general question of migrating old records; this is a concrete instance
 that would need it, in the same relationship
 [[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix]] already

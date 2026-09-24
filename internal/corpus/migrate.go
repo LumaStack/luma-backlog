@@ -136,7 +136,7 @@ func heldByAnother(items []Item, key string, asking Item) (holder string, former
 // new one.
 //
 // **Names move and keys do not, which is the whole rule.** A full name ---
-// WORK-0031-reshape-the-command-surface --- does not survive a migration: it is
+// BACK-0031-reshape-the-command-surface --- does not survive a migration: it is
 // a name rather than a key, resolution falls back to string equality, and a
 // slug defeats that. A bare key does survive, because former_keys answers for
 // it, and rewriting one can be wrong: it may name a work item in a different
