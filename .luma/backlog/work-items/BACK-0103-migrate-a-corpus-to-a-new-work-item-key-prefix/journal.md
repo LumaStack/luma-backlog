@@ -324,6 +324,43 @@ misread.
 **The entry above keeps `--rewrite-keys` as written.** It is what was proposed
 at that moment, and the journal appends rather than curates. A reader meeting
 the old name there will find this entry directly above it.
+### How a loop errors instead of hanging — the project already decided, twice
+
+**Asked after `RewriteNamesIn` hung. The answer was not to invent anything:**
+two mechanisms already exist, they are complementary, and both date from
+2026-09-17 when a repeating decimal made `formatPosition` spin.
+
+**In production code, assert the invariant that guarantees progress.**
+`checked` in `rank.go` does not bound by count or by time — it asserts that the
+new position lies strictly between its neighbours, which is the property that
+makes the search terminate, and errors **naming the remedy**: *positions are
+exhausted at this status — run `rank repair`*. An error a caller can act on
+beats a duplicate nobody can detect, and beats a process that never returns.
+
+**In tests, a tripwire that asserts only termination.** `hang_test.go` runs the
+call in a goroutine and selects against a timeout. Its comment is the reason
+this class needs its own test: *no error, no wrong answer, just a process that
+never returned.* Nothing else catches that — a wrong answer fails an assertion,
+a hang just sits there until somebody kills it.
+
+**Applied to both loops here.**
+
+`NextAvailableKey` is bounded by what could possibly block it: a candidate is
+only rejected because some record holds that key, so one of `held+1` candidates
+must be free. Exceeding that means the holding check is answering wrongly, and
+it now says so rather than spinning.
+
+`RewriteNamesIn` has one guarantee — `from` strictly increases, because
+`end > i >= from` — and that holds only while the name is non-empty. The
+non-empty check was already there and read as a nil check; it is now stated as
+the thing that makes the loop terminate. A tripwire test covers the exact
+prefix case that hung.
+
+**Worth noting the default that let it run for two minutes.** `go test` allows
+ten minutes before it gives up, so a hang looks like a slow suite rather than a
+failure. The tripwire brings that down to ten seconds for the call that can
+actually hang, which is the right place for the bound rather than shortening
+the whole suite's patience.
 
 ## ▶ 2026-09-23
 

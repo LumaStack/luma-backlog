@@ -3,6 +3,7 @@ package corpus
 import (
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestPlanMovesOnlyThePrefix(t *testing.T) {
@@ -140,5 +141,48 @@ func TestRewriteNamesWillNotCorruptALongerName(t *testing.T) {
 	}
 	if !strings.Contains(got, "BACK-0031-reshape]]") {
 		t.Errorf("the exact name was not rewritten; output:\n%s", got)
+	}
+}
+
+// RewriteNamesIn ran forever on a name that is a prefix of a longer one: it
+// advanced a local index and then let the loop restart the search from the
+// top, so the match it had just skipped was the first one found again. No
+// error, no wrong answer, just a call that never returned --- the same shape
+// as the repeating-position hang found on 2026-09-17, and caught the same way.
+//
+// The bound is a tripwire rather than a performance assertion, so this checks
+// only that it comes back.
+func TestRewriteNamesTerminatesOnAPrefixName(t *testing.T) {
+	renames := []KeyRename{{OldName: "WORK-0031-reshape", NewName: "BACK-0031-reshape"}}
+	in := "[[work-items/WORK-0031-reshape-the-command-surface]] twice: " +
+		"[[work-items/WORK-0031-reshape-the-command-surface]]"
+
+	done := make(chan string, 1)
+	go func() {
+		out, _ := RewriteNamesIn(in, renames)
+		done <- out
+	}()
+	select {
+	case got := <-done:
+		if got != in {
+			t.Errorf("a longer name was rewritten:\n%s", got)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("RewriteNamesIn did not return on a name that prefixes a longer one")
+	}
+}
+
+func TestAllocationErrorsRatherThanSpinning(t *testing.T) {
+	// The bound exists so a wrong holding check surfaces as an error a caller
+	// can act on, instead of a process that never returns. Nothing reachable
+	// produces it, so this asserts the ordinary path still comes back rather
+	// than contriving the failure.
+	b := migratedBacklog(t, map[string][]string{"BACK-0001-a": {"BACK-0001"}})
+	got, err := NextAvailableKey(b, "BACK")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "BACK-0002" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0002", got)
 	}
 }

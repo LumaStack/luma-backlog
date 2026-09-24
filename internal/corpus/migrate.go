@@ -149,6 +149,11 @@ func heldByAnother(items []Item, key string, asking Item) (holder string, former
 func RewriteNamesIn(text string, renames []KeyRename) (string, int) {
 	changed := 0
 	for _, r := range renames {
+		// The progress guarantee, and the only one this loop has: `from`
+		// strictly increases each turn because `end > i >= from`, which holds
+		// only while OldName is non-empty. An empty name makes strings.Index
+		// return 0 forever. Stated rather than left looking like a nil check,
+		// since it is what makes the loop terminate.
 		if r.OldName == "" {
 			continue
 		}

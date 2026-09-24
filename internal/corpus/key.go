@@ -152,12 +152,28 @@ func NextAvailableKey(b *root.Backlog, prefix string) (string, error) {
 		}
 	}
 
-	for n := highest + 1; ; n++ {
+	// Bounded by what could possibly block it. A candidate is only rejected
+	// because some record holds that key, and there are `held` of those, so
+	// one of `held+1` candidates must be free. Exceeding that means the
+	// holding check is answering wrongly, and the same reasoning `checked` in
+	// rank.go applies: an error a caller can act on beats a process that never
+	// returns.
+	held := 0
+	for _, it := range items {
+		if it.Key() != "" {
+			held++
+		}
+		held += len(it.FormerKeys())
+	}
+	for n := highest + 1; n <= highest+held+1; n++ {
 		candidate := FormatKeyAs(prefix, n)
 		if !anyoneHolds(items, candidate) {
 			return candidate, nil
 		}
 	}
+	return "", fmt.Errorf(
+		"no free key after %d candidates under %q, with only %d keys held --- allocation cannot be satisfied and the corpus needs looking at",
+		held+1, prefix, held)
 }
 
 // anyoneHolds reports whether any record answers to a key, now or formerly.
