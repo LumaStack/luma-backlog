@@ -2,11 +2,12 @@
 type: type_definition
 type_version: "0.0.1"
 defines: work-item
-version: "0.0.1"
+version: "0.0.2"
 fields:
   key:             {field_presence: recommended, field_type: text, desc: "The handle somebody quotes — WORK-0002. Allocated at creation from one project-wide sequence and written into the record, never derived, so a later change of prefix cannot rename what already exists. The path stays the identity for linking; the key is the identity for finding."}
   kind:            {field_presence: optional, field_type: enum, values: [defect, request, idea, inquiry, change], desc: "What sort of work item this is. A kind says what has to happen before the record can be judged; see the body. Absent means nobody has classified it, which is not the same as `change`."}
   workflow_status: {field_presence: recommended, field_type: enum, values: [captured, unprepared, preparing, prepared, todo, in_progress, closed], desc: "Where the work is. Absent means the first configured value — captured. Configurable per repository; the tool attaches no meaning to the values. See docs/workflow-status.md."}
+  former_keys:     {field_presence: optional, field_type: list of text, desc: "Keys this record formerly answered to and no longer does, oldest first. Written by a key migration, never by hand. Resolution accepts them, so a reference written before the migration keeps working; allocation skips them, so one is never issued to a different record. A record may reclaim a key from its own list."}
   blocked:         {field_presence: optional, desc: "Present means blocked. A list of { on, why}, or a single entry written bare. Undeclared shape — the format has no composite field type yet." }
   paused:          {field_presence: optional, desc: "Present means deliberately paused. { on, why}. Undeclared shape, as above." }
 ---
@@ -16,6 +17,27 @@ fields:
 The unit of delivery, and the thing that sits on a backlog. Judged on its outcomes and never on its tasks.
 
 **Body sections:** *The problem* · *What is being delivered* · *Out of scope* · *Constraints*. Leave one out rather than writing nothing under it.
+
+## Former keys, and what a key promises
+
+**A key resolves to exactly one record, forever.** That is the promise, and it
+is stronger than *a key is used once* — which is what makes the difference
+worth stating.
+
+**A key migration rewrites the prefix and records what it replaced.** The old
+key moves into `former_keys` and keeps resolving, the way a renamed repository
+keeps answering to its old name. Nothing goes and rewrites the old key out of
+other people's records, because there is no need: it still works.
+
+**Allocation skips every key any record has ever held.** A key freed by a
+migration is not available again. Issuing it to a different record would make
+one old reference resolve to two, which is the failure a rename redirect has
+when somebody takes the vacated name.
+
+**The single exception is a record reclaiming its own.** Migrating back from
+`BACK` to `WORK` must be allowed to return `WORK-0123` to the record that held
+it — same record, so the promise above still holds. Without the exception,
+migrating back would be refused for every record that ever moved.
 
 ## Five kinds, and what separates them
 

@@ -2,8 +2,8 @@
 type: bundle
 type_version: "0.0.1"
 title: lumastack/luma-catalog/versioning
-version: 0.8.0
-published: 2026-09-19
+version: 0.9.0
+published: 2026-09-23
 stage: draft
 consumers: [project, organization]
 description: What a version number promises, when to bump which part, and the rules that get decided wrongly — for anything versioned, not only releases.
@@ -56,6 +56,26 @@ catalog contents; a project versions its packages, schemas and bundles. The
 rules are identical.
 
 ## Version
+
+`0.9.0` — **`0.0.x` to `0.1.0` is approved, never inferred.**
+
+The section on pre-1.0 covered the permission `0.y.z` grants and said nothing
+about the step out of `0.0.x`, which is the one that gets taken by accident.
+
+**Every tier test says *minor* for an ordinary additive change, and the literal
+minor of `0.0.1` is `0.1.0`.** Applied mechanically, the first additive change
+to anything at `0.0.1` walks it out of the unsettled window — the opposite of
+what `0.0.x` was chosen to say. Observed: an agent following a written *bump the
+type's minor* took a type to `0.1.0` for one added optional field, while its
+three sibling types sat at `0.0.1` and the scheme was four days old.
+
+**So the move is always its owner's decision**, never a side effect of shipping
+something else. While at `0.0.x`, bump the patch and record which tier was
+declined — the same say-so-when-you-use-it rule the breaking-change-as-patch
+note already carried.
+
+**Nothing to do.** A version already at `0.1.0` or beyond is unaffected, and no
+existing number is wrong under the new section.
 
 `0.5.3` — **the manifest declares `lifecycle: draft`.** The field was absent, and
 absent reads as `unknown` — *nobody has said*. Something was known: this is

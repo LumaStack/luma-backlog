@@ -58,6 +58,36 @@ complaints, from people who assumed `0.x` behaved like `1.x`.
 should be stated in the release notes and in the release commit. It otherwise
 reads as a miscategorization to whoever finds it later, including you.
 
+## `0.0.x` to `0.1.0` is approved, never inferred
+
+**`0.0.x` and `0.1.0` are not two points on one scale.** `0.0.x` says nothing
+here is settled and nobody should depend on any of it. `0.1.0` says a shape has
+emerged worth naming. Crossing that line is a claim about the thing, not an
+arithmetic consequence of having changed it.
+
+**So it is always somebody's decision.** Whoever controls the artifact approves
+the move to `0.1.0` explicitly. **Never take it while doing something else** —
+not as a side effect of adding a field, shipping a feature, or following a rule
+that says *bump the minor*.
+
+**That rule is the trap, and it is why this section exists.** Every tier test
+worth having says *minor* for an ordinary additive change, and the literal minor
+of `0.0.1` is `0.1.0`. Applied mechanically, the first additive change to
+anything sitting at `0.0.1` walks it out of the unsettled window — which is the
+opposite of what `0.0.x` was chosen to say.
+
+**While at `0.0.x`, bump the patch and record the departure.** `0.0.1` →
+`0.0.2` for a change a tier test calls minor, with a line in the changelog
+saying which tier was declined and why. An undocumented departure from a written
+rule reads as a mistake later, including to whoever made it — the same reasoning
+as the breaking-change-as-patch note above.
+
+**Siblings are evidence, not authority.** Where several artifacts version
+together — the types in one bundle, the packages in one repository — one of them
+leaping to `0.1.0` while the rest sit at `0.0.1` is a signal the move was
+inferred rather than decided. Worth checking; not a rule, since one of them
+genuinely may settle first.
+
 ## Reaching 1.0.0
 
 `1.0.0` is not "we finished the features." It means **the shape has stopped
