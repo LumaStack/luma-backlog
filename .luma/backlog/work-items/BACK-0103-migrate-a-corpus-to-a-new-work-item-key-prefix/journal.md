@@ -5,6 +5,59 @@
 
 ---
 
+## ▶ 2026-09-24
+
+### Tasks are hand-ranked — decided, and it supersedes the deferral above
+
+**The entry above deferred ordering. That is settled now: hand-write the rank.**
+
+**The reason is that the two ranking problems are not the same problem.**
+Ranking work items reaches across an entire project — concurrent reorders on
+different machines, merge conflicts nobody sees until git resolves them, and
+groups that grow forever at the ends. That is WORK-0096, and it is genuinely
+hard. **Ranking tasks inside one work item is self-contained**: one record, one
+reader, five rows, and nothing outside it moves when they do. Borrowing the
+first problem's caution for the second bought nothing.
+
+**So the refusal recorded above was over-careful.** It was right that the tool
+owns the ordering key and right that `depends_on` is the wrong field; it was
+wrong to conclude that therefore nothing should be written. Recorded rather than
+quietly corrected, because the reasoning is the reusable part: *a constraint
+that exists for scale does not automatically apply at small scale.*
+
+### A task's rank carries its status ordinal, and the old two-segment form is stale
+
+**Found by writing the wrong one first.** Copying the shape from WORK-0001's
+tasks — `rank: "0050.000"` — produced this on every one:
+
+```
+luma-backlog: .../allocation-skips-every-key-any-record-has-ever-held.md ranks at a status it no longer holds:
+  status "todo" now carries ordinal 50, and its rank reads 0030.000
+  the status vocabulary was edited by hand; re-set the status on each to repair it
+```
+
+**The live shape is `<status ordinal>.<position>.<fraction>`, unquoted** — the
+same three segments a work item uses, `010.0820.000` at `captured` and
+`030.0010.000` at `preparing`. `todo` is ordinal 50, so the five tasks here are
+`050.0010.000` through `050.0050.000`, spaced by ten so something can be
+inserted between two without touching either.
+
+**WORK-0001's tasks are in the stale format and the tool warns about them.**
+They predate the ordinal, which arrived as a WORK-0031 task. Not repaired here —
+it is the same class as BACK-0111 and belongs with the migration work rather
+than inside this one.
+
+### The price of hand-ranking, which is worth knowing before doing it again
+
+**A rank encodes the status, so changing a task's status invalidates its rank.**
+Moving one of these from `todo` to `in_progress` means rewriting its rank by
+hand as well, or the tool reports it as ranking at a status it no longer holds.
+
+**That is exactly why `rank` is a command and `set` refuses the field** — the
+tool recomputes the ordinal part, and a person writing the key by hand has taken
+on a second thing to keep true. Fine for five rows in one record. It is the
+reason not to reach for this by default.
+
 ## ▶ 2026-09-23
 
 ### Nothing can order tasks — the contract says rank does it and the binary refuses

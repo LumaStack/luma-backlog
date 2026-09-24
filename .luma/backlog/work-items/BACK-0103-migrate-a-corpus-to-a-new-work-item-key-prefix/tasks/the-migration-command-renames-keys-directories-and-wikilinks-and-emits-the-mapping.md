@@ -7,6 +7,7 @@ workflow_status: todo
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:15:22Z'}
 advances: ["[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/a-migrated-key-keeps-its-number]]", "[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/the-migration-reports-the-full-old-to-new-mapping]]", "[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/the-command-migrates-any-prefix-to-any-prefix-assuming-neither]]", "[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/a-run-changes-structure-and-leaves-prose-alone]]"]
+rank: 050.0040.000
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:16:18Z'}
 ---
 
