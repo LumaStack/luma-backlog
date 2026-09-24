@@ -1071,3 +1071,55 @@ The binary teaches nobody how to use it well; the bundle does that, and the two 
 
 *Settled by:* publishing the bundle, then watching what actually breaks in a second project.
 
+---
+
+## 26. Whether a work item's rank and a task's rank should share a name
+
+**Status:** **Open and undecided.** Raised 2026-09-23 as a thought rather than a proposal, and recorded at that strength. No option below is preferred; the arguments are kept so the question does not start from nothing next time.
+
+Both a work item and a task carry `rank`, and the two order within different containers — a work item among the records at its status across the project, a task among its siblings inside one work item.
+
+### There is a defect underneath, and it is separable from the naming
+
+**The tool says tasks are not ranked, and tasks carry ranks.**
+
+```
+$ luma-backlog rank <a task>
+only work items are ranked
+```
+
+Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to write it — so the field exists, the command that owns it declines, and nothing else may touch it. This misled an agent on 2026-09-23 into copying the stale two-segment form from WORK-0001's tasks; the live shape is `<status ordinal>.<position>.<fraction>`.
+
+**This is a defect whether or not anything is renamed**, and it may be the whole of the confusion. Worth separating before treating the name as the problem.
+
+### What is actually being distinguished
+
+**Scope, and only scope.** The mechanism is identical — a decimal ordering key, scoped by status ordinal, one record written per move. Only the blast radius differs, and *that* difference is real: project-wide ranking is §14 and WORK-0096, with concurrent reorders, merge conflicts nobody sees until git resolves them, and groups that grow without bound. Ranking five tasks inside one record has none of it.
+
+### The candidates
+
+| | |
+| --- | --- |
+| **leave both `rank`** | The container is already known from the record's type, so the qualifier is redundant in the data. The confusion is conversational rather than structural. |
+| **`sequence` or `order` on children** | Cheapest by far — only tasks carry ranks today. But two unrelated words imply two mechanisms and invite them to diverge into two implementations of one algorithm. `order` additionally reads two ways, an ordering and an instruction. |
+| **`project_rank` / `work_item_rank`** | Names the container, keeps the shared stem so the mechanism stays visibly one thing. Costs a migration of every work item. |
+| **`global_rank`** | **Inaccurate and should not be used.** ADR-0005 scopes a work item's rank by workflow status — a record at a later status is ahead of every record at an earlier one, whatever its rank. Nothing here ever orders globally. |
+
+### The two directions do not point the same way
+
+**Cheap says rename the child.** Only tasks carrying ranks are touched — a handful under WORK-0001 plus five under BACK-0103.
+
+**Informative says rename the parent**, because only one of the two is hard. If a name should carry a warning it is the expensive one: plain `rank` on a task reading as ordinary, and the project-wide one marked as the thing with research behind it.
+
+### Not the WORK-0085 shape, though it is adjacent
+
+[[work-items/WORK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]] is a single field asked to carry two independent facts. Neither field here carries two facts; this is one *word* covering two *scopes*, which is a different problem. WORK-0085 notes that it and ADR-0003's inverse may want writing down together — a third rule about naming could join them, if this settles into one.
+
+### What decides it
+
+**Whether the confusion survives fixing the command.** If `rank` is made to work on tasks and nobody is misled again, the naming is taste and can be left. If people keep conflating the two in conversation and in records after that, the name is doing real damage and should change.
+
+**And the timing is forced by something else.** BACK-0103 already rewrites every record in the corpus. A rank rename is dramatically cheaper inside that pass than as a second sweep afterwards, so this wants deciding before that migration is built rather than after.
+
+*Settled by:* fixing the command first, then seeing whether anyone is still confused.
+
