@@ -206,3 +206,57 @@ func TestWorkItemFlagPrefersTheRecordHoldingTheKeyNow(t *testing.T) {
 		t.Errorf("ResolveWorkItemDir(WORK-0050) = %q, want the record holding it now", dir)
 	}
 }
+
+func TestAllocationSkipsAKeyHeldOnlyAsFormer(t *testing.T) {
+	// The case the monotonic argument does not cover: a former key numbered
+	// ABOVE every key in use. A corpus this tool wrote cannot reach this
+	// state — a record's number only moves upward — so it is constructed by
+	// hand, which is exactly the situation the check exists for.
+	//
+	// Without it, the next allocation is BACK-0011, which BACK-0009 still
+	// answers to, and one old reference starts resolving to two records.
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0009-hand-edited-downward": {"BACK-0009", "BACK-0011"},
+		"BACK-0010-ordinary":             {"BACK-0010"},
+	})
+
+	highest, err := highestKey(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if highest != 11 {
+		t.Errorf("highestKey = %d, want 11 — a key given up is still a key the corpus has used", highest)
+	}
+}
+
+func TestAllocationCountsKeysInUseAndGivenUpAlike(t *testing.T) {
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0036-migrated": {"BACK-0036", "WORK-0036"},
+		"BACK-0040-migrated": {"BACK-0040", "WORK-0040"},
+	})
+	highest, err := highestKey(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The ordinary case, where former keys cannot raise the answer. Asserted
+	// so a future change that started ignoring them fails here rather than
+	// only in the constructed case above.
+	if highest != 40 {
+		t.Errorf("highestKey = %d, want 40", highest)
+	}
+}
+
+func TestAllocationReadsAFormerKeyHoweverItIsSpelled(t *testing.T) {
+	// Parsed, never string-matched — the same rule the rest of key handling
+	// follows. A sloppily written former key must still consume its number.
+	b := migratedBacklog(t, map[string][]string{
+		"BACK-0002-sloppy-former": {"BACK-0002", "work  77"},
+	})
+	highest, err := highestKey(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if highest != 77 {
+		t.Errorf("highestKey = %d, want 77", highest)
+	}
+}

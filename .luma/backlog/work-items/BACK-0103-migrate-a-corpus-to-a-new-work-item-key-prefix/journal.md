@@ -166,6 +166,39 @@ generally rather than special-casing `former_keys`.
 **Verified end to end with the binary**, not only in unit tests: `show`, `set`,
 `transition` and `journal -w` all accept `WORK-0001` after a simulated migration
 and all report `BACK-0001` back.
+### Task 3 done — the allocator was already nearly right, and that was the problem
+
+**`highest+1` over keys in use could already never reissue a former key**, and
+the reason is a real invariant: a record's number only ever moves upward, so the
+largest key in use is at least as large as any key given up. On a corpus this
+tool wrote, reading `former_keys` changes no answer at all.
+
+**Which is exactly why it now reads them.** That argument is an unstated
+invariant rather than a guarantee — it holds only while nothing numbers a record
+downward and nobody hand-edits a key. **If either happens the failure is
+silent**: a new record is handed a key another record still answers to, and one
+old reference begins resolving to two. The cost of checking is one field per
+record.
+
+**This was worth noticing rather than shipping quietly.** A task whose code
+change is a no-op on every real corpus looks like wasted work, and the honest
+description is the opposite — it converts a property that happens to hold into
+one that is enforced.
+
+**The test that carries the whole point constructs a corpus this tool cannot
+produce**: a former key numbered *above* every key in use. Reaching it needs a
+hand edit, which is precisely the case the invariant does not cover. Without the
+change the next allocation collides; with it, it does not.
+
+**Verified end to end.** With `WORK-0001` live and `WORK-0009` held only as a
+former key, creating a record produced **`WORK-0010`** rather than `WORK-0002` —
+it stepped past the given-up key.
+
+**One thing deliberately not decided here.** A record reclaiming a key from its
+own `former_keys` is allowed, and that exception belongs to the migration rather
+than to allocation: creation never reclaims, so the allocator has no case to
+answer. Written into the function's comment so task 4 does not have to
+rediscover where the rule lives.
 
 ## ▶ 2026-09-23
 

@@ -95,27 +95,48 @@ func SameKey(a, b string) bool {
 	return a == b
 }
 
-// highestKey reports the largest key number in use across the project.
+// highestKey reports the largest key number the project has ever used ---
+// keys in use now, and every key a record used to answer to.
 //
 // One sequence for the whole corpus. The number is what somebody says out loud
 // or writes in a commit, so it has to mean one record — which is the same
 // reason decision numbers are allocated project-wide rather than per directory.
+//
+// **Former keys count, and the reason is not the obvious one.** Today they
+// cannot raise the answer: a record's number only ever moves upward, so the
+// largest key in use is already at least as large as any key given up. Reading
+// them changes nothing on a corpus this tool wrote.
+//
+// It is read anyway because that argument is an unstated invariant, not a
+// guarantee. It holds only while nothing ever numbers a record downward and
+// nobody hand-edits a key, and if either happens the failure is silent: a new
+// record is handed a key some other record still answers to, and one old
+// reference starts resolving to two. Checking costs one field per record and
+// removes a whole class of quiet wrongness.
+//
+// A record reclaiming a key from its own former_keys is a separate matter and
+// is not decided here --- creation never reclaims, so the exception belongs to
+// the migration.
 func highestKey(b *root.Backlog) (int, error) {
 	highest := 0
 	items, _, err := List(b, Filter{Unit: WorkItem})
 	if err != nil {
 		return 0, err
 	}
-	for _, it := range items {
-		k, ok := it.Record.Get("key")
-		if !ok {
-			continue
-		}
+	consider := func(k string) {
 		// Parsed, not pattern-matched: a key stored in an unusual spelling
 		// must still count, or the next allocation reuses its number
 		// (WORK-0082 — the same failure WORK-0040 hit from a different cause).
 		if _, n, isKey := ParseKey(k); isKey && n > highest {
 			highest = n
+		}
+	}
+	for _, it := range items {
+		if k, ok := it.Record.Get("key"); ok {
+			consider(k)
+		}
+		for _, k := range it.FormerKeys() {
+			consider(k)
 		}
 	}
 	return highest, nil
