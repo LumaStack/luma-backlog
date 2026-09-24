@@ -8,7 +8,7 @@ stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T23:15:22Z'}
 advances: ["[[work-items/BACK-0103-migrate-a-corpus-to-a-new-work-item-key-prefix/outcomes/a-newly-allocated-key-is-one-no-record-has-ever-held]]"]
 rank: 050.0030.000
-modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-24T05:25:41Z'}
+modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-24T05:38:15Z'}
 ---
 
 # Allocation skips every key any record has ever held

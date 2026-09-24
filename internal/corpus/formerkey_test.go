@@ -207,42 +207,61 @@ func TestWorkItemFlagPrefersTheRecordHoldingTheKeyNow(t *testing.T) {
 	}
 }
 
-func TestAllocationSkipsAKeyHeldOnlyAsFormer(t *testing.T) {
-	// The case the monotonic argument does not cover: a former key numbered
-	// ABOVE every key in use. A corpus this tool wrote cannot reach this
-	// state — a record's number only moves upward — so it is constructed by
-	// hand, which is exactly the situation the check exists for.
-	//
-	// Without it, the next allocation is BACK-0011, which BACK-0009 still
-	// answers to, and one old reference starts resolving to two records.
+func TestAllocationStepsPastAKeyHeldOnlyAsFormer(t *testing.T) {
+	// A former key numbered ABOVE every key in use. A corpus this tool wrote
+	// cannot reach this state, which is the point: former_keys is a field
+	// people can edit, and the allocator must not depend on what it expects to
+	// find there.
 	b := migratedBacklog(t, map[string][]string{
-		"BACK-0009-hand-edited-downward": {"BACK-0009", "BACK-0011"},
-		"BACK-0010-ordinary":             {"BACK-0010"},
+		"BACK-0009-hand-edited": {"BACK-0009", "BACK-0011"},
+		"BACK-0010-ordinary":    {"BACK-0010"},
 	})
 
-	highest, err := highestKey(b)
+	got, err := NextAvailableKey(b, "BACK")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if highest != 11 {
-		t.Errorf("highestKey = %d, want 11 — a key given up is still a key the corpus has used", highest)
+	if got != "BACK-0012" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0012 — BACK-0011 is still answered to", got)
 	}
 }
 
-func TestAllocationCountsKeysInUseAndGivenUpAlike(t *testing.T) {
+func TestAllocationWalksPastEveryHeldKeyInARun(t *testing.T) {
+	// Several keys held in a run at the top. This passes under the arithmetic
+	// too --- highest counts former keys, so it is already 14 --- and that is
+	// worth knowing rather than hiding: no static corpus can reach the loop's
+	// second turn. It is here to pin the ANSWER, so that a future change to how
+	// highest is computed fails against a corpus with keys given up, instead of
+	// only against ordinary ones.
 	b := migratedBacklog(t, map[string][]string{
-		"BACK-0036-migrated": {"BACK-0036", "WORK-0036"},
-		"BACK-0040-migrated": {"BACK-0040", "WORK-0040"},
+		"BACK-0011-a": {"BACK-0011", "BACK-0012", "BACK-0013"},
+		"BACK-0005-b": {"BACK-0005", "BACK-0014"},
 	})
-	highest, err := highestKey(b)
+
+	got, err := NextAvailableKey(b, "BACK")
 	if err != nil {
 		t.Fatal(err)
 	}
-	// The ordinary case, where former keys cannot raise the answer. Asserted
-	// so a future change that started ignoring them fails here rather than
-	// only in the constructed case above.
-	if highest != 40 {
-		t.Errorf("highestKey = %d, want 40", highest)
+	if got != "BACK-0015" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0015", got)
+	}
+}
+
+func TestAllocationIsPerPrefix(t *testing.T) {
+	// Availability is a question about a KEY, prefix and number together. The
+	// numbers are one sequence across the corpus, so a new prefix does not
+	// restart at one — but a number held under another prefix does not make
+	// this one unavailable either.
+	b := migratedBacklog(t, map[string][]string{
+		"WORK-0007-elsewhere": {"WORK-0007"},
+	})
+
+	got, err := NextAvailableKey(b, "PROJ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "PROJ-0008" {
+		t.Errorf("NextAvailableKey(PROJ) = %s, want PROJ-0008", got)
 	}
 }
 
@@ -250,13 +269,13 @@ func TestAllocationReadsAFormerKeyHoweverItIsSpelled(t *testing.T) {
 	// Parsed, never string-matched — the same rule the rest of key handling
 	// follows. A sloppily written former key must still consume its number.
 	b := migratedBacklog(t, map[string][]string{
-		"BACK-0002-sloppy-former": {"BACK-0002", "work  77"},
+		"BACK-0002-sloppy-former": {"BACK-0002", "back  77"},
 	})
-	highest, err := highestKey(b)
+	got, err := NextAvailableKey(b, "BACK")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if highest != 77 {
-		t.Errorf("highestKey = %d, want 77", highest)
+	if got != "BACK-0078" {
+		t.Errorf("NextAvailableKey = %s, want BACK-0078", got)
 	}
 }

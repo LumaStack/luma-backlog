@@ -199,6 +199,40 @@ own `former_keys` is allowed, and that exception belongs to the migration rather
 than to allocation: creation never reclaims, so the allocator has no case to
 answer. Written into the function's comment so task 4 does not have to
 rediscover where the rule lives.
+### Task 3 redone — check rather than conclude, and two false claims of mine corrected
+
+**Reopened after review.** The first version computed a maximum over more
+fields and then argued the result must be free. It is now `NextAvailableKey`,
+which tries a number and asks whether anybody holds it.
+
+**The reason is that no argument survives what actually happens.** A pull can
+land records between the scan and the write; a merge can bring a branch that
+allocated the same number; `former_keys` is a field people edit. Reasoning
+about availability assumes a corpus that stays still, and it does not.
+
+**First correction: I wrote that `highest+1` "could never reissue a former
+key" as though it were a hazard.** It is the opposite — a statement that the
+old code was already safe. Badly enough worded to read as nonsense, and it was
+called out as such.
+
+**Second correction, which I found by testing my own claim.** I wrote a test
+whose comment said the arithmetic would land on `BACK-0012` and be wrong three
+times over. **That is false.** `highest` counts former keys, so it was already
+14 and the arithmetic gives the same answer. **No corpus on disk can reach the
+loop's second turn**, and a test claiming otherwise was asserting something it
+does not prove.
+
+**So what the loop is actually for, stated plainly in the code rather than
+dressed up:** it guards the next change to how `highest` is computed. Narrow
+that scan to one prefix, or stop reading `former_keys`, and the arithmetic
+begins handing out a key somebody still answers to — silently — while the check
+steps over it. Cheap guard, silent failure prevented. That is the whole claim,
+and it is smaller than the one I made first.
+
+**Kept from the first attempt:** allocation starts above the highest number
+rather than filling the first gap. A gap is usually a record somebody removed,
+and giving its number to new work makes every old reference point at the wrong
+thing.
 
 ## ▶ 2026-09-23
 
