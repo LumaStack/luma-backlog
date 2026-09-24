@@ -54,7 +54,7 @@ everything around it: when it fires, what it does, and who may switch it off.
 ### The number that decides whether any of this is implementable
 
 **Measured on this corpus, 2026-09-09: `advances` is carried by 9 of 51 tasks.**
-All nine belong to WORK-0001; the other 42 carry nothing.
+All nine belong to BACK-0001; the other 42 carry nothing.
 
 **And nothing can set it.** `task new` takes `--description`, `--title` and
 `--work-item`. There is no `--advances`, and no command adds one afterwards
@@ -79,10 +79,10 @@ outcomes is their job. *Define this work — outcomes are set* cannot advance an
 outcome that does not exist yet.
 
 **So `advances-nothing` is not always a defect**, and any rule here has to
-survive that — either preparation steps stop being tasks, which is WORK-0077\'s
+survive that — either preparation steps stop being tasks, which is BACK-0077\'s
 question, or the condition needs to know the difference.
 
-### Adding an outcome to fit a task is the move WORK-0032 exists to watch
+### Adding an outcome to fit a task is the move BACK-0032 exists to watch
 
 **The second branch — *write the missing outcome* — is goalpost movement seen
 from the other side.**

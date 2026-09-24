@@ -54,7 +54,7 @@ the last thing the file offers.
 
 | | |
 | --- | --- |
-| **Build the board** | The designed answer, and the whole of WORK-0031 stands before it. Does nothing for reading a file in an editor, which is what was actually described. |
+| **Build the board** | The designed answer, and the whole of BACK-0031 stands before it. Does nothing for reading a file in an editor, which is what was actually described. |
 | **Make `show` answer it** | Cheap, and completion is landing there anyway (§9.3). But it is a command, not a file — and the complaint was specifically *looking at the file*. |
 | **Put something in the file** | The only one that addresses what was said, and it fights §2.4: anything written down can drift from the outcomes it summarizes. |
 

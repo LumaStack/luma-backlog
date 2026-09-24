@@ -12,7 +12,7 @@ BACK-0095-there-is-no-unranked-work in_progress → preparing: sent back: it cla
 
 **Outcome 1 was wrong and is rewritten.** It read *"a rank seeded from the
 record alone"*, which names the key-ordinal seed --- one of the two candidate
-schemes in WORK-0096. If the shared-position-plus-`ranked_at` scheme wins there
+schemes in BACK-0096. If the shared-position-plus-`ranked_at` scheme wins there
 is no seed at all, so the outcome asserted a mechanism and would have been
 retired rather than met. It now says what has to be true either way: a new work
 item arrives with a position among its peers, behind those already there, and
@@ -27,13 +27,13 @@ edge, and both are checkable as written.
 
 **Five tasks, and the dependency is the shape of them.** Two are buildable now
 and advance outcomes 2 and 3 --- deriving a listing's group from the status
-field, and landing a regressed record first. Two are blocked on WORK-0096,
+field, and landing a regressed record first. Two are blocked on BACK-0096,
 because the value written at creation and the value backfilled are both the seed
 question, and building either before that settles means building it twice. The
 fifth is the per-pair test that makes outcome 3's verify_by more than an
 assertion.
 
-**So this work item can start without WORK-0096** and cannot finish without it.
+**So this work item can start without BACK-0096** and cannot finish without it.
 That is worth knowing before it is selected: the first two tasks fix the symptom
 that produced the record --- a listing that separates records from their status
 --- and the rest waits.
@@ -43,18 +43,18 @@ inside 2m33s on 2026-09-10 and sat claiming somebody was on it for six days
 (violation 2026-09-10-173823). The outcomes above were written in that burst by
 the same actor that then declared the work ready, which is the thing the
 acceptance gate exists to prevent.
-### Nothing is blocked on WORK-0096, and the block was an artefact of a dead mechanism
+### Nothing is blocked on BACK-0096, and the block was an artefact of a dead mechanism
 
 **Correcting the entry above.** It said this work item could start without
-WORK-0096 and could not finish without it. That is wrong.
+BACK-0096 and could not finish without it. That is wrong.
 
 **The block only existed because creation was going to compute a position
 instead of asking for one.** Seeding from the key ordinal produces a value whose
-meaning depends on which scheme WORK-0096 picks, so it could not be built first.
+meaning depends on which scheme BACK-0096 picks, so it could not be built first.
 But creation does not need to compute anything: read the peers at `captured`,
 take the back, call `Between(back, "")` --- nine lines that already exist at
 `internal/app/status.go:36`, where `applyStatus` does exactly this on every
-transition. **If WORK-0096 changes how positions are allocated it changes
+transition. **If BACK-0096 changes how positions are allocated it changes
 `Between`, and creation keeps working.**
 
 **The seed was already dead.** It cannot place a record behind one that somebody
@@ -63,7 +63,7 @@ can exceed the next key number. Once creation reads peers, the seed's only
 advantage --- no walk --- is gone, and there is no reason left to prefer it.
 
 **What survives is a constraint on the tests, not a dependency.** Assert order,
-never specific position values: WORK-0096 may change what `Between` allocates,
+never specific position values: BACK-0096 may change what `Between` allocates,
 and a test pinned to numbers would fail on a scheme change that broke nothing.
 
 **Outcome 1 has now been wrong three times and each pass found a different
@@ -105,7 +105,7 @@ Backwards movement is otherwise rare, so this is recorded rather than solved.
 backwards re-enqueues at the back today, like everything else, and it points at
 this record for the proposal instead of describing it as though it were built.
 BACK-0095-there-is-no-unranked-work preparing → prepared: outcomes accepted by human:luma-foundry --- all three read back and two of them corrected in the process
-ACCEPTED: the three outcomes were accepted by human:luma-foundry on 2026-09-16, which is the authorization for preparing → prepared. Recorded here because there is nowhere else --- no field holds an acceptance yet (WORK-0097), so this line is the only thing that says who gave it. The accepter is not the proposer, which is the property the gate exists for.
+ACCEPTED: the three outcomes were accepted by human:luma-foundry on 2026-09-16, which is the authorization for preparing → prepared. Recorded here because there is nowhere else --- no field holds an acceptance yet (BACK-0097), so this line is the only thing that says who gave it. The accepter is not the proposer, which is the property the gate exists for.
 BACK-0095-there-is-no-unranked-work prepared → todo: committing to it now --- 'let's continue' answers the prepared → todo question left open at the end of the last session
 BACK-0095-there-is-no-unranked-work todo → in_progress: starting on the two tasks that need no migration; owner is the maintainer, no field exists to say so (ADR-0008)
 ### Two tasks built: the listing groups by status, and going back lands first
@@ -227,7 +227,7 @@ itself on the record that was created to justify it.
 **Repair renumbering in creation order gave a property nobody asked for.** It
 makes the result a pure function of the corpus, so two actors repairing the same
 state produce byte-identical files and a 98-record rewrite resolves itself on
-merge instead of conflicting. That is a partial answer to WORK-0096's git
+merge instead of conflicting. That is a partial answer to BACK-0096's git
 question and worth carrying there.
 
 **What is deliberately not done.** ADR-0005's ordering direction is still
@@ -246,7 +246,7 @@ BACK-0095-there-is-no-unranked-work todo → in_progress: starting; owner is the
 ### The ordinals invert ADR-0005 --- found by walking this record up the ladder
 
 **The one `in_progress` record sorts below fourteen `captured` ones.** Run
-`luma-backlog list` now: WORK-0095 is row fifteen, under everything nobody has
+`luma-backlog list` now: BACK-0095 is row fifteen, under everything nobody has
 committed to.
 
 ADR-0005 says *"All records at a later workflow status rank ahead of all records
@@ -257,11 +257,11 @@ gives `captured: 10` and `in_progress: 60`, so ascending puts `captured` first
 **The cause is that board order and work order are opposite orderings.** A board
 reads left to right `captured → closed`; work order puts `in_progress` first.
 ADR-0005 asks one ascending sort of one field to give both. It cannot. That is
-WORK-0085's shape --- one field carrying two axes --- in the record that decided
-one of WORK-0085's own precedents.
+BACK-0085's shape --- one field carrying two axes --- in the record that decided
+one of BACK-0085's own precedents.
 
 **Deferred, not settled**, and it is separable from this work item: the prefix
-direction orders statuses against each other, while everything WORK-0095 decides
+direction orders statuses against each other, while everything BACK-0095 decides
 is position *within* a status. Reopening it needs somebody to choose whether the
 default listing is a board or a work queue. Until then the placement rules here
 hold either way.
@@ -269,7 +269,7 @@ hold either way.
 ### What the walk got right
 
 - **`transition` warned exactly where the rung table said it would.** Leaving
-  `preparing` with no tasks: *"WORK-0095 was shaped without them, and whoever
+  `preparing` with no tasks: *"BACK-0095 was shaped without them, and whoever
   picks it up pays for that"* --- the message names the cost, not the rule.
 - **Status and rank were written together on all five rungs**, and the new rank
   was echoed each time (`020.0010.000` through `060.0010.000`). The invariant
@@ -287,15 +287,15 @@ hold either way.
 
 ### What needs improvement
 
-- **Creation writes no rank --- observed on this record.** WORK-0095 was created
+- **Creation writes no rank --- observed on this record.** BACK-0095 was created
   unranked and first got a rank from its transition to `unprepared`. The defect
   demonstrated itself on the record that exists to fix it.
-- **`stage` is still `draft` at `in_progress`.** WORK-0075's gap, now observed a
+- **`stage` is still `draft` at `in_progress`.** BACK-0075's gap, now observed a
   third time. The rung table says *written by the move*; nothing writes it.
 - **`set` refuses the path the tool prints, once it is prefixed.**
   `backlog/work-items/…/outcomes/x.md` resolves; the same path as
   `.luma/backlog/…` --- what tab completion gives you --- returns *nothing
-  matches*. WORK-0023, hit three times in one turn.
+  matches*. BACK-0023, hit three times in one turn.
 - **There is no content search.** Five related records were found by grepping
   `.luma/` by hand; `work-item list` gives titles only, and three of the five
   have titles that do not mention ranking.
@@ -307,4 +307,4 @@ hold either way.
   requires proposing and waiting, which here would have replayed a design the
   maintainer had just spent a session settling. The step was skipped
   deliberately; the procedure has no way to say that was right.
-Do not implement the key-ordinal seed before WORK-0096 settles --- if its same-position-plus-ranked-at scheme wins, arrival order comes from the stamp and the seed is unnecessary work that would then have to be undone. WORK-0095's placement rules (which end) hold under either scheme; only the mechanism for reaching that end is in question.
+Do not implement the key-ordinal seed before BACK-0096 settles --- if its same-position-plus-ranked-at scheme wins, arrival order comes from the stamp and the seed is unnecessary work that would then have to be undone. BACK-0095's placement rules (which end) hold under either scheme; only the mechanism for reaching that end is in question.

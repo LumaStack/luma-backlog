@@ -31,9 +31,9 @@ type Duplicate struct {
 // sequence. Reporting is useful before that is settled, and it is what makes any
 // repair usable at all: a repair nobody knows is needed does not happen.
 func Duplicates(items []Item) []Duplicate {
-	// Bucketed by the canonical form, so WORK-74 and WORK-0074 stored on two
+	// Bucketed by the canonical form, so WORK-74 and BACK-0074 stored on two
 	// records collide as the one key they are — the detector has to see one
-	// key, not two spellings (WORK-0082).
+	// key, not two spellings (BACK-0082).
 	byKey := map[string][]string{}
 	for _, it := range items {
 		if k := it.Key(); k != "" {

@@ -46,7 +46,7 @@ have meant an unchanged suite could no longer prove the extraction was clean.
 
 **Reference resolution**
 ([[backlog/work-items/BACK-0023-refer-to-a-record-by-the-path-a-person-would-type]]).
-Key-scoped paths — `WORK-0017/outcomes/<slug>` — accepted and emitted; bare
+Key-scoped paths — `BACK-0017/outcomes/<slug>` — accepted and emitted; bare
 names accepted only while unambiguous. It belongs in `internal/app`, because
 every surface needs the same forms.
 

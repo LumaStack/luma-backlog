@@ -101,16 +101,6 @@ func (p *Project) Rename(from, to string) error {
 	return p.root.Rename(from, to)
 }
 
-// skipDirs are never descended into.
-//
-// `.git` because rewriting object storage would corrupt the repository, and
-// because nothing in it is a name anybody wrote. The rest are build output and
-// vendored code: not ours to edit, regenerated anyway, and the place a naive
-// walk does the most damage.
-var skipDirs = map[string]bool{
-	".git": true, "node_modules": true, "vendor": true, "dist": true, "build": true,
-}
-
 // WalkText visits every text file in the repository, giving each path relative
 // to it, slash-separated whatever the platform.
 //
@@ -123,15 +113,19 @@ var skipDirs = map[string]bool{
 // The test is a NUL byte in the first few kilobytes, which is what git itself
 // uses to decide the same question. It is a heuristic, and it is the same
 // heuristic everything else in this ecosystem already trusts.
-func (p *Project) WalkText(fn func(relPath string, data []byte) error) error {
+func (p *Project) WalkText(ig Ignore, fn func(relPath string, data []byte) error) error {
 	return fs.WalkDir(p.root.FS(), ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
+		rel := filepath.ToSlash(path)
 		if d.IsDir() {
-			if skipDirs[d.Name()] {
+			if rel != "." && ig.Match(rel) {
 				return fs.SkipDir
 			}
+			return nil
+		}
+		if ig.Match(rel) {
 			return nil
 		}
 		if strings.HasPrefix(d.Name(), ".") && d.Name() != ".gitignore" {

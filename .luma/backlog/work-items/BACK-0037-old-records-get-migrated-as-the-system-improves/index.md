@@ -34,9 +34,9 @@ unchanged. Everything below was added by the agent while capturing it.*
 | --- | --- |
 | `deliverable` → `work item` | a rename, done manually across records, spec, code and skills |
 | The operating system username | a find-and-replace over eighteen occurrences |
-| Everything WORK-0031 changes | not yet — `closed: {reason}` becomes `closed: [{as}]`, `delivered` becomes `completed`, `claimed_by` becomes `taken` |
+| Everything BACK-0031 changes | not yet — `closed: {reason}` becomes `closed: [{as}]`, `delivered` becomes `completed`, `claimed_by` becomes `taken` |
 
-**WORK-0031 is the forcing case.** Its shapes are settled and every one leaves
+**BACK-0031 is the forcing case.** Its shapes are settled and every one leaves
 existing records stating something the tool no longer writes. A corpus half in
 each shape is worse than either.
 

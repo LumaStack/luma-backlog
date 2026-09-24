@@ -119,7 +119,7 @@ usually implies:
 where they die.** Nothing reaches the record. **That is the gap this work item
 closes**, and it is smaller and sharper than *how to deal with duplicates*.
 
-### The stamp needs a capability that does not exist, and WORK-0025 needs the same one
+### The stamp needs a capability that does not exist, and BACK-0025 needs the same one
 
 **A work item cannot point at another work item.** The type defines `key`,
 `kind`, `workflow_status`, `blocked` and `paused`, and nothing else.
@@ -165,7 +165,7 @@ about twelve hours.
 **Commit-on-every-action is one of the candidates in
 [[work-items/BACK-0076-how-the-backlog-stays-in-sync-with-everyone-working-it]]**,
 which makes that record upstream of this one: **the safety property this design
-rests on is the thing WORK-0076 has to decide.** If it lands elsewhere, step
+rests on is the thing BACK-0076 has to decide.** If it lands elsewhere, step
 three needs its own mechanism rather than assuming one.
 
 ### The posture already has a name
@@ -220,7 +220,7 @@ default is part of the answer.
 does B learn about it? One-way leaves the relation invisible from the side that
 matters when B is worked. Two-way means capture writes into an existing record,
 which is what the `captured`-gate rule in the constraints above guards against.
-WORK-0025's options table is the same argument about where a relation lives.
+BACK-0025's options table is the same argument about where a relation lives.
 
 **Does a stamp expire?** A capture-time judgement of *overlap* can be wrong once
 both records are refined. As durable frontmatter it becomes a claim nobody

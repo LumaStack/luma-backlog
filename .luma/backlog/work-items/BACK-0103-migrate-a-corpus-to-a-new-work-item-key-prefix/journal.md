@@ -14,7 +14,7 @@
 **The reason is that the two ranking problems are not the same problem.**
 Ranking work items reaches across an entire project — concurrent reorders on
 different machines, merge conflicts nobody sees until git resolves them, and
-groups that grow forever at the ends. That is WORK-0096, and it is genuinely
+groups that grow forever at the ends. That is BACK-0096, and it is genuinely
 hard. **Ranking tasks inside one work item is self-contained**: one record, one
 reader, five rows, and nothing outside it moves when they do. Borrowing the
 first problem's caution for the second bought nothing.
@@ -27,7 +27,7 @@ that exists for scale does not automatically apply at small scale.*
 
 ### A task's rank carries its status ordinal, and the old two-segment form is stale
 
-**Found by writing the wrong one first.** Copying the shape from WORK-0001's
+**Found by writing the wrong one first.** Copying the shape from BACK-0001's
 tasks — `rank: "0050.000"` — produced this on every one:
 
 ```
@@ -42,8 +42,8 @@ same three segments a work item uses, `010.0820.000` at `captured` and
 `050.0010.000` through `050.0050.000`, spaced by ten so something can be
 inserted between two without touching either.
 
-**WORK-0001's tasks are in the stale format and the tool warns about them.**
-They predate the ordinal, which arrived as a WORK-0031 task. Not repaired here —
+**BACK-0001's tasks are in the stale format and the tool warns about them.**
+They predate the ordinal, which arrived as a BACK-0031 task. Not repaired here —
 it is the same class as BACK-0111 and belongs with the migration work rather
 than inside this one.
 
@@ -152,7 +152,7 @@ would have made the answer depend on walk order.
 **Found while there: `-w` was stricter than `show` for no stated reason.** It
 compared keys with `strings.EqualFold`, which answers case but not padding or
 separator runs — so `show work-36` worked and `-w work-36` did not. Now
-`SameKey`, which is what WORK-0082 settled: keys are compared as parsed values,
+`SameKey`, which is what BACK-0082 settled: keys are compared as parsed values,
 never as strings.
 
 **And a decomposition error of mine.** Task 1 was written as advancing *a record
@@ -164,7 +164,7 @@ not just this one** — `advances` on a task has never displayed either. Fixed
 generally rather than special-casing `former_keys`.
 
 **Verified end to end with the binary**, not only in unit tests: `show`, `set`,
-`transition` and `journal -w` all accept `WORK-0001` after a simulated migration
+`transition` and `journal -w` all accept `BACK-0001` after a simulated migration
 and all report `BACK-0001` back.
 ### Task 3 done — the allocator was already nearly right, and that was the problem
 
@@ -190,8 +190,8 @@ produce**: a former key numbered *above* every key in use. Reaching it needs a
 hand edit, which is precisely the case the invariant does not cover. Without the
 change the next allocation collides; with it, it does not.
 
-**Verified end to end.** With `WORK-0001` live and `WORK-0009` held only as a
-former key, creating a record produced **`WORK-0010`** rather than `WORK-0002` —
+**Verified end to end.** With `BACK-0001` live and `BACK-0009` held only as a
+former key, creating a record produced **`BACK-0010`** rather than `BACK-0002` —
 it stepped past the given-up key.
 
 **One thing deliberately not decided here.** A record reclaiming a key from its
@@ -243,7 +243,7 @@ to move.
 
 | in the text | survives a migration | safe to rewrite |
 | --- | --- | --- |
-| bare `WORK-0031` | **yes**, `former_keys` resolves it | **no**, may name another project's work item |
+| bare `BACK-0031` | **yes**, `former_keys` resolves it | **no**, may name another project's work item |
 | full `BACK-0031-reshape-the-command-surface` | **no** | **yes** |
 
 **The second row was checked rather than assumed.** After the directory moves,
@@ -270,7 +270,7 @@ run. Every one resolves, some deliberately name another project, and one is a
 fixture for `WORK-9999`, a key that has never existed. Listing them would be the
 largest section of the output and every entry a non-problem, which is how a
 report teaches people to skip it. Whether anything names a key resolving to
-nothing is a standing question rather than a migration one; WORK-0002 is its
+nothing is a standing question rather than a migration one; BACK-0002 is its
 home.
 ### Bare keys get a flag, and my count-only recommendation was too conservative
 
@@ -309,7 +309,7 @@ expensive to discover during a run over 111 records.
 ### The flag is `--include-bare-keys`, because the default already rewrites keys
 
 **`--rewrite-keys` named something the tool does without it.** The `key:` field
-moving from `WORK-0031` to `BACK-0031` *is* the migration, so a flag by that
+moving from `BACK-0031` to `BACK-0031` *is* the migration, so a flag by that
 name describes default behaviour and reads as redundant rather than additive.
 That is a collision of meaning, not a matter of taste, and it is what settled
 this.
@@ -396,7 +396,7 @@ and regenerated anyway, and the place a naive walk does the most damage.
 
 Chosen by the maintainer over `key migrate`. It is verb-noun where the record
 tree is noun-verb, and the reason is grouping: `migrate` will have siblings
-(WORK-0022 vocabulary, WORK-0037 old records, WORK-0100 across document kinds).
+(BACK-0022 vocabulary, BACK-0037 old records, BACK-0100 across document kinds).
 Recorded as a deliberate departure so it does not read later as an accident.
 ### Migrations stay in one binary, separated by capability rather than by artifact
 
@@ -514,9 +514,9 @@ history stays followable through the move.
 worse problem than a count.
 
 **`former_keys` is a bare key by every test in the file.** The stamp writes
-`former_keys: ["WORK-0031"]`, and the scan that finds keys written without a
+`former_keys: ["BACK-0031"]`, and the scan that finds keys written without a
 slug finds exactly that. So `--include-bare-keys` would have rewritten it to
-`["BACK-0031"]` — turning *this record used to be WORK-0031* into *this record
+`["BACK-0031"]` — turning *this record used to be BACK-0031* into *this record
 used to be what it is called now*, and **destroying every reference held
 anywhere else, silently, in the same run that created the redirects.**
 
@@ -558,6 +558,102 @@ cannot observe sends the reader to the wrong file.
 **Repaired by hand, which the maintainer authorized for tasks inside one work
 item** — ordinal moved to 070, positions kept, so the order the work happened in
 still reads correctly.
+### `--include-bare-keys` ran, broke the build, and was reverted
+
+**Two bugs, and neither was the one the flag was designed around.** The 1% it
+exists to protect is another project's keys. What it actually hit was closer to
+home.
+
+**It rewrote five files inside `.luma/bundles/`.** An adopted bundle is a
+vendored copy of published content and editing one is drift — this work item's
+own outcome already said nothing there is touched, and the walk did not know.
+The plain migration never had the problem, because bundle mentions are bare
+keys and bare keys are left alone by default. Only the flag reached them.
+
+**It rewrote test fixtures and the build failed.** `workItem("BACK-0031", …)`
+became `workItem("BACK-0031", …)`, and an assertion for
+`former_keys: ["BACK-0031"]` became one for `["BACK-0031"]`. **Those are
+literals, not references** — and the tool cannot tell them from a genuine
+citation in a comment like `// recorded as BACK-0073`, which does need to move.
+Same string, same file type, opposite meanings.
+
+**Reverted before committing, and `.git` was never at risk** — fingerprinted
+before and after, byte-identical through both runs, `fsck` clean.
+
+### Markdown-only was the wrong fix, and the maintainer said so
+
+**My proposal was to rewrite markdown only and merely list source files.** That
+would have broken the case that matters everywhere else: code referencing a work
+item, a config value, a comment — all of it needs to move. The fixture problem
+is **self-referential and rare**, because only luma-backlog has keys as *data*
+in its source. It is this repository's quirk rather than a rule for the tool.
+
+### Tracked-only was also wrong, for a better reason
+
+**I proposed asking git what it tracks.** The maintainer's correction: **git is
+a strong recommendation for this tool, not a requirement.** In a project without
+it nothing is tracked, so the migration rewrites nothing and reports success —
+a silent no-op on exactly the projects least equipped to notice it.
+
+**The constraint in this record said *only tracked text files*, and it is now
+corrected rather than deleted.** It also removes the question of whether this
+codebase should gain its first `exec.Command`.
+
+### What shipped instead
+
+**`--ignore <glob>`, repeatable, on top of a built-in list**, with `**`
+spanning segments and a bare name matching itself and everything under it — so
+`--ignore vendor` does what somebody typing it meant.
+
+**The defaults are printed in `--help` and again on every run**, because a file
+missing from the output is either untouched or excluded and those are different
+facts. Nothing is skipped invisibly.
+
+**Every rewritten file is listed with its change count.** A count cannot show
+anybody that a rewrite reached a file it had no business touching; only the name
+can, and the run is the one chance to notice.
+### `--include-bare-keys` ran successfully, and finding the ignore list was the work
+
+**138 files rewritten, build green, `.git` byte-identical, every redirect
+intact, the bundle untouched.** What took the time was not running it — it was
+working out what must not be touched, and that could only be found by looking.
+
+**Four categories emerged, and only the first was predicted.**
+
+**Test fixtures** — `workItem("WORK-0031", …)`. Data, not references.
+
+**Golden files** — `internal/cli/testdata/*.golden`. The same thing under
+another name, and missed on the first pass because the ignore was written as
+`*_test.go`.
+
+**Help examples** — `rank.go` and `transition.go` carry
+`luma-backlog work-item rank WORK-0031 --first` in their `Example` strings.
+That text ships to every user, and `WORK` is the *default* prefix, so the
+example is correct as written. Rewriting it would bake this repository's prefix
+into the tool's help for everybody.
+
+**The scaffolded config template** — `scaffold.go` writes
+`# The prefix of every NEW work item key (WORK-0042)` into every new project's
+`luma-backlog.yaml`. Same failure, further downstream.
+
+**The clearest instance is this command's own help**, which reads *WORK-0123
+becomes BACK-0123*. Rewriting it produces *BACK-0123 becomes BACK-0123* — the
+tool's explanation of itself, destroyed by itself.
+
+### What separates the two kinds, since a rule would be useful
+
+**A citation names a record; an illustration names the shape of a key.**
+`internal/corpus/key.go`'s comment citing `WORK-0082` points at a real work item
+and must follow it. `rank.go`'s example points at nothing — it could have said
+`WORK-0001` — and must not.
+
+**Nothing in the text distinguishes them**, which is why this is an ignore list
+rather than a heuristic. The honest form of the tool's promise is: it lists
+every file it touched, and somebody looks.
+
+**Six patterns for this repository, and they are permanent** — it will need
+them on every run, which is the argument for an `ignore:` list in
+`luma-backlog.yaml` rather than six flags retyped from memory. Not built yet.
 
 ## ▶ 2026-09-23
 
@@ -570,7 +666,7 @@ Task 1 leaves the repository and must finish first; task 3 must land before task
 **The contract says rank orders tasks.** `type_definitions/task/DEFINITION.md`,
 on `depends_on`: *"Tasks that must finish first, when the ordering crosses a
 wave or work item boundary. Rank already orders adjacent tasks; restating that
-here goes stale on the first rerank."* And tasks under WORK-0001 carry real rank
+here goes stale on the first rerank."* And tasks under BACK-0001 carry real rank
 values — `rank: "0050.000"`, `rank: "0060.000"`.
 
 **The binary refuses, both ways in:**
@@ -637,6 +733,6 @@ records, and the convention has no answer for a required field the tool cannot
 write.
 
 **Also reproduced live: BACK-0105.** Every record created this session was born
-without `type_version`, while WORK-0031's tasks from 2026-09-06 carry
+without `type_version`, while BACK-0031's tasks from 2026-09-06 carry
 `type_version: "0.0.1"`. The invariant decays with each creation, as that record
 predicted.

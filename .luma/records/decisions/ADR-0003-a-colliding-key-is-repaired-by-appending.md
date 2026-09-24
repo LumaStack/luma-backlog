@@ -19,7 +19,7 @@ order records were created in.
 
 ## Problem
 
-A work item's key is a counter allocated optimistically — `WORK-0014` is
+A work item's key is a counter allocated optimistically — `BACK-0014` is
 whatever the highest key was, plus one. Two workstations creating work at the
 same moment both read the same highest key and both allocate the same next one.
 
@@ -45,13 +45,13 @@ prevent a collision but what to do when one has already happened.
 ## Decision
 
 **On detecting a collision, one record keeps the key and the other takes the
-next free number at the end of the sequence.** Two records claim `WORK-0014`
+next free number at the end of the sequence.** Two records claim `BACK-0014`
 while `15`, `16` and `17` exist: the winner stays `14`, the loser becomes `18`.
 
 **Exactly one record moves.** Nothing else in the corpus is touched.
 
-**Keys carry no ordering guarantee.** `WORK-0018` may have been written before
-`WORK-0015`, and that is not a defect to be corrected.
+**Keys carry no ordering guarantee.** `BACK-0018` may have been written before
+`BACK-0015`, and that is not a defect to be corrected.
 
 ## Why
 

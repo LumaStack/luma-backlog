@@ -14,6 +14,8 @@ type MigrateKeysRequest struct {
 	Renumber bool
 	// IncludeBareKeys also rewrites keys written without their slug.
 	IncludeBareKeys bool
+	// Ignore adds to the built-in exclusions.
+	Ignore []string
 }
 
 // KeyMove is one record's key and directory name, before and after.
@@ -56,7 +58,10 @@ type MigrateKeysResult struct {
 	AlreadyCorrect int
 	Files          []FileTouched
 	BareKeys       []BareKeysLeft
-	DryRun         bool
+	// Ignored is every exclusion that was in effect, so a reader can see why
+	// something is missing from the list rather than guess.
+	Ignored []string
+	DryRun  bool
 	Observations
 }
 
@@ -77,6 +82,7 @@ func (s *Session) MigrateKeys(req MigrateKeysRequest) (*MigrateKeysResult, error
 		DryRun:          req.DryRun,
 		Renumber:        req.Renumber,
 		IncludeBareKeys: req.IncludeBareKeys,
+		Ignore:          req.Ignore,
 	})
 	if err != nil {
 		return nil, FailureError("%w", err)
@@ -85,6 +91,7 @@ func (s *Session) MigrateKeys(req MigrateKeysRequest) (*MigrateKeysResult, error
 	out := &MigrateKeysResult{
 		AlreadyCorrect: res.AlreadyCorrect,
 		DryRun:         res.DryRun,
+		Ignored:        res.Ignored.Patterns(),
 		Observations:   Observations{Duplicates: s.duplicateKeys()},
 	}
 	for _, r := range res.Renames {

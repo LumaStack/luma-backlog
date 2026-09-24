@@ -32,7 +32,7 @@ unchanged. Everything below was added by the agent while capturing it.*
 
 **It is already committed.** `internal/env/actor.go`'s `DetectActor` falls back
 to `user.Current().Username`, and the corpus carries **nine occurrences** —
-including WORK-0017's closing record and all three of its verified outcomes,
+including BACK-0017's closing record and all three of its verified outcomes,
 which landed today.
 
 **The principle underneath, which is sharper than the ordering.**

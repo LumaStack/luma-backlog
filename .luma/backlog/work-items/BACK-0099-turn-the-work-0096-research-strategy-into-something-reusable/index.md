@@ -2,8 +2,8 @@
 type: work-item
 type_version: "0.0.1"
 key: BACK-0099
-title: Turn the WORK-0096 research strategy into something reusable
-description: Adapt the research strategy used in WORK-0096 into something we can reuse on other work items when the need arises, so we do not forget to learn from this.
+title: Turn the BACK-0096 research strategy into something reusable
+description: Adapt the research strategy used in BACK-0096 into something we can reuse on other work items when the need arises, so we do not forget to learn from this.
 workflow_status: captured
 rank: 010.0800.000
 kind: change
@@ -12,7 +12,7 @@ created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T16:26:47Z'}
 former_keys: ["WORK-0099"]
 ---
 
-# Turn the WORK-0096 research strategy into something reusable
+# Turn the BACK-0096 research strategy into something reusable
 
 ## The problem
 
@@ -85,7 +85,7 @@ corrections --- and it should be read rather than re-derived.
 
 ## Constraints
 
-- **Do not promote the protocol before the result is in.** WORK-0096 has to
+- **Do not promote the protocol before the result is in.** BACK-0096 has to
   produce an answer, and the answer has to be judged, before a method whose
   entire claim is *this produces better answers* becomes something this project
   tells people to follow. **The checklist is not under that constraint.**

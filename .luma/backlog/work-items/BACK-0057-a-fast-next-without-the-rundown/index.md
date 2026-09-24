@@ -62,7 +62,7 @@ still [[backlog-transition]].
 ## References
 
 - [[work-items/BACK-0016-ask-the-backlog-what-is-open]] — makes *everything
-  except closed* askable. The seam: WORK-0016 makes the question cheap, this
+  except closed* askable. The seam: BACK-0016 makes the question cheap, this
   decides what to do with the answer.
 - `.luma/bundles/local/backlog/procedure/backlog-rundown.md` — the tier above.
 - [[work-items/BACK-0058-an-exhaustive-sweep-that-verifies-rather-than-reports]]

@@ -136,7 +136,7 @@ work has to implement. **It uses six wordings, not three:**
 | *warned* | 2 | warn |
 | *checked at the gate* | 1 | refuse — but see below |
 | *refused otherwise* | 1 | refuse |
-| *written by the move* | 2 | not a check at all — a side effect (WORK-0075) |
+| *written by the move* | 2 | not a check at all — a side effect (BACK-0075) |
 
 *The table's own wording still says "written by the move"; repointing it is one of the tasks.*
 | *the gate criterion* | 1 | two readers agreeing; no machine can check it |
@@ -175,7 +175,7 @@ work back* section --- a `prepared` item that is not prepared returns to
 `<status>` exists whatever else does.
 
 **And neither shape catches the failure this is aimed at.** On 2026-09-09 an
-agent took WORK-0074 from `preparing` to `in_progress` **one work status at a time**,
+agent took BACK-0074 from `preparing` to `in_progress` **one work status at a time**,
 in work status order, and did no preparation. `--advance` would have permitted every
 one of those. A refusal on jumps across several work statuses would have permitted every one of
 them. **The failure is crossing a gate without answering it, not crossing
@@ -224,7 +224,7 @@ here rather than assumed.**
 
 ### What closes when this lands
 
-**WORK-0073 becomes fixed rather than superseded** — `set` refusing
+**BACK-0073 becomes fixed rather than superseded** — `set` refusing
 `workflow_status` is precisely what stops a close bypassing `close`. It should
 be verified against that record's own description and closed when it holds, not
 before.

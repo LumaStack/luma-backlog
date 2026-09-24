@@ -279,7 +279,7 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 	}
 
 	// A key is matched by its parsed value — prefix and number — never as a
-	// string, so `work-2`, `WORK---0002` and `WORK 2` all find `WORK-0002`.
+	// string, so `work-2`, `WORK---0002` and `WORK 2` all find `BACK-0002`.
 	// Somebody typing a handle from memory should not have to hold the shift
 	// key, count the padding, or land the dash to be understood. The joined
 	// form normalizes its key half the same way, so `work-2-lint-the-corpus`
@@ -338,7 +338,7 @@ func Resolve(b *root.Backlog, ref string) (Item, error) {
 }
 
 // scoped resolves a reference written the way a listing prints one ---
-// WORK-0031/tasks/add-the-queue --- where the leading segment names the work
+// BACK-0031/tasks/add-the-queue --- where the leading segment names the work
 // item and the rest is the path beneath it. A person reading a path out of
 // output should be able to type it back in, and before this they could not:
 // the full on-disk path worked and nothing shorter did.

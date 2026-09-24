@@ -77,7 +77,7 @@ answer wins.
 - **A configured prefix changes what gets written, never what exists** — the
   constant's comment, kept as the rule. No silent renaming of a corpus.
 - **The prefix must validate against the Jira Cloud rule** the engine enforces
-  after WORK-0082, or a configured value would create keys the tool itself
+  after BACK-0082, or a configured value would create keys the tool itself
   cannot parse.
 
 ## References

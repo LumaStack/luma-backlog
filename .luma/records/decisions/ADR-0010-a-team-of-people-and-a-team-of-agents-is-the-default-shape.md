@@ -99,5 +99,5 @@ machinery proves to cost the solo case more than the fossils cost.*
 
 **Two record shapes, one per team size.** *Deferred.* Cheaper for small teams
 and it makes growth a migration — and this project already has
-`WORK-0037` and `WORK-0022` open on how expensive corpus migration is.
+`BACK-0037` and `BACK-0022` open on how expensive corpus migration is.
 *Re-open if invisibility turns out to be unachievable for some field.*

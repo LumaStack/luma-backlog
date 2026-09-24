@@ -94,11 +94,11 @@ or more.  For MVP let's stick with 2 column max.
     |---------------------------------------------------------------------------------------------------------------------|
     
     |--- Captured (5) ---------------------------------------|--- Unprepared (1) -----------------------------------------|
-    | WORK-0001  Customer keeps asking for CSV export        | WORK-0002    Bootstrap the styleguide                      |
-    | WORK-0003  Investigate database spikes                 |                                                            |
-    | WORK-0004  Maybe replace authentication provider       |                                                            |
-    | WORK-0005  Sarah mentioned onboarding problem          |                                                            |
-    | WORK-0006  Upgrade core library to v1.8                |                                                            |
+    | BACK-0001  Customer keeps asking for CSV export        | BACK-0002    Bootstrap the styleguide                      |
+    | BACK-0003  Investigate database spikes                 |                                                            |
+    | BACK-0004  Maybe replace authentication provider       |                                                            |
+    | BACK-0005  Sarah mentioned onboarding problem          |                                                            |
+    | BACK-0006  Upgrade core library to v1.8                |                                                            |
     |---------------------------------------------------------------------------------------------------------------------|
 
     [q/Esc] Back | [Tab] Switch | [/] Search | [N] New | [E] Edit | [M] Move | [Arrows] Navigate [?] Menu
@@ -112,8 +112,8 @@ When navigating to the right it would show the next two columns over.
     |---------------------------------------------------------------------------------------------------------------------|
     
     |--- Unprepared (5) -------------------------------------|--- Preparing (1) ------------------------------------------|
-    | WORK-0001  Customer keeps asking for CSV export        | WORK-0002    Bootstrap the styleguide                      |
-    | WORK-0003  Investigate database spikes                 |                                                            |
+    | BACK-0001  Customer keeps asking for CSV export        | BACK-0002    Bootstrap the styleguide                      |
+    | BACK-0003  Investigate database spikes                 |                                                            |
     |---------------------------------------------------------------------------------------------------------------------|
 
     [q/Esc] Back | | [Tab] Switch | [/] Search | [N] New | [E] Edit | [M] Move | [Arrows] Navigate | [Enter] Select
@@ -147,11 +147,11 @@ Here is an example of what pressing Tab and switching views or modes might do.  
     |---------------------------------------------------------------------------------------------------------------------|
     
     |--- Captured (5) -----------------|--- Details ----------------------------------------------------------------------|
-    | WORK-0001  Customer keeps asking | ○ Captured WORK-0004  Maybe replace authentication provider                      |   
-    | WORK-0003  Investigate database  | -------------------------------------------------------------------------------- |
-    | WORK-0004  Maybe replace authent | Details                                                                          |
-    | WORK-0005  Sarah mentioned onboa | Created:  2026-01-01 23:39                                                       |
-    | WORK-0006  Upgrade core library  | Updated:  2026-01-01 23:39                                                       |
+    | BACK-0001  Customer keeps asking | ○ Captured BACK-0004  Maybe replace authentication provider                      |   
+    | BACK-0003  Investigate database  | -------------------------------------------------------------------------------- |
+    | BACK-0004  Maybe replace authent | Details                                                                          |
+    | BACK-0005  Sarah mentioned onboa | Created:  2026-01-01 23:39                                                       |
+    | BACK-0006  Upgrade core library  | Updated:  2026-01-01 23:39                                                       |
     |                                  | Kind:     Inquire                                                                |
     |                                  | Priority: Medium                                                                 |
     |                                  | Owner:    @jane                                                                  |

@@ -161,7 +161,7 @@ no event to react to and waits until something times out. And nothing needs it
 yet.
 
 **Why it will probably be wanted:** these commands are wordy.
-`work-item close WORK-0017 delivered --reason "…"` is a lot to type, several
+`work-item close BACK-0017 delivered --reason "…"` is a lot to type, several
 commands take required enumerated values, and a person already in a terminal
 closing one item should not have to open a full-screen application to be asked
 a question. Prompting also teaches — *Close as? [delivered/rejected/canceled/
@@ -218,7 +218,7 @@ work-item new --title "Fix the login timeout"     # precise
 **The positional is the documented path**, and it absorbs multiple words — no
 quoting, no field name, nothing to remember. That is not a nicety here: cheap
 capture is load-bearing (`docs/design/mvp.md` — *"make capture extremely cheap"*),
-and `capture-is-one-command` is a **verified** outcome of WORK-0001, so a
+and `capture-is-one-command` is a **verified** outcome of BACK-0001, so a
 flag-only form would be giving back a property this project already proved.
 
 It is also what §9.0.1 requires — *"a command whose only path requires knowing

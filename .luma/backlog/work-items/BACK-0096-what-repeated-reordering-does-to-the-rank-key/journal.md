@@ -1025,7 +1025,7 @@ has to mean something.
 - **Logoot, and Conflict-free Replicated Data Types (CRDTs) generally.**
   Positions as a list of digit-plus-actor pairs, which is the *relative to what
   it was ranked against* hunch in its published form. It buys uniqueness under
-  concurrency and gives up sortability by a plain text compare --- WORK-0013's
+  concurrency and gives up sortability by a plain text compare --- BACK-0013's
   table, arrived at independently.
 
 ### The git analysis, which is the part nobody usually writes down
@@ -1176,7 +1176,7 @@ rounding onto a neighbour.
 
 **A normative document stating a falsified bound is a trap**, and it is worse
 than an absent one: somebody would have designed against fifty. Corrected rather
-than redesigned, since WORK-0096 may replace the section wholesale.
+than redesigned, since BACK-0096 may replace the section wholesale.
 ### The brief now enumerates the workloads rather than describing them
 
 **Three abstract paragraphs became ten named scenarios**, each with the access
@@ -1477,7 +1477,7 @@ is foundational and hard to reverse** --- and the reason a checklist is worth
 more than the brief.
 
 **And a work item whose deliverable is a decision does not fit the outcome
-model.** WORK-0096 is at `preparing` and cannot advance without outcomes, but
+model.** BACK-0096 is at `preparing` and cannot advance without outcomes, but
 what is being delivered is *a chosen scheme with its sacrificed goal named* ---
 a state that cannot be checked until the work is finished. **Whether that is a
 gap in the model or a badly-framed work item is unresolved**, and it will

@@ -7,7 +7,7 @@ verify_by:
   - "Confirm `work-item list`, `outcome verify`, `task new` resolve, and that `list work-item` no longer does."
   - "Confirm every noun-verb pair on this list exists and no record type is reachable as a positional argument: work-item new/list/close/journal/rank, outcome new/list/verify, task new/list, decision new/list, exploration new/list."
   - "Confirm each verb on that list has one implementation parameterized by noun, not one per pair."
-  - "Confirm every top-level command is either `init` or one this project decided to keep --- `show`, `set` and `list` pending WORK-0031/tasks/decide-where-cross-type-listing-lives."
+  - "Confirm every top-level command is either `init` or one this project decided to keep --- `show`, `set` and `list` pending BACK-0031/tasks/decide-where-cross-type-listing-lives."
 work_item: '[[work-items/BACK-0031-reshape-the-command-surface]]'
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-06T16:45:00Z'}

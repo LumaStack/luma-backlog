@@ -10,7 +10,7 @@
 closed is not archived, and the maintainer worked out why while asking whether it should be: closed is about the WORK ending, archived is about ATTENTION — stop loading this. Time moves a record from one to the other and the close does not
 showing-records already insists on it — every record gets its own line, finished ones included, because a finished record is how somebody learns a thing was already tried and a list showing only what is left makes work look like it began this morning
 the test: does a reader need this to understand the present? a work item closed last week whose journal explains why the code looks the way it does is current context; one closed as rejected two years ago is historical
-so the act that moves a closed record to archived is a separate deliberate one, and it is THIS work item — the same pressure WORK-0016 names, eleven of sixteen closed then, thirteen of seventy now
+so the act that moves a closed record to archived is a separate deliberate one, and it is THIS work item — the same pressure BACK-0016 names, eleven of sixteen closed then, thirteen of seventy now
 
 ## ▶ 2026-09-06
 

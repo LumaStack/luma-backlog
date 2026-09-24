@@ -210,7 +210,7 @@ record. **Where a half-written capture lives is unanswered**, and if the answer
 is *uncommitted in the working tree* it collides with
 [[work-items/BACK-0076-how-the-backlog-stays-in-sync-with-everyone-working-it]].
 
-### The strongest overlap is with WORK-0078
+### The strongest overlap is with BACK-0078
 
 **Relations recorded as prose here, and stamped as data there.**
 [[work-items/BACK-0078-how-duplicate-capture-is-handled]] wants duplicate,

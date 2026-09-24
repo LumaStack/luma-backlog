@@ -7,7 +7,7 @@ rank: 010.0880.000
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T19:03:08Z'}
-description: Templates, policies and type descriptions in local/backlog describe output the binary prints and contracts it enforces. Duplication is what desynchronizes when the tool moves, and deleting it is better than detecting the drift. The bundle should carry only what the binary cannot emit - when and why, not how. Identified while settling open-questions section 25; WORK-0056 covers the separate case of duplicating another bundle.
+description: Templates, policies and type descriptions in local/backlog describe output the binary prints and contracts it enforces. Duplication is what desynchronizes when the tool moves, and deleting it is better than detecting the drift. The bundle should carry only what the binary cannot emit - when and why, not how. Identified while settling open-questions section 25; BACK-0056 covers the separate case of duplicating another bundle.
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-23T19:03:13Z'}
 ---
 
@@ -35,13 +35,13 @@ journalled on
 [[work-items/BACK-0070-make-the-backlog-usable-in-another-project]], which is
 where it changes a delivery.
 
-**The boundary with WORK-0056.**
+**The boundary with BACK-0056.**
 [[work-items/BACK-0056-re-adopt-the-command-line-bundle-and-stop-copying-its-style-guide]]
 covers the bundle duplicating **another bundle** — the vendored
 command-line-interface copy is 0.1.0, the ascii-styleguide landed in 0.3.0, and
 the marks in `showing-records` were copied rather than pointed at. This record
 covers the bundle duplicating **the tool**. Same remedy, different source of
-truth: WORK-0056 waits on re-adopting an upstream bundle, this waits on nothing.
+truth: BACK-0056 waits on re-adopting an upstream bundle, this waits on nothing.
 
 **The known instances, as a starting point rather than a scope** — scoping is
 [[backlog-refine]]'s job:

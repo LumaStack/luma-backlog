@@ -4,7 +4,7 @@ type_version: "0.0.1"
 title: A record is addressed by the path a person would type
 desired_state: "Key-scoped paths resolve and are emitted; bare names resolve while unambiguous, and ambiguity is an error rather than a guess."
 verify_by:
-  - "`WORK-0017/outcomes/<slug>` resolves; the same form appears in output."
+  - "`BACK-0017/outcomes/<slug>` resolves; the same form appears in output."
   - "A bare unambiguous name resolves; an ambiguous one exits 2 naming the candidates."
   - "Confirm resolution lives below the adapters, so every surface gets the same forms rather than each inventing its own."
 work_item: '[[work-items/BACK-0031-reshape-the-command-surface]]'
@@ -17,7 +17,7 @@ verified:
 evidence:
   - at: "2026-09-08T19:19:50Z"
     by: agent:claude-opus-5/luma-backlog
-    what: WORK-0031/tasks/<slug> resolves; the path show emits resolves as input, so references round-trip; a bare unambiguous name resolves; 'show a' exits 2 and lists the candidates; Resolve lives in internal/corpus, below every adapter
+    what: BACK-0031/tasks/<slug> resolves; the path show emits resolves as input, so references round-trip; a bare unambiguous name resolves; 'show a' exits 2 and lists the candidates; Resolve lives in internal/corpus, below every adapter
 ---
 
 # A record is addressed by the path a person would type
@@ -25,7 +25,7 @@ evidence:
 Absorbs
 [[work-items/BACK-0023-refer-to-a-record-by-the-path-a-person-would-type]].
 
-Failing today: `backlog show WORK-0031/tasks/restyle-help-output-on-gh-s-model`
+Failing today: `backlog show BACK-0031/tasks/restyle-help-output-on-gh-s-model`
 returns *nothing matches*, while the record plainly exists. The path a person
 reads off the listing is not a path the tool accepts.
 

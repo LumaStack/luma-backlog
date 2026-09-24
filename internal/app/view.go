@@ -16,7 +16,7 @@ import (
 type View struct {
 	Path string
 	Type string
-	// Key is the handle somebody quotes — WORK-0002. Empty where there is
+	// Key is the handle somebody quotes — BACK-0002. Empty where there is
 	// none: only a work item carries one, and a record written before keys
 	// existed has none either.
 	Key string

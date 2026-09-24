@@ -124,8 +124,8 @@ nobody declared.
 **Two explorations exist in this corpus**, both written before any of this was
 discussed:
 
-- `WORK-0042/explorations/whether-a-task-runner-earns-its-place.md`
-- `WORK-0059/explorations/what-the-ladder-walk-established.md`
+- `BACK-0042/explorations/whether-a-task-runner-earns-its-place.md`
+- `BACK-0059/explorations/what-the-ladder-walk-established.md`
 
 **Both are direction one** — exploration serving the work item that holds it.
 Their frontmatter is `type`, `title`, `work_item`, `stage`, `created`, and
@@ -137,7 +137,7 @@ to put either.** That is the gap, observed rather than predicted.
 [[work-items/BACK-0077-how-preparation-work-is-tracked]] asks what **unit** holds
 a preparation step and what it is called. **This asks what the step does and
 what comes out of it.** Direction one is the same activity both records are
-circling, so the boundary matters: WORK-0077 owns the container, this owns the
+circling, so the boundary matters: BACK-0077 owns the container, this owns the
 strategy and the product.
 
 **Its example list is already exploration by another name** — *establish who
@@ -211,7 +211,7 @@ to be settled, which is `open-questions.md` §22.
 ### The principle here is bigger than exploration, and this is the third time it has been stated
 
 **Guidance that informs rather than blocks** is now written in three places
-independently: `workflow-status.md` on gates, WORK-0059's *observed, never
+independently: `workflow-status.md` on gates, BACK-0059's *observed, never
 refused*, and here.
 
 **A principle restated three times in three records is one nobody has decided.**

@@ -7,7 +7,7 @@ workflow_status: closed
 kind: change
 stage: provisional
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-09T18:09:57Z'}
-description: WORK-0074, WORK-74, work-74, WORK-0000000074, 'WORK      74', WORK---74 and WoRk-74 should all be the same key in the internal engine. wants tests and a sweep to prove it. one form is the most normal — downcase, spaces to dashes, collapse runs of dashes, strip leading zeros — but normalizing to WORK-0074 may be better, so that if the normalization is ever printed it is already the correct form.
+description: BACK-0074, WORK-74, work-74, WORK-0000000074, 'WORK      74', WORK---74 and WoRk-74 should all be the same key in the internal engine. wants tests and a sweep to prove it. one form is the most normal — downcase, spaces to dashes, collapse runs of dashes, strip leading zeros — but normalizing to BACK-0074 may be better, so that if the normalization is ever printed it is already the correct form.
 modified: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:23:56Z'}
 rank: 070.0200.000
 closed: {on: 2026-09-20, as: completed, by: 'agent:claude-fable-5/luma-backlog'}
@@ -21,7 +21,7 @@ former_keys: ["WORK-0082"]
 **All of these name the same work item and only two of them find it:**
 
 ```
-WORK-0074   WORK-74   work-74   WORK-0000000074   "WORK      74"   WORK---74   WoRk-74
+BACK-0074   WORK-74   work-74   WORK-0000000074   "WORK      74"   WORK---74   WoRk-74
 ```
 
 **We should be normalizing keys**, and there should be **tests and a sweep** to
@@ -33,7 +33,7 @@ prove the engine treats them as one.
 runs of dashes down to one, and strip leading zeros on the number. That gives
 `work-74`.
 
-**The other is to normalize to `WORK-0074`** — so that if we ever output the
+**The other is to normalize to `BACK-0074`** — so that if we ever output the
 normalization, it is already the correct form.
 
 ## What is being delivered
@@ -54,7 +54,7 @@ unchanged. Everything below was added by the agent while capturing it.*
 
 | written | resolves |
 | --- | --- |
-| `WORK-0074` | ✔ |
+| `BACK-0074` | ✔ |
 | `work-0074` | ✔ |
 | `WoRk-0074` | ✔ |
 | `WORK-74` | ✘ |
@@ -77,7 +77,7 @@ that need different fixes:
 
 - **`WORK-74` and `WORK-0000000074` match the pattern and still fail.** They are
   recognized *as keys*, upper-cased, and then compared **as strings** against
-  `WORK-0074`. **The number is never parsed.** This is the actual defect: the
+  `BACK-0074`. **The number is never parsed.** This is the actual defect: the
   tool identifies something as a key and then declines to find it.
 - **`WORK---74` and `WORK 74` do not match at all**, so they fall through and
   are treated as somebody's slug. Accepting them is a widening of what a key
@@ -90,11 +90,11 @@ already made; the second is making a new one.
 
 **`FormatKey` already exists and already renders it** —
 `internal/corpus/key.go:35`, `fmt.Sprintf("%s-%04d", KeyPrefix, number)`. So
-normalizing to `WORK-0074` is *parse the number, call the function that is
+normalizing to `BACK-0074` is *parse the number, call the function that is
 already there*.
 
 **The lowercase collapsed form would cost more, not less.** `work-74` matches no
-record on disk — every stored key is `WORK-0074` — so choosing it means keeping
+record on disk — every stored key is `BACK-0074` — so choosing it means keeping
 **two** representations, a comparison form and a display form, and remembering
 which one is in hand at every boundary. **The maintainer's second instinct is
 right and the reason is stronger than aesthetics: there is only one form that is
@@ -113,7 +113,7 @@ this record is about.
 [[work-items/BACK-0014-detect-two-records-holding-one-key]] shipped duplicate
 detection, and
 [[records/decisions/ADR-0003-a-colliding-key-is-repaired-by-appending]] defines
-the repair. **If two records ever carried `WORK-74` and `WORK-0074`, the
+the repair. **If two records ever carried `WORK-74` and `BACK-0074`, the
 detector has to see one key and not two** — and whether it does today is
 untested.
 
@@ -133,7 +133,7 @@ search and is the reason a sweep is worth more here than a fix.
 
 **Resolving a record by path.**
 [[work-items/BACK-0023-refer-to-a-record-by-the-path-a-person-would-type]] covers
-`WORK-0017/outcomes/<slug>`, which is a different reference problem.
+`BACK-0017/outcomes/<slug>`, which is a different reference problem.
 
 **Whether the key prefix is configurable.** The pattern accepts any `[A-Z]+`,
 and nothing here changes that.

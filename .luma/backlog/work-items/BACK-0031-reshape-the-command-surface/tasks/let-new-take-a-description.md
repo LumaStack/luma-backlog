@@ -16,7 +16,7 @@ somebody actually said costs a second call:
 
 ```
 luma-backlog work-item new "Lint the corpus"
-luma-backlog set WORK-0001 description="records drift from the format and …"
+luma-backlog set BACK-0001 description="records drift from the format and …"
 ```
 
 **Found by writing [[backlog-capture]].** Quick capture exists to cost one turn,

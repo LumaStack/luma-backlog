@@ -26,6 +26,7 @@ func newMigrateCommand(a *App) *cobra.Command {
 
 func newMigrateKeysCommand(a *App) *cobra.Command {
 	var dryRun, renumber, includeBareKeys bool
+	var ignore []string
 
 	cmd := &cobra.Command{
 		Use:   "keys",
@@ -38,7 +39,16 @@ func newMigrateKeysCommand(a *App) *cobra.Command {
 			"Names are rewritten everywhere in the repository, because a work item's name\n" +
 			"appears in prose, in documentation and in source comments, and a name does not\n" +
 			"survive the move. Bare keys are left alone, because the old key keeps resolving\n" +
-			"and because one may name a work item in a different project.",
+			"and because one may name a work item in a different project.\n\n" +
+			"Content nobody here owns is skipped, and the list is printed with every run so\n" +
+			"a file missing from the output is explained rather than mysterious:\n\n" +
+			"  .git/            git's own storage\n" +
+			"  .luma/bundles/   adopted bundles --- vendored, and editing one is drift\n" +
+			"  node_modules/ vendor/ target/ dist/ build/ out/\n" +
+			"  .venv/ venv/ __pycache__/ .gradle/ .terraform/\n\n" +
+			"Add to it with --ignore, repeatable. A project whose source uses keys as test\n" +
+			"data rather than as references needs it --- that is rare, and it is what this\n" +
+			"repository needs, because it is the tool.",
 		Args:         cobra.NoArgs,
 		SilenceUsage: true,
 		Example: "  luma-backlog migrate keys --dry-run\n" +
@@ -53,6 +63,7 @@ func newMigrateKeysCommand(a *App) *cobra.Command {
 				DryRun:          dryRun,
 				Renumber:        renumber,
 				IncludeBareKeys: includeBareKeys,
+				Ignore:          ignore,
 			})
 			if err != nil {
 				return err
@@ -66,6 +77,8 @@ func newMigrateKeysCommand(a *App) *cobra.Command {
 		"give a record blocked by a collision the next free number")
 	cmd.Flags().BoolVar(&includeBareKeys, "include-bare-keys", false,
 		"also rewrite keys written without their slug")
+	cmd.Flags().StringArrayVar(&ignore, "ignore", nil,
+		"a path or glob to skip, repeatable --- added to the built-in list")
 	return cmd
 }
 
@@ -91,6 +104,25 @@ func renderMigration(out, errOut io.Writer, res *app.MigrateKeysResult) {
 	}
 	fmt.Fprintf(w, "files rewritten\t%d\n", len(res.Files))
 	w.Flush()
+
+	// **Every file, never a count alone.** A number cannot show somebody that
+	// a rewrite reached a file it had no business touching; only the name can.
+	// This is the one chance to notice, because the next reader sees a diff
+	// with no record of what produced it.
+	if len(res.Files) > 0 {
+		fmt.Fprintf(errOut, "\nRewritten:\n")
+		fw := tabwriter.NewWriter(errOut, 0, 0, 2, ' ', 0)
+		for _, f := range res.Files {
+			fmt.Fprintf(fw, "  %s\t%d\n", f.Path, f.Changes)
+		}
+		fw.Flush()
+	}
+
+	// What was skipped, for the same reason. A file missing from the list
+	// above is either untouched or excluded, and those are different facts.
+	if len(res.Ignored) > 0 {
+		fmt.Fprintf(errOut, "\nSkipped by: %s\n", strings.Join(res.Ignored, " "))
+	}
 
 	if len(res.Blocked) > 0 {
 		fmt.Fprintf(errOut, "\n%d record(s) could not migrate --- their keys are held:\n", len(res.Blocked))

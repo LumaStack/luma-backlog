@@ -1025,7 +1025,7 @@ Warning rather than refusing by default follows the standing posture: permissive
 
 ## 25. How a tool and its knowledge bundle stay in sync
 
-**Status:** Open, with a lean and **no measured friction** — nothing has ever fallen out of sync, because only this project has used the tool. Recorded now because the reasoning is expensive and the question arrives the moment the bundle leaves `local/` (WORK-0070).
+**Status:** Open, with a lean and **no measured friction** — nothing has ever fallen out of sync, because only this project has used the tool. Recorded now because the reasoning is expensive and the question arrives the moment the bundle leaves `local/` (BACK-0070).
 
 The binary teaches nobody how to use it well; the bundle does that, and the two are separate artifacts that change for separate reasons.
 
@@ -1053,7 +1053,7 @@ The binary teaches nobody how to use it well; the bundle does that, and the two 
 
 **Quiet failures are removed rather than detected.** Deleting a duplicated description is strictly better than building a check that notices it drifted.
 
-**Types keep the one real version contract, and already have it.** `type_version` is stamped per record and declared independently of the bundle's version. What that needs is lint and migration (§ WORK-0002, WORK-0022, WORK-0037), not a warning.
+**Types keep the one real version contract, and already have it.** `type_version` is stamped per record and declared independently of the bundle's version. What that needs is lint and migration (§ BACK-0002, BACK-0022, BACK-0037), not a warning.
 
 **Two consequences.** The bundle carries no floor on the binary, and bundle version and tool version are **not** the same number — after the shrink they are not describing the same thing.
 
@@ -1088,13 +1088,13 @@ $ luma-backlog rank <a task>
 only work items are ranked
 ```
 
-Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to write it — so the field exists, the command that owns it declines, and nothing else may touch it. This misled an agent on 2026-09-23 into copying the stale two-segment form from WORK-0001's tasks; the live shape is `<status ordinal>.<position>.<fraction>`.
+Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to write it — so the field exists, the command that owns it declines, and nothing else may touch it. This misled an agent on 2026-09-23 into copying the stale two-segment form from BACK-0001's tasks; the live shape is `<status ordinal>.<position>.<fraction>`.
 
 **This is a defect whether or not anything is renamed**, and it may be the whole of the confusion. Worth separating before treating the name as the problem.
 
 ### What is actually being distinguished
 
-**Scope, and only scope.** The mechanism is identical — a decimal ordering key, scoped by status ordinal, one record written per move. Only the blast radius differs, and *that* difference is real: project-wide ranking is §14 and WORK-0096, with concurrent reorders, merge conflicts nobody sees until git resolves them, and groups that grow without bound. Ranking five tasks inside one record has none of it.
+**Scope, and only scope.** The mechanism is identical — a decimal ordering key, scoped by status ordinal, one record written per move. Only the blast radius differs, and *that* difference is real: project-wide ranking is §14 and BACK-0096, with concurrent reorders, merge conflicts nobody sees until git resolves them, and groups that grow without bound. Ranking five tasks inside one record has none of it.
 
 ### The candidates
 
@@ -1107,13 +1107,13 @@ Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to wr
 
 ### The two directions do not point the same way
 
-**Cheap says rename the child.** Only tasks carrying ranks are touched — a handful under WORK-0001 plus five under BACK-0103.
+**Cheap says rename the child.** Only tasks carrying ranks are touched — a handful under BACK-0001 plus five under BACK-0103.
 
 **Informative says rename the parent**, because only one of the two is hard. If a name should carry a warning it is the expensive one: plain `rank` on a task reading as ordinary, and the project-wide one marked as the thing with research behind it.
 
-### Not the WORK-0085 shape, though it is adjacent
+### Not the BACK-0085 shape, though it is adjacent
 
-[[work-items/BACK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]] is a single field asked to carry two independent facts. Neither field here carries two facts; this is one *word* covering two *scopes*, which is a different problem. WORK-0085 notes that it and ADR-0003's inverse may want writing down together — a third rule about naming could join them, if this settles into one.
+[[work-items/BACK-0085-one-field-carrying-two-axes-is-the-defect-this-project-keeps-finding]] is a single field asked to carry two independent facts. Neither field here carries two facts; this is one *word* covering two *scopes*, which is a different problem. BACK-0085 notes that it and ADR-0003's inverse may want writing down together — a third rule about naming could join them, if this settles into one.
 
 ### What decides it
 

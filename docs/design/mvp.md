@@ -158,7 +158,7 @@ Only `completed` is gated.
 is the field verb, and `--if-unchanged` handles the stale-read race — which is
 the real hazard, not skipping a work status.
 
-**`--open`** — everything not closed. WORK-0016 records why: it is the first
+**`--open`** — everything not closed. BACK-0016 records why: it is the first
 question anybody asks and cannot be expressed today.
 
 ### Outcomes

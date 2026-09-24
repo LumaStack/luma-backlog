@@ -15,7 +15,7 @@ verified:
 evidence:
   - at: "2026-09-10T00:40:10Z"
     by: agent:claude-opus-5/luma-backlog
-    what: 'All three checks run. (1) After close WORK-0001 completed --force over an unproven outcome, grep for "verified" in the outcome file returns 0 --- the force added nothing. (2) show WORK-0001 --json afterwards reports completion {proven: 0, live: 1} on a record whose workflow_status is closed and whose closed entry reads as: completed. The count and the ending disagree, and both are true. (3) backlog-move names the tempting wrong implementation --- "the tempting implementation marks them verified so the arithmetic comes out clean; that destroys the record" --- and internal/app/close.go writes only the closed entry and the modified stamp, touching no outcome file. Confirmed by TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest, which asserts the outcome has no verified key.'
+    what: 'All three checks run. (1) After close BACK-0001 completed --force over an unproven outcome, grep for "verified" in the outcome file returns 0 --- the force added nothing. (2) show BACK-0001 --json afterwards reports completion {proven: 0, live: 1} on a record whose workflow_status is closed and whose closed entry reads as: completed. The count and the ending disagree, and both are true. (3) backlog-move names the tempting wrong implementation --- "the tempting implementation marks them verified so the arithmetic comes out clean; that destroys the record" --- and internal/app/close.go writes only the closed entry and the modified stamp, touching no outcome file. Confirmed by TestForcingACompletedCloseIsRecordedAndLeavesTheCountHonest, which asserts the outcome has no verified key.'
 ---
 
 # Forcing does not launder the record

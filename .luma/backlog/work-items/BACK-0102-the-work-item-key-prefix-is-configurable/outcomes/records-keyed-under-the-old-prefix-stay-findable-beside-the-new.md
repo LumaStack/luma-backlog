@@ -2,7 +2,7 @@
 type: outcome
 title: Records keyed under the old prefix stay findable beside the new
 desired_state: ""
-verify_by: "Live, after this repository switches to BACK: luma-backlog show work-53, WORK---82 and back-103 all print their records from one corpus. Already half-proven by WORK-0082's TestResolveFindsEveryKeySpelling, where an R2D2 record resolves beside WORK records."
+verify_by: "Live, after this repository switches to BACK: luma-backlog show work-53, WORK---82 and back-103 all print their records from one corpus. Already half-proven by BACK-0082's TestResolveFindsEveryKeySpelling, where an R2D2 record resolves beside WORK records."
 work_item: '[[work-items/BACK-0102-the-work-item-key-prefix-is-configurable]]'
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:39:38Z'}

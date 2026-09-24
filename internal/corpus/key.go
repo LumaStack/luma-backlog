@@ -10,11 +10,11 @@ import (
 	"github.com/lumastack/luma-backlog/internal/root"
 )
 
-// keyPattern matches anything written as a key: WORK-0002, work-2,
+// keyPattern matches anything written as a key: BACK-0002, work-2,
 // WORK---2, "WORK  2".
 //
 // The prefix rule is config.KeyPrefixRule — Jira Cloud project-key rules
-// (WORK-0082): an uppercase letter first, then uppercase letters or digits,
+// (BACK-0082): an uppercase letter first, then uppercase letters or digits,
 // two to ten characters. That admits R2D2-7 and turns away a one-letter
 // prefix — which is deliberate, so a stray `x-1` in prose stays a slug rather
 // than becoming a key. One fragment shared with the config validator, so what
@@ -27,7 +27,7 @@ var keyPattern = regexp.MustCompile(`^(` + config.KeyPrefixRule + `)[ -]+(\d+)$`
 
 // ParseKey reads a reference as a key, however it was spelled. This is the
 // only reader — every comparison goes through it, so two spellings of one key
-// cannot disagree anywhere (WORK-0082: keys are compared as parsed values,
+// cannot disagree anywhere (BACK-0082: keys are compared as parsed values,
 // never as strings).
 func ParseKey(ref string) (prefix string, number int, ok bool) {
 	m := keyPattern.FindStringSubmatch(strings.ToUpper(ref))
@@ -69,7 +69,7 @@ func IsKey(ref string) bool {
 }
 
 // NormalizeKey renders any spelling of a key in its canonical form, so
-// `work---2` becomes `WORK-0002` — already correct to print, which is why the
+// `work---2` becomes `BACK-0002` — already correct to print, which is why the
 // canonical form is the stored one rather than a lowercase comparison form:
 // one representation means no bug about which one is in hand. Anything that is
 // not a key is returned unchanged, since it is somebody's slug.
@@ -138,7 +138,7 @@ func NextAvailableKey(b *root.Backlog, prefix string) (string, error) {
 	consider := func(k string) {
 		// Parsed, not pattern-matched: a key stored in an unusual spelling
 		// must still count, or the next allocation reuses its number
-		// (WORK-0082 — the same failure WORK-0040 hit from a different cause).
+		// (BACK-0082 — the same failure BACK-0040 hit from a different cause).
 		if _, n, isKey := ParseKey(k); isKey && n > highest {
 			highest = n
 		}
@@ -216,7 +216,7 @@ func (i Item) HeldKey(ref string) bool {
 
 // HeldFormerKey reports whether a reference names a key this record used to
 // answer to. Compared as parsed values like every other key comparison, so a
-// former key quoted from memory still finds its record (WORK-0082).
+// former key quoted from memory still finds its record (BACK-0082).
 func (i Item) HeldFormerKey(ref string) bool {
 	for _, k := range i.FormerKeys() {
 		if SameKey(k, ref) {

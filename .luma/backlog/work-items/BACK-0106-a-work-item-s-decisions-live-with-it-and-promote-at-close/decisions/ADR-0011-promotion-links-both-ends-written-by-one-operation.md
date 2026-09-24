@@ -5,7 +5,7 @@ description: 'Settled by the maintainer 2026-09-20: promotion writes promoted_fr
 decided: "2026-09-20"
 work_item: '[[work-items/BACK-0106-a-work-item-s-decisions-live-with-it-and-promote-at-close]]'
 stage: provisional
-reopen_trigger: "Retention work (WORK-0039) settles on deleting promoted originals wholesale — the redirect would then point at nothing more often than it points at something — or the §4.8.1 amendment is refused."
+reopen_trigger: "Retention work (BACK-0039) settles on deleting promoted originals wholesale — the redirect would then point at nothing more often than it points at something — or the §4.8.1 amendment is refused."
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T18:35:21Z'}
 ---
 
@@ -54,7 +54,7 @@ edited.
 - **The pair does not violate one-fact-one-place (ADR-0009).** Both ends are
   written by one atomic operation and never maintained — two ends of one
   event, not two opinions that can drift. A hand edit can break one side;
-  lint (WORK-0002) can check the pair mechanically.
+  lint (BACK-0002) can check the pair mechanically.
 - **The `promoted_to` stamp does not breach "left untouched" in spirit.** The
   corpus already appends event stamps to finished records — `closed` entries,
   verification entries — without treating them as changes. §4.8.1 is amended

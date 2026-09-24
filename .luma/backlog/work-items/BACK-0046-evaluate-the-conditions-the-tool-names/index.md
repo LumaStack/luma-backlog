@@ -33,7 +33,7 @@ them is a prose-only rule:
 | `outcome.unmeasured` | an outcome has no `verify_by` |
 | `work-item.drifted` | work happened and no outcome was verified or revised |
 
-**`work-item.drifted` has already fired unobserved.** WORK-0031 had nine tasks
+**`work-item.drifted` has already fired unobserved.** BACK-0031 had nine tasks
 closed, no outcome touched, and progress reported from task counts. Nothing
 noticed because nothing evaluates it.
 

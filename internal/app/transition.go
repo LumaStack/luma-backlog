@@ -63,7 +63,7 @@ type TransitionResult struct {
 // Closing is deliberately not reachable here. `close` carries its own
 // refusals, its own disposition vocabulary and its own `--force`, and a second
 // door into the terminal status would skip all three — which is the defect
-// recorded as WORK-0073.
+// recorded as BACK-0073.
 func (s *Session) Transition(req TransitionRequest) (*TransitionResult, error) {
 	if req.To == "" {
 		return nil, Refuse(Usage, Refusal{

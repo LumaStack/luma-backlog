@@ -92,14 +92,14 @@ asked to, and **refuses, naming `rank repair`.**
 Verified against the binary rather than the library:
 
 ```
-$ luma-backlog rank WORK-0002 --first
+$ luma-backlog rank BACK-0002 --first
 luma-backlog: no room left before "0000.0000…0001": positions are
 exhausted at this status --- run `rank repair`      (exit 2)
 
 $ luma-backlog rank repair
 2 of 3 changed
 
-$ luma-backlog rank WORK-0002 --first
+$ luma-backlog rank BACK-0002 --first
 ranked  …/WORK-0002-bravo/index.md (010.0005.000)
 ```
 

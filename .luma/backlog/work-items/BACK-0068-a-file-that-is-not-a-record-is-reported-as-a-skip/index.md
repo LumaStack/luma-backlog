@@ -55,7 +55,7 @@ symptom.
 
 ## Constraints
 
-- **Do not fix it by suppressing skips.** WORK-0008 exists because silent skips
+- **Do not fix it by suppressing skips.** BACK-0008 exists because silent skips
   hid real breakage, and narrowing it to *files we expected to be records* is
   the fix; going quiet is not.
 - **Report once, not per command.** Two identical lines for one file in one view

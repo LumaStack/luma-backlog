@@ -14,7 +14,7 @@ verified:
 evidence:
   - at: "2026-09-20T17:52:09Z"
     by: agent:claude-fable-5/luma-backlog
-    what: 'TestCreateWritesTheConfiguredPrefix: with work_item_key BACK a new item lands at BACK-0075 after WORK-0074 — the sequence continues, never restarts. Scratch repo end to end: init, create → WORK-0001; add work_item_key: BACK, create → BACK-0002. Live in this repository: the first record created after the switch is BACK-0103, following WORK-0102.'
+    what: 'TestCreateWritesTheConfiguredPrefix: with work_item_key BACK a new item lands at BACK-0075 after BACK-0074 — the sequence continues, never restarts. Scratch repo end to end: init, create → BACK-0001; add work_item_key: BACK, create → BACK-0002. Live in this repository: the first record created after the switch is BACK-0103, following BACK-0102.'
 ---
 
 # A configured work_item_key decides the prefix of every new key

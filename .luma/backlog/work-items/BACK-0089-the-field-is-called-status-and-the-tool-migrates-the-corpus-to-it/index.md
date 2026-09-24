@@ -7,7 +7,7 @@ workflow_status: unprepared
 kind: change
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-10T02:25:25Z'}
-description: 'workflow_status becomes status. status is what every tool in the field calls it, and state claims more than the field holds — a record''s state is the whole record, its status is where it stands in a process. renaming it also frees workflow to mean what everyone else means by it: the set of statuses and the moves between them. and the rename is the first thing migrations have to carry, so this delivers the mechanism WORK-0037 asked for rather than another hand-edit.'
+description: 'workflow_status becomes status. status is what every tool in the field calls it, and state claims more than the field holds — a record''s state is the whole record, its status is where it stands in a process. renaming it also frees workflow to mean what everyone else means by it: the set of statuses and the moves between them. and the rename is the first thing migrations have to carry, so this delivers the mechanism BACK-0037 asked for rather than another hand-edit.'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-20T02:12:16Z'}
 rank: 020.0030.000
 former_keys: ["WORK-0089"]
@@ -58,15 +58,15 @@ already and improvised each time.
 > item has no way to point at another work item: `depends_on` lives on the task
 > (`spec.md` §4.5) and `blocked` names no target ---
 > [[work-items/BACK-0025-how-one-work-item-blocking-many-others-is-modeled]].
-> So a reader who opens WORK-0037 will not learn that this waits on it.
+> So a reader who opens BACK-0037 will not learn that this waits on it.
 
 ## Out of scope
 
-**Building the migration mechanism.** That is WORK-0037. This record uses it and
+**Building the migration mechanism.** That is BACK-0037. This record uses it and
 proves it.
 
 **Renaming any status value.** `captured`, `preparing` and the rest are
-untouched here --- and changing them is WORK-0022'"'"'s case, not this one.
+untouched here --- and changing them is BACK-0022'"'"'s case, not this one.
 
 **The wider vocabulary.**
 [[work-items/BACK-0083-finalize-the-vocabulary-for-the-workflow-model]] holds

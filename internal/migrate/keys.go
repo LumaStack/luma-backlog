@@ -23,6 +23,9 @@ type Options struct {
 	// IncludeBareKeys also rewrites keys written without their slug. Off by
 	// default because a bare key may name another project's work item.
 	IncludeBareKeys bool
+	// Ignore adds to the built-in exclusions. A project with vendored content
+	// the defaults do not name needs this, and needs it on every run.
+	Ignore []string
 }
 
 // FileChange is one file and how many replacements it took.
@@ -47,6 +50,9 @@ type Result struct {
 	// rewrote them.
 	BareKeys []BareKeyFile
 	DryRun   bool
+	// Ignored is what the walk skipped, so a reader can see it rather than
+	// wonder why a file they expected is missing from the list.
+	Ignored root.Ignore
 }
 
 // Keys moves every work item to the target prefix and repoints what named it.
@@ -91,7 +97,13 @@ func Keys(projectRoot string, b *root.Backlog, opts Options) (*Result, error) {
 		}
 	}
 
-	files, bare, err := rewriteTree(p, res.Renames, opts)
+	items, _, err := corpus.List(b, corpus.Filter{Unit: corpus.WorkItem})
+	if err != nil {
+		return nil, err
+	}
+	ig := root.NewIgnore(opts.Ignore...)
+	res.Ignored = ig
+	files, bare, err := rewriteTree(p, res.Renames, items, ig, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -189,10 +201,26 @@ func yamlList(items []string) string {
 
 // rewriteTree repoints every name across the repository, and collects or
 // rewrites the bare keys depending on what was asked for.
-func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]FileChange, []BareKeyFile, error) {
+func rewriteTree(p *root.Project, renames []corpus.KeyRename, items []corpus.Item, ig root.Ignore, opts Options) ([]FileChange, []BareKeyFile, error) {
 	var files []FileChange
 	var bare []BareKeyFile
+
+	// Old keys come from two places, and using only the first made the flag
+	// useless exactly when somebody would reach for it.
+	//
+	// **This run's renames** answer during a migration. **Every record's
+	// former_keys** answer afterwards --- and after a migration there are no
+	// renames, so a map built from renames alone is empty and
+	// `--include-bare-keys` silently does nothing. The keys a corpus has moved
+	// away from are a property of the corpus, not of the run that moved them.
 	old := map[string]string{}
+	for _, it := range items {
+		for _, k := range it.FormerKeys() {
+			if it.Key() != "" {
+				old[corpus.NormalizeKey(k)] = it.Key()
+			}
+		}
+	}
 	for _, r := range renames {
 		old[r.OldKey] = r.NewKey
 	}
@@ -208,7 +236,7 @@ func rewriteTree(p *root.Project, renames []corpus.KeyRename, opts Options) ([]F
 		stamped[path.Join(root.Dir, corpus.WorkItemPath(r.Dir))] = r.OldKey + "\x00" + r.NewKey
 	}
 
-	err := p.WalkText(func(rel string, data []byte) error {
+	err := p.WalkText(ig, func(rel string, data []byte) error {
 		text := string(data)
 		if pair, ok := stamped[rel]; ok {
 			k := strings.SplitN(pair, "\x00", 2)

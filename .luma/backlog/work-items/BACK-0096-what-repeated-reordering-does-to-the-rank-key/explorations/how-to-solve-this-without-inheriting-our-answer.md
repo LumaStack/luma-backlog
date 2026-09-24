@@ -525,8 +525,8 @@ a person rather than by an agent.
 For each answer, in the repository:
 
 ```sh
-luma-backlog exploration new "Derived independently, <n>" -w WORK-0096
-luma-backlog exploration new "Found in the literature, <n>" -w WORK-0096
+luma-backlog exploration new "Derived independently, <n>" -w BACK-0096
+luma-backlog exploration new "Found in the literature, <n>" -w BACK-0096
 ```
 
 Then put the body of that `ANSWER.md` into the record it created, and **say in

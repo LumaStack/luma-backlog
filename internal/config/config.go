@@ -14,7 +14,7 @@ import (
 // FileName is the tool's configuration file, relative to .luma/. It lives in
 // the config tier per the luma directory layout policy: one file per tool,
 // named for the tool so nobody has to guess which binary a file belongs to.
-// It was config/luma-corpus.yaml until WORK-0053: that name matched an
+// It was config/luma-corpus.yaml until BACK-0053: that name matched an
 // internal package rename rather than the tool, so the one repository using
 // the tool had a configuration that was never read.
 const FileName = "config/luma-backlog.yaml"
@@ -28,7 +28,7 @@ const DefaultKeyPrefix = "WORK"
 
 // KeyPrefixRule is the shape a key prefix must have, as a regular expression
 // fragment: an uppercase letter, then uppercase letters or digits, two to ten
-// characters — Jira Cloud's project-key rules (WORK-0102). One fragment, so
+// characters — Jira Cloud's project-key rules (BACK-0102). One fragment, so
 // the validator here and the key reader in internal/corpus cannot drift.
 const KeyPrefixRule = `[A-Z][A-Z0-9]{1,9}`
 
@@ -38,7 +38,7 @@ var keyPrefixPattern = regexp.MustCompile(`^` + KeyPrefixRule + `$`)
 //
 // Every field here is read by something. A key the binary parses and never
 // consumes is a placeholder wearing a promise — it teaches an author the
-// setting works, and nothing notices that it does not (WORK-0053 found
+// setting works, and nothing notices that it does not (BACK-0053 found
 // exactly that: a whole file that was never read, invisible because its
 // values matched the defaults).
 type Config struct {
