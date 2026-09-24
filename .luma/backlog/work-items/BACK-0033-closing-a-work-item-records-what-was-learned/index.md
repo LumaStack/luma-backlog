@@ -52,9 +52,9 @@ learn, and what should we do differently?"* — and `docs/design/mvp.md` does no
 absent rather than missing.
 
 **Both rules were broken within minutes of the practice starting.** Closing
-WORK-0018 produced six entries; two did not belong. One repeated a learning
-already on WORK-0032, and one was about `show` printing a key twice — a fact
-about the corpus, not about that work, now filed on WORK-0002. So the failure
+BACK-0018 produced six entries; two did not belong. One repeated a learning
+already on BACK-0032, and one was about `show` printing a key twice — a fact
+about the corpus, not about that work, now filed on BACK-0002. So the failure
 mode is real, immediate, and was invisible until somebody read the journal back.
 
 **And it fights the journal's own rule.** §5.5 says *append, never curate* —

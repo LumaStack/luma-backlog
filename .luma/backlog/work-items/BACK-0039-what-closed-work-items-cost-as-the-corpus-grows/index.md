@@ -53,9 +53,9 @@ record has stopped being the record those links meant.
 
 **Two things weaken that premise, and neither existed when it was written.**
 
-**Records now have keys.** WORK-0011 gave every work item one, and this
+**Records now have keys.** BACK-0011 gave every work item one, and this
 conversation settled that a reference is key-scoped —
-`WORK-0017/outcomes/<slug>`
+`BACK-0017/outcomes/<slug>`
 ([[backlog/work-items/BACK-0023-refer-to-a-record-by-the-path-a-person-would-type]]).
 **A citation by key survives any move.** Only a path citation breaks, and the
 project has already decided paths are not how records should be named. That

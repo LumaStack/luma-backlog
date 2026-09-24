@@ -23,9 +23,9 @@ There is no short handle to say out loud, put in a commit message, or write on a
 
 ## What is being delivered
 
-Every work item carries a key and a number: `WORK-0002`. `WORK` is the only prefix supported, and the record carries it rather than deriving it, so making the prefix configurable later changes what is written and not what already exists.
+Every work item carries a key and a number: `BACK-0002`. `WORK` is the only prefix supported, and the record carries it rather than deriving it, so making the prefix configurable later changes what is written and not what already exists.
 
-Numbering follows the decision records: one sequence for the project, allocated at creation, never reused. `luma-backlog show WORK-0002` resolves, and so does the slug.
+Numbering follows the decision records: one sequence for the project, allocated at creation, never reused. `luma-backlog show BACK-0002` resolves, and so does the slug.
 
 ## Out of scope
 

@@ -63,7 +63,7 @@ ended.
 **What a session identity is, and who mints it.** A random handle per session is
 enough to distinguish, and carries nothing a reader can use. Something derived
 from the worktree or the branch would be legible and might leak a path or a
-machine name, which is the trap WORK-0035 already closed.
+machine name, which is the trap BACK-0035 already closed.
 
 **Whether it belongs in the actor at all**, or beside it. The actor answers
 *who*; a session answers *which run*. Those may be two fields —

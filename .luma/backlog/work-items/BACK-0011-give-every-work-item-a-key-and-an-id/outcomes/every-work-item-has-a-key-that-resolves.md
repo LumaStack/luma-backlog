@@ -15,7 +15,7 @@ verified:
 evidence:
   - at: "2026-09-04T21:02:21Z"
     by: agent:claude-opus-5/luma-backlog
-    what: All twelve work items carry keys; show work-00011 resolves case-insensitively and prints key WORK-0011; a probe created after the backfill was allocated WORK-0013. Pinned by TestWorkItemsGetSequentialKeys, TestAKeyResolvesLikeASlug, TestAskingTwiceDoesNotBurnAKey and TestOnlyWorkItemsCarryAKey.
+    what: All twelve work items carry keys; show work-00011 resolves case-insensitively and prints key BACK-0011; a probe created after the backfill was allocated BACK-0013. Pinned by TestWorkItemsGetSequentialKeys, TestAKeyResolvesLikeASlug, TestAskingTwiceDoesNotBurnAKey and TestOnlyWorkItemsCarryAKey.
 ---
 
 # Every work item has a key that resolves

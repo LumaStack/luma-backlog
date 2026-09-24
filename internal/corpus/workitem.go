@@ -66,7 +66,7 @@ func matchesWorkItem(dirName, filter string) bool {
 		// `--work-item work-36` reaches WORK-0036-a-slug the way `show
 		// work-36` already did. EqualFold answered case but not padding or
 		// separator runs, which made this the stricter door for no stated
-		// reason (WORK-0082: keys are compared as parsed values, never as
+		// reason (BACK-0082: keys are compared as parsed values, never as
 		// strings).
 		return SameKey(m[1], filter)
 	}

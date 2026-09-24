@@ -16,13 +16,13 @@ Now let me gather the actual state.
 
 Preparation considerations
 
-○ WORK-0031 · Reshape the command surface
-○ WORK-0053 · The tool reads a config filename this repository does not use
-○ WORK-0050 · Review the backlog procedures
+○ BACK-0031 · Reshape the command surface
+○ BACK-0053 · The tool reads a config filename this repository does not use
+○ BACK-0050 · Review the backlog procedures
 
 luma-backlog work-item list --status prepared
 
-WORK-0031 needs no preparation — it is prepared already, and what it is waiting on is a selection nobody has made. WORK-0053 is a confirmed defect with a ten-minute fix. WORK-0050 has the only written body of the three; the other captures from this morning are empty templates.
+BACK-0031 needs no preparation — it is prepared already, and what it is waiting on is a selection nobody has made. BACK-0053 is a confirmed defect with a ten-minute fix. BACK-0050 has the only written body of the three; the other captures from this morning are empty templates.
 
 To Do (0)
 
@@ -36,33 +36,33 @@ Risks
 
 One commit on capture/session-findings, no upstream, no pull request. Everything written after 08:38 today exists in this working tree and nowhere else.
 
-The second gate has never been used. No work item has ever been todo or in_progress — and WORK-0031 closed nine tasks while sitting at prepared. This project is the tool's first consumer, so a ladder the project itself routes around is evidence about the ladder.
+The second gate has never been used. No work item has ever been todo or in_progress — and BACK-0031 closed nine tasks while sitting at prepared. This project is the tool's first consumer, so a ladder the project itself routes around is evidence about the ladder.
 
-Six of the seven newest captures — WORK-0051 through WORK-0056 — have empty ## The problem, ## What is being delivered, ## Out of scope and ## Constraints. WORK-0052 is "Quick capture has nowhere to put a long thought", so the defect documented itself five more times in the same burst.
+Six of the seven newest captures — BACK-0051 through BACK-0056 — have empty ## The problem, ## What is being delivered, ## Out of scope and ## Constraints. BACK-0052 is "Quick capture has nowhere to put a long thought", so the defect documented itself five more times in the same burst.
 
-WORK-0031's four outcomes are the only unverified ones in the corpus — 29 of 33 outcomes elsewhere carry verified:. None of the four is provable yet either: each verify_by names a task still todo.
+BACK-0031's four outcomes are the only unverified ones in the corpus — 29 of 33 outcomes elsewhere carry verified:. None of the four is provable yet either: each verify_by names a task still todo.
 
-WORK-0053 is real. internal/config/config.go:16 reads config/luma-corpus.yaml; .luma/config/luma-backlog.yaml sits beside it, near-identical and never read.
+BACK-0053 is real. internal/config/config.go:16 reads config/luma-corpus.yaml; .luma/config/luma-backlog.yaml sits beside it, near-identical and never read.
 
 Last touched
 
-WORK-0031 and the four defect captures, at 09:16 today — commit ddd8a4f, "Capture four findings that were noticed and never written down". WORK-0031's own modified reads 2026-09-06T16:51, a day stale, because closing a task or writing a journal line never touches the parent; the nine closed tasks and the thirty-odd journal lines below it are all newer than the stamp.
+BACK-0031 and the four defect captures, at 09:16 today — commit ddd8a4f, "Capture four findings that were noticed and never written down". BACK-0031's own modified reads 2026-09-06T16:51, a day stale, because closing a task or writing a journal line never touches the parent; the nine closed tasks and the thirty-odd journal lines below it are all newer than the stamp.
 
 It is open, but you did not stop mid-edit — the working tree is clean and the last thing the session did was write down what it had noticed. That is a clean stop with an open record, not an interruption.
 
 ──[ Options ]───────────────────────────────────────────────
 
-1. Select WORK-0031 through the second gate — move it to todo, then in_progress; the status is a claim about the present and has been false for a day, and it exercises a gate the tool ships and nobody has used.
-2. Fill the six empty capture bodies — the context is a day old rather than a month, and WORK-0053 already proved one of them was worth writing.
-3. Fix WORK-0053 — delete luma-backlog.yaml or make the tool read it; two near-identical configs where one is dead will drift, and the live one carries the ladder.
-4. Take the next WORK-0031 task — eight remain; resolve-a-reference-the-way-a-person-writes-it unblocks one of the four outcomes on its own.
+1. Select BACK-0031 through the second gate — move it to todo, then in_progress; the status is a claim about the present and has been false for a day, and it exercises a gate the tool ships and nobody has used.
+2. Fill the six empty capture bodies — the context is a day old rather than a month, and BACK-0053 already proved one of them was worth writing.
+3. Fix BACK-0053 — delete luma-backlog.yaml or make the tool read it; two near-identical configs where one is dead will drift, and the live one carries the ladder.
+4. Take the next BACK-0031 task — eight remain; resolve-a-reference-the-way-a-person-writes-it unblocks one of the four outcomes on its own.
 5. Cross something from the pile at the first gate — 32 captured against 10 unprepared, and seven arrived this morning while nothing moved up.
 
 ──[ Recommendation ]────────────────────────────────────────
 
 Push the branch and open the pull request. Every option above adds work; this is the only one that removes risk, and it takes a minute. A day of records — the split policy, seven new work items, thirty journal lines — is currently one rm -rf from gone.
 
-What would change it: if you have already pushed this from another checkout, take 1 — deciding whether WORK-0031 is being worked or waiting determines whether options 4 and 5 are even the same question.
+What would change it: if you have already pushed this from another checkout, take 1 — deciding whether BACK-0031 is being worked or waiting determines whether options 4 and 5 are even the same question.
 
 ✻ Brewed for 2m 54s
 
@@ -105,10 +105,10 @@ The Risks section from earlier, re-rendered
 ▎ Risks
 ▎
 ▎ - One commit on capture/session-findings, no upstream, no pull request — everything written after 08:38 today exists in this working tree and nowhere else.
-▎ - The second gate has never been used: no work item has ever been todo or in_progress, and WORK-0031 closed nine tasks while sitting at prepared. This project is the tool's first consumer, so a ladder it routes around is evidence about the ladder.
-▎ - Six of the seven newest captures — WORK-0051 through WORK-0056 — have empty bodies. WORK-0052 is "Quick capture has nowhere to put a long thought", so the defect documented itself five more times in the same burst.
-▎ - WORK-0031's four outcomes are the only unverified ones in a corpus of 33, and none is provable yet — each verify_by names a task still todo.
-▎ - internal/config/config.go:16 reads config/luma-corpus.yaml; .luma/config/luma-backlog.yaml sits beside it, near-identical and never read. WORK-0053, confirmed.
+▎ - The second gate has never been used: no work item has ever been todo or in_progress, and BACK-0031 closed nine tasks while sitting at prepared. This project is the tool's first consumer, so a ladder it routes around is evidence about the ladder.
+▎ - Six of the seven newest captures — BACK-0051 through BACK-0056 — have empty bodies. BACK-0052 is "Quick capture has nowhere to put a long thought", so the defect documented itself five more times in the same burst.
+▎ - BACK-0031's four outcomes are the only unverified ones in a corpus of 33, and none is provable yet — each verify_by names a task still todo.
+▎ - internal/config/config.go:16 reads config/luma-corpus.yaml; .luma/config/luma-backlog.yaml sits beside it, near-identical and never read. BACK-0053, confirmed.
 
 One thing I left alone: the commentary under the worked example says "Fifty-seven commits, 9 to 23, never — each one is checkable", but the example it points at says fifty-six. A one-word drift in the paragraph arguing for checkability — worth fixing, but it predates this change and I didn't want to bundle it in silently.
 
@@ -183,7 +183,7 @@ That resolves my objection — the scale is internal to the family, not absolute
 
 next sitting outside the pair is right too. It's a question, not a method — which correctly signals it isn't just a third intensity.
 
-The boundary needs to be checkable, or sweep becomes "scan but I tried harder." There's already evidence about where the line falls, from the report I gave you an hour ago: I ran gh pr list and read internal/config/config.go:16 to confirm WORK-0053. Neither is scanning a backlog. So:
+The boundary needs to be checkable, or sweep becomes "scan but I tried harder." There's already evidence about where the line falls, from the report I gave you an hour ago: I ran gh pr list and read internal/config/config.go:16 to confirm BACK-0053. Neither is scanning a backlog. So:
 
 - scan — the corpus and git. Records, frontmatter, journals, git log. Everything the backlog knows about itself.
 - sweep — leaves the corpus. Reads the code, checks the forge, verifies that a claim in a record is still true, confirms outcomes against reality. Expensive because it goes and looks.
@@ -282,7 +282,7 @@ The objection is the one this project already ruled on. From the 0.10.0 entry, o
 
 Here the surrounding system is the tool itself. workflow_status is the field the whole model turns on, --status is a shipped flag, and docs/workflow-status.md is normative. In this corpus status already means one record's rung on the ladder — and the command would mean the whole backlog's situation. Those two senses would appear within a few lines of each other in the same help output.
 
-The concrete failure: somebody types luma-backlog status WORK-0031 expecting prepared, because that is what status means everywhere else in the tool.
+The concrete failure: somebody types luma-backlog status BACK-0031 expecting prepared, because that is what status means everywhere else in the tool.
 
 If you want it anyway, the mitigation is real: status never takes a record argument. No positional, ever — it's the whole backlog or nothing, like board. That narrows the ambiguity to a wrong guess the tool can correct in one error message, which is survivable.
 
@@ -314,13 +314,13 @@ Still rundown, with status as the defensible-but-costly conventional pick.
 
 Weaker than I made it sound. git status is the counterexample I should have led with: git reports per-file statuses inside a command called status, it's the most-typed command in software, and nobody has ever been confused by it. Two senses of a word at two different levels coexist fine — that's normal, not a defect.
 
-luma-backlog status WORK-0031 also isn't the failure I claimed. git status <path> scopes the report rather than printing a field, so a scoped report is the conventional reading, and a useful one.
+luma-backlog status BACK-0031 also isn't the failure I claimed. git status <path> scopes the report rather than printing a field, so a scoped report is the conventional reading, and a useful one.
 
 What actually survives is narrow: gh faced this exact choice and split the words. It ships gh pr status for the report and --state for the filter. This project shipped --status for the filter — and it's the project that restyled its help output on gh's model, so that's the closest reference point available.
 
 So the real question isn't whether status is a good command name. It is. It's whether --status is the right flag name once status is a command, and the honest answer is that living with both is fine — one is a top-level verb-only command, the other is a filter on list. They appear in different sections of help and nothing forces a reader to hold them at once.
 
-The alternative — renaming --status to --state for gh parity — is a breaking change to a shipped flag, and WORK-0031 already carries a pile of those. Not worth opening for this.
+The alternative — renaming --status to --state for gh parity — is a breaking change to a shipped flag, and BACK-0031 already carries a pile of those. Not worth opening for this.
 
 Revised: backlog-status is a good pick. It's the most conventional name available, it fits §9.1 as verb-only beside board, it names the result rather than the method, and its cost is one flag that spells the same word for a narrower thing. I was leaning on the ref precedent harder than it deserves — ref was ambiguous at the same level, a record's identity versus a git object. This isn't.
 
@@ -364,7 +364,7 @@ rundown keeps every trigger for now, including the bare "what's next". Handing t
 
 Marked breaking but shipped minor — two documents renamed. Nothing outside this project adopts local/backlog, and every inbound link is repointed in the same commit, which is what §1 of update-bundle asks for.
 
-One thing I didn't rewrite. WORK-0050's body has a table naming backlog-next and next-report with their line and commit counts — a measurement taken at a time, and rewriting records to match a later rename is exactly what WORK-0022 exists to decide. I added a journal line on WORK-0050 instead, saying what the files are called now and that the counts still hold.
+One thing I didn't rewrite. BACK-0050's body has a table naming backlog-next and next-report with their line and commit counts — a measurement taken at a time, and rewriting records to match a later rename is exactly what BACK-0022 exists to decide. I added a journal line on BACK-0050 instead, saying what the files are called now and that the counts still hold.
 
 Link audit over the bundle is clean, luma-foreman bundle index . --check passes, and apply removed the old adapter. Nothing committed.
 
@@ -391,17 +391,17 @@ Both of those land in what gets written — doctor/cleanup is a real fork for sw
 
 Conflicts
 
-- WORK-0046 · Evaluate the conditions the tool names (captured)
-  This is sweep's diagnostic half, already specified. It builds check — and check is already a top-level verb-only command in the shipped surface (ADR-0006, WORK-0031's table), alongside init, board, config. So sweep is not a free name in the way rundown was: there is a spec'd command sitting in that space. Your doctor instinct is the same instinct — doctor and check are the same command in different vocabularies, and one of them is written down.
+- BACK-0046 · Evaluate the conditions the tool names (captured)
+  This is sweep's diagnostic half, already specified. It builds check — and check is already a top-level verb-only command in the shipped surface (ADR-0006, BACK-0031's table), alongside init, board, config. So sweep is not a free name in the way rundown was: there is a spec'd command sitting in that space. Your doctor instinct is the same instinct — doctor and check are the same command in different vocabularies, and one of them is written down.
 
 Overlaps
 
-- WORK-0002 · Lint the corpus (captured)
+- BACK-0002 · Lint the corpus (captured)
   Records against their type definitions, wikilinks resolving, cross-references. The other half of "make sure everything is right", and its own text already uses the word — "a sweep found one with no meaning attached to its absence."
-- WORK-0043 · Work the backlog from a terminal (captured)
+- BACK-0043 · Work the backlog from a terminal (captured)
   Delivers --column, sorting and grouping. .luma/config already defines columns that map one-to-one onto the ladder, so this is pipelines — you were right that it may become unnecessary, and it's closer to "already captured under another name" than to "might not be wanted".
-- WORK-0016 · Ask the backlog what is open (captured)
-  The predicate a fast next needs. The seam: WORK-0016 makes everything except closed askable; next decides what to do with the answer.
+- BACK-0016 · Ask the backlog what is open (captured)
+  The predicate a fast next needs. The seam: BACK-0016 makes everything except closed askable; next decides what to do with the answer.
 
 What I'd write — two records, not three
 
@@ -424,15 +424,15 @@ What I'd write — two records, not three
 │ Kind  │ idea                                                                                                                                │
 ├───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │       │ The tier above rundown: goes and confirms the records are true rather than reading what they claim. Name and shape both open — may  │
-│ Body  │ become doctor, may become cleanup, may turn out to be WORK-0046's check grown a tier, may split into diagnose-and-repair. Recorded  │
+│ Body  │ become doctor, may become cleanup, may turn out to be BACK-0046's check grown a tier, may split into diagnose-and-repair. Recorded  │
 │       │ because the tier is wanted, not because the command is.                                                                             │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 idea on both, deliberately — it is the kind for a thought nobody can judge yet, and paired with captured ("might become work; nobody has decided") the ladder already says reserved, potential, not certain without inventing a mechanism for it.
 
-For pipelines I'd add a line to WORK-0043 rather than a third record — it is that work item's --column under a different name, and a separate record would put a seam where work falls through. A note there saying the framing was considered and is absorbed keeps it findable without pretending it's distinct.
+For pipelines I'd add a line to BACK-0043 rather than a third record — it is that work item's --column under a different name, and a separate record would put a seam where work falls through. A note there saying the framing was considered and is absorbed keeps it findable without pretending it's distinct.
 
-Two records and a note on WORK-0043 — or do you want pipelines standing on its own anyway?
+Two records and a note on BACK-0043 — or do you want pipelines standing on its own anyway?
 
 ✻ Churned for 1m 26s
 
@@ -448,14 +448,14 @@ Now the bodies — the empty-template problem I flagged earlier.
 
   Ran 2 shell commands
 
-Now the pipelines note on WORK-0043, as a journal line rather than a body edit.
+Now the pipelines note on BACK-0043, as a journal line rather than a body edit.
 
   Ran 2 shell commands
 
 Captured.
 
-○ WORK-0057 · A fast next, without the rundown — kind change
-○ WORK-0058 · An exhaustive sweep that verifies rather than reports — kind idea
+○ BACK-0057 · A fast next, without the rundown — kind change
+○ BACK-0058 · An exhaustive sweep that verifies rather than reports — kind idea
 
 luma-backlog work-item list --status captured
 
@@ -463,19 +463,19 @@ Both landed at captured, which is the rung that already means what you asked for
 
 Both have written bodies, not empty templates. That was the risk I flagged this morning — six of the seven newest captures have blank ## The problem — and writing two more of those while naming it as a risk would have been absurd. Each carries the evidence, the open questions, and links to the records it sits beside.
 
-What went in that you said today: WORK-0057 records will definitely exist, capacity unknown, and the fast-but-high-quality constraint — with the observation that the real open question is whether fast means reading less or reasoning less, since those are different trades and nothing decides it yet. WORK-0058 records doctor and cleanup as live candidates and notes they aren't the same command — doctor diagnoses, cleanup repairs — so if both are wanted that's two work items, and the reciprocal test decides.
+What went in that you said today: BACK-0057 records will definitely exist, capacity unknown, and the fast-but-high-quality constraint — with the observation that the real open question is whether fast means reading less or reasoning less, since those are different trades and nothing decides it yet. BACK-0058 records doctor and cleanup as live candidates and notes they aren't the same command — doctor diagnoses, cleanup repairs — so if both are wanted that's two work items, and the reciprocal test decides.
 
-pipelines is a journal line on WORK-0043, not a record. Its --column work plus grouping is that view — the configured columns map one-to-one onto the ladder's rungs. The line carries a re-open trigger rather than a rejection: revisit if the two pipelines need something columns can't express, such as the gates between them. Cheap to promote to a record if you'd rather it stood alone.
+pipelines is a journal line on BACK-0043, not a record. Its --column work plus grouping is that view — the configured columns map one-to-one onto the ladder's rungs. The line carries a re-open trigger rather than a rejection: revisit if the two pipelines need something columns can't express, such as the gates between them. Cheap to promote to a record if you'd rather it stood alone.
 
-I also journaled on WORK-0046 that WORK-0058 may be its check grown a tier rather than a new command — that's the one finding from the corpus check worth acting on, since check is already in the shipped surface and sweep isn't a free name the way rundown was.
+I also journaled on BACK-0046 that BACK-0058 may be its check grown a tier rather than a new command — that's the one finding from the corpus check worth acting on, since check is already in the shipped surface and sweep isn't a free name the way rundown was.
 
-One thing left for you. "It will definitely exist, nothing is worked out" is the definition of unprepared, not captured — that's the first gate, and you've effectively already made the call. I didn't move it, because the capture procedure is explicit that crossing a gate is a person's decision and not a courtesy extended on the way out. Say the word and WORK-0057 goes to unprepared.
+One thing left for you. "It will definitely exist, nothing is worked out" is the definition of unprepared, not captured — that's the first gate, and you've effectively already made the call. I didn't move it, because the capture procedure is explicit that crossing a gate is a person's decision and not a courtesy extended on the way out. Say the word and BACK-0057 goes to unprepared.
 
 Nothing committed.
 
 ✻ Churned for 1m 44s
 
-❯ move WORK-0057 to unprepared
+❯ move BACK-0057 to unprepared
 
 ⏺ Skill(backlog-move)
 Successfully loaded skill
@@ -484,17 +484,17 @@ Successfully loaded skill
 
 Moved.
 
-○ WORK-0057 · A fast next, without the rundown — captured → unprepared
+○ BACK-0057 · A fast next, without the rundown — captured → unprepared
 
 luma-backlog work-item list --status unprepared
 
-That's the first gate crossed, on your call that it will definitely exist. What it commits you to is working out what it is — not doing it; that's the second gate, and it's still above WORK-0057. I journaled the reasoning on the record first, so a future session finds why it crossed rather than just that it did.
+That's the first gate crossed, on your call that it will definitely exist. What it commits you to is working out what it is — not doing it; that's the second gate, and it's still above BACK-0057. I journaled the reasoning on the record first, so a future session finds why it crossed rather than just that it did.
 
 One thing to look at. It got rank: 020.0010.000 — ordinal 020 for unprepared, then first position. It re-enqueued at the front of eleven items, not the back, and the procedure is explicit that a status change re-enqueues at the back because "a position in a queue does not travel with you when you leave the queue."
 
-Two readings, and I can't tell which from here: the other ten may never have been ranked, in which case this is the documented behavior — the journal on WORK-0031 says unranked records sort last and ranked ones lead, so the first record ever ranked at a status lands ahead of them. Or the re-enqueue is computing the wrong end. The listing above is consistent with the first, since the other ten are in key order rather than a chosen one.
+Two readings, and I can't tell which from here: the other ten may never have been ranked, in which case this is the documented behavior — the journal on BACK-0031 says unranked records sort last and ranked ones lead, so the first record ever ranked at a status lands ahead of them. Or the re-enqueue is computing the wrong end. The listing above is consistent with the first, since the other ten are in key order rather than a chosen one.
 
-Worth ten minutes to confirm, and it's the kind of thing WORK-0058 exists to catch. Want me to check?
+Worth ten minutes to confirm, and it's the kind of thing BACK-0058 exists to catch. Want me to check?
 
 ✻ Worked for 26s
 
@@ -507,13 +507,13 @@ Successfully loaded skill
 
 One record names it, and it explicitly excludes doing it.
 
-○ WORK-0050 · Review the backlog procedures (captured)
+○ BACK-0050 · Review the backlog procedures (captured)
 
 grep -rl 'backlog-move' .luma/backlog/work-items/
 
 That's a grep rather than a command — there is no search over record contents, which is a gap rather than a limit and is the second time today it would have helped.
 
-WORK-0050 puts backlog-move first in what is actually unreviewed:
+BACK-0050 puts backlog-move first in what is actually unreviewed:
 
 ▎ backlog-move — the longest judgment in the set. It carries both selection gates, which is where the whole ladder model lives, and nobody has read it since it was written.
 
@@ -523,14 +523,14 @@ But it stops short of the work you're describing. Its Out of scope is explicit:
 
 ▎ Rewriting them. This decides what a good one is and which fall short; the rewriting is whatever work items come out of it.
 
-So WORK-0050 is the inquiry, and working on backlog-move is one of the work items it would produce. Nothing covers that yet.
+So BACK-0050 is the inquiry, and working on backlog-move is one of the work items it would produce. Nothing covers that yet.
 
-Its premise moved today, which matters for how you start. WORK-0050 argues that has been run is probably the whole definition of reviewed, and records that only backlog-show and backlog-next had ever been run against the real corpus. This session ran backlog-capture, backlog-journal and backlog-move for the first time — and backlog-move immediately produced a concrete finding, the rank landing at the front of eleven records rather than the back. That's exactly the evidence WORK-0050 says nobody has.
+Its premise moved today, which matters for how you start. BACK-0050 argues that has been run is probably the whole definition of reviewed, and records that only backlog-show and backlog-next had ever been run against the real corpus. This session ran backlog-capture, backlog-journal and backlog-move for the first time — and backlog-move immediately produced a concrete finding, the rank landing at the front of eleven records rather than the back. That's exactly the evidence BACK-0050 says nobody has.
 
 Three ways in, and they're different jobs:
 
-1. Capture a work item for the backlog-move work directly — you know what you want to change, and WORK-0050 catches up later.
-2. Work it under WORK-0050 — settle what reviewed means first, since backlog-move is its top candidate and the definition is the thing that record says is missing.
+1. Capture a work item for the backlog-move work directly — you know what you want to change, and BACK-0050 catches up later.
+2. Work it under BACK-0050 — settle what reviewed means first, since backlog-move is its top candidate and the definition is the thing that record says is missing.
 3. Chase the rank finding — narrower than either, and it's a real defect or a real documentation gap sitting in the procedure you want to work on.
 
 What's driving it — is there something specific in backlog-move you want to change, or is this the review?
@@ -546,8 +546,8 @@ exploration is a built command, and §7.2.1 settles the record type: an investig
 Corpus check — one relation, no duplicates.
 
 Overlaps
-- WORK-0050 · Review the backlog procedures (captured)
-  Names backlog-move first in what is unreviewed, and needs a definition of a good procedure it doesn't have. The seam: WORK-0050 decides what good means across all seven; this one goes and gets the evidence from one of them. Its Out of scope hands this over explicitly — "the rewriting is whatever work items come out of it."
+- BACK-0050 · Review the backlog procedures (captured)
+  Names backlog-move first in what is unreviewed, and needs a definition of a good procedure it doesn't have. The seam: BACK-0050 decides what good means across all seven; this one goes and gets the evidence from one of them. Its Out of scope hands this over explicitly — "the rewriting is whatever work items come out of it."
 
 What I'd write
 
@@ -562,7 +562,7 @@ What I'd write
 │             │ it and forming an opinion                                                                                                     │
 └─────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-The experiment, and why it's shaped this way. WORK-0050 argues that has been run is probably the whole definition of reviewed, and backlog-move had never been run against the real corpus until an hour ago. It ran once today and immediately produced a finding — the rank landing at the front of eleven records. That is one data point from one invocation, which is the argument for doing this deliberately rather than hoping.
+The experiment, and why it's shaped this way. BACK-0050 argues that has been run is probably the whole definition of reviewed, and backlog-move had never been run against the real corpus until an hour ago. It ran once today and immediately produced a finding — the rank landing at the front of eleven records. That is one data point from one invocation, which is the argument for doing this deliberately rather than hoping.
 
 CLAUDE.md names three things that promote prose to a command, and two are reachable here: friction where it appears, which is what heavy journaling captures, and divergence where we provoke it — same instruction, two agents, diff the records. I'd propose the first arm now and hold divergence as a second arm once the prose's weak points are known, since provoking divergence blind is expensive.
 
@@ -587,8 +587,8 @@ That reframes it — backlog-move is the vehicle, not the subject. The question 
 
 Overlaps
 
-- WORK-0029 · Separate quick capture from thoughtful capture (unprepared)
-  The same question, one level down and already answered once — for capture only. Its principle is the one you're generalizing: "Quick capture is measured by latency, not by quality. A quick capture that produces a better record at the cost of two extra turns has failed. It is a different procedure with a different success condition — not the same one with the reading skipped." Seam: WORK-0029 gives one procedure a fast mode; this asks when work skips the ladder entirely.
+- BACK-0029 · Separate quick capture from thoughtful capture (unprepared)
+  The same question, one level down and already answered once — for capture only. Its principle is the one you're generalizing: "Quick capture is measured by latency, not by quality. A quick capture that produces a better record at the cost of two extra turns has failed. It is a different procedure with a different success condition — not the same one with the reading skipped." Seam: BACK-0029 gives one procedure a fast mode; this asks when work skips the ladder entirely.
   Worth knowing — it looks largely delivered. backlog-capture now has both modes with the quick rules written out, and nobody closed it.
 
 Nothing duplicates. Nothing conflicts.
@@ -615,7 +615,7 @@ Below is mine, kept separate.
 
 The project already works this way and has never written down when it's allowed. Everything done today — the rename, the version bump, the Risks change, the cross-reference repointing — was ad hoc. No work item, no outcomes, no gate. It produced a real result and there is no record of the policy that permitted it, because there isn't one.
 
-Which means one of this morning's risks was probably misread. I flagged WORK-0031 closing nine tasks while sitting at prepared as a status that had stopped being true. Under your framing that may not be a defect at all — it may be ad hoc work behaving correctly against a ladder with no rung for it. Worth resolving inside the experiment rather than assuming either reading.
+Which means one of this morning's risks was probably misread. I flagged BACK-0031 closing nine tasks while sitting at prepared as a status that had stopped being true. Under your framing that may not be a defect at all — it may be ad hoc work behaving correctly against a ladder with no rung for it. Worth resolving inside the experiment rather than assuming either reading.
 
 It's self-demonstrating, which is rare and worth exploiting. This is ad hoc work about ad hoc work, so the journal is the instrument and the specimen at once. Nothing else in the corpus has that property.
 
@@ -634,7 +634,7 @@ Write it as above, with that one outcome?
 
   Ran 2 shell commands
 
-WORK-0032 already ranks exactly what you're describing, and you wrote it:
+BACK-0032 already ranks exactly what you're describing, and you wrote it:
 
 ▎ worst to best: 1. Writing no outcomes. 2. Writing outcomes after the fact, and still proving them. 3. Writing outcomes ahead of execution. All three are allowed.
 
@@ -642,17 +642,17 @@ So the mode is permitted, with one condition attached — and still proving them
 
   Searched for 1 pattern, ran 3 shell commands
 
-○ WORK-0059 · How ad hoc work should be done — captured, kind inquiry
+○ BACK-0059 · How ad hoc work should be done — captured, kind inquiry
 
 The record carries both halves as you framed them: the gates, and outcomes-and-tasks-as-afterthought — with the stronger claim stated as the claim, that up-front specification would produce a worse result here, not just a slower one, because what's wanted isn't known until it's seen.
 
-I dropped the bounding outcome I argued for. WORK-0032 already ranks writing outcomes after the fact, and still proving them second of three and allows it explicitly. That's a better bound than mine and it's already decided, so inventing a hoop on top of it would have been the behavior under test. The condition rides along instead as a constraint: written late is fine, written late and never proven is goalpost fitting — and close … delivered already refuses without outcomes, so the tool enforces it rather than prose asking.
+I dropped the bounding outcome I argued for. BACK-0032 already ranks writing outcomes after the fact, and still proving them second of three and allows it explicitly. That's a better bound than mine and it's already decided, so inventing a hoop on top of it would have been the behavior under test. The condition rides along instead as a constraint: written late is fine, written late and never proven is goalpost fitting — and close … delivered already refuses without outcomes, so the tool enforces it rather than prose asking.
 
 Two shortcuts are journaled as taken, not in hindsight — writing the record instead of a fourth agree-cycle, and shipping with no outcomes. That's the one discipline the experiment needs: the line goes down before anyone knows whether the shortcut worked.
 
-Three things went in that you'd want on the record. The project has been working this way all day — the rename, the version bump, the Risks reformat, all ad hoc with no work item and a real result, and no policy anywhere permitting it. This morning's WORK-0031 risk is flagged as probably misread: work happening at prepared may be ad hoc working correctly rather than a status gone stale. And WORK-0029 looks delivered and unclosed — it's the same question already answered for capture alone.
+Three things went in that you'd want on the record. The project has been working this way all day — the rename, the version bump, the Risks reformat, all ad hoc with no work item and a real result, and no policy anywhere permitting it. This morning's BACK-0031 risk is flagged as probably misread: work happening at prepared may be ad hoc working correctly rather than a status gone stale. And BACK-0029 looks delivered and unclosed — it's the same question already answered for capture alone.
 
-Status is captured. Doing it means both gates, and the second has never been used in this project — which makes WORK-0059 either the first thing through it, or the first thing to prove it shouldn't have to be. That's the experiment's first real question and I'd rather you answer it than have me pick.
+Status is captured. Doing it means both gates, and the second has never been used in this project — which makes BACK-0059 either the first thing through it, or the first thing to prove it shouldn't have to be. That's the experiment's first real question and I'd rather you answer it than have me pick.
 
 Nothing committed. Where do you want to start on backlog-move — the rank finding, or open the file and read it?
 
@@ -717,19 +717,19 @@ Captured, and the record now carries both things you sharpened.
 
 On the brief: dissatisfaction is not the absence of a standard — it's a standard that isn't articulable yet. Knowing something is wrong before you can say why is the ordinary condition of editing, and a system demanding the why first forbids the reading that would produce it. So the test moved: not whether the criterion precedes the work, but whether it arrives. Finish the edit and still not be able to say what it was for — that's thrashing, diagnosed after, which is the only time it's diagnosable.
 
-On force-a-pause versus let-them-move: ruled out the gate, since anything that stops the work to extract a specification destroys what it was protecting. The system already owns the right idiom — observed, never refused — what list does with skips and duplicates and what WORK-0046 specifies for conditions. Never block; name it, and report when it looks like abuse.
+On force-a-pause versus let-them-move: ruled out the gate, since anything that stops the work to extract a specification destroys what it was protecting. The system already owns the right idiom — observed, never refused — what list does with skips and duplicates and what BACK-0046 specifies for conditions. Never block; name it, and report when it looks like abuse.
 
-Your mode-recognition requirement is bigger than this work item — recognize the mode, name it on request or on sight, judge whether it's being abused, apply guidelines per mode. That's a mechanism with its own definition of done. Not splitting: WORK-0059 has no outcomes yet, so there's nothing to split against. Recorded with a trigger — split when its outcomes get written and the mode machinery needs a different one.
+Your mode-recognition requirement is bigger than this work item — recognize the mode, name it on request or on sight, judge whether it's being abused, apply guidelines per mode. That's a mechanism with its own definition of done. Not splitting: BACK-0059 has no outcomes yet, so there's nothing to split against. Recorded with a trigger — split when its outcomes get written and the mode machinery needs a different one.
 
 And the experiment caught me. I ended last turn asking whether you had a criterion for backlog-move. That question was the hoop, one turn after I described it. Journaled as evidence rather than quietly dropped.
 
 So I read the file instead of asking. Diagnosis, worst first:
 
 - It teaches a vocabulary a decision in force replaced. ADR-0007 is provisional — in force — and renames delivered to completed, adds rejected, and explicitly drops abandoned. backlog-move still teaches delivered/abandoned and spends a paragraph arguing the canceled vs abandoned distinction ADR-0007 deleted. It's pinned to the shipped binary while contradicting the decision that supersedes it.
-- Line 107 says a move re-enqueues at the back. WORK-0057 landed at 020.0010.000 — the front of eleven. Doc and behavior disagree, and only running it showed that.
-- It says journal before closing, never before crossing a gate — though the gate is the decision the whole ladder turns on. WORK-0057's crossing got journaled on instinct, not because the procedure asked.
+- Line 107 says a move re-enqueues at the back. BACK-0057 landed at 020.0010.000 — the front of eleven. Doc and behavior disagree, and only running it showed that.
+- It says journal before closing, never before crossing a gate — though the gate is the decision the whole ladder turns on. BACK-0057's crossing got journaled on instinct, not because the procedure asked.
 - Nothing says to verify a move landed, which is why the rank anomaly survived until I happened to look.
-- Sending back and reopening have no command form, and reopen may not be built — WORK-0020 is still captured.
+- Sending back and reopening have no command form, and reopen may not be built — BACK-0020 is still captured.
 
 29 journal lines. Next I start editing, beginning with the disposition table, since teaching a superseded vocabulary is the one actively doing damage.
 
@@ -780,8 +780,8 @@ Jumping in. Capturing the modes menu, journaling the rest, and moving the record
 
   Ran 2 shell commands
 
-○ WORK-0060 · A configurable menu of working modes — captured
-◐ WORK-0059 · How ad hoc work should be done — captured → in_progress
+○ BACK-0060 · A configurable menu of working modes — captured
+◐ BACK-0059 · How ad hoc work should be done — captured → in_progress
 
 in_progress, not preparing — and the reason is the answer to your ambiguity. in_progress is a claim about the present, and the present is that a live procedure is about to change. Sitting at preparing while editing production files would be the record lying in the other direction.
 
@@ -809,17 +809,17 @@ Two things that should have happened and can't. Nobody owns it — ADR-0008 ship
   so we need to allow this but also surface it to observers so they can intervene, only when it's an actual problem
   we don't have a way to do that yet, but we still need to record it all the same
 
-Right — and the gap is precise: the journal records it, nothing indexes it. An observer doesn't know to open WORK-0059.
+Right — and the gap is precise: the journal records it, nothing indexes it. An observer doesn't know to open BACK-0059.
 
   Ran 2 shell commands
 
 Recorded three ways, since the mechanism doesn't exist yet.
 
-In the record, where an observer looks first — a Declared: this work went around the system section, above everything else. It's written for someone who wasn't here, and it doesn't defend the choice: both gates skipped in one move, no outcomes so nothing can say this is done or drifted, no review and no second actor, the corpus check skipped on WORK-0060, a convention invented with no decision behind it. It says plainly that nobody has reviewed any of it — same category as WORK-0003, which already records the Go merged unreviewed rather than leaving it implicit.
+In the record, where an observer looks first — a Declared: this work went around the system section, above everything else. It's written for someone who wasn't here, and it doesn't defend the choice: both gates skipped in one move, no outcomes so nothing can say this is done or drifted, no review and no second actor, the corpus check skipped on BACK-0060, a convention invented with no decision behind it. It says plainly that nobody has reviewed any of it — same category as BACK-0003, which already records the Go merged unreviewed rather than leaving it implicit.
 
-In the journal, with a grep-able prefix. Five lines now open with the literal string shortcut taken, and unproven claims with hypothesis, untested. That's the interim convention — no mechanism needed, a future check can find them, and WORK-0037 covers migrating the shape once there's a real one. I journaled that inventing it is itself a shortcut: a settled convention is supposed to be a decision record here, and nothing outside WORK-0059 knows this one exists.
+In the journal, with a grep-able prefix. Five lines now open with the literal string shortcut taken, and unproven claims with hypothesis, untested. That's the interim convention — no mechanism needed, a future check can find them, and BACK-0037 covers migrating the shape once there's a real one. I journaled that inventing it is itself a shortcut: a settled convention is supposed to be a decision record here, and nothing outside BACK-0059 knows this one exists.
 
-○ WORK-0061 · Surface work that went around the system to observers — captured
+○ BACK-0061 · Surface work that went around the system to observers — captured
 
 The framing that matters is yours and it's the hard half: intervene only when it's an actual problem. A mechanism that flags every skipped gate is a linter everyone silences, and then the rogue work is genuinely invisible rather than merely unindexed. That's the same trap observed, never refused exists to avoid — the difficulty isn't detecting the shortcuts, it's ranking them, and detection with no ranking is worse than nothing because it looks like coverage.
 
@@ -844,7 +844,7 @@ Six, and the first is the one I'd want answered before anything gets written.
 
 1. The brake is strongest exactly when the menu is emptiest. Day one, almost nothing matches, so almost everything brakes — which teaches people to route around the system entirely and produces the invisible rogue work this exists to catch. Does there need to be an unnamed mode that always matches and records itself as unnamed? That keeps the work visible at the cost of the brake almost never firing.
 
-2. Who detects the breach? If it's an agent noticing, that's prose compliance — and CLAUDE.md says measured compliance with prose-only rules runs far below a guarantee. This experiment already produced the evidence: I asked the hoop question one turn after describing it. If detection is the tool's job it's a check condition and lands in WORK-0046's territory, which is a very different build.
+2. Who detects the breach? If it's an agent noticing, that's prose compliance — and CLAUDE.md says measured compliance with prose-only rules runs far below a guarantee. This experiment already produced the evidence: I asked the hoop question one turn after describing it. If detection is the tool's job it's a check condition and lands in BACK-0046's territory, which is a very different build.
 
 3. Consent comes before the mode is picked. Warn → "yeah I know" → find mode → pick it together. That's two interactions in a mode whose whole point is speed. Can it be one? "You're skipping the second gate — that looks like editor mode. Take it, or something else?" Same information, one turn.
 
@@ -852,9 +852,9 @@ Six, and the first is the one I'd want answered before anything gets written.
 
 5. "Without too much context bloat" is the binding constraint and I think it forces the architecture. A system that learns by accumulating conditions pays for every rule in every session, forever. The escape is that a mode's rules load only while that mode is active — modes as lazily loaded rule sets, not additions to the base guidelines. Is that the intent? It's the only version I can see that survives ten retros.
 
-6. What does a mode attach to? A work item already carries kind; mode is a different axis. Working WORK-0059 in editor mode for two hours and normally afterward is real — which suggests mode is per-interaction, not a field on the record. That would explain why the journal has been the right instrument all along rather than a workaround.
+6. What does a mode attach to? A work item already carries kind; mode is a different axis. Working BACK-0059 in editor mode for two hours and normally afterward is real — which suggests mode is per-interaction, not a field on the record. That would explain why the journal has been the right instrument all along rather than a workaround.
 
-And one dependency nobody's flagged: the retro is load-bearing here and doesn't exist. WORK-0051 is captured with an empty body. Everything in your step 5 — was the call good, was the policy wrong, what edge cases need conditions — happens in a mechanism that hasn't been designed. If the retro stays hypothetical, modes get recorded and never evaluated, which is the accumulate-without-learning failure.
+And one dependency nobody's flagged: the retro is load-bearing here and doesn't exist. BACK-0051 is captured with an empty body. Everything in your step 5 — was the call good, was the policy wrong, what edge cases need conditions — happens in a mechanism that hasn't been designed. If the retro stays hypothetical, modes get recorded and never evaluated, which is the accumulate-without-learning failure.
 
 Noted that mode is provisional. All eight journaled, 43 lines now.
 
@@ -864,11 +864,11 @@ Noted that mode is provisional. All eight journaled, 43 lines now.
 
   Searched for 1 pattern, ran 2 shell commands
 
-Correcting my own finding first — the ten other unprepared records carry no rank at all, so WORK-0057 landed at the back of one ranked record. The code and the doc agree; the surprise was mine.
+Correcting my own finding first — the ten other unprepared records carry no rank at all, so BACK-0057 landed at the back of one ranked record. The code and the doc agree; the surprise was mine.
 
   Ran 2 shell commands
 
-Captured — the protocol and all eight questions are now WORK-0060's body, which also fixes its empty template. It holds your six steps verbatim before they get argued with, the questions as questions, and the retro flagged as load-bearing-and-nonexistent.
+Captured — the protocol and all eight questions are now BACK-0060's body, which also fixes its empty template. It holds your six steps verbatim before they get argued with, the questions as questions, and the retro flagged as load-bearing-and-nonexistent.
 
 First real edit made. backlog-move's disposition section now teaches ADR-0007's vocabulary: completed · canceled · rejected · superseded. delivered and abandoned are gone.
 
@@ -927,7 +927,7 @@ META: Journal. Not tasks, and not outcomes yet.
 
 Tasks are the wrong unit and your instinct about why is exactly right. A task is an attempt at part of the work — something someone could pick up. A turn isn't that. Turn-as-task gives you a transcript wearing a work breakdown, and the flip-flopping is fatal: tasks are meant to be completed, so two contradicting each other is a defect. The journal is append-only and never curated, so "I wanted X, then I wanted Y" is correct data there and broken data in a task list. That difference is the whole answer.
 
-Outcomes: not yet, and WORK-0032 already licenses that. Rank two — written after the fact, still proven. The criterion hasn't arrived. Writing them now is the guessing you rejected two hours ago.
+Outcomes: not yet, and BACK-0032 already licenses that. Rank two — written after the fact, still proven. The criterion hasn't arrived. Writing them now is the guessing you rejected two hours ago.
 
 Exploration: yes eventually, no right now — and the reason is the interesting one. The distinction that matters is the journal is chronological, an exploration is topical. The journal answers what happened; an exploration answers what did we work out about X. Flip-flopping belongs in the first. A worked-through conclusion belongs in the second.
 
@@ -941,9 +941,9 @@ So an exploration earns its place the moment one specific question gets deep eno
 
   Ran 2 shell commands
 
-META: Journaled, and it changed WORK-0060 more than I expected.
+META: Journaled, and it changed BACK-0060 more than I expected.
 
-This is the second instance of your own mode system. Editor mode was one; this is two. That matters — one instance is an anecdote, two is a menu, and WORK-0060 was speculative until now because it had nothing to generalize from. Both are recorded there as worked examples.
+This is the second instance of your own mode system. Editor mode was one; this is two. That matters — one instance is an anecdote, two is a menu, and BACK-0060 was speculative until now because it had nothing to generalize from. Both are recorded there as worked examples.
 
 And it added a step the protocol didn't have. You want to name it and have it start with nothing explained, and have the agent teach a newcomer when it recognizes the mode would help. Nothing in your six steps does that — a mode isn't just a permission and a rule set, it's a thing with an explanation attached, offered on recognition rather than on request. That's now a seventh step, sitting between find a mode and pick it with them.
 
@@ -966,9 +966,9 @@ META first, quickly, so it's not lost.
 
   Ran 1 shell command
 
-○ WORK-0062 · Review journal quality against the session transcript — captured
+○ BACK-0062 · Review journal quality against the session transcript — captured
 
-The method is the part worth keeping: a journal is a lossy compression of a session, and loss can't be measured from inside the compressed artifact — only against the original. Nothing in this project keeps the original today, so the transcript is an input the corpus has never had. Flagged that it operates on the journal (backlog) using the transcript (session-scoped), so it's a backlog procedure needing something session-manager owns. Also flagged: WORK-0051 is your retro skill with an empty body and an undecided name, and this is a concrete instance of what a retro would do — it may belong inside WORK-0051 rather than beside it. Your call, later.
+The method is the part worth keeping: a journal is a lossy compression of a session, and loss can't be measured from inside the compressed artifact — only against the original. Nothing in this project keeps the original today, so the transcript is an input the corpus has never had. Flagged that it operates on the journal (backlog) using the transcript (session-scoped), so it's a backlog procedure needing something session-manager owns. Also flagged: BACK-0051 is your retro skill with an empty body and an undecided name, and this is a concrete instance of what a retro would do — it may belong inside BACK-0051 rather than beside it. Your call, later.
 
 ---
 
@@ -997,7 +997,7 @@ EDITOR — move 1 of 7: captured → unprepared, the first gate.
 
 The document covers why this gate exists well — the pile is honest, crossing commits you to working it out and not to doing it. What it says nothing about is what actually happens when someone crosses.
 
-Live data from today: WORK-0057 crossed it. You said "next will definitely exist but I'm not sure in what capacity", I matched that to the rung, you said move it, I wrote a journal line and ran set. The only thing recording why it crossed is that journal line — and I wrote it on instinct. The procedure asked for nothing.
+Live data from today: BACK-0057 crossed it. You said "next will definitely exist but I'm not sure in what capacity", I matched that to the rung, you said move it, I wrote a journal line and ran set. The only thing recording why it crossed is that journal line — and I wrote it on instinct. The procedure asked for nothing.
 
 1. Is anything checked before crossing? Duplicates, whether something already covers it, whether it's blocked on something nobody's selected. Or is the pile assumed already-checked because capture did that work?
 
@@ -1040,7 +1040,7 @@ EDITOR — six more to consider, and the first two matter most.
 
 5. Reversal has no vocabulary. close has four dispositions specifically so the record says why it ended. De-selecting has none — unprepared → captured can only be recorded as a bare status change. If observers are meant to review the reasoning and reverse it, the reversal itself needs to record its reasoning, and that's the same argument ADR-0007 made for close.
 
-6. "Ideally not much" is a metric, and it'd be the ladder's first. Reversal rate out of unprepared measures selection quality directly. That's computable rather than eyeballed, and it belongs with WORK-0046's conditions. Worth noticing that you reached for a rate without meaning to — it's the first place this model implies a number.
+6. "Ideally not much" is a metric, and it'd be the ladder's first. Reversal rate out of unprepared measures selection quality directly. That's computable rather than eyeballed, and it belongs with BACK-0046's conditions. Worth noticing that you reached for a rate without meaning to — it's the first place this model implies a number.
 
 One smaller thing: ten of the eleven unprepared records have no rank. Crossing decides something is worth understanding; nothing decides what to understand first. If the gate creates a queue, that queue isn't ordered yet.
 
@@ -1054,7 +1054,7 @@ On your two uncertainties — I'd keep the two-readers test at this gate, not pr
 
   Ran 1 shell command
 
-WORK-0037 already owns the backfill half thoroughly — five instances, the constraints, what a repair must do. What nothing covers is grandfathering, and that's the half that needs establishing. Writing it as a bundle policy, since it's a rule rather than work.
+BACK-0037 already owns the backfill half thoroughly — five instances, the constraints, what a repair must do. What nothing covers is grandfathering, and that's the half that needs establishing. Writing it as a bundle policy, since it's a rule rather than work.
 
   Searched for 1 pattern, ran 3 shell commands
 
@@ -1064,7 +1064,7 @@ Caught one on my own edit — a bundle document must not link outside itself, an
 
 EDITOR — established. local/backlog 0.18.0 adds policy/adopting-a-rule-the-corpus-does-not-meet.
 
-The half that was actually missing was grandfathering. WORK-0037 already owns backfill completely — five real instances, the constraints, what a repair has to be able to do. Nothing anywhere covered the option of saying this applies from here. So the policy is mostly about the one nobody had written down.
+The half that was actually missing was grandfathering. BACK-0037 already owns backfill completely — five real instances, the constraints, what a repair has to be able to do. Nothing anywhere covered the option of saying this applies from here. So the policy is mostly about the one nobody had written down.
 
 The finding that makes it a policy rather than a note: doing neither is the default. Not choosing looks identical to adopting the rule, and produces a corpus visibly violating its own policy — at which point a reader concludes the rules are aspirational and reads the next one the same way. One unenforced rule devalues the others. That's what raises this above tidiness. The worked example is yours from twenty minutes ago: the two-readers test proposed the same week six records shipped with an empty ## The problem.
 
@@ -1074,7 +1074,7 @@ Grandfathering is legitimate and must be explicit, in the same change that adopt
 
 Left open in the doc rather than invented: when grandfathering beats backfilling, and who decides. Cost is the obvious axis and probably not the only one — a rule about what a record means may be unbackfillable at any price, since nobody can reconstruct what an author intended.
 
-And I broke a rule while writing one. The policy wikilinked out to WORK-0037; a bundle document must not point outside its bundle or it stops surviving being copied. Delinked to a prose reference, the way every other document there cites spec.md. Journaled as self-inflicted — it's the same failure the policy describes, one level up.
+And I broke a rule while writing one. The policy wikilinked out to BACK-0037; a bundle document must not point outside its bundle or it stops surviving being copied. Delinked to a prose reference, the way every other document there cites spec.md. Journaled as self-inflicted — it's the same failure the policy describes, one level up.
 
 Index regenerated, links audit clean, policy registered as standby on a topic match so it fires when a rule is being adopted rather than loading every session.
 
@@ -1092,7 +1092,7 @@ That's a real gap and I'm capturing it rather than solving it, since that's the 
 
   Ran 2 shell commands
 
-Recorded in WORK-0060, not designed. The useful part is the asymmetry: reading record as do burns real work and leaves an artifact nobody asked for; reading do as record costs one turn. The safe default when no verb is given is the cheaper misread — and mine went the other way.
+Recorded in BACK-0060, not designed. The useful part is the asymmetry: reading record as do burns real work and leaves an artifact nobody asked for; reading do as record costs one turn. The safe default when no verb is given is the cheaper misread — and mine went the other way.
 
 ---
 
@@ -1110,7 +1110,7 @@ You've already given a lot about what happens during preparing and what prepared
 
 ✻ Sautéed for 55s
 
-※ recap: We're running an experiment on ad hoc "editor mode" work (WORK-0059), improving the backlog-move procedure by walking it top-down and journaling everything. Next: you answer my four interview questions about the unprepared to preparing move.
+※ recap: We're running an experiment on ad hoc "editor mode" work (BACK-0059), improving the backlog-move procedure by walking it top-down and journaling everything. Next: you answer my four interview questions about the unprepared to preparing move.
 
 ❯ EDITOR:
   at it's most basic, preparing is the "in progress" of the preparation pipeline
@@ -1198,7 +1198,7 @@ The test is also the exit condition, which makes it more important than it looks
 
 "Doesn't guarantee all outcomes are present" has a consequence downstream. close … completed checks against the outcomes — so it's checking a set nobody ever claimed was complete. The outcomes hold really means the outcomes we happened to write hold, and nothing distinguishes a work item with three good outcomes from one with three good outcomes and a missing fourth. That's not an argument for requiring completeness; it's an argument that completed is a weaker claim than it reads as, and somebody should know that.
 
-Effective and complete are two axes, and you may already have the field for the first. Outcomes carry stage — draft, provisional. That might already be the is this outcome any good yet marker rather than something new. WORK-0036 is the open question on whether stage is used correctly or removed, and this would be a real use for it rather than a field nobody exercises.
+Effective and complete are two axes, and you may already have the field for the first. Outcomes carry stage — draft, provisional. That might already be the is this outcome any good yet marker rather than something new. BACK-0036 is the open question on whether stage is used correctly or removed, and this would be a real use for it rather than a field nobody exercises.
 
 Nothing to decide there — recorded. preparing → prepared next, which is where the completeness question comes due.
 
@@ -1212,7 +1212,7 @@ Three notes on that addition.
 
 External teams and external work items are different kinds and you listed them together. LEGAL-0004 has a state the tool can check — did it close. "We depend on the platform team" has no state at all. One is a link that resolves; the other is a note that rots silently and nobody finds out until the work stalls. They probably need different treatment, and the second one is where a dependency quietly stops being true.
 
-On a solo project the included list collapses to one person, but informed doesn't — future you, an observer, the agent in the next session. So the informed half is what earns this a place in the basic form rather than the maximal one. And it's the natural input to WORK-0061's observer mechanism: the people who needed to know are exactly the people a breach should surface to. That connects two threads that have been running separately.
+On a solo project the included list collapses to one person, but informed doesn't — future you, an observer, the agent in the next session. So the informed half is what earns this a place in the basic form rather than the maximal one. And it's the natural input to BACK-0061's observer mechanism: the people who needed to know are exactly the people a breach should surface to. That connects two threads that have been running separately.
 
 Same shape, second sighting. Consider who needs involving and decide which pipelines activate both name an activity whose output nothing records. Consideration that leaves no trace is indistinguishable from omission — I said it last turn about dismissed pipelines, and it's now appeared twice in one rung. Twice makes it a shape rather than an oversight, and it's probably the thing preparing most needs from the record format: somewhere to put we thought about X and the answer was no.
 
@@ -1232,7 +1232,7 @@ And it drifts with no event. A work item reopening is at least an action taken o
 
 You usually need two links, not one. A deliverable is normally the output of somebody else's work item, and the two answer different questions: the work item says is it coming, the deliverable says is it here and does it serve. Depend on only the work item and you can't tell if what arrived is usable; depend only on the artifact and you can't tell if it's ever arriving.
 
-This has already bitten this corpus, before it had a name. WORK-0037's instance 3: package renames left a closed work item's verify_by naming paths that no longer run — "and nothing could report which records referred to a shape that had moved." That's a deliverable dependency going stale, already logged as a migration problem. It's the same failure seen from the other end, which is worth knowing when you decide where this gets handled.
+This has already bitten this corpus, before it had a name. BACK-0037's instance 3: package renames left a closed work item's verify_by naming paths that no longer run — "and nothing could report which records referred to a shape that had moved." That's a deliverable dependency going stale, already logged as a migration problem. It's the same failure seen from the other end, which is worth knowing when you decide where this gets handled.
 
 Recorded, not designed.
 
@@ -1262,7 +1262,7 @@ The same ambiguity has now appeared twice. "Where all the blockers will be, know
 
 The fourth quadrant can't be handled here, and that's fine because it already has a home. Unknown unknowns are undefinable at prepared by construction — so prepared can never mean risk-free. The discovery of new unknowns during in_progress is lifecycle.md §2.8's Redefine phase, which already exists. Worth knowing before you design the matrix work: one quadrant is served by machinery you already have.
 
-The de-risking smell is mechanically detectable — but only if outcomes carry a distinction they don't have. An outcome that reduces uncertainty versus one that delivers a state. A work item holding both is de-risking its own work, and that's a condition WORK-0046 could compute. Today the outcome type has no such field, so the smell can only be noticed by a reader. That's the difference between a rule and a guarantee, and it's cheap to close.
+The de-risking smell is mechanically detectable — but only if outcomes carry a distinction they don't have. An outcome that reduces uncertainty versus one that delivers a state. A work item holding both is de-risking its own work, and that's a condition BACK-0046 could compute. Today the outcome type has no such field, so the smell can only be noticed by a reader. That's the difference between a rule and a guarantee, and it's cheap to close.
 
 prepared → todo next — the second gate, and the one this project has never used honestly.
 
@@ -1311,7 +1311,7 @@ It contradicts the ladder document. workflow-status.md says preparing is "the on
 
 The mapping has two objectives that trade off. Best utilization and best quality pull apart — assigning the fastest hand maximizes throughput; assigning someone who has to learn it buys resilience. The document says nothing anywhere about how work maps to people, so there's no place for that judgment to live even as prose.
 
-And the mechanism for the activity this rung is about doesn't exist. ADR-0008 settled that taking a task expires and owning a work item doesn't — and WORK-0031 records that take, release and steal don't ship. So todo is defined by an allocation the tool cannot record. That's the sharpest gap yet: not a missing rule, a missing verb for the rung's whole purpose.
+And the mechanism for the activity this rung is about doesn't exist. ADR-0008 settled that taking a task expires and owning a work item doesn't — and BACK-0031 records that take, release and steal don't ship. So todo is defined by an allocation the tool cannot record. That's the sharpest gap yet: not a missing rule, a missing verb for the rung's whole purpose.
 
 Focus is scarce and distinct from capacity, which makes the size of todo a measurement rather than an accident. You can hold hours and still have no attention on a thing. Fifty items in todo is not a focus set — it's prepared with a different label. Zero, which is this project today, is the opposite failure: nothing is in focus at all. That gives the rung a health signal it currently has no way to express.
 
@@ -1323,7 +1323,7 @@ META side quest — capturing it, and the math you're reaching for exists.
 
   Ran 1 shell command
 
-○ WORK-0063 · An algorithm for assigning work to assignees — captured
+○ BACK-0063 · An algorithm for assigning work to assignees — captured
 
 The canonical form is the assignment problem, solved optimally by the Hungarian algorithm in cubic time, given a value matrix of person × work item. Add per-person capacity and it becomes the generalized assignment problem — NP-hard, but with well-studied heuristics. If both sides have preferences rather than a value matrix, it's stable matching instead, which optimizes for nobody wanting to defect rather than for total output.
 
@@ -1356,7 +1356,7 @@ But the objective function changes, not just the algorithm. A human costs roughl
 
 And the mistake people actually make: a cheap agent is only cheap if the output doesn't need checking. If it has to be reviewed by an expensive agent or a human, the true cost is cheap-plus-review, which can exceed doing it well once. The unit is cost to acceptable output, not cost per attempt.
 
-This corpus has the instance already. WORK-0003 records every line of Go written by an agent and merged unreviewed — and "several bugs were found by running the tool rather than by its tests." That's cheap output with the verification cost deferred, not avoided. It's the pattern, already logged, before it had a name.
+This corpus has the instance already. BACK-0003 records every line of Go written by an agent and merged unreviewed — and "several bugs were found by running the tool rather than by its tests." That's cheap output with the verification cost deferred, not avoided. It's the pattern, already logged, before it had a name.
 
 Difficulty isn't one scale across humans and agents. A mechanical refactor over two hundred files is tedious for a person and trivial for an agent; judging whether prose reads well to a newcomer is the reverse. A single difficulty matrix can't serve a mixed team, which breaks the clean formulation more than anything else here.
 
@@ -1391,7 +1391,7 @@ Four axes then, and they want four different responses.
 
 Only complexity is answered by assignment at all. A better model doesn't make a security-sensitive change less sensitive, doesn't reduce what depends on a critical change working, and doesn't raise the standard something is held to. So "give the hard work to the expensive agent" is right on one axis and actively dangerous applied to the others — it concludes a capable agent can handle sensitive work alone, which is precisely the wrong inference.
 
-This corpus already records that exact failure. WORK-0003: "The security-shaped parts were designed by the same agent that reviewed them." Capability was high and independence was zero. Sensitivity needed a second party, not a better first one.
+This corpus already records that exact failure. BACK-0003: "The security-shaped parts were designed by the same agent that reviewed them." Capability was high and independence was zero. Sensitivity needed a second party, not a better first one.
 
 And quality is the axis where cheap-plus-review breaks completely. Verification catches wrong; it does not catch bland. A correctness review is close to a decision procedure and mediocre output passes it cleanly. So the strategy that rescues complexity and criticality — use a cheap hand and check the result — cannot rescue quality. Quality has to be produced, not recovered.
 
@@ -1411,7 +1411,7 @@ Axis 5 is the only one whose answer is a hard gate rather than an assignment. Th
 
 And that answers something we left open hours ago. The mode protocol has put the brakes on, and my objection was that the brake fires hardest when the mode menu is emptiest, which trains people to route around the system. The brake is for axis 5. Not for skipped ceremony, not for missing outcomes — for compliance and security exposure. That makes it rare, defensible, and the one refusal nobody argues with, which is exactly what a brake needs to be to survive.
 
-Axis 5 is also the only one where the record is itself a deliverable. Your own compliance pipeline lists Evidence as a step. For the other four the artifact is the work; here, proving it was done right is a separate output — and that's precisely what WORK-0061's observer mechanism has to serve. Two threads that have been running separately since this morning converge on this axis.
+Axis 5 is also the only one where the record is itself a deliverable. Your own compliance pipeline lists Evidence as a step. For the other four the artifact is the work; here, proving it was done right is a separate output — and that's precisely what BACK-0061's observer mechanism has to serve. Two threads that have been running separately since this morning converge on this axis.
 
 Customer sensitivity is where your standing solution breaks. A single-person team can have agents stand in for security, compliance, or product analysis. An agent cannot be the customer. Your own Customer Advocacy pipeline has Validate and Advocate steps that require actual customers, so this is the one axis that can't be filled by adding more agents — it can only be filled by talking to someone.
 
@@ -1451,9 +1451,9 @@ We're a long way from backlog-move. Want to keep going down this thread, or head
 
 You've invented a reusable shape there: tolerate → warn → force. That's three steps of escalation along the ladder, and it needn't be about stage alone — the same pattern could govern kind being set, outcomes being present, and the five axes. Worth naming as the pattern rather than as a stage rule, so each future requirement doesn't invent its own escalation.
 
-On "forces" — there's a version that doesn't refuse. The move can write the field rather than block on it. Moving to in_progress means it's no longer a draft, so the tool sets provisional the same way it already writes rank alongside workflow_status. Same guarantee, no refusal, and consistent with report, never refuse — which WORK-0022 states as a hard constraint citing spec.md §5.2 and §5.0. Given that the only place we've agreed a genuine block belongs is axis 5, I'd lean hard toward force-means-write here.
+On "forces" — there's a version that doesn't refuse. The move can write the field rather than block on it. Moving to in_progress means it's no longer a draft, so the tool sets provisional the same way it already writes rank alongside workflow_status. Same guarantee, no refusal, and consistent with report, never refuse — which BACK-0022 states as a hard constraint citing spec.md §5.2 and §5.0. Given that the only place we've agreed a genuine block belongs is axis 5, I'd lean hard toward force-means-write here.
 
-And stage is doing double duty, with the less important one getting the attention. Outcomes carry stage too. A work item at draft while in progress is untidy; an outcome at draft while in progress means you're building against a target nobody has settled. That's the one worth warning about. WORK-0036 is the open question on whether stage is used correctly at all, and this would be its first real use.
+And stage is doing double duty, with the less important one getting the attention. Outcomes carry stage too. A work item at draft while in progress is untidy; an outcome at draft while in progress means you're building against a target nobody has settled. That's the one worth warning about. BACK-0036 is the open question on whether stage is used correctly at all, and this would be its first real use.
 
 EDITOR note on the document itself: metadata obligations are piling up by rung — kind set by unprepared, idea gone by preparing, stage warned at todo and forced at in_progress. Right now each would land as a sentence inside its own section. That wants to be one table, or the rules become findable only by reading the whole file, which is how they drift.
 
@@ -1488,7 +1488,7 @@ That's what makes force-writes safe, and the two belong together as one position
 
 There are two visibilities and they need different mechanisms. At the moment — the command tells you what it wrote. After the fact — the history shows what was written and by whom. Git gives you the second completely and unforgeably; spec.md §5.5 already says git is the machine record. The first is currently absent.
 
-Observed in this session, an hour ago. I ran set WORK-0059 workflow_status=in_progress and the output was updated backlog/work-items/WORK-0059-.../index.md. It never mentioned that it had also written rank: 060.0010.000. I found that out by grepping the file. That's precisely the failure this requirement guards against, and it happened while we were designing the requirement.
+Observed in this session, an hour ago. I ran set BACK-0059 workflow_status=in_progress and the output was updated backlog/work-items/WORK-0059-.../index.md. It never mentioned that it had also written rank: 060.0010.000. I found that out by grepping the file. That's precisely the failure this requirement guards against, and it happened while we were designing the requirement.
 
 One tension with a decision in force. "And correct it" collides with set refusing the rank field — ADR-0005, and a shipped behavior. So there's a field the tool writes that you can see and cannot directly change. Correction does exist, through rank --before/--after/--top/--bottom, so the requirement probably wants to say there must be a path to correct it, not that every written field is settable. Otherwise it contradicts a decision you'd have to reopen.
 
@@ -1500,7 +1500,7 @@ And the highest-stakes case is already specified. ADR-0003 has the tool repairin
 
   Ran 1 shell command
 
-The corpus already answers this, and the answer is both. when-a-work-item-splits says "discovery is what doing the work is for, and a work item that never gains a task was trivially scoped or nobody learned anything." WORK-0031 went from nine tasks to twenty-three, eleven of them found by doing it — and that record explicitly calls it "the reshape working as intended."
+The corpus already answers this, and the answer is both. when-a-work-item-splits says "discovery is what doing the work is for, and a work item that never gains a task was trivially scoped or nobody learned anything." BACK-0031 went from nine tasks to twenty-three, eleven of them found by doing it — and that record explicitly calls it "the reshape working as intended."
 
 I think the dilemma exists because the spec argument is being applied to the wrong object. A spec describes what — the target. Tasks describe how — the route. Specs-before-work is well established precisely because the target shouldn't move. The route is supposed to change as you learn. So the argument transfers cleanly to outcomes, not to tasks:
 
@@ -1512,7 +1512,7 @@ And the before-versus-discovered ratio is measurable from data you already store
 
 So the shape of an answer: tasks before to size it, tasks during as discovery, and the timing of arrival is what tells you whether preparation worked.
 
-One data point from right now: WORK-0059 is in_progress with zero tasks and seventy-odd journal lines. This session is currently running the most extreme version of the question you're asking — and it hasn't obviously failed yet, which is itself worth knowing.
+One data point from right now: BACK-0059 is in_progress with zero tasks and seventy-odd journal lines. This session is currently running the most extreme version of the question you're asking — and it hasn't obviously failed yet, which is itself worth knowing.
 
 ✻ Crunched for 43s
 
@@ -1533,13 +1533,13 @@ And there's a real contradiction in the corpus, which is a good reason to feel t
 
 The actionable gap: a task cannot record why it ended. There's no task close — only set workflow_status=closed — and no disposition vocabulary at all. So if tasks are the history of attempts, the history loses the half that matters: this was tried and it didn't work. That's precisely the loss ADR-0007 gave work items four dispositions to prevent. Tasks got none, and nobody noticed because tasks were being read as plan items.
 
-The struggle-and-learning half may not be the task at all — it may be the wave. spec.md §2.4: "an agent may attempt an outcome many times — attempt, probe, adjust — and those passes are transient", and §2.3 names the wave as the durable unit. WORK-0019 says it flatly: "until waves exist there is nowhere to hang the context an attempt had."
+The struggle-and-learning half may not be the task at all — it may be the wave. spec.md §2.4: "an agent may attempt an outcome many times — attempt, probe, adjust — and those passes are transient", and §2.3 names the wave as the durable unit. BACK-0019 says it flatly: "until waves exist there is nowhere to hang the context an attempt had."
 
 So there are plausibly three levels and only two are built:
 
 - outcome — what must be true
 - task — an attempt at part of the work
-- the passes against an outcome — transient, and WORK-0019 wants them tied to the effort that produced them
+- the passes against an outcome — transient, and BACK-0019 wants them tied to the effort that produced them
 
 That would explain why tasks feel overloaded: they're currently carrying planning, attempts, and the struggle record, and the specification says the third belongs somewhere that doesn't exist yet.
 
@@ -1547,7 +1547,7 @@ The cheap thing that unblocks the most: give tasks a disposition. It makes the h
 
 ✻ Cogitated for 59s
 
-※ recap: You're walking through the backlog-move procedure to improve it while running an experiment on ad hoc "editor mode" work, journaling every turn into WORK-0059. You've interviewed through in_progress; next is closing, then reopening.
+※ recap: You're walking through the backlog-move procedure to improve it while running an experiment on ad hoc "editor mode" work, journaling every turn into BACK-0059. You've interviewed through in_progress; next is closing, then reopening.
 
 ❯ capture the task disposition gap
 
@@ -1557,7 +1557,7 @@ No existing record — only journal mentions in three work items.
 
   Ran 2 shell commands
 
-○ WORK-0064 · A task cannot record why it ended — captured, kind change
+○ BACK-0064 · A task cannot record why it ended — captured, kind change
 
 Captured with a written body, not a template. Four things in it:
 
@@ -1565,9 +1565,9 @@ The gap — close is registered on work-item only, so a task ends with set workf
 
 Why it went unnoticed — tasks have been read as plan items, and under that reading a disposition is pointless: a plan item is done or not done. Under the attempt reading it's the most valuable field on the record. That's the two-document contradiction from a minute ago doing real damage, not just being untidy.
 
-What it blocks — spec.md §4.6 succession says "when an attempt does not succeed and another begins, a new record is created and links back." That presupposes the corpus knows an attempt failed. Nothing does. WORK-0024 is the other half of the same gap: it can't create the successor, this can't mark the predecessor. Neither record mentions the other today.
+What it blocks — spec.md §4.6 succession says "when an attempt does not succeed and another begins, a new record is created and links back." That presupposes the corpus knows an attempt failed. Nothing does. BACK-0024 is the other half of the same gap: it can't create the successor, this can't mark the predecessor. Neither record mentions the other today.
 
-Why it's cheap — WORK-0019 wants the rich version and is blocked on waves, which are specified and unbuilt. A disposition on a task needs none of that, and the vocabulary is already designed. The open question is only whether a task wants ADR-0007's four, fewer, or different ones — and the thing to avoid is inventing a second unrelated vocabulary.
+Why it's cheap — BACK-0019 wants the rich version and is blocked on waves, which are specified and unbuilt. A disposition on a task needs none of that, and the vocabulary is already designed. The open question is only whether a task wants ADR-0007's four, fewer, or different ones — and the thing to avoid is inventing a second unrelated vocabulary.
 
 Back to in_progress whenever you're ready — we got as far as what tasks are for, and haven't touched what the move itself means.
 
@@ -1577,7 +1577,7 @@ Back to in_progress whenever you're ready — we got as far as what tasks are fo
 
 EDITOR — move 5: todo → in_progress. The document gives this three lines total: "says somebody is on it now… a record left in_progress across weeks is lying about what is happening." That's the whole section, and it's the rung where all the work actually happens.
 
-1. Does entering it require an assignee? It's a claim that somebody is on it — and the record has no way to say who. ADR-0008 settled that taking a task expires and owning a work item doesn't, and WORK-0031 records that take, release and steal don't ship. So the rung's central claim has no subject. Invisible solo; not invisible the moment agents are doing the work and you want to know which one.
+1. Does entering it require an assignee? It's a claim that somebody is on it — and the record has no way to say who. ADR-0008 settled that taking a task expires and owning a work item doesn't, and BACK-0031 records that take, release and steal don't ship. So the rung's central claim has no subject. Invisible solo; not invisible the moment agents are doing the work and you want to know which one.
 
 2. Can several things be in_progress at once — and should the move say something? backlog-rundown already carries an opinion: "Several things in_progress is itself the finding. More was started than gets finished." If that's true, the warning belongs at the move, not only in a report nobody may run.
 
@@ -1605,7 +1605,7 @@ It isn't a spec.md §5.2 condition either: conditions are computed from the reco
 
 Assignee-required is unimplementable today. ADR-0008 separates taking, which expires, from owning, which doesn't — and take, release and steal don't ship. The rule needs the verb before it can be adopted, so it's a dependency rather than something to write into the document now.
 
-And it's the first real test of this morning's policy. WORK-0059 is in_progress right now with no assignee. Adopting assignee-required means choosing backfill or an explicit grandfather clause — the rule being proposed in the same conversation that produced the policy about adopting rules. That's a good sign the policy was worth writing, and a slightly uncomfortable one.
+And it's the first real test of this morning's policy. BACK-0059 is in_progress right now with no assignee. Adopting assignee-required means choosing backfill or an explicit grandfather clause — the rule being proposed in the same conversation that produced the policy about adopting rules. That's a good sign the policy was worth writing, and a slightly uncomfortable one.
 
 Your uncertainty about vetting outcomes is already answered by your own escalation pattern. Tolerate → warn → force, from two turns ago. Strongly encourage without blocking is the warn step. So this isn't a missing decision; it's an instance of one you already made — which is what the pattern was for.
 
@@ -1613,7 +1613,7 @@ One argument for putting the prompt exactly there, stronger than quality: before
 
 ✻ Cogitated for 46s
 
-※ recap: You're walking through the backlog-move procedure to improve it, interviewing rung by rung and journaling everything into WORK-0059. You've finished in_progress. Next is closing, then reopening, and then the document rewrite.
+※ recap: You're walking through the backlog-move procedure to improve it, interviewing rung by rung and journaling everything into BACK-0059. You've finished in_progress. Next is closing, then reopening, and then the document rewrite.
 
 ❯ no way, when somehting is blocked, it stays where it's at, and when you unblock it, it stays where it's at.
 
@@ -1629,7 +1629,7 @@ There's no mark for it. The set is ○ ◐ ✔ ↪ ⊘ ✘, and all six describe
 
 Blocked has to name what it's blocked on, or it's a flag with no route out. And you already built that vocabulary earlier today: an external work item, a team, or a deliverable. Same three kinds, same different resolution behaviors — a work item has a checkable state, a team has none, a deliverable exists without being adequate.
 
-One useful asymmetry falls out of that: blocking is declared by a person, but unblocking can be observed. If something is blocked on WORK-0022 and WORK-0022 closes, the flag is stale — and that's computable as a §5.2-style condition. So the tool can notice a block has cleared without anyone telling it, which is the half that would otherwise rot.
+One useful asymmetry falls out of that: blocking is declared by a person, but unblocking can be observed. If something is blocked on BACK-0022 and BACK-0022 closes, the flag is stale — and that's computable as a §5.2-style condition. So the tool can notice a block has cleared without anyone telling it, which is the half that would otherwise rot.
 
 in_progress → closed next, which is the only move the document already treats as heavy.
 
@@ -1639,9 +1639,9 @@ in_progress → closed next, which is the only move the document already treats 
 
 Elegant — shape carries blocked, fill still carries progress, so the flag doesn't cost you the state underneath.
 
-○ WORK-0022 · not started          □ WORK-0022 · not started, blocked
-◐ WORK-0031 · under way            ◧ WORK-0031 · under way, blocked
-✔ WORK-0018 · delivered
+○ BACK-0022 · not started          □ BACK-0022 · not started, blocked
+◐ BACK-0031 · under way            ◧ BACK-0031 · under way, blocked
+✔ BACK-0018 · delivered
 
   Ran 1 shell command
 
@@ -1653,9 +1653,9 @@ It extends the system's own logic rather than bolting on a second one. showing-r
 
 One thing to check before adopting: font coverage. That policy already made a font-driven call — the heavy ✔ and ✘ over the light pair, because "the light marks are thinner than the circles beside them, so a finished row reads as fainter than an unfinished one." ◧ (U+25E7) has noticeably worse coverage than ◐ (U+25D0), and a mark that falls back to a box is worse than no mark. Worth eyeballing in a real terminal before it's written down.
 
-And shape is the right carrier rather than colour, which is worth stating explicitly since WORK-0043 already has colour the state marks as a task. Colour dies in a pipe, and a blocked record written to a file still has to read as blocked. Shape survives everything; colour can reinforce it.
+And shape is the right carrier rather than colour, which is worth stating explicitly since BACK-0043 already has colour the state marks as a task. Colour dies in a pipe, and a blocked record written to a file still has to read as blocked. Shape survives everything; colour can reinforce it.
 
-Process catch: showing-records says its marks mirror command-line-interface's policy/ascii-styleguide, and that the section should be replaced by a pointer once that bundle is adopted at 0.3.0 or later — which is WORK-0056. So a new mark belongs upstream in the style guide, not added to a vendored section already scheduled for deletion. Otherwise the re-adoption silently drops it.
+Process catch: showing-records says its marks mirror command-line-interface's policy/ascii-styleguide, and that the section should be replaced by a pointer once that bundle is adopted at 0.3.0 or later — which is BACK-0056. So a new mark belongs upstream in the style guide, not added to a vendored section already scheduled for deletion. Otherwise the re-adoption silently drops it.
 
 ✻ Worked for 43s
 
@@ -1665,11 +1665,11 @@ Blocked itself was never captured — the whole model came out of this conversat
 
   Ran 2 shell commands
 
-○ WORK-0065 · Blocked is a flag rather than a rung — captured, kind change
+○ BACK-0065 · Blocked is a flag rather than a rung — captured, kind change
 
 The glyph proposal is in it as a section, with the rendered pair, the two-glyph argument, the shape-over-colour reasoning, and the font-coverage check as an open item rather than a settled choice.
 
-The upstream note went on WORK-0056, where it's actionable — a new mark added to the vendored showing-records section is silently dropped by the re-adoption that replaces it with a pointer. That record is the one that would cause the loss, so that's where the warning has to sit.
+The upstream note went on BACK-0056, where it's actionable — a new mark added to the vendored showing-records section is silently dropped by the re-adoption that replaces it with a pointer. That record is the one that would cause the loss, so that's where the warning has to sit.
 
 Two things I added that you didn't ask for, both flagged as open rather than decided:
 
@@ -1703,13 +1703,13 @@ It gates on verification, never on the assertion — because gating on the doer'
 
 On tasks I'd push back. spec.md §2.4 says a work item is judged on its outcomes and on nothing else. Requiring every task completed contradicts that — you can prove every outcome while abandoning half the attempts, and that's success, not a defect. Attempts that failed are exactly what tasks-as-history is for. I'd make it a warning, not a refusal.
 
-And it's unimplementable today regardless. WORK-0064: a task has no disposition, so superseded can't be expressed. WORK-0024: succession can't create the successor, because idempotency wins over §4.6. Your transitive check — that the superseding task is itself completed — needs both to land first.
+And it's unimplementable today regardless. BACK-0064: a task has no disposition, so superseded can't be expressed. BACK-0024: succession can't create the successor, because idempotency wins over §4.6. Your transitive check — that the superseding task is itself completed — needs both to land first.
 
 Your checks correctly apply only to completed. ADR-0007 has canceled, rejected and superseded closing freely and deliberately: "gating cancellation on completion would make it impossible to stop work because it was unfinished, which is the usual reason." That also answers closing something never started — reject it and nothing is checked.
 
 One question on stage: stable — does it reach the outcomes? An unproven outcome marked stable would assert settledness about something unresolved. And a canceled work item at stable is settled without being successful — which is fine if stage tracks how settled the content is rather than how it ended, but that's worth saying out loud since the two readings diverge exactly here.
 
-The journaling guidance already exists, and it's good — backlog-journal's test is relitigation risk: "anything that should not have to be argued a second time." What's missing is the close-specific version, which is retro material: what the estimate got wrong, whether the outcomes were the right ones. That's WORK-0051, still captured with an empty body.
+The journaling guidance already exists, and it's good — backlog-journal's test is relitigation risk: "anything that should not have to be argued a second time." What's missing is the close-specific version, which is retro material: what the estimate got wrong, whether the outcomes were the right ones. That's BACK-0051, still captured with an empty body.
 
 ✻ Worked for 1m 11s
 
@@ -1738,9 +1738,9 @@ So if canceled needs a recorded reason, rejected needs one by identical logic �
 
 A forced close needs a reason more than a cancel does. Forcing overrides a refusal — the most questionable action the tool offers. ADR-0007 makes the override visible in the arithmetic, but nothing anywhere records why it was forced. That's the one place a reader can see something was overridden and has no way to learn whether it was justified.
 
-And that's exactly WORK-0061's event. A forced close is the went-around-the-system moment the observer mechanism exists to surface, and the required reason is its evidence. Those two threads connect rather than being separate features — which makes the reason field worth more than it looks.
+And that's exactly BACK-0061's event. A forced close is the went-around-the-system moment the observer mechanism exists to surface, and the required reason is its evidence. Those two threads connect rather than being separate features — which makes the reason field worth more than it looks.
 
-One dependency: the prose reason doesn't exist yet. In the shipped binary --reason is the disposition. ADR-0007 makes the disposition positional and --reason prose — WORK-0031's make-close-take-its-disposition-positionally, still todo. So this rides on that task landing.
+One dependency: the prose reason doesn't exist yet. In the shipped binary --reason is the disposition. ADR-0007 makes the disposition positional and --reason prose — BACK-0031's make-close-take-its-disposition-positionally, still todo. So this rides on that task landing.
 
 That's the ladder end to end. Want me to write the interview up into backlog-move now, or keep going on the backward moves and reopening?
 
@@ -1756,7 +1756,7 @@ That's the ladder end to end. Want me to write the interview up into backlog-mov
 
 "Open and ready to start" names the failure precisely — a task sitting at todo under a closed work item advertises available work that nobody can pick up. That's the honesty problem, not a completeness one, and it's a much better justification than "finish everything."
 
-It splits into a part you can build now and a part you can't. No task is left open is checkable today. Every task says how it ended needs WORK-0064 — right now a task closes with set workflow_status=closed and "resolved" is indistinguishable from "resolved successfully."
+It splits into a part you can build now and a part you can't. No task is left open is checkable today. Every task says how it ended needs BACK-0064 — right now a task closes with set workflow_status=closed and "resolved" is indistinguishable from "resolved successfully."
 
 Warn rather than refuse, on your own tolerate → warn → force ladder. spec.md §2.4 says a work item is judged on its outcomes and on nothing else, so a second hard gate for something the model says doesn't determine done-ness would contradict the refusal surface we just agreed — close … completed without proven outcomes, and axis-5.
 
@@ -1818,7 +1818,7 @@ That's the disposition vocabulary settled. Backward moves and reopening are the 
 
 Your "leave closed data on the object" is already how it works. ADR-0007 makes closed an append-only list of {by, at, as} — so reopening and re-closing appends a second entry and the whole close/reopen history is native. Nothing to preserve by hand.
 
-And owner-as-array has a written precedent with the exact argument. WORK-0019 records that asserted was originally a single field overwritten on each attempt, and became a list because "a replaced field could not represent a second attempt and would have been the only place in the design that destroys history." That transfers to owner unchanged — it'd be the fourth instance of the same pattern after closed, asserted and verified, which is a strong sign it's right rather than novel.
+And owner-as-array has a written precedent with the exact argument. BACK-0019 records that asserted was originally a single field overwritten on each attempt, and became a list because "a replaced field could not represent a second attempt and would have been the only place in the design that destroys history." That transfers to owner unchanged — it'd be the fourth instance of the same pattern after closed, asserted and verified, which is a strong sign it's right rather than novel.
 
 On "we need to clear some things" — there's a principle that decides it without enumerating fields:
 
@@ -1830,7 +1830,7 @@ Which answers a question hiding in the reopen: does it invalidate verification? 
 
 Your three re-entry points are coherent, and worth saying why so they don't read as taste: unprepared is the head of the preparation pipeline, todo the head of the work pipeline, in_progress the resume-now case. preparing and prepared are excluded because they're states you arrive at by working, not states you declare.
 
-WORK-0020 is captured and is the home for all of it. And backlog-move already holds the mutate-versus-new-record judgment — "same work resuming keeps the history and the journal; new work that happens to rhyme should be its own record linking back" — which is consistent with allowing mutation now.
+BACK-0020 is captured and is the home for all of it. And backlog-move already holds the mutate-versus-new-record judgment — "same work resuming keeps the history and the journal; new work that happens to rhyme should be its own record linking back" — which is consistent with allowing mutation now.
 
 That's the whole ladder. Say the word and I'll write it up.
 
@@ -1880,11 +1880,11 @@ Committed, working tree clean.
 31d7391 Make the procedures say what the decisions already settled
 ddd8a4f Capture four findings that were noticed and never written down
 
-Two commits, split by story rather than by file. The first is the bundle — the rundown rename, risks as bullets, the new adopting-a-rule policy, and backlog-move no longer teaching delivered/abandoned. The second is the corpus — WORK-0057 through WORK-0065, plus journal lines on WORK-0043, 0046, 0050 and 0056.
+Two commits, split by story rather than by file. The first is the bundle — the rundown rename, risks as bullets, the new adopting-a-rule policy, and backlog-move no longer teaching delivered/abandoned. The second is the corpus — BACK-0057 through BACK-0065, plus journal lines on BACK-0043, 0046, 0050 and 0056.
 
 One thing I fixed on the way in: backlog-move's corrections had never been versioned. The rename was 0.17.0 and the policy 0.18.0, but the disposition fix and the Always true section were sitting unversioned in the working tree — which is exactly the drift this bundle polices. Bumped to 0.19.0 with an entry covering them, including the note that one of the three invariants exists only because I reported it as a defect and the code turned out to be right.
 
-Both messages say why rather than what, per the convention. 284 journal lines on WORK-0059.
+Both messages say why rather than what, per the convention. 284 journal lines on BACK-0059.
 
 Three commits ahead of origin/main, nothing pushed — say the word if you want that, or a pull request.
 

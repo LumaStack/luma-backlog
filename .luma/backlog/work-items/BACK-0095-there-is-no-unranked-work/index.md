@@ -35,8 +35,8 @@ record loses its work status.
 - **Creation never writes one.** `internal/corpus/create.go:193` writes a
   workflow status and nothing else. Every capture since the beginning is
   unranked, which is most of the corpus.
-- **Closing did not write one before `applyStatus` existed.** WORK-0001,
-  WORK-0014, WORK-0017, WORK-0018 and WORK-0042 were closed on or before
+- **Closing did not write one before `applyStatus` existed.** BACK-0001,
+  BACK-0014, BACK-0017, BACK-0018 and BACK-0042 were closed on or before
   2026-09-06; `263f605` landed the write-both rule the same day. That half is
   already fixed forward --- `internal/app/close.go:143` and
   `internal/app/transition.go:203` are the only paths and both go through it.
@@ -117,7 +117,7 @@ rule.**
 ### The seed makes it free
 
 **A fresh position is derived from the record alone, not from its peers.**
-Seeding from the key ordinal --- `WORK-0094` becomes position `0094.000` --- is
+Seeding from the key ordinal --- `BACK-0094` becomes position `0094.000` --- is
 monotonic, so arrival order falls out rather than being enforced; it needs no
 walk of the corpus; and two sessions capturing at the same moment cannot collide
 on it, which is the objection that would otherwise sink ranking at creation.
@@ -216,10 +216,10 @@ indefinitely and stays exact.
 
 - **[[work-items/BACK-0075-a-move-does-not-write-the-stage-it-promises]]** edits
   the same function. `applyStatus` (`internal/app/status.go:21`) is the whole
-  move; WORK-0075 adds the field writes it fails to make, this changes the rank
+  move; BACK-0075 adds the field writes it fails to make, this changes the rank
   it computes. Whichever lands second rebases on the first.
 - **[[work-items/BACK-0022-migrate-a-corpus-when-the-vocabulary-changes]]**
-  owns the repair path this migration rides on. WORK-0022 repairs a prefix that
+  owns the repair path this migration rides on. BACK-0022 repairs a prefix that
   *disagrees* with the status; this fills a position that was *never written*.
 - **[[work-items/BACK-0002-lint-the-corpus]]** is where the new invariant gets
   enforced once it exists.

@@ -16,7 +16,7 @@ former_keys: ["WORK-0013"]
 
 ## The problem
 
-Two people, or two agents on two machines, create work at the same time. Both allocate the next key and both get `WORK-0013`. Nothing catches it until merge, and what arrives then is two different records claiming one handle.
+Two people, or two agents on two machines, create work at the same time. Both allocate the next key and both get `BACK-0013`. Nothing catches it until merge, and what arrives then is two different records claiming one handle.
 
 **The specification already says this is unsolved.** §6.4 is precise about the shape: within one filesystem, exclusive-create settles it with no coordination and no allocator — the create fails, you take the next candidate and retry. **Across branches or machines it cannot be settled by local means**, because two actors on separate branches can each create the same path with different content, and that is a property of the storage topology rather than a gap in the code. It is tracked as `open-questions.md` §8.
 
@@ -26,12 +26,12 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 **Two questions are tangled here and may separate.**
 
-*Can work be inserted between work?* If `WORK-0013` is taken twice, one answer is to insert rather than renumber. Every scheme that allows it trades away one of three properties, and **no scheme has all three**:
+*Can work be inserted between work?* If `BACK-0013` is taken twice, one answer is to insert rather than renumber. Every scheme that allows it trades away one of three properties, and **no scheme has all three**:
 
 | scheme | sortable | dense | unique by construction |
 | --- | --- | --- | --- |
-| **a counter** — `WORK-0013`, what ships today | yes | yes | **no** — two actors allocate the same number |
-| **a fractional key** — `WORK-0013.5` | yes | **no** — gaps by design, widening with each insert | no — two actors can still pick the same fraction |
+| **a counter** — `BACK-0013`, what ships today | yes | yes | **no** — two actors allocate the same number |
+| **a fractional key** — `BACK-0013.5` | yes | **no** — gaps by design, widening with each insert | no — two actors can still pick the same fraction |
 | **a gap-leaving sequence** — 10, 20, 30 | yes | **no** — numbers spent to buy room, and the room runs out | no — two actors still choose the same gap |
 | **an actor-specific component** — `WORK-ab3-00013` | **no** — orders by actor before number | yes | yes |
 
@@ -43,11 +43,11 @@ So there are two collision surfaces with different odds, and only one of them wa
 
 ### The leaning: pick a loser and send it to the end
 
-**On a collision, one record keeps the key and the other takes the next free number at the end of the sequence** (benjamin, 2026-09-04). Two records claim `WORK-0014` and `15`, `16`, `17` already exist: the winner stays `14`, the loser becomes `18`.
+**On a collision, one record keeps the key and the other takes the next free number at the end of the sequence** (benjamin, 2026-09-04). Two records claim `BACK-0014` and `15`, `16`, `17` already exist: the winner stays `14`, the loser becomes `18`.
 
 **That does not cascade, and an earlier draft of this record said it would.** The claim rested on repairing to *n+1* — bump the second `14` to `15`, hit the existing `15`, and the fix runs through the corpus. That is not the repair. The repair is to append, and **the end of the sequence is free by construction**, so exactly one record moves and nothing else is touched.
 
-**What it costs is that a key stops implying creation order.** `WORK-0018` may have been written before `WORK-0015`. That is judged acceptable: allowing keys to fall a little out of order is a fair price for a repair that touches one record.
+**What it costs is that a key stops implying creation order.** `BACK-0018` may have been written before `BACK-0015`. That is judged acceptable: allowing keys to fall a little out of order is a fair price for a repair that touches one record.
 
 **And the order is not lost, only moved off the key.** `created` records when a record was written, exactly and always. A key that also encoded order would be a second copy of a fact another field already holds, and the rule this project keeps returning to is that two copies of one fact eventually disagree — which is why membership lives on the member and why an outcome's status is derived rather than stored.
 
@@ -72,8 +72,8 @@ attacks a different part of the problem: appending protects the key by refusing
 to move it, and a redirect protects the citation while letting the key move.
 
 **What it would cost us that it does not cost them** is the reason it is not the
-lead. A redirect needs somewhere to record that `WORK-0007` now means
-`WORK-0031`, and a server has a table for that where a git repository would need
+lead. A redirect needs somewhere to record that `BACK-0007` now means
+`BACK-0031`, and a server has a table for that where a git repository would need
 a record — one more thing to write, keep, and eventually prune. Appending needs
 nothing.
 

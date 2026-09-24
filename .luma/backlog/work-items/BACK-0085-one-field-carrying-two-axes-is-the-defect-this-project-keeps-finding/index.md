@@ -51,7 +51,7 @@ a decision record — but that is the thing to decide.
 
 **Fixing the two unresolved instances.** Owner-versus-worker belongs with
 [[work-items/BACK-0066-an-actor-cannot-name-a-session]]; the outcome vocabulary
-belongs with WORK-0080 and
+belongs with BACK-0080 and
 [[work-items/BACK-0036-whether-stage-is-used-correctly-or-removed]]. This
 records the pattern; it does not resolve its cases.
 

@@ -68,7 +68,7 @@ orthogonal to both — so the useful output is a sequence rather than a winner.
 
 ## Out of scope
 
-**Keys colliding.** Two actors allocating `WORK-0013` at once is
+**Keys colliding.** Two actors allocating `BACK-0013` at once is
 [[work-items/BACK-0013-how-two-workstations-avoid-colliding]], and the repair is
 settled by
 [[records/decisions/ADR-0003-a-colliding-key-is-repaired-by-appending]]. Names
@@ -125,7 +125,7 @@ re-opening a settled question; it is closing one that was analyzed and left.**
 ### Two things the prior analysis does not contain
 
 **The single-actor case.** §8 frames staleness as a multi-actor problem, and on
-2026-09-09 it happened with one actor on one machine: WORK-0059's closure —
+2026-09-09 it happened with one actor on one machine: BACK-0059's closure —
 both outcomes verified, thirty-six journal lines, a new defect record — sat
 uncommitted for about twelve hours. For that whole window the corpus on disk
 said `closed` and the corpus in git said `in_progress`. **No mechanism in §8's
@@ -170,7 +170,7 @@ is the complement, and the boundary is sharp.** It puts the pick deliberately
 outside git, because it is per-actor and a committed pointer would give two
 agents one cursor. If backlog actions start committing and pushing, **the pick
 is the one piece of state that must specifically not** — this work item decides
-what synchronizes, and WORK-0074 has already decided one thing that does not.
+what synchronizes, and BACK-0074 has already decided one thing that does not.
 
 ## References
 

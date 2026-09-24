@@ -18,12 +18,12 @@ which is why that work item does not need its own reshape.
 **Belongs in `internal/app`, not in the adapter** --- every surface needs the
 same forms, and the board will need them next.
 
-Accept and emit key-scoped paths, `WORK-0017/outcomes/<slug>`. Accept bare
+Accept and emit key-scoped paths, `BACK-0017/outcomes/<slug>`. Accept bare
 names while unambiguous; ambiguity is an error naming the candidates, never a
 guess (`spec.md` §9.1, §7.4).
 
 **Live failure to fix:** `backlog show
-WORK-0031/tasks/restyle-help-output-on-gh-s-model` returns *nothing matches*
+BACK-0031/tasks/restyle-help-output-on-gh-s-model` returns *nothing matches*
 while the record exists --- the path a person reads off a listing is not one
 the tool accepts.
 

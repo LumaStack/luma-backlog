@@ -113,7 +113,7 @@ that lets them decide, not a defense.
 - **No review, and no second actor.** One maintainer and one agent. Every
   multi-actor check the model implies produced no friction here, which is not
   the same as passing.
-- **The capture procedure's corpus check** was skipped for WORK-0060.
+- **The capture procedure's corpus check** was skipped for BACK-0060.
 - **A journal-line convention was invented** with no decision record behind it.
 
 **Nobody has reviewed any of it.** Same category as
@@ -189,7 +189,7 @@ repointing every inbound link — was ad hoc. No work item, no outcomes, no gate
 and a real result. There is no record of the policy that permitted it.
 
 **One risk reported this morning was probably misread**, and this experiment
-should settle it. WORK-0031 closing nine tasks while sitting at `prepared` was
+should settle it. BACK-0031 closing nine tasks while sitting at `prepared` was
 reported as a status that had stopped being true. It may instead be ad hoc work
 behaving correctly against a ladder that has no work status for it.
 
@@ -202,7 +202,7 @@ to be delivered and unclosed.
 
 **One data point exists already.** `backlog-move` was run for the first time
 against the real corpus an hour before this record, and immediately produced a
-finding — WORK-0057's rank landing at the front of eleven records rather than
+finding — BACK-0057's rank landing at the front of eleven records rather than
 the back, which the procedure says should not happen.
 
 ## References

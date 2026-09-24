@@ -13,11 +13,11 @@ message to the maintainer between any of them.
 ## The five commands, as issued
 
 ```
-luma-backlog transition WORK-0095 unprepared  --reason "…"
-luma-backlog transition WORK-0095 preparing   --reason "shaping it into outcomes now"
-luma-backlog transition WORK-0095 prepared    --reason "…"
-luma-backlog transition WORK-0095 todo        --reason "…"
-luma-backlog transition WORK-0095 in_progress --reason "…"
+luma-backlog transition BACK-0095 unprepared  --reason "…"
+luma-backlog transition BACK-0095 preparing   --reason "shaping it into outcomes now"
+luma-backlog transition BACK-0095 prepared    --reason "…"
+luma-backlog transition BACK-0095 todo        --reason "…"
+luma-backlog transition BACK-0095 in_progress --reason "…"
 ```
 
 The first two ran in one Bash call; the last three ran in one Bash call. The
@@ -37,7 +37,7 @@ above:
 > That is where done gets defined, and it is the only rung with a natural
 > stopping point.
 
-> **Measured here, twice in one session on 2026-09-09.** An agent took WORK-0074
+> **Measured here, twice in one session on 2026-09-09.** An agent took BACK-0074
 > from `preparing` to `in_progress` in three consecutive commands, and the
 > maintainer sent it back to `todo` because no work had been done on it. **This
 > procedure already said not to**, which is the evidence that saying it is not

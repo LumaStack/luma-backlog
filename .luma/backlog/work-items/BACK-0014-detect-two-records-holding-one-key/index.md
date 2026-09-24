@@ -17,7 +17,7 @@ former_keys: ["WORK-0014"]
 
 ## The problem
 
-Keys are allocated optimistically and collide across branches, which `spec.md` §6.4 says cannot be solved by local means. **Nothing notices.** Two records can hold `WORK-0013` indefinitely, and the handle somebody quotes in a commit stops meaning one record without anyone being told.
+Keys are allocated optimistically and collide across branches, which `spec.md` §6.4 says cannot be solved by local means. **Nothing notices.** Two records can hold `BACK-0013` indefinitely, and the handle somebody quotes in a commit stops meaning one record without anyone being told.
 
 A merge does not catch it either. Two work items created on two branches touch different files, so git merges them cleanly and the duplicate arrives quietly.
 

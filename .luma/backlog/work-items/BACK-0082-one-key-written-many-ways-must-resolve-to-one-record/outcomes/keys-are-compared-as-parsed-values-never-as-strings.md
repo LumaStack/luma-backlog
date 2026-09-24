@@ -2,7 +2,7 @@
 type: outcome
 title: Keys are compared as parsed values, never as strings
 desired_state: ""
-verify_by: "The sweep's findings are journaled with each comparison site named; tests prove duplicate detection and highestKey treat WORK-74 and WORK-0074 as one key, so allocation cannot reuse a number behind an unusual spelling."
+verify_by: "The sweep's findings are journaled with each comparison site named; tests prove duplicate detection and highestKey treat WORK-74 and BACK-0074 as one key, so allocation cannot reuse a number behind an unusual spelling."
 work_item: '[[work-items/BACK-0082-one-key-written-many-ways-must-resolve-to-one-record]]'
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:12:34Z'}

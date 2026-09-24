@@ -156,7 +156,7 @@ needs the hard version authors it.
 exists because outcomes get edited to match what was found. Requiring outcomes
 at the preparation gate moves the moment they are written earlier, which makes
 them more likely to be revised later rather than less — so whichever strength is
-chosen, WORK-0032 is where the cost lands.
+chosen, BACK-0032 is where the cost lands.
 
 ### On the third concept, and the name
 
@@ -173,7 +173,7 @@ named once and everywhere —
 is the decision in force, so the name has one assignment point rather than being
 introduced separately per surface.
 
-**The naming has a live precedent in this corpus.** WORK-0074's journal records
+**The naming has a live precedent in this corpus.** BACK-0074's journal records
 choosing `pick` and rejecting `select`, `active`, `current`, `take`, `claim`,
 `slate`, `cue` and *on deck* — each on the grounds that the surrounding system
 had already spent the word. The same test applies here, and the obvious

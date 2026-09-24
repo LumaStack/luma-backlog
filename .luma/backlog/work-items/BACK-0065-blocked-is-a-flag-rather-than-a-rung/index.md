@@ -43,7 +43,7 @@ kinds, and they resolve differently:
 | a deliverable | existing, which is not the same as being adequate |
 
 **Blocking is declared; unblocking can be observed.** A person says they are
-blocked. But a record blocked on `WORK-0022` when `WORK-0022` closes has a stale
+blocked. But a record blocked on `BACK-0022` when `BACK-0022` closes has a stale
 flag, and that is computable as a `spec.md` §5.2 style condition — so the tool
 can notice a block has cleared without being told.
 

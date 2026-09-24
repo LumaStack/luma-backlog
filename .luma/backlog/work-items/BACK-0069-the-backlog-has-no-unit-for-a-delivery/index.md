@@ -167,7 +167,7 @@ later decision.
 
 ## The instance that produced it
 
-*What has to be true before another project can use luma-backlog* — WORK-0031's
+*What has to be true before another project can use luma-backlog* — BACK-0031's
 remaining tasks, `--open`, publishing the bundle out of `local/`, a released
 binary, and migration. Eight or so pieces, ordered only in part, adding up to one
 thing that has no record.

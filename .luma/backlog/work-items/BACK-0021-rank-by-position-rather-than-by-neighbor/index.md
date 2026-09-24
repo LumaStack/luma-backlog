@@ -31,7 +31,7 @@ Two forms of the same want:
 
 ## Why it was not taken now
 
-**`--at 3` names a slot in a list nobody specified.** Third among all work items, third in the `todo` column, or third in whatever the board is filtered to — all defensible, all different. `--before WORK-0012` names a record and cannot be misread.
+**`--at 3` names a slot in a list nobody specified.** Third among all work items, third in the `todo` column, or third in whatever the board is filtered to — all defensible, all different. `--before BACK-0012` names a record and cannot be misread.
 
 **It reintroduces index semantics that `spec.md` §9.6 removed on purpose.** Positions are decimal ordering keys precisely so a move writes one record; a caller thinking in indices is a caller whose intent breaks when somebody else inserts between the read and the write.
 

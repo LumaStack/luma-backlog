@@ -15,7 +15,7 @@ created_using: lumastack/luma-catalog/violation-records 0.1.0
 
 # A work item was run up the ladder in one burst
 
-WORK-0095 was created and taken `captured → unprepared → preparing → prepared →
+BACK-0095 was created and taken `captured → unprepared → preparing → prepared →
 todo → in_progress` in five consecutive commands inside one turn, two minutes
 and thirty-three seconds apart end to end. It should have stopped at
 `preparing`, where none of the preparing work had been done, and waited.
@@ -32,7 +32,7 @@ decision somebody makes, then stop.
 **Delivered.** `procedure/backlog-move` was read in full in the same turn,
 through the `backlog-move` skill, and says *"Do not run a work item up the
 ladder in one burst"* and *"`preparing` is the one to stop at"*. It also carries
-the measurement of the same breach on WORK-0074 the day before, with the note
+the measurement of the same breach on BACK-0074 the day before, with the note
 that the procedure already said not to.
 
 The actor classified the request as *speed through the gates without breaking

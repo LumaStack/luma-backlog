@@ -66,7 +66,7 @@ question.
 
 ### This project is evidence, and it points at *no*
 
-**WORK-0074 is the case to look at.** Its outcomes were written on 2026-09-09
+**BACK-0074 is the case to look at.** Its outcomes were written on 2026-09-09
 while its scope, constraints and open questions were still being worked in the
 same session — defining and preparing interleaved rather than queued.
 
@@ -114,7 +114,7 @@ useful thing to know before arguing about either.
 
 ### The maintainer's own example list already divides along this seam
 
-**WORK-0077 proposed a default list of preparation steps, and it splits two and
+**BACK-0077 proposed a default list of preparation steps, and it splits two and
 two:**
 
 | step | falls under |

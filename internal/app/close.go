@@ -151,7 +151,7 @@ func (s *Session) CloseWorkItem(req CloseRequest) (*CloseResult, error) {
 	// `as` rather than `reason`, because the field holds the disposition and
 	// the prose is a separate thing somebody may or may not have said
 	// (ADR-0007). Every record closed before this carries the old spelling;
-	// migrating them is work-items/WORK-0037.
+	// migrating them is work-items/BACK-0037.
 	closed := fmt.Sprintf("{on: %s, as: %s, by: %s}", s.Env.Today(), req.As, s.Env.Actor.String())
 	if req.Reason != "" {
 		closed = fmt.Sprintf("{on: %s, as: %s, by: %s, reason: %s}",

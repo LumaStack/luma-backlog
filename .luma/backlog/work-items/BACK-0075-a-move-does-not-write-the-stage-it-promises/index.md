@@ -30,7 +30,7 @@ says how hard the rule is:
 **Nothing writes it.** `internal/corpus/create.go:202` sets `stage` to `draft`
 at creation and no other code path touches the field.
 
-**Observed live.** WORK-0059 was closed `completed` on 2026-09-09 with both
+**Observed live.** BACK-0059 was closed `completed` on 2026-09-09 with both
 outcomes proven, and its frontmatter still reads `stage: draft`.
 
 ## What is being delivered
@@ -46,13 +46,13 @@ asking an agent to remember it is the failure mode rather than the fix.
 
 ## Two more rows, found by using the table
 
-**Moving WORK-0074 through both gates on 2026-09-09 ran three of these rows and
+**Moving BACK-0074 through both gates on 2026-09-09 ran three of these rows and
 none of them fired.** `internal/app/status.go:21` — `applyStatus` writes
 `workflow_status` and `rank` and returns. That is the whole move. One of the
 three is the `in_progress` row this record already named; **two are new.**
 
 - `in_progress` → **`stage` is at least `provisional`** — *written by the move*.
-  Not written. WORK-0074 is `in_progress` and reads `stage: draft`.
+  Not written. BACK-0074 is `in_progress` and reads `stage: draft`.
 - `todo` → **no longer a draft** — *warned*. No warning. Nothing inspects
   `stage` at any gate.
 - `todo` → **outcomes exist** — *checked at the gate*. There is no check. The
@@ -81,9 +81,9 @@ to go first — see the conflict below.
 - **ADR-0005 is the precedent, not an analogy.** Status and rank are already
   written together by every move, and no command will write one without the
   other. This is the same shape for a third field.
-- **The write has to be visible.** WORK-0059's journal records the maintainer
+- **The write has to be visible.** BACK-0059's journal records the maintainer
   establishing that every change to metadata and key fields must be visible so
-  it can be corrected — and records `set WORK-0059 workflow_status=in_progress`
+  it can be corrected — and records `set BACK-0059 workflow_status=in_progress`
   silently writing rank as the case that motivated it. A silent `stage` write
   would repeat it.
 
@@ -94,27 +94,27 @@ unchanged. Everything below was added by the agent while capturing it.*
 
 ## Added while capturing
 
-**This conflicts with WORK-0036 and the conflict decides the order.**
-WORK-0036 asks whether `stage` is used correctly or removed, and names removal
+**This conflicts with BACK-0036 and the conflict decides the order.**
+BACK-0036 asks whether `stage` is used correctly or removed, and names removal
 as a complete result: *"concluding that `stage` should be removed from work
 items and outcomes and kept only for decisions is a complete result — it is
 currently doing no work on the first two."* Implementing the write makes `stage`
 real on work items, which pre-empts one of the two answers that inquiry exists
 to choose between.
 
-**So the defect is real either way and the fix is not.** If WORK-0036 keeps
+**So the defect is real either way and the fix is not.** If BACK-0036 keeps
 `stage`, this is the implementation. If it removes it, the fix is deleting the
 two rows and the sentence — still a change to `backlog-move`, still this record.
 **What is not acceptable is the current state**, where the table asserts a
 guarantee nobody keeps.
 
-**WORK-0036 already holds the same observation** — *"`stage` is currently
+**BACK-0036 already holds the same observation** — *"`stage` is currently
 written once and never touched. Every record in this corpus is `stage: draft`"*
 — stated as evidence that the field is doing no work. This record states it as a
 broken promise in a procedure. Same fact, two different claims about what to do
 about it.
 
-**The seam with WORK-0073.** That one is `set workflow_status=closed` bypassing
+**The seam with BACK-0073.** That one is `set workflow_status=closed` bypassing
 `close` entirely; this one is `close` running and still not doing what it says.
 A door left open, and a door that does not lock.
 

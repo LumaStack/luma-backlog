@@ -7,7 +7,7 @@ rank: 060.0010.000
 kind: change
 stage: draft
 created: {by: 'agent:claude-fable-5/luma-backlog', at: '2026-09-20T17:51:46Z'}
-description: 'Most of the time users will want to migrate the old keys over to the new key — but maybe not always, since that might break links in external systems that we do not control. So migration must be optional, never implied by changing work_item_key. Deferred: reopen when a corpus actually wants its old prefix gone — likely a binary command, since every stored key, directory name and wikilink must move together or the corpus corrupts silently. See WORK-0022, WORK-0037, WORK-0100. — Reopened 2026-09-23 — the trigger fired, asked for on this corpus: 102 WORK keys against 9 BACK, with work_item_key already BACK, so the split the config comment describes as by-design is now 92% of the records. Target is whatever the project configured, not a third prefix — existing BACK keys keep their numbers and nothing resequences. Must be repeatable and runnable on any project rather than a one-time edit here, which makes the command the deliverable and this corpus its first user; building it without running it here proves nothing, and migrating here by hand is the thing being asked against. The wikilink rewrite is the largest part and the part that corrupts silently if missed — see BACK-0111, captured the same day, for the same failure in a different subject.'
+description: 'Most of the time users will want to migrate the old keys over to the new key — but maybe not always, since that might break links in external systems that we do not control. So migration must be optional, never implied by changing work_item_key. Deferred: reopen when a corpus actually wants its old prefix gone — likely a binary command, since every stored key, directory name and wikilink must move together or the corpus corrupts silently. See BACK-0022, BACK-0037, BACK-0100. — Reopened 2026-09-23 — the trigger fired, asked for on this corpus: 102 WORK keys against 9 BACK, with work_item_key already BACK, so the split the config comment describes as by-design is now 92% of the records. Target is whatever the project configured, not a third prefix — existing BACK keys keep their numbers and nothing resequences. Must be repeatable and runnable on any project rather than a one-time edit here, which makes the command the deliverable and this corpus its first user; building it without running it here proves nothing, and migrating here by hand is the thing being asked against. The wikilink rewrite is the largest part and the part that corrupts silently if missed — see BACK-0111, captured the same day, for the same failure in a different subject.'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-24T04:33:26Z'}
 ---
 
@@ -16,7 +16,7 @@ modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-24T04:33:26Z'}
 ## The problem
 
 **This corpus holds two prefixes and cannot resolve them itself.** 102 records at
-`WORK-0001`–`WORK-0102`, 9 at `BACK-0103`–`BACK-0111`, and
+`BACK-0001`–`BACK-0102`, 9 at `BACK-0103`–`BACK-0111`, and
 `.luma/config/luma-backlog.yaml` says `work_item_key: BACK`. The config file
 states the reason in its own comment: *changing it never renames existing
 records — the prefix is written into each record.*
@@ -25,7 +25,7 @@ records — the prefix is written into each record.*
 avoided because a key may be held by something outside this repository, which we
 cannot edit on our own schedule and sometimes cannot edit at all. The vendored
 bundle is the proof that this is real rather than theoretical: its changelog
-names `WORK-0002`, `0031`, `0036`, `0039`, `0063` and `0074`, it is published,
+names `BACK-0002`, `0031`, `0036`, `0039`, `0063` and `0074`, it is published,
 and editing an adopted copy is drift.
 
 **What changed is that we now know how to rename without breaking anybody.**
@@ -35,7 +35,7 @@ name out of other people's content. Adopting that model turns the objection into
 a requirement: the old key must keep working, permanently.
 
 **And one thing that model does not give us, we need.** A forge redirect is
-forward-only. When an external project holds `WORK-0036` and is not ours to fix,
+forward-only. When an external project holds `BACK-0036` and is not ours to fix,
 holding `BACK-0036` has to tell us what to go looking for over there — so the
 mapping has to be readable in both directions, and emitted whole.
 
@@ -102,7 +102,7 @@ decision made after seeing what collided — not a silent recovery.
 wherever anybody writes them. Counted before building: **450 wikilinks across
 233 files**, **95 full names outside a wikilink**, one link in
 `docs/open-questions.md`, and full names in **ten `.go` files** —
-`internal/corpus/rank.go` cites `WORK-0096`, `duplicate.go` cites `WORK-0013`.
+`internal/corpus/rank.go` cites `BACK-0096`, `duplicate.go` cites `BACK-0013`.
 A migration that stopped at `.luma/` would have broken all of those quietly.
 
 **Anchored on the full name, with a boundary.** The replacement matches
@@ -114,7 +114,7 @@ because that is not something to depend on.
 ### Bare keys are offered rather than assumed
 
 **Left alone by default, because rewriting one can be wrong.** A bare
-`WORK-0031` may name a work item in a different project that uses the same
+`BACK-0031` may name a work item in a different project that uses the same
 prefix — rare, and silent when it happens.
 
 **But for a single-project repository it is right nearly every time**, so the
@@ -130,7 +130,7 @@ per corpus, and nobody makes it by scrolling.
 and it is the only case the flag must not touch.
 
 **Journals are included, and that was confirmed rather than assumed.** 45% of
-what the flag changes is lines such as *"Journaled on WORK-0039"* — statements
+what the flag changes is lines such as *"Journaled on BACK-0039"* — statements
 about what happened, in a file whose own header says *append, never curate*.
 **A key in a journal is an address, not a quotation**: the record still exists,
 it answers to a new name, and a reference that resolves is worth more than one
@@ -148,7 +148,7 @@ and it is worth knowing it costs a cycle before anybody starts.
 
 ## Out of scope
 
-**Bare keys, wherever they appear.** A line reading *journaled on WORK-0036*
+**Bare keys, wherever they appear.** A line reading *journaled on BACK-0036*
 still resolves, because `former_keys` answers for it — shipped, not planned.
 And rewriting one is **not safe**: a bare key may name a work item in another
 project that uses the same prefix. Unnecessary and risky is an easy call.

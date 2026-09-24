@@ -25,7 +25,7 @@ evidence:
 **The golden files move, and that is the point.** Every diff is a breaking
 change being made deliberately (`spec.md` §9a.5).
 
-WORK-0018 was kept behaviour-preserving precisely so this work item could move
+BACK-0018 was kept behaviour-preserving precisely so this work item could move
 them --- its journal records that mixing the two would have left nothing able
 to attest to either. Regenerating in bulk here would throw away what that
 separation bought.

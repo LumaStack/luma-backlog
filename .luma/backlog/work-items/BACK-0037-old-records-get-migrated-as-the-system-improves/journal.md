@@ -8,8 +8,8 @@
 ## ▶ 2026-09-10
 
 BACK-0037-old-records-get-migrated-as-the-system-improves unprepared → captured: sent back to the pile so there is one place to choose from; this had crossed the first gate and that decision is being re-made rather than lost
-FIRST CONSUMER, 2026-09-09: WORK-0089 renames workflow_status to status across every record, and depends on this mechanism rather than hand-editing. that would be the fourth hand-migration, and this record already notes the first three
-recorded here as well as there because the tool cannot express the dependency — depends_on lives on the task and blocked names no target, so WORK-0089 pointing at this record is invisible from this side. that is WORK-0025's cost, paid
+FIRST CONSUMER, 2026-09-09: BACK-0089 renames workflow_status to status across every record, and depends on this mechanism rather than hand-editing. that would be the fourth hand-migration, and this record already notes the first three
+recorded here as well as there because the tool cannot express the dependency — depends_on lives on the task and blocked names no target, so BACK-0089 pointing at this record is invisible from this side. that is BACK-0025's cost, paid
 
 ## ▶ 2026-09-08
 
@@ -17,7 +17,7 @@ fifth instance, and the first done rather than deferred: 29 verified entries car
 
 ## ▶ 2026-09-06
 
-already needed three times and solved by hand each time — the unit rename, the username replacement, and everything WORK-0031 will change
+already needed three times and solved by hand each time — the unit rename, the username replacement, and everything BACK-0031 will change
 first live instance — two package renames left a closed work item's verify_by naming paths that no longer run, and there was no way to tell which records refer to a shape that moved
 no other repository uses the tool yet, so every corpus needing migration is this one — the machinery can be built and proven against records whose every value is understood, and that window closes on first use elsewhere rather than on a date
 the command surface rename is the first instance touching many records at once: delivered becomes completed, abandoned is dropped, rejected is added, and every closed record carries the old vocabulary

@@ -77,7 +77,7 @@ analysis):
 ## Constraints
 
 - **Capture stays cheap.** One command, no file to open, no heading to write —
-  friction at the moment of writing is what loses the learning (WORK-0012's
+  friction at the moment of writing is what loses the learning (BACK-0012's
   constraint, kept verbatim).
 - **Append, never curate** (`spec.md` §5.5). Any entry shape must survive
   never being edited after the fact.

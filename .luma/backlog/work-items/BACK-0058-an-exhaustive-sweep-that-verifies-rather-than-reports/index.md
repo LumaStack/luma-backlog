@@ -7,7 +7,7 @@ workflow_status: captured
 kind: idea
 stage: draft
 created: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-07T14:44:53Z'}
-description: 'the tier above the rundown: goes and confirms the records are true rather than reading what they claim; may turn into doctor or cleanup, or turn out to be WORK-0046''s check grown a tier'
+description: 'the tier above the rundown: goes and confirms the records are true rather than reading what they claim; may turn into doctor or cleanup, or turn out to be BACK-0046''s check grown a tier'
 modified: {by: 'agent:claude-opus-5/luma-backlog', at: '2026-09-17T14:50:06Z'}
 rank: 010.0430.000
 former_keys: ["WORK-0058"]
@@ -22,7 +22,7 @@ former_keys: ["WORK-0058"]
 claim is still true. Both failures observed on 2026-09-07 were of exactly that
 shape:
 
-- WORK-0031 sat at `prepared` with nine tasks closed against it. The status was
+- BACK-0031 sat at `prepared` with nine tasks closed against it. The status was
   a claim about the present and had stopped being true.
 - Four outcomes carried `verify_by` steps that nothing had run, in a corpus
   where 29 of 33 outcomes elsewhere are verified.

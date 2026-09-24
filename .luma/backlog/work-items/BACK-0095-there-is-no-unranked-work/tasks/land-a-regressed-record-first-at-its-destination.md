@@ -2,7 +2,7 @@
 type: task
 type_version: "0.0.1"
 title: Land a regressed record first at its destination
-description: Advancing already lands last. Going backwards lands last too, which buries a record somebody just examined behind everything nobody has looked at. Between with no before is already unbounded --- formatPosition extends precision --- so no rebalance path is needed. Advances outcome 3 and does not depend on WORK-0096.
+description: Advancing already lands last. Going backwards lands last too, which buries a record somebody just examined behind everything nobody has looked at. Between with no before is already unbounded --- formatPosition extends precision --- so no rebalance path is needed. Advances outcome 3 and does not depend on BACK-0096.
 work_item: '[[work-items/BACK-0095-there-is-no-unranked-work]]'
 workflow_status: closed
 stage: draft

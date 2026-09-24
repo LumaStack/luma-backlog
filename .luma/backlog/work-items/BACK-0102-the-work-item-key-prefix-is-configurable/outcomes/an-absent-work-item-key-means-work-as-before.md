@@ -14,7 +14,7 @@ verified:
 evidence:
   - at: "2026-09-20T17:52:09Z"
     by: agent:claude-fable-5/luma-backlog
-    what: 'TestAnAbsentWorkItemKeyMeansWork: a config without the setting yields WORK, and a zero-value Config falls back to WORK rather than producing keys like -0042. The scaffold documents the key commented-out as optional with WORK stated as the default, and TestDefaultFileMatchesDefaults holds the file and Default() together. Scratch repo: the record created before the setting was added is WORK-0001.'
+    what: 'TestAnAbsentWorkItemKeyMeansWork: a config without the setting yields WORK, and a zero-value Config falls back to WORK rather than producing keys like -0042. The scaffold documents the key commented-out as optional with WORK stated as the default, and TestDefaultFileMatchesDefaults holds the file and Default() together. Scratch repo: the record created before the setting was added is BACK-0001.'
 ---
 
 # An absent work_item_key means WORK, as before

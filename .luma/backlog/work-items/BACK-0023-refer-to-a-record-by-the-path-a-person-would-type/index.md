@@ -21,9 +21,9 @@ former_keys: ["WORK-0023"]
 reference:
 
 ```
-WORK-0017                                                     ✓
+BACK-0017                                                     ✓
 specification-agrees-with-the-decisions                       ✓
-WORK-0017/outcomes/specification-agrees-with-the-decisions     ✗
+BACK-0017/outcomes/specification-agrees-with-the-decisions     ✗
 WORK-0017-specify-the-…/outcomes/specification-agrees-…        ✗
 ```
 
@@ -51,16 +51,16 @@ telling them.
 **The canonical reference is scoped by the work item's key:**
 
 ```
-WORK-0017/outcomes/specification-agrees-with-the-decisions
+BACK-0017/outcomes/specification-agrees-with-the-decisions
 ```
 
 Resolution accepts, in descending order of safety:
 
-- **A key-scoped path** — `WORK-0017/outcomes/<slug>`. **Canonical, and what the
+- **A key-scoped path** — `BACK-0017/outcomes/<slug>`. **Canonical, and what the
   tool emits.**
 - **A slug-scoped path** — what a directory listing gives.
 - **An unambiguous prefix** of any segment (`spec.md` §9.1, §7.4), so
-  `WORK-0017/outcomes/spec-agrees` resolves.
+  `BACK-0017/outcomes/spec-agrees` resolves.
 - **A bare name**, as today, only while unambiguous — accepted, never emitted.
 
 **`list` must stop emitting bare names.** It prints the unsafe form today, which

@@ -63,7 +63,7 @@ The third level above the project, and the guidelines for what earns
 promotion —
 [[work-items/BACK-0015-decisions-have-levels-and-get-promoted-between-them]]
 keeps both. The seam: this ships the two levels the specification already
-knows and the close-time ask; WORK-0015 works out the tier above and what
+knows and the close-time ask; BACK-0015 works out the tier above and what
 belongs where.
 
 ## Constraints
