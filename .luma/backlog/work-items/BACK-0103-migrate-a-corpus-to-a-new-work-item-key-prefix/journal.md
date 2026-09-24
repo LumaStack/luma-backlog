@@ -733,6 +733,73 @@ Both wrong versions were written from what I thought the system did. The right
 one was written from watching it — and took one command to establish. Where a
 behaviour can be run, run it first and describe what came back; do not write the
 description and then go looking for agreement.
+### What this work item taught, collected — for whoever does the next migration
+
+**Verification cannot catch an outcome that is wrong.** Every rule in
+`backlog-verify` is about the evidence: read every check, follow `verify_by`,
+do not substitute a different question. All of it assumes the outcome is right
+and the world might not be. So a clause invented here passed straight through
+the one gate designed to catch falsehood, and arrived carrying evidence. The
+cheapest guard found: **when verification fails, suspect the outcome first** —
+it is younger than the code, written once, and often read by nobody.
+
+**A retraction can carry the assumption that produced it.** After reverting the
+code I rewrote the clause as *"and does not now"*, which forbids the same state
+in softer words. The belief outlived the sentence. It was caught by running a
+round trip, not by rereading.
+
+**Demonstrate a behaviour before writing the sentence that describes it.** Both
+wrong versions were written from what I thought the system did. The right one
+took one command to establish.
+
+**A key in text is a reference or an illustration, and nothing says which.**
+Four categories bit, each looking different: test fixtures, golden files, help
+examples, a scaffolded config template. The sharpest was this command's own
+help — *WORK-0123 becomes BACK-0123* — which rewriting turns into
+*BACK-0123 becomes BACK-0123*. One more survived by luck: `migrate.go`'s doc
+comment was not in the ignore list and came through only because no record here
+holds `WORK-0123`. **The absence of damage was not evidence the list was
+complete.**
+
+**The corpus caught what every fixture passed, twice.** The dry-run over-report
+and the `former_keys` miscount both survived a full green suite, because no test
+asked the question the real corpus answered. Run it against the real thing
+before believing it.
+
+**Two runs agreeing is not two runs being right.** I made the dry run predict
+the real run, tested that property, and shipped it — and the property held while
+both sides were wrong about `former_keys`.
+
+**Bound a loop by the invariant that makes it terminate, not by time.** The
+rewriter hung for two minutes. The project had already solved this class on
+2026-09-17: `checked` in `rank.go` asserts progress and names a remedy;
+`hang_test.go` asserts only that a call returns.
+
+**A boundary saying no is information.** The migration could not be built
+through the handle the tool has, because `internal/guards` fails the build if
+anything outside `internal/root` touches the filesystem. Reading `spec.md`
+§9a.4 showed the property it actually protects is *writing outside the
+repository* — so the fence could move without opening. Routing around the guard
+would have been the wrong instinct.
+
+**What must not be touched is found by looking, not by predicting.** Only one of
+the four ignore categories was anticipated. The rest appeared by running it and
+reading what changed, which is why every rewritten file is now listed by name.
+
+**Deferring with a trigger paid for itself.** This work item sat deferred for
+seven days and already knew the deliverable was a command and that the wikilink
+rewrite was the silent-corruption risk. Reopening cost one field. Recorded as
+*rejected*, that argument would have been had again from nothing.
+
+**Three of these look like violations and none has been filed.** The invented
+constraint that deleted data, committing on a red `scripts/check` — which would
+be a second instance of `2026-09-20-201357` — and citing a pull request number
+before it existed. **Whether any of them belongs in the register is the
+maintainer's call, not the agent's**, and an agent filing its own violations
+pre-empts the judgment the register exists to collect.
+
+**Two are recorded as open questions**, since they are design rather than
+conduct: §27 for reference-versus-illustration, §28 for the verification gap.
 
 ## ▶ 2026-09-23
 

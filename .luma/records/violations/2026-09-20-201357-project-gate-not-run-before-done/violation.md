@@ -36,3 +36,31 @@ So the delivery failure is one step removed: the pointer arrived, the
 document did not, because nothing forces the hop. If this recurs, the fix may
 be surfacing the check command itself where the work happens rather than one
 link away.
+
+## Second instance — 2026-09-24
+
+`agent:claude-opus-5/luma-backlog`, commit `321bd7b`, noticed by the agent one
+command later.
+
+`scripts/check` reported `internal/migrate/keys_test.go` not gofmt-clean. The
+commit and push went through anyway, because the commands were chained as
+`./scripts/check; git add -A && git commit && git push` — **the check's output
+was printed and its exit status gated nothing.** Formatted, verified, amended,
+and the retry wrapped in `if ./scripts/check; then …` so it could not repeat.
+
+**The delivery failure is different this time, and that is the useful part.**
+The first instance was *undelivered*: `docs/development.md` never entered
+context, and the agent never made the hop `CLAUDE.md` pointed at. Here the rule
+was delivered and held — the agent knew the gate, ran it every time, gated on
+it before every other merge that day, and had it in memory as a standing
+instruction. **It failed once, on the one occasion the command was chained
+rather than branched on.**
+
+**So the fix the first entry proposed would not have caught this.** Surfacing
+the check command where the work happens addresses not knowing. This was
+knowing and still not being stopped, which is the shape a hook answers and
+documentation does not — the agent cannot forget a `pre-commit` hook the way it
+can forget a `;` that should have been an `&&`.
+
+**Two instances, two agents, four days apart, same gate.** The first says the
+rule was not reachable. The second says reachability is not sufficient.

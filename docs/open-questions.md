@@ -1123,3 +1123,64 @@ Meanwhile every ranked task on disk has a `rank:` field, and `set` refuses to wr
 
 *Settled by:* fixing the command first, then seeing whether anyone is still confused.
 
+
+---
+
+## 27. Whether a key in text is a reference or an illustration
+
+**Status:** Open, with a convention adopted and no mechanism behind it. Raised 2026-09-24 by the key migration, which had to answer it four times in four different places and got a different-looking answer each time.
+
+**A citation names a record; an illustration names the shape of a key.** `internal/corpus/key.go`'s comment citing `WORK-0082` points at real work and must follow it when that record is renamed. `rank`'s help example — `luma-backlog work-item rank WORK-0031 --first` — points at nothing and must not, because it ships to every user and `WORK` is the default prefix.
+
+**Nothing in the text tells them apart**, which is the whole problem. Same string, same file, opposite meanings.
+
+### Where it bit, and each looked different
+
+| | |
+| --- | --- |
+| **test fixtures** | `workItem("WORK-0031", …)` — data, not a reference |
+| **golden files** | the same thing under another name; an ignore written as `*_test.go` missed `testdata/` entirely |
+| **help examples** | `Example:` strings that ship to every adopter |
+| **a scaffolded config template** | writes its illustration into every new project's `luma-backlog.yaml` |
+
+**The sharpest instance was the migration command's own help**, which reads *WORK-0123 becomes BACK-0123*. Rewriting it produces *BACK-0123 becomes BACK-0123* — the tool's explanation of itself, destroyed by itself.
+
+**And one survived by luck rather than by rule.** `internal/corpus/migrate.go`'s doc comment carries the same illustration and was not in the ignore list; it came through only because no record here holds `WORK-0123`. A repository numbered past 123 would have lost it silently, and the absence of damage is not evidence the list was complete.
+
+### What was done, and what it does not solve
+
+**An `--ignore` list**, with built-in defaults printed on every run, and every rewritten file listed by name so somebody can notice. That is the honest promise: not that the tool knows, but that it shows.
+
+**A recommendation for illustrations** — `WORK-0001 0011 0111 1111`, then `0002 0022 0222 2222`, in `showing-records`. A repeated digit is unmistakably artificial and the widths vary, so an example does not quietly teach that a key is always four characters.
+
+**Neither is a mechanism.** The convention is advice nobody enforces, and a project reaches `WORK-0001` on its first day, so it protects nothing. It makes an example *recognisable*, which is a different claim.
+
+### What would settle it
+
+**A marker that survives being read by a machine.** Something in the text saying *this is an example* — a fenced block a rewriter skips, a comment convention, a distinct namespace for illustrations. Every option costs readability in the place readability matters most, which is why none was taken.
+
+*Settled by:* the next migration of anything — a vocabulary change, a status rename — needing the same distinction. If it does, the answer is worth a mechanism. If nothing else ever needs it, the convention is enough.
+
+---
+
+## 28. Whether verification can catch an outcome that is wrong
+
+**Status:** Open, and it is a gap in the procedure rather than in any record. Found 2026-09-24 when an outcome invented by the agent was verified, failed, and caused working code to be changed.
+
+**`backlog-verify` checks the world against the outcome.** Every rule in it is about the evidence: read every check, follow `verify_by`, do not substitute a different question, verify what is true now. All of it assumes the outcome is right and the world might not be.
+
+**So an outcome that is wrong passes straight through.** A clause nobody asked for — *a key is never both live and former on the same record* — was checked, found false, and acted on: the code was changed to delete a true fact so the record would match the sentence. The outcome was then marked passing, carrying evidence.
+
+**Every motion was the motion of doing good work.** A discrepancy found, traced, fixed, tested, re-verified. Nothing in the process felt wrong, which is why nothing in the process stopped it.
+
+**And the retraction carried the same assumption.** The corrected wording said *and does not now*, forbidding the same state in softer words. It was caught by running the behaviour, not by rereading the sentence.
+
+### What might close it
+
+**A step that asks where an outcome came from**, at verification time rather than at writing time. Every other clause in that work item traced to a decision record, a measurement, or something the maintainer said. The invented one traced to nothing, and that was checkable.
+
+**Or: when verification fails, suspect the outcome first.** The instinct is to fix the world, because that is what verification is for. But the outcome is younger than the code, written by one person in one sitting, and often read by nobody — it is the less-tested artifact of the two.
+
+**A rule that deletes data deserves its own pause**, whatever its source. The fix removed a recorded fact, and anything making a corpus hold less than it did should answer to something stronger than a sentence in an outcome.
+
+*Settled by:* trying one of these on the next work item that gets verified, and seeing whether it catches anything or only adds a step.
