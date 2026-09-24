@@ -361,6 +361,43 @@ ten minutes before it gives up, so a hang looks like a slow suite rather than a
 failure. The tripwire brings that down to ten seconds for the call that can
 actually hang, which is the right place for the bound rather than shortening
 the whole suite's patience.
+### The fence moves from .luma/ to the repository, and does not open
+
+**The migration could not be built through the handle the tool has.** `Backlog`
+is an `os.Root` fenced at `.luma/` — deliberately, and a guard test in
+`internal/guards` fails the build if any package outside `internal/root`
+touches the filesystem directly. Reaching `docs/` and `internal/` is not an
+oversight to route around; it is the boundary saying no.
+
+**What made it safe to widen is what `spec.md` §9a.4 actually says.** Its stated
+concern is the tool *"writing outside their repository"* — not outside `.luma/`.
+So a second `os.Root` at the repository root preserves the property exactly:
+traversal out via `..` or a symlink is resisted by the same mechanism with the
+same caveats. `.luma/` was simply where the tool needed to work until now.
+
+**`root.Project` is the narrowest thing that does the job** — read, write,
+rename, and a text walk. Every method on it reaches past `.luma/`, which is
+worth keeping in view when somebody wants to add a fifth.
+
+**Two tests hold the line rather than describe it.** One proves the wider fence
+still refuses `..` on read and on write. The other proves the walk skips a
+compiled binary and never descends into `.git` — the binary case is the one
+found by accident, where counting key mentions matched a Go runtime error
+string inside `./luma-backlog` sitting in the repository root.
+
+**Binary detection is a NUL byte in the first 8KB**, which is the same
+heuristic git uses for the same question. A heuristic, and the one everything
+else in this ecosystem already trusts.
+
+**Also skipped: `node_modules`, `vendor`, `dist`, `build`.** Not ours to edit
+and regenerated anyway, and the place a naive walk does the most damage.
+
+### The command is `migrate keys`
+
+Chosen by the maintainer over `key migrate`. It is verb-noun where the record
+tree is noun-verb, and the reason is grouping: `migrate` will have siblings
+(WORK-0022 vocabulary, WORK-0037 old records, WORK-0100 across document kinds).
+Recorded as a deliberate departure so it does not read later as an accident.
 
 ## ▶ 2026-09-23
 
