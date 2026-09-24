@@ -375,6 +375,7 @@ func newRootCommand(app *App) *cobra.Command {
 	addGroups(root)
 
 	root.AddCommand(inGroup(newInitCommand(app), groupExtra))
+	root.AddCommand(inGroup(newMigrateCommand(app), groupExtra))
 	addNouns(root, app)
 
 	// Ordered by how often each is reached for, not alphabetically. `list` and
