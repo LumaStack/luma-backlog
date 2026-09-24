@@ -533,6 +533,31 @@ real run, tested that property, and shipped it — and the property held for the
 case I had in mind while both sides were wrong about `former_keys`. **Two runs
 agreeing is not two runs being right.** The real corpus disagreed with both,
 which is the second time today it caught something every fixture passed.
+### All seven tasks closed, and closing them reproduced the cost that was predicted
+
+**`transition` wrote each task's status and left its rank at the previous
+status's ordinal.** All seven read `closed` while their ranks still said `050`,
+which is `todo`, and `task list` warned on every one.
+
+**This was written down before it happened.** The entry recording the decision
+to hand-rank says: *a rank encodes the status, so changing a task's status
+invalidates its rank… that is exactly why `rank` is a command and `set` refuses
+the field.* The prediction was right and the cost arrived on the first status
+change.
+
+**ADR-0005 says a record where status and rank disagree cannot be produced by
+using the tool.** For a work item that holds. For a task it does not, and seven
+records produced by ordinary commands now disagreed. Filed as BACK-0112.
+
+**The warning names the wrong cause**, which is the more interesting half: *the
+status vocabulary was edited by hand.* It was not. The tool infers a vocabulary
+edit from a rank that disagrees with a status, and cannot distinguish that from
+a status change that failed to write one. A message confident about a cause it
+cannot observe sends the reader to the wrong file.
+
+**Repaired by hand, which the maintainer authorized for tasks inside one work
+item** — ordinal moved to 070, positions kept, so the order the work happened in
+still reads correctly.
 
 ## ▶ 2026-09-23
 
