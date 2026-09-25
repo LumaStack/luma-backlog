@@ -446,6 +446,16 @@ And make Body structured rather than creating five separate custom fields.
 
 Body headings give the AI nearly the same semantic structure while remaining much easier for humans to edit and Jira administrators to maintain. You can promote something into a custom field later only if you discover that you need to query/report/automate against it.
 
+## Work item components
+- Outcomes - core component, required
+- Tasks - core, at least highly recommended, maybe required
+- Explorations - core, optional, used when someone needs to figure out what the work should be, typically used during preparing stage - think of these as an interactive design process with evidence
+- Decisions - core, optional, used when someone wants to make a decision within a work item - all decisions should start as work item decisions and attach themselves to the most relevent work item as a default case - and the exceptions are when the user asks for otherwise or it clearly only deals with the project - decisions should be considered for promotion to project-level decision record when closing a work item (or possibly before if other work items shouldn't wait that long)
+- Plans - non-core, tolerated but not recommended, we can take a plan if someone wants to create one, but it should feed into outcomes - we don't want to prevent people from creating plans when they find it useful
+- Specs - non-core, tolerated but not recommended, this typically translates into mainly tasks - we don't want to prevent people from creating specs when they find it useful - We should figure out how a spec and a plan differ.  Or if having both is noise.
+- Journal Entries - core. Prose as log.  Includes work item memory, potential learnings, mistakes, decision reasoning, context that helps the next agent pick up where the previous one left off, etc.
+- 
+
 ## Sources
 - https://www.sciencedirect.com/science/article/pii/S0950584925003180
 - https://link.springer.com/article/10.1007/s00766-016-0250-x
