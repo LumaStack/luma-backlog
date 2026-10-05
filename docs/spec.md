@@ -906,7 +906,7 @@ Harder than *was the work recorded*, and the bar that matters — because the al
 
 > Chronological order was tried first and does not survive a long-running work item. A reader arriving at a file with forty entries has to work backwards to assemble the current picture, and does it wrong. The newest-first pointer emerged from that pressure rather than from preference.
 
-**Headings are named after what they settle**, not drawn from a fixed template. *Proxmox versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will.
+**Headings are named after what they settle**, not drawn from a fixed template. *Virtual machine host versus bare metal — decided: bare metal, no hypervisor* scans in a way that *Observations* never will.
 
 What an entry is expected to carry, in whatever shape the work calls for:
 
